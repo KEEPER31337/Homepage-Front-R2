@@ -10,7 +10,7 @@ assignees: ''
 ### 기능 추가 요약
 -
 
-### 추가되는 Dependecy 
+### 추가되는 Dependency 
 -
 
 ### 개발 시 참고되는 Documentation
