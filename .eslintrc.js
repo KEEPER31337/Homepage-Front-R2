@@ -10,5 +10,11 @@ module.exports = {
   ],
   rules: {
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
+    'import/extensions': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };
