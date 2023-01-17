@@ -12,6 +12,15 @@ const useMainRouter = () =>
           index: true,
           element: <Home />,
         },
+        {
+          path: 'admin',
+          children: [
+            {
+              path: 'seminarManage',
+              element: <SeminarManage />,
+            },
+          ],
+        },
       ],
     },
   ]);
