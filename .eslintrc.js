@@ -17,6 +17,12 @@ module.exports = {
         namedComponents: ['arrow-function'],
       },
     ],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
   settings: {
     'import/resolver': {
