@@ -1,7 +1,10 @@
 import React from 'react';
+import useMainRouter from './router/useMainRouter';
 
-function App() {
-  return <div className="App">Homepage-Front-R2</div>;
-}
+const App = () => {
+  const routes = useMainRouter();
+
+  return <div className="App">{routes}</div>;
+};
 
 export default App;

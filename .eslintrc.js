@@ -10,5 +10,17 @@ module.exports = {
   ],
   rules: {
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
+    'import/extensions': 'off',
+    'react/function-component-definition': [
+      'error',
+      {
+        namedComponents: ['arrow-function'],
+      },
+    ],
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };
