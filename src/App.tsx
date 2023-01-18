@@ -6,10 +6,10 @@ const App = () => {
   const routes = useMainRouter();
 
   return (
-    <>
+    <div className="h-screen bg-[#26262C]">
       <Header />
       <div className="App">{routes}</div>
-    </>
+    </div>
   );
 };
 
