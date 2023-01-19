@@ -17,7 +17,7 @@ const SidebarContents = ({ category }: SidebarContentsProps) => {
   }, [category]);
 
   return (
-    <Popover className="relative ">
+    <Popover className="relative hover:bg-[#4ceef9]/30 ">
       <Popover.Button>
         <div className="text-white">{category?.name}</div>
       </Popover.Button>
