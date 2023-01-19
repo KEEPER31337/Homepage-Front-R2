@@ -1,15 +1,25 @@
 /* This example requires Tailwind CSS v2.0+ */
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 // import { ChevronDownIcon } from '@heroicons/react/solid';
 // import { ViewGridIcon } from '@heroicons/react/outline';
 
-const SidebarContents = (category: any) => {
-  const { thiscategory } = category;
+interface SidebarContentsProps {
+  category: any;
+}
+
+const SidebarContents = ({ category }: SidebarContentsProps) => {
+  useEffect(() => {
+    if (category) {
+      console.log(category);
+      console.log(category.name);
+    }
+  }, [category]);
+
   return (
-    <Popover className="relative">
+    <Popover className="relative ">
       <Popover.Button>
-        <span className="">{thiscategory.name}</span>
+        <div className="text-white">{category?.name}</div>
       </Popover.Button>
     </Popover>
   );
