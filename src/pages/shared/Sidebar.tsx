@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Popover } from '@headlessui/react';
 import { categoriesAll, categoriesHidden } from './category';
-import SidebarContents from './Component/SidebarContents';
+import SidebarContents from './component/SidebarContents';
 
 interface sub {
   id: number | null;

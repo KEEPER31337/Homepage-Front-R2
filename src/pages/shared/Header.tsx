@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 // local
 import Logo from '../../assets/keeper_logo.png';
-import SignInBox from './Component/SignInBox';
-import HeaderIcon from './Component/HeaderIcon';
+import SignInBox from './component/SignInBox';
+import HeaderIcon from './component/HeaderIcon';
 
 const Header: React.FC = () => {
   // const jobs = member?.memberInfo?.jobs;
