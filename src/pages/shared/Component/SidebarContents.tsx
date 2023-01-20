@@ -1,6 +1,8 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React, { Fragment, useEffect } from 'react';
 import { Popover, Transition } from '@headlessui/react';
+import { Link } from 'react-router-dom';
+import { VscCircleFilled } from 'react-icons/vsc';
 // import { ChevronDownIcon } from '@heroicons/react/solid';
 // import { ViewGridIcon } from '@heroicons/react/outline';
 
@@ -17,10 +19,20 @@ const SidebarContents = ({ category }: SidebarContentsProps) => {
   }, [category]);
 
   return (
-    <Popover className="relative hover:bg-[#4ceef9]/30 ">
-      <Popover.Button>
-        <div className="text-white">{category?.name}</div>
+    <Popover>
+      <Popover.Button className="flex items-center text-white pl-[50px] w-full h-[45px] hover:bg-[#4ceef9]/30 ">
+        <div>{category?.name}</div>
       </Popover.Button>
+      <Popover.Panel>
+        <div className="flex flex-col relative bg-[#131316] text-white">
+          {category.subs.map((item: any) => (
+            <Link to="#!" className="flex items-center pl-[50px] h-[40px] ">
+              <VscCircleFilled className="inline-block" />
+              <div className="inline-block">&nbsp;{item.name}</div>
+            </Link>
+          ))}
+        </div>
+      </Popover.Panel>
     </Popover>
   );
 };

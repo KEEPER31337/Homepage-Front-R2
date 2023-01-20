@@ -26,7 +26,7 @@ const Sidebar: React.FC = () => {
   return (
     <Popover>
       <div className="bg-[#131316] w-80 h-screen">
-        <Popover.Group as="nav" className="flex flex-col">
+        <Popover.Group as="nav" className="flex flex-col pt-[35px]">
           {categories.map((category) => (
             <SidebarContents category={category} />
           ))}
