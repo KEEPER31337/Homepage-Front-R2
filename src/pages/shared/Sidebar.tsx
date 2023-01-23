@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Popover } from '@headlessui/react';
+import { useRecoilState } from 'recoil';
 import { categoriesAll, categoriesHidden } from './category';
 import SidebarContents from './component/SidebarContents';
+import SidebarState from '../../atoms';
 
 interface sub {
   id: number | null;
@@ -19,6 +21,7 @@ interface thiscategory {
 
 const Sidebar: React.FC = () => {
   const [categories, setCategories] = useState<thiscategory[]>([]);
+  const [currentCategory, setCurrentCategory] = useRecoilState(SidebarState(0));
   useEffect(() => {
     setCategories(categoriesAll);
   }, []);
@@ -27,9 +30,19 @@ const Sidebar: React.FC = () => {
     <Popover>
       <div className="bg-[#131316] w-80 h-screen">
         <Popover.Group as="nav" className="flex flex-col pt-[35px]">
-          {categories.map((category) => (
-            <SidebarContents category={category} />
-          ))}
+          {categories.map((category) =>
+            currentCategory === category.id ? (
+              <SidebarContents
+                category={category}
+                styles="flex items-center text-white pl-[50px] w-full h-[45px] bg-[#4ceef9]"
+              />
+            ) : (
+              <SidebarContents
+                category={category}
+                styles="flex items-center text-white pl-[50px] w-full h-[45px] hover:bg-[#4ceef9]/30"
+              />
+            ),
+          )}
         </Popover.Group>
       </div>
     </Popover>

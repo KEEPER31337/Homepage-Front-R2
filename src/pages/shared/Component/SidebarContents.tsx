@@ -1,16 +1,17 @@
-/* This example requires Tailwind CSS v2.0+ */
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { Popover, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import { VscCircleFilled } from 'react-icons/vsc';
-// import { ChevronDownIcon } from '@heroicons/react/solid';
-// import { ViewGridIcon } from '@heroicons/react/outline';
+import SidebarState from '../../../atoms';
 
 interface SidebarContentsProps {
   category: any;
+  styles: string;
 }
 
-const SidebarContents = ({ category }: SidebarContentsProps) => {
+const SidebarContents = ({ category, styles }: SidebarContentsProps) => {
+  const [currentCategory, setCurrentCategory] = useRecoilState(SidebarState(0));
   useEffect(() => {
     if (category) {
       console.log(category);
@@ -20,7 +21,7 @@ const SidebarContents = ({ category }: SidebarContentsProps) => {
 
   return (
     <Popover>
-      <Popover.Button className="flex items-center text-white pl-[50px] w-full h-[45px] hover:bg-[#4ceef9]/30 ">
+      <Popover.Button className={styles} onClick={() => setCurrentCategory(category.id)}>
         <div>{category?.name}</div>
       </Popover.Button>
       <Popover.Panel>
