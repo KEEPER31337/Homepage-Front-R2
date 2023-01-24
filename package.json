@@ -10,7 +10,6 @@
     "@types/node": "^16.18.3",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
-    "craco-alias": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.2",
@@ -44,6 +43,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.0.0",
+    "craco-alias": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "eslint": "^8.28.0",
