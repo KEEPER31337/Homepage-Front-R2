@@ -19,7 +19,7 @@ interface thiscategory {
   subs: sub[];
 }
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const [categories, setCategories] = useState<thiscategory[]>([]);
   const [currentCategory, setCurrentCategory] = useRecoilState(SidebarCategoryState(0));
   useEffect(() => {
