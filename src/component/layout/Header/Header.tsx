@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 // import { connect } from 'react-redux';
 
 // local
-import Logo from '../../assets/keeper_logo.png';
-import SignInBox from './component/SignInBox';
+import Logo from '../../../assets/keeper_logo.png';
+import SignInBox from '../Sidebar/component/SignInBox';
 import HeaderIcon from './component/HeaderIcon';
 
 const Header: React.FC = () => {

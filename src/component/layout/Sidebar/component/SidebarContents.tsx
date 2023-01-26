@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { Popover, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import { VscCircleFilled } from 'react-icons/vsc';
-import { SidebarCategoryState, SidebarSubcategoryState } from '../../../atoms';
+import { SidebarCategoryState, SidebarSubcategoryState } from '../../../../atoms';
 
 interface SidebarContentsProps {
   category: any;

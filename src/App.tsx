@@ -1,7 +1,7 @@
 import React from 'react';
 import useMainRouter from './router/useMainRouter';
-import Header from './pages/shared/Header';
-import Sidebar from './pages/shared/Sidebar';
+import Header from './component/layout/Header/Header';
+import Sidebar from './component/layout/Sidebar/Sidebar';
 
 const App = () => {
   const routes = useMainRouter();

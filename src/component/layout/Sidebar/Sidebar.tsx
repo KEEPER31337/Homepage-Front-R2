@@ -3,7 +3,7 @@ import { Popover } from '@headlessui/react';
 import { useRecoilState } from 'recoil';
 import { categoriesAll, categoriesHidden } from './category';
 import SidebarContents from './component/SidebarContents';
-import { SidebarCategoryState, SidebarSubcategoryState } from '../../atoms';
+import { SidebarCategoryState, SidebarSubcategoryState } from '../../../atoms';
 
 interface sub {
   id: number | null;
