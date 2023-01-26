@@ -1,8 +1,11 @@
-import { atom, atomFamily } from 'recoil';
+import { atomFamily } from 'recoil';
 
-const SidebarState = atomFamily({
+export const SidebarCategoryState = atomFamily({
   key: 'currentCategory',
   default: 0,
 });
 
-export default SidebarState;
+export const SidebarSubcategoryState = atomFamily({
+  key: 'currentSubcategory',
+  default: 0,
+});
