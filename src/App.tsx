@@ -7,7 +7,7 @@ const App = () => {
   const routes = useMainRouter();
 
   return (
-    <div className="h-screen bg-[#26262C]">
+    <div className="min-h-full bg-[#26262C]">
       <Header />
       <Sidebar />
       <div className="App">{routes}</div>
