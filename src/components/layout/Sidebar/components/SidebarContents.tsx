@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 import { Link } from 'react-router-dom';
 import { categoryIdStateFamily, subcategoryIdStateFamily } from '../../../../atoms';
@@ -16,7 +16,7 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
   return (
     <div className="flex flex-col bg-mainBlack text-white">
       {category.subs.map((item: sub) => {
-        if (currentSubcategory === item.id && currentCategory === item.id % 10) {
+        if (currentSubcategory === item.id) {
           return (
             <Link
               key={item.id}
@@ -48,7 +48,10 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
             className={`flex items-center pl-[50px] h-[40px] text-white ${
               isOpen ? 'max-h-[100%]' : 'max-h-[0] invisible'
             }`}
-            onClick={() => setCurrentSubcategory(item.id)}
+            onClick={() => {
+              setCurrentSubcategory(item.id);
+              setCurrentCategory(item.id % 10);
+            }}
           >
             <span>&nbsp;•&nbsp;</span>
             <span className="inline-block">{item.name}</span>
