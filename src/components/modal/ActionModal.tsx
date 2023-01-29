@@ -6,21 +6,11 @@ interface ModalProps {
   title: string;
   contents: string;
   code: string;
-  actionName: string;
+  buttonName: string;
+  onClick: () => void;
 }
 
-/* 
-  interface ModalProps {
-    title: string;
-    contents: string;
-    actionName: string;
-    children: undefined | React.ReactNode;
-  }
-
-  const ActionModal = (props: ModalProps) => {
-  const { title, contents, actionName, children } = props; */
-
-const ActionModal = ({ title, contents, code, actionName }: ModalProps) => {
+const ActionModal = ({ title, contents, code, buttonName, onClick }: ModalProps) => {
   const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(!open);
 
@@ -33,8 +23,8 @@ const ActionModal = ({ title, contents, code, actionName }: ModalProps) => {
         <Button variant="text" onClick={handleOpen}>
           <span>취소</span>
         </Button>
-        <Button variant="gradient" onClick={handleOpen}>
-          <span>{actionName}</span>
+        <Button variant="gradient" onClick={onClick}>
+          <span>{buttonName}</span>
         </Button>
       </DialogFooter>
     </Dialog>
