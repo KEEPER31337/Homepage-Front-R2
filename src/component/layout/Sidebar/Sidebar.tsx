@@ -22,7 +22,7 @@ interface sidebarprops {
   depth: number;
 }
 
-const Sidebar = ({ depth }: sidebarprops) => {
+const Sidebar = () => {
   const [categories, setCategories] = useState<thiscategory[]>([]);
   const [currentCategory, setCurrentCategory] = useRecoilState(SidebarCategoryState(0));
   const [collapsed, setCollapsed] = useState(Array(7).fill(false));

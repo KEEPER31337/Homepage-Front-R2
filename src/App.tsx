@@ -9,7 +9,7 @@ const App = () => {
   return (
     <div className="min-h-full bg-[#26262C]">
       <Header />
-      <Sidebar depth={0} />
+      <Sidebar />
       <div className="App">{routes}</div>
     </div>
   );
