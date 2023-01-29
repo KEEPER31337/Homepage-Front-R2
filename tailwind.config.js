@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/** @type {import('tailwindcss').Config} */
+const withMT = require('@material-tailwind/react/utils/withMT');
+
 module.exports = {
   content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
@@ -10,15 +14,10 @@ module.exports = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       colors: {
-        mainHeader: 'rgb(255,255,255,0)',
-        mainBlack: '#000000',
-        mainWhite: '#ffffff',
-        mainYellow: '#fbbf24',
-        pointYellow: '#f59e0b',
-        backGray: '#efefef',
-        divisionGray: '#e0e0e0',
-        darkComponent: '#1f2937',
-        darkPoint: '#111827',
+        mainBlack: '#131316',
+        middleBlack: '#18181C',
+        subBlack: '#26262C',
+        pointBlue: '#4CEEF9',
       },
     },
   },
