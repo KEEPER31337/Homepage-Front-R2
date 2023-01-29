@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Popover } from '@headlessui/react';
 import { useRecoilState } from 'recoil';
-import { categoriesAll, categoriesHidden } from './category';
+import { categoriesAll } from './category';
 import SidebarContents from './component/SidebarContents';
-import { SidebarCategoryState, SidebarSubcategoryState } from '../../../atoms';
+import { SidebarCategoryState } from '../../../atoms';
 
 interface sub {
   id: number | null;
@@ -19,33 +18,47 @@ interface thiscategory {
   subs: sub[];
 }
 
-const Sidebar = () => {
+interface sidebarprops {
+  depth: number;
+}
+
+const Sidebar = ({ depth }: sidebarprops) => {
   const [categories, setCategories] = useState<thiscategory[]>([]);
   const [currentCategory, setCurrentCategory] = useRecoilState(SidebarCategoryState(0));
+  const [collapsed, setCollapsed] = useState(Array(7).fill(false));
+
   useEffect(() => {
     setCategories(categoriesAll);
   }, []);
 
+  const toggleCollapes = (i: number) => {
+    const toggled = [...collapsed];
+    toggled[i] = !collapsed[i];
+    setCollapsed(toggled);
+  };
+
   return (
-    <Popover>
-      <div className="bg-[#131316] w-80 h-screen">
-        <Popover.Group as="nav" className="flex flex-col pt-[35px]">
-          {categories.map((category) =>
-            currentCategory === category.id ? (
-              <SidebarContents
-                category={category}
-                styles="flex items-center text-white pl-[50px] w-full h-[45px] bg-[#4ceef9]/30"
-              />
-            ) : (
-              <SidebarContents
-                category={category}
-                styles="flex items-center text-white pl-[50px] w-full h-[45px] hover:bg-[#4ceef9]/30"
-              />
-            ),
-          )}
-        </Popover.Group>
+    <div className="bg-mainBlack w-80 h-screen">
+      <div className="flex flex-col pt-[35px]">
+        {categories.map((category, index) => (
+          <>
+            <button
+              type="button"
+              className={`flex items-center text-white pl-[50px] w-full h-[45px] ${
+                currentCategory === category.id ? 'bg-[#4ceef9]/30' : 'hover:bg-pointBlue/30'
+              }`}
+              onClick={() => {
+                setCurrentCategory(category.id);
+                toggleCollapes(index);
+              }}
+            >
+              {category?.name}
+            </button>
+            <SidebarContents key={category.id} category={category} isOpen={collapsed[index]} />
+          </>
+        ))}
       </div>
-    </Popover>
+    </div>
   );
 };
 export default Sidebar;
