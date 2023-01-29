@@ -23,8 +23,8 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
               className={`flex items-center pl-[50px] h-[40px] text-pointBlue 
                 ${isOpen ? 'max-h-[100%]' : 'max-h-[0] invisible'}`}
             >
-              <VscCircleFilled className="inline-block" />
-              <div className="inline-block">&nbsp;{item.name}</div>
+              <span>&nbsp;•&nbsp;</span>
+              <span className="inline-block">{item.name}</span>
             </Link>
           );
         }
@@ -47,8 +47,8 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
             }`}
             onClick={() => setCurrentSubcategory(item.id)}
           >
-            <VscCircleFilled className="inline-block" />
-            <div className="inline-block">&nbsp;{item.name}</div>
+            <span>&nbsp;•&nbsp;</span>
+            <span className="inline-block">{item.name}</span>
           </Link>
         );
       })}

@@ -62,7 +62,7 @@ const categoriesAll = [
       },
       {
         id: 111,
-        name: '표자료',
+        name: '발표자료',
         href: 'board/발표자료',
         auth: null,
       },
