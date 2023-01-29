@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { Link } from 'react-router-dom';
-import { VscCircleFilled } from 'react-icons/vsc';
-import { SidebarCategoryState, SidebarSubcategoryState } from '../../../../atoms';
+import { categoryIdStateFamily, subcategoryIdStateFamily } from '../../../../atoms';
+import { thiscategory, sub } from '../Sidebar';
 
 interface SidebarContentsProps {
-  category: any;
+  category: thiscategory;
   isOpen: boolean;
 }
 
 const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
-  const [currentCategory, setCurrentCategory] = useRecoilState(SidebarCategoryState(0));
-  const [currentSubcategory, setCurrentSubcategory] = useRecoilState(SidebarSubcategoryState(0));
+  const [currentCategory, setCurrentCategory] = useRecoilState(categoryIdStateFamily(0));
+  const [currentSubcategory, setCurrentSubcategory] = useRecoilState(subcategoryIdStateFamily(0));
 
   return (
     <div className="flex flex-col bg-mainBlack text-white">
-      {category.subs.map((item: any) => {
+      {category.subs.map((item: sub) => {
         if (currentSubcategory === item.id && currentCategory === item.id % 10) {
           return (
             <Link
+              key={item.id}
               to="#!"
               className={`flex items-center pl-[50px] h-[40px] text-pointBlue 
                 ${isOpen ? 'max-h-[100%]' : 'max-h-[0] invisible'}`}
@@ -31,6 +32,7 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
         if (item.id >= 1000) {
           return (
             <div
+              key={item.id}
               className={`flex items-center pl-[50px] mt-[10px] h-[40px] font-light ${
                 isOpen ? 'max-h-[100%]' : 'max-h-[0] invisible'
               }`}
@@ -41,6 +43,7 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
         }
         return (
           <Link
+            key={item.id}
             to="#!"
             className={`flex items-center pl-[50px] h-[40px] text-white ${
               isOpen ? 'max-h-[100%]' : 'max-h-[0] invisible'

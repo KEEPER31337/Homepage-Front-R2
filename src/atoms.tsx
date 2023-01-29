@@ -1,11 +1,11 @@
 import { atomFamily } from 'recoil';
 
-export const SidebarCategoryState = atomFamily({
+export const categoryIdStateFamily = atomFamily({
   key: 'currentCategory',
   default: 0,
 });
 
-export const SidebarSubcategoryState = atomFamily({
+export const subcategoryIdStateFamily = atomFamily({
   key: 'currentSubcategory',
   default: 0,
 });

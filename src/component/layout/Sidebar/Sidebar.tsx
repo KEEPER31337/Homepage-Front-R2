@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { categoriesAll } from './category';
 import SidebarContents from './component/SidebarContents';
-import { SidebarCategoryState } from '../../../atoms';
+import { categoryIdStateFamily } from '../../../atoms';
 
-interface sub {
-  id: number | null;
+export interface sub {
+  id: number;
   name: string;
   href: string;
-  auth: any;
-  external?: any;
+  auth: string[] | null;
+  external?: string[] | null;
 }
 
-interface thiscategory {
+export interface thiscategory {
   id: number;
   name: string;
   subs: sub[];
@@ -24,7 +24,7 @@ interface sidebarprops {
 
 const Sidebar = () => {
   const [categories, setCategories] = useState<thiscategory[]>([]);
-  const [currentCategory, setCurrentCategory] = useRecoilState(SidebarCategoryState(0));
+  const [currentCategory, setCurrentCategory] = useRecoilState(categoryIdStateFamily(0));
   const [collapsed, setCollapsed] = useState(Array(7).fill(false));
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Sidebar = () => {
     <div className="bg-mainBlack w-80 h-screen">
       <div className="flex flex-col pt-[35px]">
         {categories.map((category, index) => (
-          <>
+          <div key={category.id}>
             <button
               type="button"
               className={`flex items-center text-white pl-[50px] w-full h-[45px] ${
@@ -54,8 +54,8 @@ const Sidebar = () => {
             >
               {category?.name}
             </button>
-            <SidebarContents key={category.id} category={category} isOpen={collapsed[index]} />
-          </>
+            <SidebarContents category={category} isOpen={collapsed[index]} />
+          </div>
         ))}
       </div>
     </div>
