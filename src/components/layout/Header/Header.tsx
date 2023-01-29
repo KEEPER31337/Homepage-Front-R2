@@ -1,27 +1,23 @@
 import React from 'react';
-import { Popover } from '@headlessui/react';
 import { Link } from 'react-router-dom';
-// import { connect } from 'react-redux';
 
 // local
 import Logo from '../../../assets/keeper_logo.png';
 import SignInBox from '../Sidebar/components/SignInBox';
 import HeaderIcon from './components/HeaderIcon';
 
-const Header: React.FC = () => {
-  // const jobs = member?.memberInfo?.jobs;
-
+const Header = () => {
   return (
-    <Popover className="flex h-[66px] bg-[#131316] border-t-0 border-r-0 border-b border-l-0 border-[#4CEEF9]">
+    <div className="flex h-[66px] border-t-0 border-r-0 border-b border-l-0 border-[#4CEEF9] bg-[#131316]">
       <div className="flex w-full items-center justify-between">
         <Link to="/">
-          <img className="ml-[33px] w-[105px] h-[41px] object-cover" src={Logo} alt="" />
+          <img className="ml-[33px] h-[41px] w-[105px] object-cover" src={Logo} alt="" />
         </Link>
         <div className="mr-[19px]">
           <HeaderIcon />
         </div>
       </div>
-    </Popover>
+    </div>
   );
 };
 
