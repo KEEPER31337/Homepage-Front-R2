@@ -5,6 +5,7 @@ import { Button, Dialog, DialogHeader, DialogBody, DialogFooter } from '@materia
 interface ModalProps {
   title: string;
   contents: string;
+  code: string;
   actionName: string;
 }
 
@@ -19,7 +20,7 @@ interface ModalProps {
   const ActionModal = (props: ModalProps) => {
   const { title, contents, actionName, children } = props; */
 
-const ActionModal = ({ title, contents, actionName }: ModalProps) => {
+const ActionModal = ({ title, contents, code, actionName }: ModalProps) => {
   const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(!open);
 
@@ -27,6 +28,7 @@ const ActionModal = ({ title, contents, actionName }: ModalProps) => {
     <Dialog open={open} handler={handleOpen}>
       <DialogHeader>{title}</DialogHeader>
       <DialogBody>{contents}</DialogBody>
+      <div dangerouslySetInnerHTML={{ __html: code }} />
       <DialogFooter>
         <Button variant="text" onClick={handleOpen}>
           <span>취소</span>
