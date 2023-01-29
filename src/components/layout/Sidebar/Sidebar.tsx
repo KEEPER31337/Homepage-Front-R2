@@ -38,13 +38,13 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-mainBlack w-80 h-screen">
+    <div className="h-screen w-80 bg-mainBlack">
       <div className="flex flex-col pt-[35px]">
         {categories.map((category, index) => (
           <div key={category.id}>
             <button
               type="button"
-              className={`flex items-center text-white pl-[50px] w-full h-[45px] ${
+              className={`flex h-[45px] w-full items-center pl-[50px] text-white ${
                 currentCategory === category.id ? 'bg-[#4ceef9]/30' : 'hover:bg-pointBlue/30'
               }`}
               onClick={() => {

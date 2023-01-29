@@ -21,8 +21,8 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
             <Link
               key={item.id}
               to="#!"
-              className={`flex items-center pl-[50px] h-[40px] text-pointBlue 
-                ${isOpen ? 'max-h-[100%]' : 'max-h-[0] invisible'}`}
+              className={`flex h-[40px] items-center pl-[50px] text-pointBlue 
+                ${isOpen ? 'max-h-[100%]' : 'invisible max-h-[0]'}`}
             >
               <span>&nbsp;•&nbsp;</span>
               <span className="inline-block">{item.name}</span>
@@ -33,8 +33,8 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
           return (
             <div
               key={item.id}
-              className={`flex items-center pl-[50px] mt-[10px] h-[40px] font-light ${
-                isOpen ? 'max-h-[100%]' : 'max-h-[0] invisible'
+              className={`mt-[10px] flex h-[40px] items-center pl-[50px] font-light ${
+                isOpen ? 'max-h-[100%]' : 'invisible max-h-[0]'
               }`}
             >
               {item.name}
@@ -45,8 +45,8 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
           <Link
             key={item.id}
             to="#!"
-            className={`flex items-center pl-[50px] h-[40px] text-white ${
-              isOpen ? 'max-h-[100%]' : 'max-h-[0] invisible'
+            className={`flex h-[40px] items-center pl-[50px] text-white ${
+              isOpen ? 'max-h-[100%]' : 'invisible max-h-[0]'
             }`}
             onClick={() => {
               setCurrentSubcategory(item.id);

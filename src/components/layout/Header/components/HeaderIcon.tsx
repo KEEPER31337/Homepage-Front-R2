@@ -7,15 +7,15 @@ const HeaderIcon = () => {
   return (
     <div className="relative flex w-[110px] justify-between">
       <a target="_blank" rel="noopener noreferrer" href="https://keeper.or.kr/wiki/%EB%8C%80%EB%AC%B8">
-        <VscCircleLargeFilled className="w-[28px] h-[28px] fill-[#4CEEF9]" />
+        <VscCircleLargeFilled className="h-[28px] w-[28px] fill-[#4CEEF9]" />
       </a>
       <a target="_blank" rel="noopener noreferrer" href="https://github.com/KEEPER31337">
-        <VscGithubInverted className="w-[28px] h-[28px] fill-[#4CEEF9]" />
+        <VscGithubInverted className="h-[28px] w-[28px] fill-[#4CEEF9]" />
       </a>
       <Menu>
         <MenuHandler>
           <div>
-            <VscAccount className="w-[28px] h-[28px] fill-[#4CEEF9]" />
+            <VscAccount className="h-[28px] w-[28px] fill-[#4CEEF9]" />
           </div>
         </MenuHandler>
         <MenuList>
