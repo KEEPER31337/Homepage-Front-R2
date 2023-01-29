@@ -23,6 +23,7 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['craco.config.ts', 'prettier.config.js'] }],
   },
   settings: {
     'import/resolver': {

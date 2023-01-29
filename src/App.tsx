@@ -1,5 +1,5 @@
 import React from 'react';
-import useMainRouter from './router/useMainRouter';
+import useMainRouter from '@router/useMainRouter';
 import Header from './components/layout/Header/Header';
 import Sidebar from './components/layout/Sidebar/Sidebar';
 
