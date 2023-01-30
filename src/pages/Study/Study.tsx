@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { ThemeProvider, Select, Option } from '@material-tailwind/react';
+import { ThemeProvider, Select, Option, Button } from '@material-tailwind/react';
 
 import StudyItem from './StudyItem';
 
@@ -27,6 +27,17 @@ const StudyContent = () => {
             initial: {
               borderColor: 'border-blue-300',
             },
+          },
+        },
+      },
+    },
+    button: {
+      styles: {
+        variants: {
+          outlined: {
+            bgColor: '!bg-red-300',
+            borderRadius: '!rounded-[20px]',
+            border: '!border-[4px]',
           },
         },
       },
@@ -82,10 +93,9 @@ const StudyContent = () => {
                 <Option>겨울방학</Option>
               </Select>
             </div>
-
-            <button type="button" className="min-h-[34px] min-w-[70px] border border-blue-300">
-              <span className="mx-[24px] my-[8px]">추가</span>
-            </button>
+            <Button variant="outlined" className="rounded-[2px] border-2">
+              추가
+            </Button>
           </div>
           <div className="flex h-full justify-center border border-black">
             <div className="w-full max-w-[640px]">
