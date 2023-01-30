@@ -31,9 +31,9 @@ const ActionModal = ({ title, contents, code, buttonName, onClick }: ModalProps)
             <span>취소</span>
           </Button>
           <Button
-            variant="gradient"
+            variant="outlined"
             onClick={onClick}
-            className="rounded-sm flex-grow-0 flex-shrink-0 text-xs font-semibold text-center text-[#26262c] bg-[#4ceef9]"
+            className="rounded-sm flex-grow-0 flex-shrink-0 border-none text-xs font-semibold text-center text-[#26262c] bg-[#4ceef9]"
           >
             <span>{buttonName}</span>
           </Button>
