@@ -1,113 +1,33 @@
 import React, { Fragment } from 'react';
-import { ThemeProvider, Select, Option, Button } from '@material-tailwind/react';
-
+import StudySelect from './share/StudySelect';
+import StudyModal from './StudyModal';
 import StudyItem from './StudyItem';
 
 const StudyContent = () => {
   const studyList = [1, 2, 3, 4, 5];
-  const theme = {
-    select: {
-      styles: {
-        base: {
-          container: {
-            position: 'relative',
-            width: 'w-[97px]',
-            minWidth: 'min-w-[0px]',
-          },
-        },
-      },
-    },
-    accordion: {
-      styles: {
-        base: {
-          container: {
-            bgColor: 'bg-white',
-          },
-          header: {
-            initial: {
-              borderColor: 'border-blue-300',
-            },
-          },
-        },
-      },
-    },
-    button: {
-      styles: {
-        variants: {
-          outlined: {
-            bgColor: '!bg-red-300',
-            borderRadius: '!rounded-[20px]',
-            border: '!border-[4px]',
-          },
-        },
-      },
-    },
-    chip: {
-      styles: {
-        base: {
-          font: 'text-[12px]',
-          height: 'h-[22px]',
-          paddingRight: 'px-[8px]',
-          paddingTop: 'py-[2px]',
-        },
-        variants: {
-          filled: {
-            blue: {
-              borderRadius: 'rounded-[4px]',
-              background: 'bg-blue-300',
-              opacity: 'bg-opacity-30',
-              color: 'text-white',
-            },
-          },
-        },
-        closeButtonColor: {
-          blue: {
-            height: 'h-[14px]',
-            weight: 'w-[14px]',
-            borderRadius: 'rounded-[2px]',
-            bgColor: 'bg-blue-300',
-          },
-        },
-      },
-    },
-  };
-
+  const yearList = ['2022', '2021', '2020', '2019'];
+  const seasonList = ['1학기', '여름방학', '2학기', '겨울방학'];
   return (
     <div className="flex h-full flex-col space-y-[32px] pt-[80px]">
       <p className="border border-black text-blue-300">스터디</p>
-      <ThemeProvider value={theme}>
-        <div className="flex h-full flex-col space-y-[16px] border border-red-300">
-          <div className="flex justify-between">
+      <div className="flex justify-center">
+        <div className="h-full w-full max-w-[640px] space-y-[16px] border border-red-300">
+          <div className="flex h-[45px] items-center justify-between border border-black">
             <div className="flex space-x-[8px]">
-              <Select variant="static" className="" value="2022">
-                <Option>2022</Option>
-                <Option>2021</Option>
-                <Option>2020</Option>
-                <Option>2019</Option>
-                <Option>2018</Option>
-              </Select>
-              <Select variant="static" className="" value="1학기">
-                <Option>1학기</Option>
-                <Option>여름방학</Option>
-                <Option>2학기</Option>
-                <Option>겨울방학</Option>
-              </Select>
+              <StudySelect value="2022" options={yearList} />
+              <StudySelect value="1학기" options={seasonList} />
             </div>
-            <Button variant="outlined" className="rounded-[2px] border-2">
-              추가
-            </Button>
+            <StudyModal isModify={false} studyId={null} />
           </div>
-          <div className="flex h-full justify-center border border-black">
-            <div className="w-full max-w-[640px]">
-              {studyList?.map((study) => (
-                <Fragment key={study}>
-                  <StudyItem id={study} />
-                </Fragment>
-              ))}
-            </div>
+          <div className=" h-full border border-black">
+            {studyList?.map((study) => (
+              <Fragment key={study}>
+                <StudyItem id={study} />
+              </Fragment>
+            ))}
           </div>
         </div>
-      </ThemeProvider>
+      </div>
     </div>
   );
 };
