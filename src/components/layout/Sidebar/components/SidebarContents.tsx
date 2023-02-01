@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { Link } from 'react-router-dom';
-import { categoryIdStateFamily, subcategoryIdStateFamily } from '../../../../atoms';
-import { thiscategory, sub } from '../Sidebar';
+import { categoryIdStateFamily, subcategoryIdStateFamily } from '@src/atoms';
+import { thiscategory, sub } from '@components/layout/Sidebar/Sidebar';
 
 interface SidebarContentsProps {
   category: thiscategory;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { categoriesAll } from '../../../data/category';
-import SidebarContents from './components/SidebarContents';
-import { categoryIdStateFamily } from '../../../atoms';
+import { categoriesAll } from '@data/category';
+import SidebarContents from '@components/layout/Sidebar/components/SidebarContents';
+import { categoryIdStateFamily } from '@src/atoms';
 
 export interface sub {
   id: number;

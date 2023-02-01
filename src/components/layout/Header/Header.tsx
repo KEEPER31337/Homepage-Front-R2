@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // local
-import Logo from '../../../assets/keeper_logo.png';
-import SignInBox from '../Sidebar/components/SignInBox';
-import HeaderIcon from './components/HeaderIcon';
+import Logo from '@assets/logo.svg';
+import HeaderIcon from '@components/layout/Header/components/HeaderIcon';
+import SignInBox from '@components/layout/Sidebar/components/SignInBox';
 
 const Header = () => {
   return (
