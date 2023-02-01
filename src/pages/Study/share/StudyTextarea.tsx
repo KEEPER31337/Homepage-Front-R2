@@ -14,9 +14,13 @@ const theme = {
           fontSize: 'text-[16px]',
           border: 'border-b-2',
           borderColor: '!border-pointBlue',
+          fontColor: '!text-white',
+          placeholder: 'placeholder:text-subGray',
         },
         label: {
           fontSize: 'text-[16px]',
+          fontColor: '!text-pointBlue',
+          focus: 'peer-focus:text-[16px]',
         },
       },
     },

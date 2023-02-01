@@ -11,9 +11,12 @@ const theme = {
     styles: {
       base: {
         font: 'text-[12px]',
+        width: 'w-fit',
         height: 'h-[22px]',
         paddingRight: 'px-[8px]',
         paddingTop: 'py-[2px]',
+        display: 'flex',
+        alignItems: 'items-center',
       },
       variants: {
         filled: {
@@ -27,11 +30,13 @@ const theme = {
       },
       closeButtonColor: {
         blue: {
+          display: 'flex',
           height: 'h-[14px]',
           weight: 'w-[14px]',
           borderRadius: 'rounded-[2px]',
           fontColor: 'text-pointBlue',
           bgColor: 'bg-subBlack',
+          hover: 'hover:bg-middleBlack',
         },
       },
     },

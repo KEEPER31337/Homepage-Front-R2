@@ -34,8 +34,8 @@ const AccordionHeaderContent = () => {
       <span className="h-[64px] w-[64px] bg-gray-300">이미지</span>
       <div className="flex flex-col justify-between">
         <p className="h-[30px] text-[20px]">CTF 스터디</p>
-        <p className="h-[24px] text-[16px]">
-          스터디장 <StudyChip value="김태연" /> | 현재 인원 8명
+        <p className="flex h-[24px] space-x-[4px] text-[16px]">
+          <span>스터디장</span> <StudyChip value="김태연" /> <span>| 현재 인원 8명</span>
         </p>
       </div>
     </div>
@@ -56,7 +56,7 @@ const AccordionBodyContent = () => {
       </div>
       <div className="space-y-[16px] ">
         <p>스터디원</p>
-        <p className="space-x-[10px]">
+        <p className="flex space-x-[10px]">
           {members?.map((member: string) => (
             <StudyChip value={member} />
           ))}
