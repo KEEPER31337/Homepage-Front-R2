@@ -1,19 +1,20 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
-interface StandardTableProps {
-  columns: { key: string; headerName: string }[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rows: Record<string, any>[];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface StandardTableProps<T extends Record<string, any>> {
+  columns: { key: keyof T; headerName: string }[];
+  rows: T[];
 }
 
-const StandardTable = ({ columns, rows }: StandardTableProps) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const StandardTable = <T,>({ columns, rows }: StandardTableProps<T extends Record<string, any> ? T : never>) => {
   return (
     <Table>
       <TableHead>
         <TableRow>
           {columns.map((column) => (
-            <TableCell key={column.key}>{column.headerName}</TableCell>
+            <TableCell key={column.key as string}>{column.headerName}</TableCell>
           ))}
         </TableRow>
       </TableHead>
@@ -21,7 +22,7 @@ const StandardTable = ({ columns, rows }: StandardTableProps) => {
         {rows.map((row) => (
           <TableRow>
             {columns.map((column) => {
-              return <TableCell key={column.key}>{row[column.key]}</TableCell>;
+              return <TableCell key={column.key as string}>{row[column.key]}</TableCell>;
             })}
           </TableRow>
         ))}
