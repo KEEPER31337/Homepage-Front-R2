@@ -30,7 +30,7 @@ const LinkIcon = (name: string): JSX.Element => {
 
 const AccordionHeaderContent = () => {
   return (
-    <div className="flex h-[64px] w-full space-x-[24px] text-left">
+    <div className="flex h-[64px] w-full space-x-[24px] pl-[23px] text-left">
       <span className="h-[64px] w-[64px] bg-gray-300">이미지</span>
       <div className="flex flex-col justify-between">
         <p className="h-[30px] text-[20px]">CTF 스터디</p>
@@ -49,10 +49,10 @@ const AccordionBodyContent = () => {
   ];
   const members = ['장서윤', '김은지', '송세연', '산다라박'];
   return (
-    <div>
+    <div className="space-y-[30px]">
       <div className="space-y-[16px]">
         <p>스터디 소개</p>
-        <div className="border-l-2 border-blue-300 px-[10px]">CTF 준비합니다</div>
+        <div className="border-l-2 border-pointBlue px-[10px]">CTF 준비합니다</div>
       </div>
       <div className="space-y-[16px] ">
         <p>스터디원</p>
@@ -64,11 +64,11 @@ const AccordionBodyContent = () => {
       </div>
       <div className="space-y-[16px] ">
         <p>링크</p>
-        <p className="flex space-x-[16px]">
+        <p className="flex space-x-[16px] text-pointBlue">
           {link?.map((li) => (
             <p className="flex items-center space-x-[4px]">
               <span>{LinkIcon(li.title)}</span>
-              <span className="underline">{capitalize(li.title)}</span>
+              <span className="border-b border-pointBlue">{capitalize(li.title)}</span>
             </p>
           ))}
         </p>

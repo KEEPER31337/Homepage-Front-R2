@@ -10,10 +10,35 @@ const theme = {
     styles: {
       base: {
         container: {
-          border: 'border-2',
           position: 'relative',
           width: 'w-[97px]',
           minWidth: 'min-w-[0px]',
+        },
+        select: {
+          fontColor: 'text-white',
+          borderColor: '!border-pointBlue',
+          backdrop: '::backdrop:!ring-red-300',
+        },
+        arrow: {
+          initial: {
+            fontColor: '!text-white',
+            width: 'w-[16px]',
+            height: 'h-[16px]',
+          },
+        },
+        menu: {
+          bgColor: 'bg-middleBlack',
+          borderColr: 'border-middleBlack',
+        },
+        option: {
+          initial: {
+            fontColor: 'text-white',
+            hover: 'hover:!bg-gray-600 hover:text-white',
+          },
+          active: {
+            fontColor: 'text-white',
+            bgColor: 'bg-gray-600',
+          },
         },
       },
     },

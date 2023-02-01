@@ -5,13 +5,21 @@ const theme = {
   accordion: {
     styles: {
       base: {
-        container: {
-          bgColor: 'bg-white',
-        },
+        container: {},
         header: {
           initial: {
-            borderColor: 'border-pointBlue',
+            fontColor: 'text-white',
+            borderColor: 'border-white/[20%]',
+            focus: 'focus:outline-0',
+            hover: 'hover:text-white hover:bg-gray-600',
           },
+          active: {
+            fontColor: 'text-white',
+          },
+        },
+        body: {
+          bgColor: 'bg-middleBlack',
+          fontColor: 'text-white',
         },
       },
     },
