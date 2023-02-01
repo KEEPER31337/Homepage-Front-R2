@@ -10,7 +10,7 @@ const App = () => {
     <div className="min-h-full bg-[#26262C]">
       <Header />
       <Sidebar />
-      <div className="App">{routes}</div>
+      <div className="App text-base(=16pt) font-basic">{routes}</div>
     </div>
   );
 };
