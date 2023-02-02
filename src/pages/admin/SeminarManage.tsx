@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import StandardTable from '@components/Table/StandardTable';
+import { Button } from '@mui/material';
+
 
 const SeminarContent = () => {
   const [listColumns, setListColumns] = useState([
@@ -28,13 +30,13 @@ const SeminarContent = () => {
       <div className="flex h-fit w-full justify-between">
         <div className="m-10 grow">
           <StandardTable columns={listColumns} rows={listRows} />
-          <div className="flex justify-end">
-            <button type="button" className="m-1 bg-black text-white" onClick={addSeminar}>
+          <div className="mt-4 flex justify-end space-x-2">
+            <Button variant="outlined" className="border-pointBlue text-pointBlue" onClick={addSeminar}>
               추가
-            </button>
-            <button type="button" className="m-1 bg-black text-white">
+            </Button>
+            <Button variant="outlined" className="border-2 border-pointBlue text-pointBlue">
               삭제
-            </button>
+            </Button>
           </div>
         </div>
       </div>
