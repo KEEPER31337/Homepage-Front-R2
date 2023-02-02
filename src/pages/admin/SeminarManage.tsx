@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import StandardTable from '@components/Table/StandardTable';
+
 const SeminarContent = () => {
   const [listColumns, setListColumns] = useState([
   ]);
