@@ -1,11 +1,15 @@
 import React from 'react';
 const SeminarContent = () => {
+  const [listColumns, setListColumns] = useState([
+  ]);
+  const [listRows, setListRows] = useState([
+  ]);
   return (
     <div className="flex h-full flex-col space-y-[32px] bg-subBlack px-20 pt-[80px]">
       <p className="font-[28pt] text-pointBlue">세미나 관리(2023년 1학기)</p>
       <div className="flex h-fit w-full justify-between">
         <div className="m-10 grow">
-          세미나 목록 테이블
+          <StandardTable columns={listColumns} rows={listRows} />
           <div className="flex justify-end">
             <button type="button" className="m-1 bg-black text-white">
               추가
