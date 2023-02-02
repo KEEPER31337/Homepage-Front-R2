@@ -9,8 +9,12 @@ const App = () => {
   return (
     <div className="min-h-full bg-[#26262C]">
       <Header />
-      <Sidebar />
-      <div className="App text-base(=16pt) font-basic">{routes}</div>
+      <div className="flex">
+        <Sidebar />
+        <div className="flex w-full justify-center">
+          <div className="w-full max-w-[1080px] App text-base(=16pt) font-basic">{routes}</div>
+        </div>
+      </div>
     </div>
   );
 };
