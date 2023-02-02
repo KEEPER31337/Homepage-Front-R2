@@ -8,7 +8,7 @@ interface StandardTableProps<T extends Record<string, any>> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const StandardTable = <T,>({ columns, rows }: StandardTableProps<T extends Record<string, any> ? T : never>) => {
+const StandardTable = <T extends Record<string, any>>({ columns, rows }: StandardTableProps<T>) => {
   return (
     <Table>
       <TableHead>
