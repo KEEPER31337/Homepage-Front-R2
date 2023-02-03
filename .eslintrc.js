@@ -17,6 +17,13 @@ module.exports = {
         namedComponents: ['arrow-function'],
       },
     ],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['craco.config.ts', 'prettier.config.js'] }],
   },
   settings: {
     'import/resolver': {
