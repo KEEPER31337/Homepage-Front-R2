@@ -13,6 +13,12 @@ module.exports = withMT({
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
+      fontSize: {
+        h1: '28pt',
+        h3: '20pt',
+        paragraph: '16pt',
+        small: '12pt',
+      },
       colors: {
         mainBlack: '#131316',
         middleBlack: '#18181C',
