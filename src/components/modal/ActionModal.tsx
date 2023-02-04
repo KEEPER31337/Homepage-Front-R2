@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button, Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
 
-interface ModalProps {
+interface ActionModalProps {
   title: string;
   contents: string;
   code: string;
@@ -10,7 +10,7 @@ interface ModalProps {
   onClick: () => void;
 }
 
-const ActionModal = ({ title, contents, code, buttonName, onClick }: ModalProps) => {
+const ActionModal = ({ title, contents, code, buttonName, onClick }: ActionModalProps) => {
   const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(!open);
 
