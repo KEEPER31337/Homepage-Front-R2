@@ -16,6 +16,9 @@ module.exports = withMT({
         header: '66px',
         sidebar: '320px',
       },
+      maxWidth: {
+        container: '1080px',
+      },
     },
   },
   plugins: [],
