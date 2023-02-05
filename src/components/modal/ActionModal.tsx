@@ -28,14 +28,14 @@ const ActionModal = ({ title, contents, code, buttonName, onClick }: ActionModal
             onClick={handleOpen}
             className="flex-shrink-0 flex-grow-0 rounded-sm text-center text-xs font-semibold text-[#4ceef9]"
           >
-            <span>취소</span>
+            취소
           </Button>
           <Button
             variant="outlined"
             onClick={onClick}
             className="flex-shrink-0 flex-grow-0 rounded-sm border-none bg-[#4ceef9] text-center text-xs font-semibold text-[#26262c]"
           >
-            <span>{buttonName}</span>
+            {buttonName}
           </Button>
         </DialogFooter>
       </div>
