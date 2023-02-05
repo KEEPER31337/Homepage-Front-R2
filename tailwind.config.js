@@ -12,6 +12,10 @@ module.exports = withMT({
         subBlack: '#26262C',
         pointBlue: '#4CEEF9',
       },
+      spacing: {
+        header: '66px',
+        sidebar: '320px',
+      },
     },
   },
   plugins: [],
