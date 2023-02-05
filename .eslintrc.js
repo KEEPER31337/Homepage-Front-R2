@@ -11,6 +11,8 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
     'import/extensions': 'off',
+    'react/require-default-props': 'off',
+    'react/no-unused-prop-types': 'off',
     'react/function-component-definition': [
       'error',
       {
