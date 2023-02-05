@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider, Select, Option } from '@material-tailwind/react';
 
-interface SelectType {
+interface SelectProps {
   value: string;
   options: string[];
 }
@@ -44,7 +44,7 @@ const theme = {
     },
   },
 };
-const StudySelect = ({ value, options }: SelectType) => {
+const StudySelect = ({ value, options }: SelectProps) => {
   return (
     <ThemeProvider value={theme}>
       <Select variant="static" className="" value={value}>

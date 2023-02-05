@@ -1,13 +1,15 @@
 import React, { Fragment, useState } from 'react';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
-import StudyAccodion from './share/StudyAccordion';
+import StudyAccordion from './share/StudyAccordion';
 import { StudyChip } from './share/StudyChip';
 
-interface StudyItemType {
+interface StudyItemProps {
   id: number;
 }
-
+interface IconType {
+  [key: string]: JSX.Element;
+}
 /**
  * TODO 나중에 다른 파일로 빼줄 예정
  * 영문 가장 앞 글자만 대문자, 나머지는 소문자로 반환해주는 함수
@@ -17,15 +19,11 @@ interface StudyItemType {
 const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
-/**
- * 링크 라벨에 따라 알맞은 아이콘 컴포넌트를 반환하는 함수
- * @param name 링크 라벨(github, notion, plato 등)
- * @returns 아이콘
- */
-const LinkIcon = (name: string): JSX.Element => {
-  if (name === 'github') return <VscGithubInverted className="h-[28px] w-[28px]" />;
-  if (name === 'notion') return <SiNotion className="h-[28px] w-[28px]" />;
-  return <VscLink className="h-[28px] w-[28px]" />;
+
+const LinkIconData: IconType = {
+  github: <VscGithubInverted className="h-[28px] w-[28px]" />,
+  notion: <SiNotion className="h-[28px] w-[28px]" />,
+  etc: <VscLink className="h-[28px] w-[28px]" />,
 };
 
 const AccordionHeaderContent = () => {
@@ -58,7 +56,7 @@ const AccordionBodyContent = () => {
         <p>스터디원</p>
         <p className="flex space-x-[10px]">
           {members?.map((member: string) => (
-            <StudyChip value={member} />
+            <StudyChip key={member} value={member} />
           ))}
         </p>
       </div>
@@ -66,8 +64,8 @@ const AccordionBodyContent = () => {
         <p>링크</p>
         <p className="flex space-x-[16px] text-pointBlue">
           {link?.map((li) => (
-            <p className="flex items-center space-x-[4px]">
-              <span>{LinkIcon(li.title)}</span>
+            <p key={li.title} className="flex items-center space-x-[4px]">
+              <span>{LinkIconData[li.title] ? LinkIconData[li.title] : LinkIconData.etc}</span>
               <span className="border-b border-pointBlue">{capitalize(li.title)}</span>
             </p>
           ))}
@@ -76,8 +74,8 @@ const AccordionBodyContent = () => {
     </div>
   );
 };
-const StudyItem = ({ id }: StudyItemType) => {
-  return <StudyAccodion id={id} headerContent={AccordionHeaderContent()} bodyContent={AccordionBodyContent()} />;
+const StudyItem = ({ id }: StudyItemProps) => {
+  return <StudyAccordion id={id} headerContent={AccordionHeaderContent()} bodyContent={AccordionBodyContent()} />;
 };
 
 export default StudyItem;

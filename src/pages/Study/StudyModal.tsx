@@ -6,12 +6,13 @@ import StudyInput from './share/StudyInput';
 import StudyTextarea from './share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from './share/StudyChip';
 
-interface ModalType {
+interface ModalProps {
   isModify: boolean;
-  studyId: number | null;
+  studyId: number | undefined;
 }
+
 const memberList = ['김은지', '장서윤', '송세연'];
-const StudyModal = ({ isModify, studyId }: ModalType): JSX.Element => {
+const StudyModal = ({ isModify, studyId }: ModalProps): JSX.Element => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(!open);
@@ -54,6 +55,7 @@ const StudyModal = ({ isModify, studyId }: ModalType): JSX.Element => {
                   <StudyChip value="박재열" />
                   {memberList.map((member) => (
                     <StudyChipDismissible
+                      key={member}
                       value={member}
                       onClick={() => {
                         console.log('xxx');

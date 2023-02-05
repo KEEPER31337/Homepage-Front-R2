@@ -1,6 +1,13 @@
 import React from 'react';
 import { ThemeProvider, Input } from '@material-tailwind/react';
 
+interface InputProps {
+  variant: 'standard' | 'outlined' | 'static';
+  size: 'md' | 'lg';
+  label: string;
+  placeholder: string;
+}
+
 const lgTheme = {
   input: {
     styles: {
@@ -51,13 +58,8 @@ const mdTheme = {
     },
   },
 };
-interface InputType {
-  variant: 'standard' | 'outlined' | 'static';
-  size: 'md' | 'lg';
-  label: string;
-  placeholder: string;
-}
-const StudyInput = ({ variant, size, label, placeholder }: InputType) => {
+
+const StudyInput = ({ variant, size, label, placeholder }: InputProps) => {
   return (
     <ThemeProvider value={size === 'md' ? mdTheme : lgTheme}>
       <Input variant={variant} label={label} placeholder={placeholder} />

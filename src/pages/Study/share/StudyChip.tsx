@@ -1,9 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { ThemeProvider, Chip } from '@material-tailwind/react';
 
-interface ChipType {
+interface ChipProps {
   value: string;
-  // eslint-disable-next-line react/require-default-props
   onClick?: () => void;
 }
 const theme = {
@@ -42,19 +41,14 @@ const theme = {
     },
   },
 };
-export const StudyChip = ({
-  value,
-  onClick = () => {
-    console.log('a');
-  },
-}: ChipType) => {
+export const StudyChip = ({ value }: ChipProps) => {
   return (
     <ThemeProvider value={theme}>
       <Chip value={value} />
     </ThemeProvider>
   );
 };
-export const StudyChipDismissible = ({ value, onClick }: ChipType) => {
+export const StudyChipDismissible = ({ value, onClick }: ChipProps) => {
   const [show, setShow] = useState(true);
   return (
     <ThemeProvider value={theme}>

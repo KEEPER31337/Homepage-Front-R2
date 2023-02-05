@@ -1,6 +1,12 @@
 import React from 'react';
 import { ThemeProvider, Textarea } from '@material-tailwind/react';
 
+interface TextareaProps {
+  variant: 'standard' | 'outlined' | 'static';
+  label: string;
+  placeholder: string;
+}
+
 const theme = {
   textarea: {
     styles: {
@@ -26,12 +32,8 @@ const theme = {
     },
   },
 };
-interface TextareaType {
-  variant: 'standard' | 'outlined' | 'static';
-  label: string;
-  placeholder: string;
-}
-const StudyTextarea = ({ variant, label, placeholder }: TextareaType) => {
+
+const StudyTextarea = ({ variant, label, placeholder }: TextareaProps) => {
   return (
     <ThemeProvider value={theme}>
       <Textarea variant={variant} label={label} placeholder={placeholder} />

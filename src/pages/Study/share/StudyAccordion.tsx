@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
 import { ThemeProvider, Accordion, AccordionHeader, AccordionBody } from '@material-tailwind/react';
+import type { AccordionStylesType } from '@material-tailwind/react';
+
+interface AccordionProps {
+  id: number;
+  headerContent: JSX.Element;
+  bodyContent: JSX.Element;
+}
+interface ArrowIconProps {
+  id: number;
+  open: number;
+}
 
 const theme = {
   accordion: {
@@ -25,16 +36,8 @@ const theme = {
     },
   },
 };
-interface StudyItemType {
-  id: number;
-  headerContent: JSX.Element;
-  bodyContent: JSX.Element;
-}
-interface Test {
-  id: number;
-  open: number;
-}
-const Icon = ({ id, open }: Test) => {
+
+const Icon = ({ id, open }: ArrowIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +51,7 @@ const Icon = ({ id, open }: Test) => {
     </svg>
   );
 };
-const StudyAccodion = ({ id, headerContent, bodyContent }: StudyItemType) => {
+const StudyAccordion = ({ id, headerContent, bodyContent }: AccordionProps) => {
   const [open, setOpen] = useState(0);
 
   const handleOpen = (value: number) => {
@@ -66,4 +69,4 @@ const StudyAccodion = ({ id, headerContent, bodyContent }: StudyItemType) => {
   );
 };
 
-export default StudyAccodion;
+export default StudyAccordion;

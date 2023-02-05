@@ -17,7 +17,7 @@ const StudyContent = () => {
               <StudySelect value="2022" options={yearList} />
               <StudySelect value="1학기" options={seasonList} />
             </div>
-            <StudyModal isModify={false} studyId={null} />
+            <StudyModal isModify={false} studyId={undefined} />
           </div>
           <div className="">
             {studyList?.map((study) => (
