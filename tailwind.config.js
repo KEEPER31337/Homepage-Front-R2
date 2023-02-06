@@ -12,6 +12,12 @@ module.exports = withMT({
         subBlack: '#26262C',
         pointBlue: '#4CEEF9',
       },
+      fontSize: {
+        h1: '28pt',
+        h3: '20pt',
+        paragraph: '16pt',
+        small: '12pt',
+      },
     },
   },
   plugins: [],
