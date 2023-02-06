@@ -4,9 +4,12 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@material-tailwind/react';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import axios from 'axios';
 
 import './tailwind.css';
 import App from './App';
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
