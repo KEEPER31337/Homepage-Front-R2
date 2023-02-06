@@ -2,6 +2,7 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Home from '@pages/home/Home';
 import SeminarManage from '@pages/admin/SeminarManage';
+import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
 
 const useMainRouter = () =>
   useRoutes([
@@ -18,6 +19,10 @@ const useMainRouter = () =>
             {
               path: 'seminarManage',
               element: <SeminarManage />,
+            },
+            {
+              path: 'libraryManage',
+              element: <LibraryManage />,
             },
           ],
         },
