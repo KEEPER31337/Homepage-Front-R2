@@ -14,7 +14,7 @@ const StandardTable = <T extends Record<string, any>>({ columns, rows }: Standar
       <TableHead className="bg-middleBlack">
         <TableRow>
           {columns.map((column) => (
-            <TableCell className="!border-subBlack" key={column.key as string}>
+            <TableCell className="!border-subBlack !text-white" key={column.key as string}>
               {column.headerName}
             </TableCell>
           ))}
@@ -25,7 +25,7 @@ const StandardTable = <T extends Record<string, any>>({ columns, rows }: Standar
           <TableRow>
             {columns.map((column) => {
               return (
-                <TableCell className="!border-subBlack bg-mainBlack" key={column.key as string}>
+                <TableCell className="!border-subBlack bg-mainBlack !text-white" key={column.key as string}>
                   {row[column.key]}
                 </TableCell>
               );
