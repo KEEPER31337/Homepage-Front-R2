@@ -20,6 +20,16 @@ module.exports = withMT({
         paragraph: '16pt',
         small: '12pt',
       },
+      spacing: {
+        header: '66px',
+        sidebar: '320px',
+      },
+      maxWidth: {
+        container: '1080px',
+      },
+      minWidth: {
+        sidebar: '320px',
+      },
     },
   },
   plugins: [],
