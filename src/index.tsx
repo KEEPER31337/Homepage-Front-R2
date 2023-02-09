@@ -5,13 +5,14 @@ import { ThemeProvider } from '@material-tailwind/react';
 import { RecoilRoot } from 'recoil';
 
 import './tailwind.css';
+import theme from '@constants/materialTailwindTheme';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <ThemeProvider>
+      <ThemeProvider value={theme}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
