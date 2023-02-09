@@ -7,7 +7,7 @@ interface PageTitleProps {
 
 const PageTitle = ({ children }: PageTitleProps) => {
   return (
-    <Typography variant="h1" className="font-base text-pointBlue">
+    <Typography variant="h1" className="mb-8 font-base text-pointBlue">
       {children}
     </Typography>
   );
