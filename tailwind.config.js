@@ -15,10 +15,10 @@ module.exports = withMT({
         subRed: '#EF4444',
       },
       fontSize: {
-        h1: '28pt',
-        h3: '20pt',
-        paragraph: '16pt',
-        small: '12pt',
+        h1: '28px',
+        h3: '20px',
+        paragraph: '16px',
+        small: '12px',
       },
       spacing: {
         header: '66px',
