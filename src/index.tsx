@@ -9,13 +9,13 @@ import './tailwind.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <RecoilRoot>
-    <React.StrictMode>
+  <React.StrictMode>
+    <RecoilRoot>
       <ThemeProvider>
         <BrowserRouter>
           <App />
         </BrowserRouter>
       </ThemeProvider>
-    </React.StrictMode>
-  </RecoilRoot>,
+    </RecoilRoot>
+  </React.StrictMode>,
 );

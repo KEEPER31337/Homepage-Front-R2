@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import { Link } from 'react-router-dom';
 import { categoryIdStateFamily, subcategoryIdStateFamily } from '@src/atoms';
-import { thiscategory, sub } from '@components/layout/Sidebar/Sidebar';
+/* import { thiscategory, sub } from '@components/Layout/Sidebar/Sidebar';
 
 interface SidebarContentsProps {
   category: thiscategory;
@@ -63,3 +63,4 @@ const SidebarContents = ({ category, isOpen }: SidebarContentsProps) => {
 };
 
 export default SidebarContents;
+*/
