@@ -18,7 +18,7 @@ module.exports = withMT({
         h1: '28px',
         h3: '20px',
         paragraph: '16px',
-        small: '12px',
+        small: '10px',
       },
       spacing: {
         header: '66px',
