@@ -4,7 +4,9 @@
     "paths": {
       "@pages/*": ["src/pages/*"],
       "@components/*": ["src/components/*"],
-      "@router/*": ["src/router/*"]
+      "@router/*": ["src/router/*"],
+      "@api/*": ["src/api/*"],
+      "@constants/*": ["src/constants/*"]
     }
   }
 }
