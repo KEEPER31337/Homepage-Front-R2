@@ -5,7 +5,8 @@
       "@pages/*": ["src/pages/*"],
       "@components/*": ["src/components/*"],
       "@router/*": ["src/router/*"],
-      "@constants/*": ["src/constants/*"]
+      "@constants/*": ["src/constants/*"]],
+      "@api/*": ["src/api/*"]
     }
   }
 }
