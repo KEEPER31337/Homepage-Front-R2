@@ -3,7 +3,7 @@ import StandardTable from '@components/Table/StandardTable';
 import { Button } from '@mui/material';
 
 
-const SeminarContent = () => {
+const SeminarManage = () => {
   const [listColumns, setListColumns] = useState([
   ]);
   const [listRows, setListRows] = useState([
@@ -37,22 +37,6 @@ const SeminarContent = () => {
             <Button variant="outlined" className="border-2 border-pointBlue text-pointBlue">
               삭제
             </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SeminarManage = () => {
-  return (
-    <div>
-      <div>Keeper Title</div>
-      <div className="flex h-[100vh] w-[100vw] bg-gray-300">
-        <div className="h-[100vh] w-[320px] border border-black bg-white">사이드 바</div>
-        <div className="flex w-full justify-center">
-          <div className="h-full w-full max-w-[1080px] border border-black bg-white">
-            <SeminarContent />
           </div>
         </div>
       </div>
