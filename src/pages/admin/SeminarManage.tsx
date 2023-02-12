@@ -10,15 +10,15 @@ const SeminarContent = () => {
   ]);
   const [newDate, setNewDate] = useState();
   const addSeminar = () => {
-    setListColumns([
-      ...listColumns,
+    setListColumns((prev) => [
+      ...prev,
       {
         key: `date${newDate}` as keyof SeminarListRow,
         headerName: `${newDate}`,
       },
     ]);
-    setListRows(
-      listRows.map((row) => {
+    setListRows((prev) =>
+      prev.map((row) => {
         return { ...row, [`date${newDate}`]: '출석 전' };
       }),
     );
