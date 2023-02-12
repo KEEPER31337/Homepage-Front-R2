@@ -13,6 +13,7 @@ module.exports = withMT({
         pointBlue: '#4CEEF9',
         subGray: '#575E69',
         subRed: '#EF4444',
+        subBlue: '#56CFE1',
       },
       fontSize: {
         h1: '28pt',
