@@ -6,7 +6,8 @@
       "@components/*": ["src/components/*"],
       "@router/*": ["src/router/*"],
       "@api/*": ["src/api/*"],
-      "@constants/*": ["src/constants/*"]
+      "@constants/*": ["src/constants/*"],
+      "@img/*": ["src/assets/img/*"]
     }
   }
 }
