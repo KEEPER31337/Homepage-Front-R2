@@ -14,6 +14,9 @@ module.exports = withMT({
         subGray: '#575E69',
         subRed: '#EF4444',
       },
+      fontFamily: {
+        base: 'IBM Plex Sans KR, system-ui, sans-serif',
+      },
       fontSize: {
         h1: '28pt',
         h3: '20pt',
