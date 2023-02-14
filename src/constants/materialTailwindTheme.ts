@@ -28,6 +28,13 @@ const theme: CustomTheme = {
     defaultProps: {
       variant: 'standard',
     },
+    styles: {
+      base: {
+        container: {
+          width: 'min-w-min',
+        },
+      },
+    },
   },
 };
 
