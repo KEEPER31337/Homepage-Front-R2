@@ -11,7 +11,6 @@ import axios from 'axios';
 import './tailwind.css';
 import theme from '@constants/materialTailwindTheme';
 import App from './App';
-import './tailwind.css';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
