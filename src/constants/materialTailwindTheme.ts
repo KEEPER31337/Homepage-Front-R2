@@ -33,6 +33,12 @@ const theme: CustomTheme = {
         container: {
           width: 'min-w-min',
         },
+        input: {
+          border: '!border-pointBlue',
+        },
+        label: {
+          border: 'after:border-pointBlue peer-focus:after:border-pointBlue',
+        },
       },
     },
   },
