@@ -10,15 +10,6 @@ interface StudyItemProps {
 interface IconType {
   [key: string]: JSX.Element;
 }
-/**
- * TODO 나중에 다른 파일로 빼줄 예정
- * 영문 가장 앞 글자만 대문자, 나머지는 소문자로 반환해주는 함수
- * @param str
- * @returns
- */
-const capitalize = (str: string): string => {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-};
 
 const LinkIconData: IconType = {
   github: <VscGithubInverted className="h-[28px] w-[28px]" />,
@@ -66,7 +57,7 @@ const AccordionBodyContent = () => {
           {link?.map((li) => (
             <p key={li.title} className="flex items-center space-x-[4px]">
               <span>{LinkIconData[li.title] ? LinkIconData[li.title] : LinkIconData.etc}</span>
-              <span className="border-b border-pointBlue">{capitalize(li.title)}</span>
+              <span className="border-b border-pointBlue">{li.title}</span>
             </p>
           ))}
         </p>
