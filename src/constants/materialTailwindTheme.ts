@@ -40,6 +40,7 @@ const theme: CustomTheme = {
         },
         label: {
           border: 'after:border-pointBlue peer-focus:after:border-pointBlue',
+          color: ' peer-focus:text-pointBlue',
         },
       },
     },
