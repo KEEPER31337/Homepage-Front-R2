@@ -3,7 +3,10 @@ import { ThemeProvider, Chip } from '@material-tailwind/react';
 
 interface ChipProps {
   value: string;
-  onClick?: () => void;
+}
+interface ChipDismissibleProps {
+  value: string;
+  onClick: () => void;
 }
 const theme = {
   chip: {
@@ -48,7 +51,7 @@ export const StudyChip = ({ value }: ChipProps) => {
     </ThemeProvider>
   );
 };
-export const StudyChipDismissible = ({ value, onClick }: ChipProps) => {
+export const StudyChipDismissible = ({ value, onClick }: ChipDismissibleProps) => {
   const [show, setShow] = useState(true);
   return (
     <ThemeProvider value={theme}>
