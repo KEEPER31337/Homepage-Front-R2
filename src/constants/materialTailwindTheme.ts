@@ -34,7 +34,8 @@ const theme: CustomTheme = {
           width: 'min-w-min',
         },
         input: {
-          border: '!border-pointBlue',
+          border: '!border-pointBlue disabled:border-b disabled:!border-opacity-50',
+          background: 'disabled:!bg-transparent',
         },
         label: {
           border: 'after:border-pointBlue peer-focus:after:border-pointBlue',
