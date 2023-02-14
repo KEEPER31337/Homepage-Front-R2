@@ -31,7 +31,7 @@ const theme: CustomTheme = {
     styles: {
       base: {
         container: {
-          width: 'min-w-min',
+          width: 'min-w-min w-fit',
         },
         input: {
           border: '!border-pointBlue disabled:border-b disabled:!border-opacity-50',
