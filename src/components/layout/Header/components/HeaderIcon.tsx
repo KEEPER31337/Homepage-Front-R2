@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Menu, MenuHandler, MenuList, MenuItem } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
-import { VscAccount, VscCircleLargeFilled, VscGithubInverted } from 'react-icons/vsc';
+/* import { VscAccount, VscCircleLargeFilled, VscGithubInverted } from 'react-icons/vsc';
 
 const HeaderIcon = () => {
   return (
@@ -35,3 +35,4 @@ const HeaderIcon = () => {
 };
 
 export default HeaderIcon;
+*/
