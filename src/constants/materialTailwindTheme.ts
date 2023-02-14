@@ -35,6 +35,7 @@ const theme: CustomTheme = {
         },
         input: {
           border: '!border-pointBlue disabled:border-b disabled:!border-opacity-50',
+          color: 'text-white',
           background: 'disabled:!bg-transparent',
         },
         label: {
