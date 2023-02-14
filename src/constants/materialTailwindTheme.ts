@@ -1,7 +1,8 @@
-import type { TypographyStylesType } from '@material-tailwind/react';
+import type { TypographyStylesType, InputStylesType } from '@material-tailwind/react';
 
 interface CustomTheme {
   typography: TypographyStylesType;
+  input: InputStylesType;
 }
 
 const theme: CustomTheme = {
@@ -21,6 +22,11 @@ const theme: CustomTheme = {
           fontSize: 'text-[10px]',
         },
       },
+    },
+  },
+  input: {
+    defaultProps: {
+      variant: 'standard',
     },
   },
 };
