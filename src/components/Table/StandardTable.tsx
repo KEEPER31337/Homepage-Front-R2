@@ -11,10 +11,12 @@ interface StandardTableProps<T extends Record<string, any>> {
 const StandardTable = <T extends Record<string, any>>({ columns, rows }: StandardTableProps<T>) => {
   return (
     <Table>
-      <TableHead>
+      <TableHead className="bg-middleBlack">
         <TableRow>
           {columns.map((column) => (
-            <TableCell key={column.key as string}>{column.headerName}</TableCell>
+            <TableCell className="!border-subBlack !text-white" key={column.key as string}>
+              {column.headerName}
+            </TableCell>
           ))}
         </TableRow>
       </TableHead>
@@ -22,7 +24,11 @@ const StandardTable = <T extends Record<string, any>>({ columns, rows }: Standar
         {rows.map((row) => (
           <TableRow>
             {columns.map((column) => {
-              return <TableCell key={column.key as string}>{row[column.key]}</TableCell>;
+              return (
+                <TableCell className="!border-subBlack bg-mainBlack !text-white" key={column.key as string}>
+                  {row[column.key]}
+                </TableCell>
+              );
             })}
           </TableRow>
         ))}
