@@ -2,9 +2,10 @@ import React from 'react';
 import BoardPagination from '@components/Board/BoardPagination';
 import BoardSearch from '@components/Board/BoardSearch';
 import StandardTable from '@components/Table/StandardTable';
-import { ReactComponent as ListViewIcon } from '@img/board/listview_icon.svg';
-import { ReactComponent as GridViewIcon } from '@img/board/gridview_icon.svg';
+import { MdOutlineApps, MdOutlineViewHeadline } from 'react-icons/md';
 import { useSearchParams } from 'react-router-dom';
+import PageTitle from '@components/Typography/PageTitle';
+import OutlinedButton from '@components/Button/OutlinedButton';
 
 interface BoardRow {
   id: number;
@@ -47,17 +48,19 @@ const BoardList = () => {
     <div className="flex h-screen flex-col items-center bg-subBlack pt-24">
       <div className="w-full text-white">
         <div className="flex flex-row justify-between">
-          <div className="text-h3 text-subBlue">{category}</div>
-          <div className="rounded-sm border border-subBlue px-6 py-2 text-sm font-semibold text-subBlue">글쓰기</div>
+          <PageTitle>{category}</PageTitle>
+          <div>
+            <OutlinedButton>글쓰기</OutlinedButton>
+          </div>
         </div>
-        <div className="flex flex-row items-center justify-between pt-12 pb-5">
+        <div className="flex flex-row items-center justify-between pb-5">
           <BoardSearch />
           <div className="flex flex-row justify-between gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-subBlue">
-              <ListViewIcon width="15" height="11" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-pointBlue">
+              <MdOutlineViewHeadline size="20" color="#4CEEF9" />
             </div>
             <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-white">
-              <GridViewIcon width="13" height="13" />
+              <MdOutlineApps size="20" />
             </div>
           </div>
         </div>
