@@ -4,7 +4,7 @@ import useMainRouter from '@router/useMainRouter';
 const App = () => {
   const routes = useMainRouter();
 
-  return <div className="App">{routes}</div>;
+  return <div className="bg-subBlack">{routes}</div>;
 };
 
 export default App;
