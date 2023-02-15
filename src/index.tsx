@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { ThemeProvider as MaterialTailwindProvider } from '@material-tailwind/react';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import { RecoilRoot } from 'recoil';
@@ -27,15 +29,17 @@ const queryClient = new QueryClient({
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <MaterialTailwindProvider value={materialTailwindTheme}>
-        <MUIThemeProvider theme={muiTheme}>
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-              <App />
-            </QueryClientProvider>
-          </BrowserRouter>
-        </MUIThemeProvider>
-      </MaterialTailwindProvider>
+      <LocalizationProvider dateAdapter={AdapterLuxon}>
+        <MaterialTailwindProvider value={materialTailwindTheme}>
+          <MUIThemeProvider theme={muiTheme}>
+            <BrowserRouter>
+              <QueryClientProvider client={queryClient}>
+                <App />
+              </QueryClientProvider>
+            </BrowserRouter>
+          </MUIThemeProvider>
+        </MaterialTailwindProvider>
+      </LocalizationProvider>
     </RecoilRoot>
   </React.StrictMode>,
 );
