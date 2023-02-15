@@ -2,7 +2,6 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Home from '@pages/home/Home';
 import SeminarManage from '@pages/admin/SeminarManage';
-import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
 import MainLayout from '@components/Layout/MainLayout';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import FitContainer from '@components/Layout/Container/FitContainer';
@@ -33,15 +32,6 @@ const useMainRouter = () =>
                   element: <SeminarManage />,
                 },
               ],
-            },
-          ],
-        },
-        {
-          element: <FitContainer />,
-          children: [
-            {
-              path: 'seminarAttend',
-              element: <SeminarAttend />,
             },
           ],
         },

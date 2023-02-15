@@ -11,7 +11,7 @@ const FilledButton = ({ children, onClick, disabled }: OutlinedButtonProps) => {
   return (
     <Button
       variant="filled"
-      className="rounded-sm bg-pointBlue py-2 font-base text-subBlack hover:opacity-80 hover:shadow-none"
+      className="font-base rounded-sm bg-pointBlue py-2 text-subBlack hover:opacity-80 hover:shadow-none"
       onClick={onClick}
       disabled={disabled}
     >
