@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select, Option, Input, Checkbox } from '@material-tailwind/react';
 import PageTitle from '@components/Typography/PageTitle';
-import { MdOutlineSearch } from 'react-icons/md';
 import StandardTable from '@components/Table/StandardTable';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import ActionModal from '@components/Modal/ActionModal';
+import AddBookButton from '@components/LibraryManage/AddBookButton';
+import DeleteBookButton from '@components/LibraryManage/DeleteBookButton';
 
 interface IExampleRow {
   id: number;
@@ -68,7 +70,7 @@ const LibraryManage = () => {
       <PageTitle>도서관리</PageTitle>
       <div className="flex h-fit w-full flex-col space-y-4">
         {/* 상단 검색창, 버튼 */}
-        <div className="flex h-fit w-full justify-between">
+        <div className="flex h-full w-full justify-between">
           <div className="flex w-fit space-x-2">
             <Select className="border-pointBlue text-white " variant="standard" value="도서명+저자">
               <Option>도서명+저자</Option>
@@ -78,9 +80,9 @@ const LibraryManage = () => {
 
             <Input label="검색어를 입력하세요" className="w-64" />
           </div>
-          <div className="flex w-fit space-x-2">
-            <OutlinedButton onClick={() => console.log('OutlinedButton')}>도서 추가</OutlinedButton>
-            <OutlinedButton onClick={() => console.log('OutlinedButton')}>도서 삭제</OutlinedButton>
+          <div className="flex space-x-2">
+            <AddBookButton />
+            <DeleteBookButton />
             <OutlinedButton onClick={() => console.log('OutlinedButton')}>대출 관리</OutlinedButton>
             <OutlinedButton onClick={() => console.log('OutlinedButton')}>반납 관리</OutlinedButton>
           </div>
