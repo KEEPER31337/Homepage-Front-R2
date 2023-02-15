@@ -13,7 +13,6 @@ module.exports = withMT({
         pointBlue: '#4CEEF9',
         subGray: '#575E69',
         subRed: '#EF4444',
-        subBlue: '#56CFE1',
       },
       fontFamily: {
         base: 'IBM Plex Sans KR, system-ui, sans-serif',
