@@ -1,7 +1,6 @@
 import React from 'react';
 import { Select, Option, Input, Checkbox } from '@material-tailwind/react';
 import PageTitle from '@components/Typography/PageTitle';
-import { MdOutlineSearch } from 'react-icons/md';
 import StandardTable from '@components/Table/StandardTable';
 import OutlinedButton from '@components/Button/OutlinedButton';
 
@@ -16,7 +15,7 @@ interface IExampleRow {
 }
 
 const BookEnableText = ({ enable }: { enable: boolean }) => {
-  return enable === true ? (
+  return enable ? (
     <div className="h-fit w-fit text-pointBlue">대출가능</div>
   ) : (
     <div className="h-fit w-fit text-subGray">대출불가</div>
