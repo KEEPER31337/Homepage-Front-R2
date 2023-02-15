@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { ThemeProvider, Card, CardBody, Typography, Input, Button, Select, Option } from '@material-tailwind/react';
 import FilledButton from '@components/Button/FilledButton';
 
 const SeminarAttend = () => {
-  const today = DateTime.now().toISO().substr(2, 8).replaceAll('-', '.');
-  const [seminarDate, setSeminarDate] = useState(today);
+  let today: string;
+  const [seminarDate, setSeminarDate] = useState('today');
+
+  useEffect(() => {
+    console.log(DateTime.now());
+    today = DateTime.now().toFormat('yy.MM.dd');
+    setSeminarDate(today);
+  }, []);
+
   const [attendValue, setAttendValue] = useState('5분');
   const [lateAttendValue, setLateAttendValue] = useState('5분');
 
