@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@material-tailwind/react';
+import { ThemeProvider as MaterialTailwindProvider } from '@material-tailwind/react';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
 
 import './tailwind.css';
-import theme from '@constants/materialTailwindTheme';
+import materialTailwindTheme from '@constants/materialTailwindTheme';
 import muiTheme from '@constants/muiTheme';
 import App from './App';
 
@@ -27,7 +27,7 @@ const queryClient = new QueryClient({
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <ThemeProvider value={theme}>
+      <MaterialTailwindProvider value={materialTailwindTheme}>
         <MUIThemeProvider theme={muiTheme}>
           <BrowserRouter>
             <QueryClientProvider client={queryClient}>
@@ -35,7 +35,7 @@ root.render(
             </QueryClientProvider>
           </BrowserRouter>
         </MUIThemeProvider>
-      </ThemeProvider>
+      </MaterialTailwindProvider>
     </RecoilRoot>
   </React.StrictMode>,
 );

@@ -4,7 +4,7 @@ interface CustomTheme {
   typography: TypographyStylesType;
 }
 
-const theme: CustomTheme = {
+const materialTailwindTheme: CustomTheme = {
   typography: {
     styles: {
       variants: {
@@ -25,4 +25,4 @@ const theme: CustomTheme = {
   },
 };
 
-export default theme;
+export default materialTailwindTheme;
