@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
 
 interface ActionModalProps {
-  open: boolean;
+  opened: boolean;
   handleOpen: () => void;
   title: string;
   children: React.ReactNode;
@@ -11,9 +11,9 @@ interface ActionModalProps {
   onClick: () => void;
 }
 
-const ActionModal = ({ open, handleOpen, title, children, buttonName, onClick }: ActionModalProps) => {
+const ActionModal = ({ opened, handleOpen, title, children, buttonName, onClick }: ActionModalProps) => {
   return (
-    <Dialog open={open} handler={handleOpen} className="rounded-lg bg-[#26262c]">
+    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-[#26262c]">
       <div className="mt-7 ml-10 mb-2 mr-2">
         <DialogHeader className="text-left font-bold text-[#4ceef9]">{title}</DialogHeader>
         <DialogBody className="text-left text-base text-white">{children}</DialogBody>
