@@ -58,7 +58,9 @@ const StudyModal = ({ isModify, studyId }: ModalProps): JSX.Element => {
                       key={member}
                       value={member}
                       onClick={() => {
-                        console.log('xxx');
+                        /* TODO 추후 멤버 제거 핸들러 구현할 예정
+                         */
+                        console.log('임시로 구현한 핸들러 함수');
                       }}
                     />
                   ))}
