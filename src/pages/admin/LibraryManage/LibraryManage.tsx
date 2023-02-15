@@ -1,6 +1,9 @@
 import React from 'react';
-import { Select, Option, Input, Button, Checkbox } from '@material-tailwind/react';
+import { Select, Option, Input, Checkbox } from '@material-tailwind/react';
+import PageTitle from '@components/Typography/PageTitle';
+import { MdOutlineSearch } from 'react-icons/md';
 import StandardTable from '@components/Table/StandardTable';
+import OutlinedButton from '@components/Button/OutlinedButton';
 
 interface IExampleRow {
   id: number;
@@ -16,11 +19,11 @@ const BookEnableText = ({ enable }: { enable: boolean }) => {
   return enable === true ? (
     <div className="h-fit w-fit text-pointBlue">대출가능</div>
   ) : (
-    <div className="h-fit w-fit text-black">대출불가</div>
+    <div className="h-fit w-fit text-subGray">대출불가</div>
   );
 };
 
-const LibraryContent = () => {
+const LibraryManage = () => {
   const columns = [
     { key: 'checkboxEnable' as keyof IExampleRow, headerName: '' },
     { key: 'bookTitle' as keyof IExampleRow, headerName: '도서명' },
@@ -61,48 +64,29 @@ const LibraryContent = () => {
   ];
 
   return (
-    <div className="flex h-full flex-col space-y-[32px] bg-subBlack pt-[80px]">
-      <p className="font-[28pt] text-pointBlue">도서검색</p>
-      <div className="flex h-fit w-full justify-between">
-        <div className="flex w-fit">
-          <Select className="border-pointBlue text-white" variant="standard" value="도서명+저자">
-            <Option>도서명+저자</Option>
-            <Option>도서명</Option>
-            <Option>저자</Option>
-          </Select>
-          <Input className="border-pointBlue !text-white" variant="standard" placeholder="검색어를 입력하세요" />
-        </div>
-        <div className="flex w-fit space-x-2">
-          <Button className="border-pointBlue text-pointBlue" variant="outlined">
-            대출관리
-          </Button>
-          <Button className="border-pointBlue text-pointBlue" variant="outlined">
-            반납관리
-          </Button>
-          <div className="h-full w-0.5 bg-pointBlue opacity-30" />
-          <Button className="border-pointBlue text-pointBlue" variant="outlined">
-            도서추가
-          </Button>
-          <Button className="border-pointBlue text-pointBlue" variant="outlined">
-            도서삭제
-          </Button>
-        </div>
-      </div>
-      <div className="flex w-full border border-deep-orange-300 bg-white text-white">
-        <StandardTable<IExampleRow> columns={columns} rows={rows} />
-      </div>
-    </div>
-  );
-};
+    <div>
+      <PageTitle>도서관리</PageTitle>
+      <div className="flex h-fit w-full flex-col space-y-4">
+        {/* 상단 검색창, 버튼 */}
+        <div className="flex h-fit w-full justify-between">
+          <div className="flex w-fit space-x-2">
+            <Select className="border-pointBlue text-white " variant="standard" value="도서명+저자">
+              <Option>도서명+저자</Option>
+              <Option>도서명</Option>
+              <Option>저자</Option>
+            </Select>
 
-const LibraryManage = () => {
-  return (
-    <div className="flex h-[100vh] w-[100vw] bg-gray-300">
-      <div className="h-[100vh] w-[320px] border border-black bg-white">사이드 바</div>
-      <div className="flex w-full justify-center bg-subBlack">
-        <div className="h-full w-full max-w-[1080px] bg-subBlack">
-          <LibraryContent />
+            <Input label="검색어를 입력하세요" className="w-64" />
+          </div>
+          <div className="flex w-fit space-x-2">
+            <OutlinedButton onClick={() => console.log('OutlinedButton')}>도서 추가</OutlinedButton>
+            <OutlinedButton onClick={() => console.log('OutlinedButton')}>도서 삭제</OutlinedButton>
+            <OutlinedButton onClick={() => console.log('OutlinedButton')}>대출 관리</OutlinedButton>
+            <OutlinedButton onClick={() => console.log('OutlinedButton')}>반납 관리</OutlinedButton>
+          </div>
         </div>
+        {/* 테이블 */}
+        <StandardTable<IExampleRow> columns={columns} rows={rows} />
       </div>
     </div>
   );
