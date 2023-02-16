@@ -24,10 +24,7 @@ const SetSeminar = ({ seminarDate }: SetSeminarProps) => {
             minWidth: 'max-w-[42px]',
           },
           input: {
-            fontSize: 'text-[16px]',
             borderRadius: '!rounded-none',
-            fontColor: '!text-white',
-            placeholder: 'placeholder:text-subGray',
             bgColor: '!bg-white',
             height: 'h-[52px]',
           },
@@ -57,6 +54,7 @@ const SetSeminar = ({ seminarDate }: SetSeminarProps) => {
       },
     },
   };
+
   return (
     <ThemeProvider value={inputTheme}>
       <Card className="h-[426px] w-96 bg-mainBlack">

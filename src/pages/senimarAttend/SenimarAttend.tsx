@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
-import { ThemeProvider, Card, CardBody, Typography, Input, Button, Select, Option } from '@material-tailwind/react';
 import FilledButton from '@components/Button/FilledButton';
 import PageTitle from '@components/Typography/PageTitle';
 import DoAttend from './DoAttend';
@@ -13,16 +12,6 @@ const SeminarAttend = () => {
   useEffect(() => {
     setSeminarDate(DateTime.now().toFormat('yy.MM.dd'));
   }, []);
-
-  const [attendValue, setAttendValue] = useState('5분');
-  const [lateAttendValue, setLateAttendValue] = useState('5분');
-
-  const handleAttendChange = (value: string) => {
-    setAttendValue(value);
-  };
-  const handleLateChange = (value: string) => {
-    setLateAttendValue(value);
-  };
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ThemeProvider, Card, CardBody, Typography, Input, Button, Select, Option } from '@material-tailwind/react';
+import { ThemeProvider, Card, CardBody, Typography, Button } from '@material-tailwind/react';
 import { VscCheck } from 'react-icons/vsc';
 
 interface DoAttendProps {
@@ -17,6 +17,7 @@ const inputStyle: React.CSSProperties = {
 
 const DoAttend = ({ seminarDate }: DoAttendProps) => {
   const [isAttend, setIsAttend] = useState(false);
+
   const calAttendance = () => {
     setIsAttend(true);
   };
