@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import StandardTable from '@components/Table/StandardTable';
 import { Button } from '@mui/material';
-
+import { columns, rows } from '@mocks/SeminarManageApi';
+import type { SeminarListRow } from '@mocks/SeminarManageApi';
 
 const SeminarManage = () => {
-  const [listColumns, setListColumns] = useState([
-  ]);
-  const [listRows, setListRows] = useState([
-  ]);
+  const [listColumns, setListColumns] = useState(columns);
+  const [listRows, setListRows] = useState(rows);
   const [newDate, setNewDate] = useState();
+
   const addSeminar = () => {
     setListColumns((prev) => [
       ...prev,
