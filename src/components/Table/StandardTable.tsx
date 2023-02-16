@@ -4,25 +4,31 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface StandardTableProps<T extends Record<string, any>> {
   columns: { key: keyof T; headerName: string }[];
-  rows: T[];
+  rows: (T & { id: number })[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const StandardTable = <T,>({ columns, rows }: StandardTableProps<T extends Record<string, any> ? T : never>) => {
+const StandardTable = <T extends Record<string, any>>({ columns, rows }: StandardTableProps<T>) => {
   return (
     <Table>
-      <TableHead>
+      <TableHead className="bg-middleBlack">
         <TableRow>
           {columns.map((column) => (
-            <TableCell key={column.key as string}>{column.headerName}</TableCell>
+            <TableCell className="!border-subBlack !text-white" key={column.key as string}>
+              {column.headerName}
+            </TableCell>
           ))}
         </TableRow>
       </TableHead>
       <TableBody>
         {rows.map((row) => (
-          <TableRow>
+          <TableRow key={row.id}>
             {columns.map((column) => {
-              return <TableCell key={column.key as string}>{row[column.key]}</TableCell>;
+              return (
+                <TableCell className="!border-subBlack bg-mainBlack !text-white" key={column.key as string}>
+                  {row[column.key]}
+                </TableCell>
+              );
             })}
           </TableRow>
         ))}
