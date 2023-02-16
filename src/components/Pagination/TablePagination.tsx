@@ -13,8 +13,13 @@ const StandardTablePagination = ({ rowsPerPage = 10 }: StandardTablePaginationPr
 
   const [page, setPage] = useState(0);
 
+  const setoffPageDiff = (prevPage: number, reverse?: boolean) => {
+    // TablePagination page의 인덱스와 Pagination page의 인덱스 간 차이(1) 상쇄를 위한 동작입니다.
+    return prevPage - (reverse ? 1 : -1);
+  };
+
   const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
-    setPage(newPage - 1);
+    setPage(setoffPageDiff(newPage, true));
   };
 
   return (
@@ -35,7 +40,7 @@ const StandardTablePagination = ({ rowsPerPage = 10 }: StandardTablePaginationPr
         className="mr-1 !text-pointBlue"
         count={totalPages}
         shape="rounded"
-        page={page + 1}
+        page={setoffPageDiff(page)}
         onChange={handleChangePage}
       />
     </div>
