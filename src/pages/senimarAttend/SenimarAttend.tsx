@@ -6,11 +6,6 @@ import PageTitle from '@components/Typography/PageTitle';
 
 const SeminarAttend = () => {
   const [seminarDate, setSeminarDate] = useState('today');
-
-  useEffect(() => {
-    setSeminarDate(DateTime.now().toFormat('yy.MM.dd'));
-  }, []);
-
   const [attendValue, setAttendValue] = useState('5분');
   const [lateAttendValue, setLateAttendValue] = useState('5분');
 
@@ -21,6 +16,10 @@ const SeminarAttend = () => {
     setLateAttendValue(value);
   };
 
+  useEffect(() => {
+    setSeminarDate(DateTime.now().toFormat('yy.MM.dd'));
+  }, []);
+
   const inputTheme = {
     input: {
       styles: {
@@ -29,10 +28,7 @@ const SeminarAttend = () => {
             minWidth: 'max-w-[42px]',
           },
           input: {
-            fontSize: 'text-[16px]',
             borderRadius: '!rounded-none',
-            fontColor: '!text-white',
-            placeholder: 'placeholder:text-subGray',
             bgColor: '!bg-white',
             height: 'h-[52px]',
           },
