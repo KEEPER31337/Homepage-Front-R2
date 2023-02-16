@@ -25,19 +25,25 @@ const SeminarAttend = () => {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      {tempIsBoss ? (
-        <div>
-          <FilledButton onClick={() => setTempIsBoss(false)}>회원권한페이지로</FilledButton>
-          <SetSeminar seminarDate={seminarDate} />
-        </div>
-      ) : (
-        <div>
-          <FilledButton onClick={() => setTempIsBoss(true)}>회장권한페이지로</FilledButton>
-          <DoAttend seminarDate={seminarDate} />
-        </div>
-      )}
-    </div>
+    <>
+      <PageTitle>세미나 출석체크</PageTitle>
+      <div className="grid justify-items-end">
+        <FilledButton>세미나 관리</FilledButton>
+      </div>
+      <div className="flex h-screen items-center justify-center">
+        {tempIsBoss ? (
+          <div>
+            <FilledButton onClick={() => setTempIsBoss(false)}>회원권한페이지로</FilledButton>
+            <SetSeminar seminarDate={seminarDate} />
+          </div>
+        ) : (
+          <div>
+            <FilledButton onClick={() => setTempIsBoss(true)}>회장권한페이지로</FilledButton>
+            <DoAttend seminarDate={seminarDate} />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
