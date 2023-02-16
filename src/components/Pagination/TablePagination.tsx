@@ -25,6 +25,7 @@ const StandardTablePagination = ({ rowsPerPage = 10 }: StandardTablePaginationPr
   return (
     <div className="flex !w-full items-center justify-between bg-middleBlack">
       <TablePagination
+        component="div"
         className="!m-0 !-ml-2 !border-none !p-0 !text-subGray"
         count={totalItems}
         page={page}
