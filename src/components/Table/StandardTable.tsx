@@ -6,10 +6,11 @@ import StandardTablePagination from '@components/Pagination/StandardTablePaginat
 interface StandardTableProps<T extends Record<string, any>> {
   columns: { key: keyof T; headerName: string }[];
   rows: (T & { id: number })[];
+  onRowClick?: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const StandardTable = <T extends Record<string, any>>({ columns, rows }: StandardTableProps<T>) => {
+const StandardTable = <T extends Record<string, any>>({ columns, rows, onRowClick }: StandardTableProps<T>) => {
   return (
     <>
       <Table>
@@ -24,7 +25,11 @@ const StandardTable = <T extends Record<string, any>>({ columns, rows }: Standar
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow
+              className={`${onRowClick && 'hover:brightness-90 hover:drop-shadow-none'}`}
+              key={row.id}
+              onClick={onRowClick}
+            >
               {columns.map((column) => {
                 return (
                   <TableCell className="!border-subBlack bg-mainBlack !text-white" key={column.key as string}>
