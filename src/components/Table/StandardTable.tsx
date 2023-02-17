@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import StandardTablePagination from '@components/Pagination/TablePagination';
+import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface StandardTableProps<T extends Record<string, any>> {
