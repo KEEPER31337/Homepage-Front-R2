@@ -1,12 +1,14 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
+import { Column, Row } from './StandardTable.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface StandardTableProps<T extends Record<string, any>> {
-  columns: { key: keyof T; headerName: string }[];
-  rows: (T & { id: number })[];
-  onRowClick?: ({ rowData }: { rowData: T & { id: number } }) => void;
+  columns: Column<T>[];
+  rows: Row<T>[];
+  onRowClick?: ({ rowData }: { rowData: Row<T> }) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
