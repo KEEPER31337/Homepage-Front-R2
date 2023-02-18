@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Button, Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
 
@@ -8,10 +8,10 @@ interface ActionModalProps {
   title: string;
   children: React.ReactNode;
   buttonName: string;
-  onClick: () => void;
+  onActionButonClick: () => void;
 }
 
-const ActionModal = ({ opened, handleOpen, title, children, buttonName, onClick }: ActionModalProps) => {
+const ActionModal = ({ opened, handleOpen, title, children, buttonName, onActionButonClick }: ActionModalProps) => {
   return (
     <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-[#26262c]">
       <div className="mt-7 ml-10 mb-2 mr-2">
@@ -27,10 +27,7 @@ const ActionModal = ({ opened, handleOpen, title, children, buttonName, onClick 
           </Button>
           <Button
             variant="outlined"
-            onClick={() => {
-              onClick();
-              handleOpen();
-            }}
+            onClick={onActionButonClick}
             className="flex-shrink-0 flex-grow-0 rounded-sm border-none bg-[#4ceef9] text-center text-xs font-semibold text-[#26262c]"
           >
             {buttonName}
