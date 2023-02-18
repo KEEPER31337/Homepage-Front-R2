@@ -1,11 +1,11 @@
 import React from 'react';
-import BoardPagination from '@components/Board/BoardPagination';
 import BoardSearch from '@components/Board/BoardSearch';
 import StandardTable from '@components/Table/StandardTable';
 import { MdOutlineApps, MdOutlineViewHeadline } from 'react-icons/md';
 import { useSearchParams } from 'react-router-dom';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import BoardSwitchButton from './BoardSwitchButton';
 
 interface BoardRow {
   id: number;
@@ -45,28 +45,21 @@ const BoardList = () => {
   const category: string | null = searchParams.get('category');
 
   return (
-    <div className="flex h-screen flex-col items-center bg-subBlack pt-24">
-      <div className="w-full text-white">
-        <div className="flex flex-row justify-between">
-          <PageTitle>{category}</PageTitle>
-          <div>
-            <OutlinedButton>글쓰기</OutlinedButton>
-          </div>
+    <div className="w-full text-white">
+      <div className="flex  justify-between">
+        <PageTitle>{category}</PageTitle>
+        <div>
+          <OutlinedButton>글쓰기</OutlinedButton>
         </div>
-        <div className="flex flex-row items-center justify-between pb-5">
-          <BoardSearch />
-          <div className="flex flex-row justify-between gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-pointBlue">
-              <MdOutlineViewHeadline size="20" color="#4CEEF9" />
-            </div>
-            <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-white">
-              <MdOutlineApps size="20" />
-            </div>
-          </div>
-        </div>
-        <StandardTable columns={dummyColumn} rows={dummyRow} />
-        <BoardPagination />
       </div>
+      <div className="flex  items-center justify-between pb-5">
+        <BoardSearch />
+        <div className="flex gap-2">
+          <BoardSwitchButton type="List" isActive />
+          <BoardSwitchButton type="Grid" />
+        </div>
+      </div>
+      <StandardTable columns={dummyColumn} rows={dummyRow} />
     </div>
   );
 };
