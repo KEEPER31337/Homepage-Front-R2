@@ -9,9 +9,10 @@ interface ConfirmModalProps {
   handleOpen: () => void;
   title: string;
   children: React.ReactNode;
+  showButton: boolean;
 }
 
-const ConfirmModal = ({ opened, handleOpen, title, children }: ConfirmModalProps) => {
+const ConfirmModal = ({ opened, handleOpen, title, children, showButton }: ConfirmModalProps) => {
   return (
     <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-[#26262c]">
       <div className="mt-5 ml-10 mb-2 mr-2">
@@ -20,6 +21,7 @@ const ConfirmModal = ({ opened, handleOpen, title, children }: ConfirmModalProps
         </div>
         <DialogHeader className="text-left font-bold text-[#4ceef9]">{title}</DialogHeader>
         <DialogBody className="mb-6 text-left text-base text-white">{children}</DialogBody>
+        <DialogFooter>{showButton ? <FilledButton onClick={handleOpen}>확인</FilledButton> : null}</DialogFooter>
       </div>
     </Dialog>
   );
