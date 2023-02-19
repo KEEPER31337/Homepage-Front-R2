@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { columns, rows } from '@mocks/SeminarManageApi';
 import type { SeminarListRow } from '@mocks/SeminarManageApi';
 import PageTitle from '@components/Typography/PageTitle';
+import OutlinedButton from '@components/Button/OutlinedButton';
 
 const SeminarManage = () => {
   const [listColumns, setListColumns] = useState(columns);
@@ -19,12 +20,8 @@ const SeminarManage = () => {
       <PageTitle>세미나 관리(2023년 1학기)</PageTitle>
       <StandardTable columns={listColumns} rows={listRows} />
       <div className="mt-4 flex justify-end space-x-2">
-        <Button variant="outlined" className="border-pointBlue text-pointBlue" onClick={addSeminar}>
-          추가
-        </Button>
-        <Button variant="outlined" className="border-2 border-pointBlue text-pointBlue">
-          삭제
-        </Button>
+        <OutlinedButton onClick={addSeminar}>추가</OutlinedButton>
+        <OutlinedButton>삭제</OutlinedButton>
       </div>
     </div>
   );
