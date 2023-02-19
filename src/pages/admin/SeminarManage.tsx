@@ -7,6 +7,7 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 const SeminarManage = () => {
   const listColumns = columns;
   const listRows = rows;
+  const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
 
   const addSeminar = () => {
     // TODO
@@ -14,7 +15,7 @@ const SeminarManage = () => {
 
   return (
     <div>
-      <PageTitle>세미나 관리(2023년 1학기)</PageTitle>
+      <PageTitle>세미나 관리 {`(${currentTerm.year}년 ${currentTerm.season})`}</PageTitle>
       <StandardTable columns={listColumns} rows={listRows} />
       <div className="mt-4 flex justify-end space-x-2">
         <OutlinedButton onClick={addSeminar}>추가</OutlinedButton>
