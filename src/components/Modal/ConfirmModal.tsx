@@ -21,7 +21,7 @@ const ConfirmModal = ({ opened, handleOpen, title, children, showButton }: Confi
         </div>
         <DialogHeader className="text-left font-bold text-[#4ceef9]">{title}</DialogHeader>
         <DialogBody className="mb-6 text-left text-base text-white">{children}</DialogBody>
-        <DialogFooter>{showButton ? <FilledButton onClick={handleOpen}>확인</FilledButton> : null}</DialogFooter>
+        <DialogFooter>{showButton && <FilledButton onClick={handleOpen}>확인</FilledButton>}</DialogFooter>
       </div>
     </Dialog>
   );
