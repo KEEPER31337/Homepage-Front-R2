@@ -17,7 +17,7 @@ const ConfirmModal = ({ opened, handleOpen, title, children, showButton }: Confi
     <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack">
       <div className="mt-5 ml-10 mb-2 mr-2">
         <div className="mr-5 flex items-center justify-end">
-          <VscChromeClose onClick={handleOpen} />
+          <VscChromeClose size="19" color="#4CEEF9" onClick={handleOpen} />
         </div>
         <DialogHeader className="text-left font-bold text-pointBlue">{title}</DialogHeader>
         <DialogBody className="mb-6 text-left text-base text-white">{children}</DialogBody>
