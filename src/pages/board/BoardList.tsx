@@ -1,10 +1,10 @@
 import React from 'react';
-import BoardSearch from '@components/Board/BoardSearch';
+import TableViewSwitchButton from '@components/Button/TableViewSwitchButton';
 import StandardTable from '@components/Table/StandardTable';
 import { useSearchParams } from 'react-router-dom';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import BoardSwitchButton from './BoardSwitchButton';
+import SearchSection from '@components/Section/SearchSection';
 
 interface BoardRow {
   id: number;
@@ -52,10 +52,10 @@ const BoardList = () => {
         </div>
       </div>
       <div className="flex  items-center justify-between pb-5">
-        <BoardSearch />
+        <SearchSection />
         <div className="flex gap-2">
-          <BoardSwitchButton type="List" isActive />
-          <BoardSwitchButton type="Grid" />
+          <TableViewSwitchButton type="List" isActive />
+          <TableViewSwitchButton type="Grid" />
         </div>
       </div>
       <StandardTable columns={dummyColumn} rows={dummyRow} />

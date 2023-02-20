@@ -3,12 +3,12 @@ import { MdOutlineApps, MdOutlineViewHeadline } from 'react-icons/md';
 
 type switchType = 'List' | 'Grid';
 
-interface BoardSwitchButtonProps {
+interface TableViewSwitchButtonProps {
   type: switchType;
   isActive?: boolean;
 }
 
-const BoardSwitchButton = ({ type, isActive }: BoardSwitchButtonProps) => {
+const TableViewSwitchButton = ({ type, isActive }: TableViewSwitchButtonProps) => {
   return (
     <div
       className={`flex h-8 w-8 items-center justify-center rounded-sm border ${
@@ -20,4 +20,4 @@ const BoardSwitchButton = ({ type, isActive }: BoardSwitchButtonProps) => {
   );
 };
 
-export default BoardSwitchButton;
+export default TableViewSwitchButton;
