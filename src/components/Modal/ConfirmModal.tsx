@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { Button, Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
+import { Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
 import FilledButton from '@components/Button/FilledButton';
-import { VscChromeClose } from 'react-icons/vsc/';
+import { VscChromeClose } from 'react-icons/vsc';
 
 interface ConfirmModalProps {
   opened: boolean;
