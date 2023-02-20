@@ -11,7 +11,7 @@ const TextButton = ({ children, onClick, disabled }: TextButtonProps) => {
   return (
     <Button
       variant="text"
-      className="font-base rounded-sm py-2 text-pointBlue hover:bg-pointBlue/10 active:bg-pointBlue/30"
+      className="h-fit rounded-sm py-2 font-base text-pointBlue hover:bg-pointBlue/10 active:bg-pointBlue/30"
       onClick={onClick}
       disabled={disabled}
     >
