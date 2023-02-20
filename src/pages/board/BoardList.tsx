@@ -1,7 +1,6 @@
 import React from 'react';
 import BoardSearch from '@components/Board/BoardSearch';
 import StandardTable from '@components/Table/StandardTable';
-import { MdOutlineApps, MdOutlineViewHeadline } from 'react-icons/md';
 import { useSearchParams } from 'react-router-dom';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
