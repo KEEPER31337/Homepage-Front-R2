@@ -47,9 +47,7 @@ const BoardList = () => {
     <div>
       <div className="flex justify-between">
         <PageTitle>{category}</PageTitle>
-        <div>
-          <OutlinedButton>글쓰기</OutlinedButton>
-        </div>
+        <OutlinedButton>글쓰기</OutlinedButton>
       </div>
       <div className="flex items-center justify-between pb-5">
         <SearchSection />
