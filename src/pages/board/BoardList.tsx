@@ -44,7 +44,7 @@ const BoardList = () => {
   const category: string | null = searchParams.get('category');
 
   return (
-    <div className="w-full text-white">
+    <div>
       <div className="flex justify-between">
         <PageTitle>{category}</PageTitle>
         <div>
