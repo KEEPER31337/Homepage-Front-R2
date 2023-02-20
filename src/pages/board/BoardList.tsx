@@ -45,13 +45,13 @@ const BoardList = () => {
 
   return (
     <div className="w-full text-white">
-      <div className="flex  justify-between">
+      <div className="flex justify-between">
         <PageTitle>{category}</PageTitle>
         <div>
           <OutlinedButton>글쓰기</OutlinedButton>
         </div>
       </div>
-      <div className="flex  items-center justify-between pb-5">
+      <div className="flex items-center justify-between pb-5">
         <SearchSection />
         <div className="flex gap-2">
           <TableViewSwitchButton type="List" isActive />
