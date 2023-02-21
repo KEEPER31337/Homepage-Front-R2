@@ -6,3 +6,9 @@ export interface Column<T> {
 export type Row<T> = T & {
   id: number;
 };
+
+export interface ChildComponent<T> {
+  key: keyof T;
+  value: T[keyof T];
+  rowData: T;
+}
