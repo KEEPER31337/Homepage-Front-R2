@@ -12,3 +12,5 @@ export interface ChildComponent<T> {
   value: T[keyof T];
   rowData: T;
 }
+
+export type TableType = 'List' | 'Grid';
