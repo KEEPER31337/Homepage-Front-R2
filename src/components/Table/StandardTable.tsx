@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
+import ChildComponent from './StandardTable.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface StandardTableProps<T extends Record<string, any>> {
   columns: { key: keyof T; headerName: string }[];
   rows: (T & { id: number })[];
+  childComponent?: ({ key, value, rowData }: ChildComponent<T>) => ReactNode;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const StandardTable = <T extends Record<string, any>>({ columns, rows }: StandardTableProps<T>) => {
+const StandardTable = <T extends Record<string, any>>({ columns, rows, childComponent }: StandardTableProps<T>) => {
   return (
     <>
       <Table>
@@ -28,7 +30,9 @@ const StandardTable = <T extends Record<string, any>>({ columns, rows }: Standar
               {columns.map((column) => {
                 return (
                   <TableCell className="!border-subBlack bg-mainBlack !text-white" key={column.key as string}>
-                    {row[column.key]}
+                    {childComponent
+                      ? childComponent({ key: column.key, value: row[column.key], rowData: row })
+                      : row[column.key]}
                   </TableCell>
                 );
               })}
