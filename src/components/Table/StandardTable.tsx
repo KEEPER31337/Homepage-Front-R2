@@ -32,7 +32,7 @@ const StandardTable = <T extends Record<string, any>>({
         <TableBody>
           {rows.map((row) => (
             <TableRow
-              className={`${onRowClick && 'hover:brightness-90 hover:drop-shadow-none'}`}
+              className={`${onRowClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'}`}
               key={row.id}
               onClick={onRowClick ? () => onRowClick({ rowData: row }) : undefined}
             >
