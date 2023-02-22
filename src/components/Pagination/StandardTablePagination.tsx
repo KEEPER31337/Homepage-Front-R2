@@ -37,7 +37,7 @@ const StandardTablePagination = ({ rowsPerPage = 10 }: StandardTablePaginationPr
         labelDisplayedRows={({ from, to, count }) => `Showing ${from}-${to} of ${count} items`}
       />
       <Pagination
-        color="primary"
+        color="secondary"
         className="mr-1 !text-pointBlue"
         count={totalPages}
         shape="rounded"
