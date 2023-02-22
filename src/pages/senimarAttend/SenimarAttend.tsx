@@ -15,7 +15,7 @@ const SeminarAttend = () => {
 
   return (
     <>
-      <PageTitle>세미나 출석체크</PageTitle>
+      <PageTitle>세미나 출석</PageTitle>
       <div className="grid justify-items-end">
         <FilledButton>세미나 관리</FilledButton>
       </div>
