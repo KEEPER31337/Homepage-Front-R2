@@ -3,64 +3,80 @@ import { Select, Option, Input, Checkbox } from '@material-tailwind/react';
 import PageTitle from '@components/Typography/PageTitle';
 import StandardTable from '@components/Table/StandardTable';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import { ChildComponent } from '@components/Table/StandardTable.interface';
 
-interface IExampleRow {
+interface ExampleRow {
   id: number;
-  checkboxEnable: JSX.Element;
-  bookTitle: string;
-  bookWriter: string;
-  bookStatus: string;
-  bookInfo: string;
-  bookEnable: JSX.Element;
+  no: number;
+  title: string;
+  author: string;
+  total: string;
+  information: string;
+  enable: boolean;
+}
+interface ExampleColumn {
+  key: keyof ExampleRow;
+  headerName: string;
 }
 
-const BookEnableText = ({ enable }: { enable: boolean }) => {
-  return enable ? (
-    <div className="h-fit w-fit text-pointBlue">대출가능</div>
-  ) : (
-    <div className="h-fit w-fit text-subGray">대출불가</div>
-  );
-};
-
 const LibraryManage = () => {
-  const columns = [
-    { key: 'checkboxEnable' as keyof IExampleRow, headerName: '' },
-    { key: 'bookTitle' as keyof IExampleRow, headerName: '도서명' },
-    { key: 'bookWriter' as keyof IExampleRow, headerName: '저자' },
-    { key: 'bookStatus' as keyof IExampleRow, headerName: '대출현황' },
-    { key: 'bookInfo' as keyof IExampleRow, headerName: '대출정보' },
-    { key: 'bookEnable' as keyof IExampleRow, headerName: '대출상태' },
+  const columns: ExampleColumn[] = [
+    {
+      key: 'no',
+      headerName: '번호',
+    },
+    { key: 'title', headerName: '도서명' },
+    { key: 'author', headerName: '저자' },
+    { key: 'total', headerName: '대출현황' },
+    { key: 'information', headerName: '대출정보' },
+    {
+      key: 'enable',
+      headerName: '대출상태',
+    },
   ];
 
-  const rows: IExampleRow[] = [
+  const rows: ExampleRow[] = [
     {
       id: 1,
-      checkboxEnable: <Checkbox />,
-      bookTitle: '해킹책1',
-      bookWriter: '장서윤',
-      bookStatus: '3/3',
-      bookInfo: '장서윤, 김은지, 송세연',
-      bookEnable: <BookEnableText enable={false} />,
+      no: 1,
+      title: '해킹책1',
+      author: '장서윤',
+      total: '3/3',
+      information: '장서윤, 김은지, 송세연',
+      enable: false,
     },
     {
       id: 2,
-      checkboxEnable: <Checkbox />,
-      bookTitle: '보안책2',
-      bookWriter: '아주아주 이름 긴 김은지',
-      bookStatus: '1/10',
-      bookInfo: '누가 빌려갔냐!',
-      bookEnable: <BookEnableText enable />,
+      no: 2,
+      title: '보안책2',
+      author: '아주아주 이름 긴 김은지',
+      total: '1/10',
+      information: '누가 빌려갔냐!',
+      enable: false,
     },
     {
       id: 3,
-      checkboxEnable: <Checkbox />,
-      bookTitle: '아주아주 긴 보안책',
-      bookWriter: '장서윤',
-      bookStatus: '1/1',
-      bookInfo: '접니다',
-      bookEnable: <BookEnableText enable={false} />,
+      no: 3,
+      title: '아주아주 긴 보안책',
+      author: '장서윤',
+      total: '1/1',
+      information: '접니다',
+      enable: true,
     },
   ];
+
+  const childComponent = ({ key, value, rowData }: ChildComponent<ExampleRow>) => {
+    switch (key) {
+      case 'enable':
+        return value ? (
+          <div className="h-fit w-fit text-pointBlue">대출가능</div>
+        ) : (
+          <div className="h-fit w-fit text-subGray">대출불가</div>
+        );
+      default:
+        return value;
+    }
+  };
 
   return (
     <div>
@@ -77,7 +93,7 @@ const LibraryManage = () => {
 
             <Input label="검색어를 입력하세요" className="w-64" />
           </div>
-          <div className="flex w-fit space-x-2">
+          <div className="flex space-x-2">
             <OutlinedButton onClick={() => console.log('OutlinedButton')}>도서 추가</OutlinedButton>
             <OutlinedButton onClick={() => console.log('OutlinedButton')}>도서 삭제</OutlinedButton>
             <OutlinedButton onClick={() => console.log('OutlinedButton')}>대출 관리</OutlinedButton>
@@ -85,7 +101,7 @@ const LibraryManage = () => {
           </div>
         </div>
         {/* 테이블 */}
-        <StandardTable<IExampleRow> columns={columns} rows={rows} />
+        <StandardTable<ExampleRow> columns={columns} rows={rows} childComponent={childComponent} />
       </div>
     </div>
   );
