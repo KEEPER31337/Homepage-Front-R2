@@ -6,6 +6,7 @@ import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
 import MainLayout from '@components/Layout/MainLayout';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import FitContainer from '@components/Layout/Container/FitContainer';
+import BoardList from '@pages/board/BoardList';
 
 const useMainRouter = () =>
   useRoutes([
@@ -35,6 +36,15 @@ const useMainRouter = () =>
                 {
                   path: 'libraryManage',
                   element: <LibraryManage />,
+                },
+              ],
+            },
+            {
+              path: 'board',
+              children: [
+                {
+                  path: 'list',
+                  element: <BoardList />,
                 },
               ],
             },
