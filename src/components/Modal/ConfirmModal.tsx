@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
+import { Dialog, DialogHeader, DialogBody, DialogFooter, Typography } from '@material-tailwind/react';
 import FilledButton from '@components/Button/FilledButton';
 import { VscChromeClose } from 'react-icons/vsc';
 
@@ -19,8 +19,12 @@ const ConfirmModal = ({ opened, handleOpen, title, children, showButton }: Confi
         <div className="absolute right-0 mr-5">
           <VscChromeClose size="19" color="#4CEEF9" onClick={handleOpen} />
         </div>
-        <DialogHeader className="break-all font-bold text-pointBlue">{title}</DialogHeader>
-        <DialogBody className="mb-20 break-all text-white">{children}</DialogBody>
+        <DialogHeader className="break-all font-bold text-pointBlue">
+          <Typography variant="h3">{title}</Typography>
+        </DialogHeader>
+        <DialogBody className="mb-20 break-all text-white">
+          <Typography variant="paragraph">{children}</Typography>
+        </DialogBody>
         <DialogFooter className="absolute right-1 bottom-1">
           {showButton && <FilledButton onClick={handleOpen}>확인</FilledButton>}
         </DialogFooter>
