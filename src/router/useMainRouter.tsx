@@ -5,6 +5,7 @@ import SeminarManage from '@pages/admin/SeminarManage';
 import MainLayout from '@components/Layout/MainLayout';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import FitContainer from '@components/Layout/Container/FitContainer';
+import BoardList from '@pages/board/BoardList';
 
 const useMainRouter = () =>
   useRoutes([
@@ -30,6 +31,15 @@ const useMainRouter = () =>
                 {
                   path: 'seminarManage',
                   element: <SeminarManage />,
+                },
+              ],
+            },
+            {
+              path: 'board',
+              children: [
+                {
+                  path: 'list',
+                  element: <BoardList />,
                 },
               ],
             },
