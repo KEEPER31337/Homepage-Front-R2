@@ -9,7 +9,7 @@ const SeminarManage = () => {
   const listRows = rows;
   const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
 
-  const addSeminar = () => {
+  const handleSeminarAddButtonClick = () => {
     // TODO
   };
 
@@ -18,7 +18,7 @@ const SeminarManage = () => {
       <PageTitle>세미나 관리 {`(${currentTerm.year}년 ${currentTerm.season})`}</PageTitle>
       <StandardTable columns={listColumns} rows={listRows} />
       <div className="mt-4 flex justify-end space-x-2">
-        <OutlinedButton onClick={addSeminar}>추가</OutlinedButton>
+        <OutlinedButton onClick={handleSeminarAddButtonClick}>추가</OutlinedButton>
         <OutlinedButton>삭제</OutlinedButton>
       </div>
     </div>
