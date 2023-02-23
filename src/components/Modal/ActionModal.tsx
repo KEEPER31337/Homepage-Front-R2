@@ -15,11 +15,11 @@ interface ActionModalProps {
 const ActionModal = ({ opened, handleOpen, title, children, buttonName, onActionButonClick }: ActionModalProps) => {
   return (
     <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack">
-      <div className="mt-7 ml-10 mb-2 mr-2">
-        <DialogHeader className="text-left font-bold text-pointBlue">
+      <div className="mt-5 ml-10 mb-2 mr-10">
+        <DialogHeader className="break-all text-pointBlue">
           <Typography variant="h3">{title}</Typography>
         </DialogHeader>
-        <DialogBody className="text-left text-base text-white">
+        <DialogBody className="break-all text-white">
           <Typography variant="paragraph">{children}</Typography>
         </DialogBody>
         <DialogFooter className="flex-end items-center gap-5">
