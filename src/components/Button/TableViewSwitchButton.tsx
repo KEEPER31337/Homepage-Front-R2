@@ -7,18 +7,17 @@ import { useRecoilState } from 'recoil';
 
 interface TableViewSwitchButtonProps {
   type: TableType;
-  isActive?: boolean;
   disabled?: boolean;
 }
 
-const TableViewSwitchButton = ({ type, isActive, disabled }: TableViewSwitchButtonProps) => {
-  const [, setTableType] = useRecoilState<TableType>(tableTypeState);
+const TableViewSwitchButton = ({ type, disabled }: TableViewSwitchButtonProps) => {
+  const [tableType, setTableType] = useRecoilState<TableType>(tableTypeState);
 
   return (
     <Button
       variant="outlined"
       className={`flex h-8 w-8 items-center justify-center rounded-sm border p-0 focus:ring-0 ${
-        isActive ? 'border-pointBlue text-[#4CEEF9]' : 'border-white text-white'
+        tableType === type ? 'border-pointBlue text-[#4CEEF9]' : 'border-white text-white'
       }`}
       onClick={() => setTableType(type)}
       disabled={disabled}

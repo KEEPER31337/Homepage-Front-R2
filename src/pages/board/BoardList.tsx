@@ -52,7 +52,7 @@ const BoardList = () => {
       <div className="flex items-center justify-between pb-5">
         <SearchSection />
         <div className="flex gap-2">
-          <TableViewSwitchButton type="List" isActive />
+          <TableViewSwitchButton type="List" />
           <TableViewSwitchButton type="Grid" />
         </div>
       </div>
