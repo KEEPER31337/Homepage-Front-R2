@@ -11,7 +11,7 @@ const Home = () => {
       <div className="flex h-[calc(100vh-theme(space.header))] w-full flex-col">
         <div className="m-auto">
           <LogoNeon className="my-20 w-[700px]" />
-          <p className="mx-auto whitespace-pre-wrap text-center text-white">{introText}</p>
+          <p className="whitespace-pre-wrap text-center">{introText}</p>
         </div>
       </div>
     </div>
