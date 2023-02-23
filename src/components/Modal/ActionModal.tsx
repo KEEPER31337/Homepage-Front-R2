@@ -14,9 +14,9 @@ interface ActionModalProps {
 
 const ActionModal = ({ opened, handleOpen, title, children, buttonName, onActionButonClick }: ActionModalProps) => {
   return (
-    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-[#26262c]">
+    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack">
       <div className="mt-7 ml-10 mb-2 mr-2">
-        <DialogHeader className="text-left font-bold text-[#4ceef9]">{title}</DialogHeader>
+        <DialogHeader className="text-left font-bold text-pointBlue">{title}</DialogHeader>
         <DialogBody className="text-left text-base text-white">{children}</DialogBody>
         <DialogFooter className="flex-end items-center gap-5">
           <TextButton onClick={handleOpen}>취소</TextButton>
