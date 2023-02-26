@@ -3,13 +3,12 @@ import React from 'react';
 import { DateTime } from 'luxon';
 import TextField from '@mui/material/TextField';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 interface DatePickerProps {
   date: DateTime | null;
   setDate: React.Dispatch<React.SetStateAction<DateTime | null>>;
-  label: string;
+  label?: string;
 }
 
 const StandardDatePicker = ({ date, setDate, label }: DatePickerProps) => {
@@ -22,7 +21,7 @@ const StandardDatePicker = ({ date, setDate, label }: DatePickerProps) => {
         onChange={(newValue) => {
           setDate(newValue);
         }}
-        renderInput={(params) => <TextField id="standard-basic" label="Standard" variant="standard" {...params} />}
+        renderInput={(params) => <TextField variant="standard" {...params} />}
       />
     </LocalizationProvider>
   );
