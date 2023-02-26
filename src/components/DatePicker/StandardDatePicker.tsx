@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { DateTime } from 'luxon';
 import TextField from '@mui/material/TextField';
