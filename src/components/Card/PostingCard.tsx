@@ -1,10 +1,11 @@
 import React from 'react';
-import { Card, CardContent, CardMedia } from '@mui/material';
+import { Avatar, Card, CardContent, CardMedia } from '@mui/material';
 import { Typography } from '@material-tailwind/react';
+import { DateTime } from 'luxon';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import { CardMainInfoProps } from './PostingCard.interface';
+import { CardDetailInfoProps, CardMainInfoProps } from './PostingCard.interface';
 
-interface PostingCardProps extends CardMainInfoProps {
+interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps {
   thumbnailPath: string | null;
 }
 
@@ -21,7 +22,23 @@ const CardMainInfo = ({ type, title }: CardMainInfoProps) => {
   );
 };
 
-const PostingCard = ({ thumbnailPath, type, title }: PostingCardProps) => {
+const CardDetailInfo = ({ writerThumbnailPath, writer, registerTime }: CardDetailInfoProps) => {
+  return (
+    <div className="flex">
+      <Avatar className="mr-2 !h-6 !w-6" src={writerThumbnailPath} />
+      <div>
+        <Typography className="font-medium" variant="small">
+          {writer}
+        </Typography>
+        <Typography className="font-semibold text-subGray" variant="small">
+          {DateTime.fromISO(registerTime).toFormat('yyyy.MM.dd')}
+        </Typography>
+      </div>
+    </div>
+  );
+};
+
+const PostingCard = ({ thumbnailPath, type, title, writerThumbnailPath, writer, registerTime }: PostingCardProps) => {
   return (
     <Card className="w-52 !rounded-none !bg-middleBlack !bg-none">
       {thumbnailPath ? (
@@ -29,8 +46,9 @@ const PostingCard = ({ thumbnailPath, type, title }: PostingCardProps) => {
       ) : (
         <Logo className="m-auto h-[118px] w-28" />
       )}
-      <CardContent className="h-24 !bg-mainBlack">
+      <CardContent className="flex h-24 flex-col justify-between !bg-mainBlack !p-3">
         <CardMainInfo type={type} title={title} />
+        <CardDetailInfo writerThumbnailPath={writerThumbnailPath} writer={writer} registerTime={registerTime} />
       </CardContent>
     </Card>
   );
