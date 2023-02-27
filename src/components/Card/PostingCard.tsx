@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
 
-interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps, InteractionScoreProps {
+export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps, InteractionScoreProps {
   thumbnailPath: string | null;
 }
 
