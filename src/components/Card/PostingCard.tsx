@@ -26,7 +26,7 @@ const CardMainInfo = ({ type, title }: CardMainInfoProps) => {
 const CardDetailInfo = ({ writerThumbnailPath, writer, registerTime }: CardDetailInfoProps) => {
   return (
     <div className="flex">
-      <Avatar className="mr-2 !h-6 !w-6" src={writerThumbnailPath} />
+      <Avatar className="mr-2 !h-6 !w-6" src={writerThumbnailPath ?? undefined} />
       <div>
         <Typography className="font-medium" variant="small">
           {writer}

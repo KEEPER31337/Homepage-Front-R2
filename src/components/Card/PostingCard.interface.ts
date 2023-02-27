@@ -4,7 +4,7 @@ export interface CardMainInfoProps {
 }
 
 export interface CardDetailInfoProps {
-  writerThumbnailPath: string;
+  writerThumbnailPath: string | null;
   writer: string;
   registerTime: string;
 }
