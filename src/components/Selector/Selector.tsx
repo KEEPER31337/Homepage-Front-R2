@@ -2,14 +2,14 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, SelectProps } from '@mui/material';
 import React from 'react';
 
-interface SelectorProps {
+interface SelectorProps extends SelectProps {
   label?: string;
   value?: number;
   onChange: (event: SelectChangeEvent<unknown>) => void;
   options: { id: number; content: string | number }[];
 }
 
-const Selector = ({ label, value, onChange, options, className, ...selectProps }: SelectorProps & SelectProps) => {
+const Selector = ({ label, value, onChange, options, className, ...selectProps }: SelectorProps) => {
   return (
     <FormControl className={className} variant="standard">
       <InputLabel>{label}</InputLabel>
