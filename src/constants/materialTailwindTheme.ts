@@ -1,10 +1,11 @@
-import type { TypographyStylesType } from '@material-tailwind/react';
+import type { TypographyStylesType, InputStylesType } from '@material-tailwind/react';
 
 interface CustomTheme {
   typography: TypographyStylesType;
+  input: InputStylesType;
 }
 
-const theme: CustomTheme = {
+const materialTailwindTheme: CustomTheme = {
   typography: {
     styles: {
       variants: {
@@ -23,6 +24,27 @@ const theme: CustomTheme = {
       },
     },
   },
+  input: {
+    defaultProps: {
+      variant: 'standard',
+    },
+    styles: {
+      base: {
+        container: {
+          width: 'min-w-min w-fit',
+        },
+        input: {
+          border: '!border-pointBlue disabled:border-b disabled:!border-opacity-50',
+          color: 'text-white',
+          background: 'disabled:!bg-transparent',
+        },
+        label: {
+          border: 'after:border-pointBlue peer-focus:after:border-pointBlue',
+          color: ' peer-focus:text-pointBlue',
+        },
+      },
+    },
+  },
 };
 
-export default theme;
+export default materialTailwindTheme;
