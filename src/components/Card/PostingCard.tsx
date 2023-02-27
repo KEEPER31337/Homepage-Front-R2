@@ -1,11 +1,12 @@
 import React from 'react';
 import { Avatar, Card, CardContent, CardMedia } from '@mui/material';
 import { Typography } from '@material-tailwind/react';
+import { VscComment, VscEye } from 'react-icons/vsc';
 import { DateTime } from 'luxon';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import { CardDetailInfoProps, CardMainInfoProps } from './PostingCard.interface';
+import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
 
-interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps {
+interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps, InteractionScoreProps {
   thumbnailPath: string | null;
 }
 
@@ -38,7 +39,35 @@ const CardDetailInfo = ({ writerThumbnailPath, writer, registerTime }: CardDetai
   );
 };
 
-const PostingCard = ({ thumbnailPath, type, title, writerThumbnailPath, writer, registerTime }: PostingCardProps) => {
+const InteractionScore = ({ visitCount, commentCount }: InteractionScoreProps) => {
+  return (
+    <div className="flex space-x-1.5 text-pointBlue">
+      <div className="flex items-center">
+        <VscEye className="mr-0.5" size={12} color="#4CEEF9" />
+        <Typography className="mt-0.5 font-normal" variant="small">
+          {visitCount}
+        </Typography>
+      </div>
+      <div className="flex items-center">
+        <VscComment className="mr-0.5" size={12} color="#4CEEF9" />
+        <Typography className="mt-0.5 font-normal" variant="small">
+          {commentCount}
+        </Typography>
+      </div>
+    </div>
+  );
+};
+
+const PostingCard = ({
+  thumbnailPath,
+  type,
+  title,
+  writerThumbnailPath,
+  writer,
+  registerTime,
+  visitCount,
+  commentCount,
+}: PostingCardProps) => {
   return (
     <Card className="w-52 !rounded-none !bg-middleBlack !bg-none">
       {thumbnailPath ? (
@@ -48,7 +77,10 @@ const PostingCard = ({ thumbnailPath, type, title, writerThumbnailPath, writer, 
       )}
       <CardContent className="flex h-24 flex-col justify-between !bg-mainBlack !p-3">
         <CardMainInfo type={type} title={title} />
-        <CardDetailInfo writerThumbnailPath={writerThumbnailPath} writer={writer} registerTime={registerTime} />
+        <div className="flex items-end justify-between">
+          <CardDetailInfo writerThumbnailPath={writerThumbnailPath} writer={writer} registerTime={registerTime} />
+          <InteractionScore visitCount={visitCount} commentCount={commentCount} />
+        </div>
       </CardContent>
     </Card>
   );

@@ -9,3 +9,7 @@ export interface CardDetailInfoProps {
   registerTime: string;
 }
 
+export interface InteractionScoreProps {
+  visitCount: number;
+  commentCount: number;
+}
