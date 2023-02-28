@@ -1,7 +1,12 @@
 import React from 'react';
+import { AppBar, Toolbar } from '@mui/material';
 
 const Header = () => {
-  return <div className="fixed h-header w-full border-b border-pointBlue bg-mainBlack" />;
+  return (
+    <AppBar position="fixed" className="h-header border-b border-pointBlue !bg-mainBlack !bg-none">
+      <Toolbar />
+    </AppBar>
+  );
 };
 
 export default Header;
