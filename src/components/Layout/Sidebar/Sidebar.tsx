@@ -1,6 +1,8 @@
 import React from 'react';
 import { Drawer, Toolbar } from '@mui/material';
 import { KEEPER_COLOR, SIDEBAR_WIDTH } from '@constants/keeperTheme';
+import CATEGORIES from '@constants/category';
+import CategoryNav from '@components/Navigation/CategoryNav';
 
 const Sidebar = () => {
   return (
@@ -13,6 +15,9 @@ const Sidebar = () => {
       }}
     >
       <Toolbar />
+      {CATEGORIES.map((category) => (
+        <CategoryNav key={category.id} category={category} />
+      ))}
     </Drawer>
   );
 };
