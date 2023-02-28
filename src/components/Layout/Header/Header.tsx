@@ -24,7 +24,7 @@ const Header = () => {
         </Link>
         <div>
           <IconButton target="_blank" href="https://keeper.or.kr/wiki/%EB%8C%80%EB%AC%B8">
-            <Typography className=" h-6 w-6 rounded-full bg-pointBlue text-mainBlack">W</Typography>
+            <Typography className="h-6 w-6 rounded-full bg-pointBlue text-mainBlack">W</Typography>
           </IconButton>
           <IconButton target="_blank" href="https://github.com/KEEPER31337">
             <VscGithubInverted fill="#4CEEF9" />
