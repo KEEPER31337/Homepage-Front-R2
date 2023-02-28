@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 
 import OutlinedButton from '@components/Button/OutlinedButton';
-import TextButton from '@components/Button/TextButton';
-import FilledButton from '@components/Button/FilledButton';
 import ActionModal from '@components/Modal/ActionModal';
 import StudyInput from './share/StudyInput';
 import StudyTextarea from './share/StudyTextarea';
@@ -60,7 +57,7 @@ const StudyModal = ({ isModify, studyId }: ModalProps): JSX.Element => {
                     key={member}
                     value={member}
                     onClick={() => {
-                      /* TODO 추후 멤버 제거 핸들러 구현할 예정
+                      /* TODO 추후 멤버 제거 핸들러 구현하고 지울 예정
                        */
                       console.log('임시로 구현한 핸들러 함수');
                     }}

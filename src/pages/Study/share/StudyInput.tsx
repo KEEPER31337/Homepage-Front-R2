@@ -1,6 +1,10 @@
 import React from 'react';
 import { ThemeProvider, Input } from '@material-tailwind/react';
 
+/**
+ * TODO 공통 컴포넌트 제작 후 삭제 예정
+ */
+
 interface InputProps {
   variant: 'standard' | 'outlined' | 'static';
   size: 'md' | 'lg';

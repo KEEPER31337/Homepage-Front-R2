@@ -1,9 +1,14 @@
 import React from 'react';
 import { ThemeProvider, Select, Option } from '@material-tailwind/react';
 
+/**
+ * TODO 공통 컴포넌트 제작 후 삭제 예정
+ */
+
 interface SelectProps {
   value: string;
   options: string[];
+  setValue: (arg0: any) => void;
 }
 const theme = {
   select: {
@@ -44,12 +49,14 @@ const theme = {
     },
   },
 };
-const StudySelect = ({ value, options }: SelectProps) => {
+const StudySelect = ({ value, options, setValue }: SelectProps) => {
   return (
     <ThemeProvider value={theme}>
       <Select variant="static" className="" value={value}>
         {options?.map((option) => (
-          <Option key={option}>{option}</Option>
+          <Option key={option} onChange={() => setValue(option)}>
+            {option}
+          </Option>
         ))}
       </Select>
     </ThemeProvider>

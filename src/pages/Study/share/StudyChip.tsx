@@ -1,6 +1,9 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider, Chip } from '@material-tailwind/react';
 
+/**
+ * TODO 공통 컴포넌트 제작 후 삭제 예정
+ */
 interface ChipProps {
   value: string;
 }

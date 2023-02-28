@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ThemeProvider, Accordion, AccordionHeader, AccordionBody } from '@material-tailwind/react';
-import type { AccordionStylesType } from '@material-tailwind/react';
 
 interface AccordionProps {
   id: number;

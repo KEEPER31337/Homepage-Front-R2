@@ -1,6 +1,10 @@
 import React from 'react';
 import { ThemeProvider, Textarea } from '@material-tailwind/react';
 
+/**
+ * TODO 공통 컴포넌트 제작 후 삭제 예정
+ */
+
 interface TextareaProps {
   variant: 'standard' | 'outlined' | 'static';
   label: string;
