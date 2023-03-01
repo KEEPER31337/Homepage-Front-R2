@@ -44,7 +44,7 @@ const AccordionHeaderContent = () => {
     <div className="flex h-16 w-full space-x-6 pl-6 text-left">
       <span className="h-16 w-16 bg-gray-300">이미지</span>
       <div className="flex flex-col justify-between">
-        <Typography className="h-[30px] text-[20px]">CTF 스터디</Typography>
+        <Typography className="text-h3">CTF 스터디</Typography>
         <div className="flex h-6 space-x-[4px] text-[16px]">
           <span>스터디장</span> <StudyChip value="김태연" /> <span>| 현재 인원 8명</span>
         </div>
