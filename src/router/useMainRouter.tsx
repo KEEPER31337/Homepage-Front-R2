@@ -44,11 +44,11 @@ const useMainRouter = () =>
                 },
               ],
             },
+            {
+              path: 'study',
+              element: <Study />,
+            },
           ],
-        },
-        {
-          path: 'study',
-          element: <Study />,
         },
       ],
     },
