@@ -68,11 +68,11 @@ const AccordionBodyContent = () => {
     <div className="space-y-[30px]">
       <div className="space-y-4">
         <Typography className="font-semibold">스터디 소개</Typography>
-        <Typography className="border-l-2 border-pointBlue px-[10px]">CTF 준비합니다</Typography>
+        <Typography className="border-l-2 border-pointBlue px-2">CTF 준비합니다</Typography>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
-        <div className="flex space-x-[10px]">
+        <div className="flex space-x-2">
           {members?.map((member: string) => (
             <StudyChip key={member} value={member} />
           ))}
