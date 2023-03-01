@@ -7,7 +7,7 @@ import StudyInput from './share/StudyInput';
 import StudyTextarea from './share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from './share/StudyChip';
 
-interface ModalProps {
+interface StudyModalProps {
   open: boolean;
   handleOpen: () => void;
   isModify: boolean;
@@ -15,7 +15,7 @@ interface ModalProps {
 }
 
 const memberList = ['김은지', '장서윤', '송세연'];
-const StudyModal = ({ open, isModify, handleOpen, studyId }: ModalProps): JSX.Element => {
+const StudyModal = ({ open, isModify, handleOpen, studyId }: StudyModalProps): JSX.Element => {
   return (
     <ActionModal
       opened={open}
