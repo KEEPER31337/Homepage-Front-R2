@@ -24,9 +24,9 @@ const AccordionHeaderContent = () => {
       <span className="h-[64px] w-[64px] bg-gray-300">이미지</span>
       <div className="flex flex-col justify-between">
         <Typography className="h-[30px] text-[20px]">CTF 스터디</Typography>
-        <p className="flex h-[24px] space-x-[4px] text-[16px]">
+        <div className="flex h-[24px] space-x-[4px] text-[16px]">
           <span>스터디장</span> <StudyChip value="김태연" /> <span>| 현재 인원 8명</span>
-        </p>
+        </div>
       </div>
     </div>
   );
@@ -46,22 +46,22 @@ const AccordionBodyContent = () => {
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
-        <p className="flex space-x-[10px]">
+        <div className="flex space-x-[10px]">
           {members?.map((member: string) => (
             <StudyChip key={member} value={member} />
           ))}
-        </p>
+        </div>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">링크</Typography>
-        <p className="flex space-x-4 text-pointBlue">
+        <div className="flex space-x-4 text-pointBlue">
           {link?.map((li) => (
-            <p key={li.title} className="flex items-center space-x-1">
+            <div key={li.title} className="flex items-center space-x-1">
               <span>{LinkIconData[li.title] ? LinkIconData[li.title] : LinkIconData.etc}</span>
               <span className="border-b border-pointBlue">{li.title}</span>
-            </p>
+            </div>
           ))}
-        </p>
+        </div>
       </div>
     </div>
   );
