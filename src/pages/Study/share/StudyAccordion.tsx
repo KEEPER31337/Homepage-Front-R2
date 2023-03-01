@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { ThemeProvider, Accordion, AccordionHeader, AccordionBody, Typography } from '@material-tailwind/react';
-import { VscGithubInverted, VscLink } from 'react-icons/vsc';
+import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 import { StudyChip } from './StudyChip';
-
-interface ArrowIconProps {
-  open: boolean;
-}
 
 const theme = {
   accordion: {
@@ -31,21 +27,6 @@ const theme = {
       },
     },
   },
-};
-
-const Icon = ({ open }: ArrowIconProps) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={`${open ? 'rotate-180' : ''} h-[20px] w-[20px] transition-transform`}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-    </svg>
-  );
 };
 
 interface IconType {
@@ -117,7 +98,7 @@ const StudyAccordion = () => {
 
   return (
     <ThemeProvider value={theme}>
-      <Accordion open={open} icon={<Icon open={open} />}>
+      <Accordion open={open} icon={open ? <VscChevronUp /> : <VscChevronDown />}>
         <AccordionHeader className="h-[80px]" onClick={() => handleOpen()}>
           <AccordionHeaderContent />
         </AccordionHeader>
