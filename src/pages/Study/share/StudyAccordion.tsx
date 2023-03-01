@@ -30,16 +30,6 @@ const theme = {
   },
 };
 
-interface IconType {
-  [key: string]: JSX.Element;
-}
-
-const LinkIconData: IconType = {
-  github: <VscGithubInverted className="h-[28px] w-[28px]" />,
-  notion: <SiNotion className="h-[28px] w-[28px]" />,
-  etc: <VscLink className="h-[28px] w-[28px]" />,
-};
-
 const AccordionHeaderContent = () => {
   return (
     <div className="flex w-full space-x-6 pl-6 text-left">
@@ -58,6 +48,16 @@ const AccordionHeaderContent = () => {
 };
 
 const AccordionBodyContent = () => {
+  interface IconType {
+    [key: string]: JSX.Element;
+  }
+
+  const LinkIconData: IconType = {
+    github: <VscGithubInverted className="h-[28px] w-[28px]" />,
+    notion: <SiNotion className="h-[28px] w-[28px]" />,
+    etc: <VscLink className="h-[28px] w-[28px]" />,
+  };
+
   const link = [
     { title: 'github', contents: 'https//~' },
     { title: 'notion', contents: 'https//~' },
