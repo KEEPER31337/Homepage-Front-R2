@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 
 import { studyList, yearList } from '@mocks/StudyApi';
 import PageTitle from '@components/Typography/PageTitle';
@@ -28,9 +28,7 @@ const Study = () => {
       ) : (
         <div>
           {studyList?.map((study) => (
-            <Fragment key={study}>
-              <StudyItem id={study} />
-            </Fragment>
+            <StudyItem key={study} id={study} />
           ))}
         </div>
       )}
