@@ -40,11 +40,11 @@ const AccordionBodyContent = () => {
   const members = ['장서윤', '김은지', '송세연', '산다라박'];
   return (
     <div className="space-y-[30px]">
-      <div className="space-y-[16px]">
+      <div className="space-y-4">
         <Typography className="font-semibold">스터디 소개</Typography>
         <Typography className="border-l-2 border-pointBlue px-[10px]">CTF 준비합니다</Typography>
       </div>
-      <div className="space-y-[16px] ">
+      <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
         <p className="flex space-x-[10px]">
           {members?.map((member: string) => (
@@ -52,11 +52,11 @@ const AccordionBodyContent = () => {
           ))}
         </p>
       </div>
-      <div className="space-y-[16px] ">
+      <div className="space-y-4">
         <Typography className="font-semibold">링크</Typography>
-        <p className="flex space-x-[16px] text-pointBlue">
+        <p className="flex space-x-4 text-pointBlue">
           {link?.map((li) => (
-            <p key={li.title} className="flex items-center space-x-[4px]">
+            <p key={li.title} className="flex items-center space-x-1">
               <span>{LinkIconData[li.title] ? LinkIconData[li.title] : LinkIconData.etc}</span>
               <span className="border-b border-pointBlue">{li.title}</span>
             </p>
