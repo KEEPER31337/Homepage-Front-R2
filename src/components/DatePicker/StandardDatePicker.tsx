@@ -5,13 +5,13 @@ import { TextField } from '@mui/material';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-interface DatePickerProps {
+interface StandardDatePickerProps {
   date: DateTime | null;
   setDate: React.Dispatch<React.SetStateAction<DateTime | null>>;
   label?: string;
 }
 
-const StandardDatePicker = ({ date, setDate, label }: DatePickerProps) => {
+const StandardDatePicker = ({ date, setDate, label }: StandardDatePickerProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <DatePicker
