@@ -53,9 +53,9 @@ const AccordionBodyContent = () => {
   }
 
   const LinkIconData: IconType = {
-    github: <VscGithubInverted className="h-[28px] w-[28px]" />,
-    notion: <SiNotion className="h-[28px] w-[28px]" />,
-    etc: <VscLink className="h-[28px] w-[28px]" />,
+    github: <VscGithubInverted className="h-7 w-7" />,
+    notion: <SiNotion className="h-7 w-7" />,
+    etc: <VscLink className="h-7 w-7" />,
   };
 
   const link = [
