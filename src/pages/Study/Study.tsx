@@ -5,8 +5,8 @@ import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StudySelect from './share/StudySelect';
 import StudyModal from './StudyModal';
-import StudyItem from './StudyItem';
 import OldStudy from './OldStudy';
+import StudyAccordion from './share/StudyAccordion';
 
 const Study = () => {
   const seasonList = ['1학기', '여름방학', '2학기', '겨울방학'];
@@ -29,7 +29,7 @@ const Study = () => {
       ) : (
         <div>
           {studyList?.map((study) => (
-            <StudyItem key={study} id={study} />
+            <StudyAccordion key={study} />
           ))}
         </div>
       )}
