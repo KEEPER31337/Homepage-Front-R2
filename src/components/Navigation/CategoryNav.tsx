@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Collapse, ListItem, ListItemButton, ListItemText } from '@mui/material';
-import { Category, CategoryMenu } from '@constants/category';
+import { Category } from '@constants/category';
 import SubCategoryNav from './SubCategoryNav';
 
 interface CategoryNavProps {
@@ -21,7 +21,7 @@ const CategoryNav = ({ category }: CategoryNavProps) => {
         <ListItemText primary={category.name} />
       </ListItemButton>
       <Collapse className="w-full" in={open} timeout="auto">
-        {category.subCategories.map((subcategory: CategoryMenu) => (
+        {category.subCategories.map((subcategory) => (
           <SubCategoryNav key={subcategory.id} subcategory={subcategory} />
         ))}
       </Collapse>
