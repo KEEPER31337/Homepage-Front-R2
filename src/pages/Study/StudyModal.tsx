@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 
@@ -8,16 +8,14 @@ import StudyTextarea from './share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from './share/StudyChip';
 
 interface ModalProps {
+  open: boolean;
+  handleOpen: () => void;
   isModify: boolean;
   studyId: number | undefined;
 }
 
 const memberList = ['김은지', '장서윤', '송세연'];
-const StudyModal = ({ isModify, studyId }: ModalProps): JSX.Element => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(!open);
-
+const StudyModal = ({ open, isModify, handleOpen, studyId }: ModalProps): JSX.Element => {
   return (
     <ActionModal
       opened={open}
