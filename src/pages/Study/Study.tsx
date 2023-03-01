@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 
 import { studyList, yearList } from '@mocks/StudyApi';
 import PageTitle from '@components/Typography/PageTitle';
+import OutlinedButton from '@components/Button/OutlinedButton';
 import StudySelect from './share/StudySelect';
 import StudyModal from './StudyModal';
 import StudyItem from './StudyItem';
@@ -20,7 +21,7 @@ const Study = () => {
           <StudySelect value="2022" options={yearList} setValue={setCurrentYear} />
           <StudySelect value="1학기" options={seasonList} setValue={setCurrentSeason} />
         </div>
-        {currentYear !== '2021' ? <StudyModal isModify={false} studyId={undefined} /> : ''}
+        {currentYear !== '2021' && <OutlinedButton>추가</OutlinedButton>}
       </div>
       {currentYear !== '2021' ? (
         <OldStudy studyList={studyList} />
