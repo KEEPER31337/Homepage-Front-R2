@@ -41,7 +41,7 @@ const DoAttend = ({ seminarDate }: DoAttendProps) => {
             </div>
           ) : (
             <Button
-              className="font-small mx-auto mb-[33px] block flex h-[34px] w-[71px] items-center whitespace-nowrap bg-pointBlue text-mainBlack"
+              className="font-small mx-auto mb-[33px] flex h-[34px] w-[71px] items-center whitespace-nowrap bg-pointBlue text-mainBlack"
               onClick={() => {
                 calAttendance();
               }}
