@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { ThemeProvider, Accordion, AccordionHeader, AccordionBody, Typography } from '@material-tailwind/react';
 import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
@@ -94,16 +94,12 @@ const AccordionBodyContent = () => {
 };
 
 const StudyAccordion = () => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(!open);
-  };
+  const [open, setOpen] = useReducer((prev) => !prev, false);
 
   return (
     <ThemeProvider value={theme}>
       <Accordion open={open} icon={open ? <VscChevronUp /> : <VscChevronDown />}>
-        <AccordionHeader className="h-20" onClick={() => handleOpen()}>
+        <AccordionHeader className="h-20" onClick={setOpen}>
           <AccordionHeaderContent />
         </AccordionHeader>
         <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
