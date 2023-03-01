@@ -3,7 +3,7 @@ import { ThemeProvider, Accordion, AccordionHeader, AccordionBody, Typography } 
 import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 import { Divider } from '@mui/material';
-import { StudyChip } from './StudyChip';
+import { StudyChip } from '../share/StudyChip';
 
 const theme = {
   accordion: {

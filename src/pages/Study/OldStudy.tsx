@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import StudyAccordion from './share/StudyAccordion';
+import StudyAccordion from './Accordion/StudyAccordion';
 
 interface OldStudyProps {
   studyList: number[];

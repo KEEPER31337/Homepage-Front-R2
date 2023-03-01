@@ -3,10 +3,10 @@ import React, { useReducer, useState } from 'react';
 import { studyList, yearList } from '@mocks/StudyApi';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import StudyModal from './Modal/StudyModal';
+import StudyAccordion from './Accordion/StudyAccordion';
 import StudySelect from './share/StudySelect';
-import StudyModal from './StudyModal';
 import OldStudy from './OldStudy';
-import StudyAccordion from './share/StudyAccordion';
 
 const Study = () => {
   const seasonList = ['1학기', '여름방학', '2학기', '겨울방학'];

@@ -4,9 +4,9 @@ import { SiNotion } from 'react-icons/si';
 import { Typography } from '@material-tailwind/react';
 
 import ActionModal from '@components/Modal/ActionModal';
-import StudyInput from './share/StudyInput';
-import StudyTextarea from './share/StudyTextarea';
-import { StudyChip, StudyChipDismissible } from './share/StudyChip';
+import StudyInput from '../share/StudyInput';
+import StudyTextarea from '../share/StudyTextarea';
+import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
 
 interface StudyModalProps {
   open: boolean;
