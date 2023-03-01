@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ThemeProvider, Accordion, AccordionHeader, AccordionBody, Typography } from '@material-tailwind/react';
 import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
+import { Divider } from '@mui/material';
 import { StudyChip } from './StudyChip';
 
 const theme = {
@@ -41,12 +42,15 @@ const LinkIconData: IconType = {
 
 const AccordionHeaderContent = () => {
   return (
-    <div className="flex h-16 w-full space-x-6 pl-6 text-left">
+    <div className="flex w-full space-x-6 pl-6 text-left">
       <span className="h-16 w-16 bg-gray-300">이미지</span>
       <div className="flex flex-col justify-between">
         <Typography className="text-h3">CTF 스터디</Typography>
-        <div className="flex h-6 space-x-[4px] text-[16px]">
-          <span>스터디장</span> <StudyChip value="김태연" /> <span>| 현재 인원 8명</span>
+        <div className="flex">
+          <Typography className="mr-1 font-semibold">스터디장</Typography>
+          <StudyChip value="김태연" />
+          <Divider className="!m-1 !border-white" orientation="vertical" flexItem />
+          <Typography className="font-semibold">현재 인원 8명</Typography>
         </div>
       </div>
     </div>
@@ -99,7 +103,7 @@ const StudyAccordion = () => {
   return (
     <ThemeProvider value={theme}>
       <Accordion open={open} icon={open ? <VscChevronUp /> : <VscChevronDown />}>
-        <AccordionHeader className="h-[80px]" onClick={() => handleOpen()}>
+        <AccordionHeader className="h-20" onClick={() => handleOpen()}>
           <AccordionHeaderContent />
         </AccordionHeader>
         <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
