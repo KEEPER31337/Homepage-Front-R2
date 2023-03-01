@@ -15,26 +15,24 @@ const Study = () => {
   return (
     <div>
       <PageTitle>스터디</PageTitle>
-      <div className="h-full w-full space-y-[32px]">
-        <div className="flex h-[45px] items-center justify-between">
-          <div className="flex space-x-[8px]">
-            <StudySelect value="2022" options={yearList} setValue={setCurrentYear} />
-            <StudySelect value="1학기" options={seasonList} setValue={setCurrentSeason} />
-          </div>
-          {currentYear !== '2021' ? <StudyModal isModify={false} studyId={undefined} /> : ''}
+      <div className="mb-5 flex items-center justify-between">
+        <div className="flex space-x-2">
+          <StudySelect value="2022" options={yearList} setValue={setCurrentYear} />
+          <StudySelect value="1학기" options={seasonList} setValue={setCurrentSeason} />
         </div>
-        {currentYear !== '2021' ? (
-          <OldStudy studyList={studyList} />
-        ) : (
-          <div className="">
-            {studyList?.map((study) => (
-              <Fragment key={study}>
-                <StudyItem id={study} />
-              </Fragment>
-            ))}
-          </div>
-        )}
+        {currentYear !== '2021' ? <StudyModal isModify={false} studyId={undefined} /> : ''}
       </div>
+      {currentYear !== '2021' ? (
+        <OldStudy studyList={studyList} />
+      ) : (
+        <div>
+          {studyList?.map((study) => (
+            <Fragment key={study}>
+              <StudyItem id={study} />
+            </Fragment>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
