@@ -24,15 +24,15 @@ const StudyModal = ({ open, isModify, handleOpen, studyId }: StudyModalProps): J
       buttonName={isModify ? '적용하기' : '생성하기'}
       onActionButonClick={handleOpen}
     >
-      <div className="space-y-[24px]">
-        <div className="flex space-x-[16px]">
-          <div className="w-full space-y-[24px]">
+      <div className="space-y-6">
+        <div className="flex space-x-4">
+          <div className="w-full space-y-6">
             <StudyInput size="lg" variant="static" label="스터디명" placeholder="스터디 이름을 적어주세요." />
             <StudyTextarea variant="static" label="스터디 소개" placeholder="스터디 소개를 적어주세요." />
           </div>
           <div className="w-[141px] space-y-[10px]">
             <p className="text-pointBlue">썸네일</p>
-            <div className="flex h-[130px] w-[130px] items-center justify-center rounded-[10px] border-[2px] border-dashed border-pointBlue/[30%] text-pointBlue/[30%]">
+            <div className="flex h-[130px] w-[130px] items-center justify-center rounded-[10px] border-2 border-dashed border-pointBlue/30 text-pointBlue/30">
               aaa
             </div>
           </div>
