@@ -52,7 +52,14 @@ const theme = {
 const StudySelect = ({ value, options, setValue }: SelectProps) => {
   return (
     <ThemeProvider value={theme}>
-      <Select variant="static" className="" value={value}>
+      <Select
+        variant="static"
+        className=""
+        value={value}
+        onChange={() => {
+          // TODO
+        }}
+      >
         {options?.map((option) => (
           <Option key={option} onChange={() => setValue(option)}>
             {option}
