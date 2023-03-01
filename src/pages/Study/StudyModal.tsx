@@ -77,9 +77,9 @@ const StudyModal = ({ open, isModify, handleOpen, studyId }: StudyModalProps): J
             <div className="flex space-x-2">
               <VscLink className="h-[25px] w-[25px] text-pointBlue" />
               <div className="flex w-full space-x-4">
-                <p className="w-[90px]">
+                <div className="w-[90px]">
                   <StudyInput size="md" variant="static" label="etc." placeholder="ex)Plato" />
-                </p>
+                </div>
                 <StudyInput size="md" variant="static" label="" placeholder="https://" />
               </div>
             </div>
