@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 const FullContainer = () => {
   return (
-    <div className="pt-header">
+    <div className="w-full pt-header">
       <Outlet />
     </div>
   );
