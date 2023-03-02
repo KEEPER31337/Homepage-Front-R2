@@ -1,26 +1,18 @@
 import React from 'react';
+import { BookListInfo } from '@api/dto';
 import { Select, Option, Input, Checkbox } from '@material-tailwind/react';
 import PageTitle from '@components/Typography/PageTitle';
 import StandardTable from '@components/Table/StandardTable';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { ChildComponent } from '@components/Table/StandardTable.interface';
 
-interface ExampleRow {
-  id: number;
-  no: number;
-  title: string;
-  author: string;
-  total: string;
-  information: string;
-  enable: boolean;
-}
-interface ExampleColumn {
-  key: keyof ExampleRow;
+interface BookListInfoColumn {
+  key: keyof BookListInfo;
   headerName: string;
 }
 
 const LibraryManage = () => {
-  const columns: ExampleColumn[] = [
+  const columns: BookListInfoColumn[] = [
     {
       key: 'no',
       headerName: '번호',
@@ -35,7 +27,7 @@ const LibraryManage = () => {
     },
   ];
 
-  const rows: ExampleRow[] = [
+  const rows: BookListInfo[] = [
     {
       id: 1,
       no: 1,
@@ -65,7 +57,7 @@ const LibraryManage = () => {
     },
   ];
 
-  const childComponent = ({ key, value, rowData }: ChildComponent<ExampleRow>) => {
+  const childComponent = ({ key, value, rowData }: ChildComponent<BookListInfo>) => {
     switch (key) {
       case 'enable':
         return value ? (
@@ -101,7 +93,7 @@ const LibraryManage = () => {
           </div>
         </div>
         {/* 테이블 */}
-        <StandardTable<ExampleRow> columns={columns} rows={rows} childComponent={childComponent} />
+        <StandardTable<BookListInfo> columns={columns} rows={rows} childComponent={childComponent} />
       </div>
     </div>
   );
