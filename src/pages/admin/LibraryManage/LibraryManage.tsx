@@ -35,7 +35,6 @@ const LibraryManage = () => {
             <OutlinedButton>반납 관리</OutlinedButton>
           </div>
         </div>
-        {/* 테이블 */}
         <StandardTable<BookListInfo> columns={columns} rows={rows} childComponent={childComponent} />
       </div>
     </div>
