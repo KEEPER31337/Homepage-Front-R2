@@ -1,10 +1,11 @@
 import React from 'react';
 import { BookListInfo } from '@api/dto';
-import { Select, Option, Input, Checkbox } from '@material-tailwind/react';
 import PageTitle from '@components/Typography/PageTitle';
 import StandardTable from '@components/Table/StandardTable';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { ChildComponent } from '@components/Table/StandardTable.interface';
+
+import SearchBook from './SearchBook';
 
 interface BookListInfoColumn {
   key: keyof BookListInfo;
@@ -74,17 +75,8 @@ const LibraryManage = () => {
     <div>
       <PageTitle>도서관리</PageTitle>
       <div className="flex h-fit w-full flex-col space-y-4">
-        {/* 상단 검색창, 버튼 */}
         <div className="flex h-fit w-full justify-between">
-          <div className="flex w-fit space-x-2">
-            <Select className="border-pointBlue text-white " variant="standard" value="도서명+저자">
-              <Option>도서명+저자</Option>
-              <Option>도서명</Option>
-              <Option>저자</Option>
-            </Select>
-
-            <Input label="검색어를 입력하세요" className="w-64" />
-          </div>
+          <SearchBook />
           <div className="flex space-x-2">
             <OutlinedButton>도서 추가</OutlinedButton>
             <OutlinedButton>도서 삭제</OutlinedButton>
