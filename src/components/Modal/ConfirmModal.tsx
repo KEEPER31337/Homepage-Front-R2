@@ -21,7 +21,7 @@ const ConfirmModal = ({ opened, handleOpen, title, children, showButton }: Confi
       <DialogHeader className="break-all font-bold text-pointBlue">
         <Typography variant="h3">{title}</Typography>
       </DialogHeader>
-      <DialogBody className="min-h-[80px] break-all text-white">
+      <DialogBody className="min-h-[80px] break-all pt-1 text-white">
         <Typography variant="paragraph">{children}</Typography>
       </DialogBody>
       <DialogFooter className="absolute right-1 bottom-1">
