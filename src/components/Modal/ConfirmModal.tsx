@@ -14,21 +14,19 @@ interface ConfirmModalProps {
 
 const ConfirmModal = ({ opened, handleOpen, title, children, showButton }: ConfirmModalProps) => {
   return (
-    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack">
-      <div className="mt-5 ml-10 mb-2 mr-10">
-        <div className="absolute right-0 mr-5">
-          <VscChromeClose size="19" color="#4CEEF9" onClick={handleOpen} />
-        </div>
-        <DialogHeader className="break-all font-bold text-pointBlue">
-          <Typography variant="h3">{title}</Typography>
-        </DialogHeader>
-        <DialogBody className="mb-20 break-all text-white">
-          <Typography variant="paragraph">{children}</Typography>
-        </DialogBody>
-        <DialogFooter className="absolute right-1 bottom-1">
-          {showButton && <FilledButton onClick={handleOpen}>확인</FilledButton>}
-        </DialogFooter>
+    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack py-5 pl-10 pr-10">
+      <div className="absolute right-0 mr-5">
+        <VscChromeClose size="19" color="#4CEEF9" onClick={handleOpen} />
       </div>
+      <DialogHeader className="break-all font-bold text-pointBlue">
+        <Typography variant="h3">{title}</Typography>
+      </DialogHeader>
+      <DialogBody className="mb-20 break-all text-white">
+        <Typography variant="paragraph">{children}</Typography>
+      </DialogBody>
+      <DialogFooter className="absolute right-1 bottom-1">
+        {showButton && <FilledButton onClick={handleOpen}>확인</FilledButton>}
+      </DialogFooter>
     </Dialog>
   );
 };
