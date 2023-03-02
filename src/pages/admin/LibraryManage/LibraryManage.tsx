@@ -9,7 +9,7 @@ import { columns, rows } from '@mocks/LibraryManageApi';
 import SearchSection from '@components/Section/SearchSection';
 
 const LibraryManage = () => {
-  const childComponent = ({ key, value, rowData }: ChildComponent<BookListInfo>) => {
+  const childComponent = ({ key, value }: ChildComponent<BookListInfo>) => {
     switch (key) {
       case 'enable':
         return value ? (
