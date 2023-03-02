@@ -6,10 +6,18 @@ interface SearchInputProps {
   className?: string;
   label?: string;
   placeholder?: string;
-  inputText: React.RefObject<HTMLInputElement>;
+  inputText: string;
+  handleInputText: React.ChangeEventHandler<HTMLInputElement>;
   onActionSearch: () => void;
 }
-const SearchInput = ({ className, label, placeholder, inputText, onActionSearch }: SearchInputProps) => {
+const SearchInput = ({
+  className,
+  label,
+  placeholder,
+  inputText,
+  handleInputText,
+  onActionSearch,
+}: SearchInputProps) => {
   const handleOnKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onActionSearch();
@@ -21,7 +29,8 @@ const SearchInput = ({ className, label, placeholder, inputText, onActionSearch 
       className={`${className}`}
       label={label}
       placeholder={placeholder}
-      inputRef={inputText}
+      value={inputText}
+      onChange={handleInputText}
       onKeyPress={handleOnKeyEnterPress}
       InputProps={{
         endAdornment: (
