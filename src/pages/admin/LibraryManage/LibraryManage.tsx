@@ -6,7 +6,7 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import { ChildComponent } from '@components/Table/StandardTable.interface';
 import { columns, rows } from '@mocks/LibraryManageApi';
 
-import SearchBook from './SearchBook';
+import SearchSection from '@components/Section/SearchSection';
 
 const LibraryManage = () => {
   const childComponent = ({ key, value, rowData }: ChildComponent<BookListInfo>) => {
@@ -27,7 +27,7 @@ const LibraryManage = () => {
       <PageTitle>도서관리</PageTitle>
       <div className="flex h-fit w-full flex-col space-y-4">
         <div className="flex h-fit w-full justify-between">
-          <SearchBook />
+          <SearchSection />
           <div className="flex space-x-2">
             <OutlinedButton>도서 추가</OutlinedButton>
             <OutlinedButton>도서 삭제</OutlinedButton>
