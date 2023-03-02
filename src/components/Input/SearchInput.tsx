@@ -5,19 +5,11 @@ import { MdOutlineSearch } from 'react-icons/md';
 interface SearchInputProps {
   className?: string;
   label?: string;
-  placeholder?: string;
   inputText: string;
   handleInputText: React.ChangeEventHandler<HTMLInputElement>;
   onActionSearch: () => void;
 }
-const SearchInput = ({
-  className,
-  label,
-  placeholder,
-  inputText,
-  handleInputText,
-  onActionSearch,
-}: SearchInputProps) => {
+const SearchInput = ({ className, label, inputText, handleInputText, onActionSearch }: SearchInputProps) => {
   const handleOnKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onActionSearch();
@@ -28,7 +20,6 @@ const SearchInput = ({
     <TextField
       className={`${className}`}
       label={label}
-      placeholder={placeholder}
       value={inputText}
       onChange={handleInputText}
       onKeyPress={handleOnKeyEnterPress}
