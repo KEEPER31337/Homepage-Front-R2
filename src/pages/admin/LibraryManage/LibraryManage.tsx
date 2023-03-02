@@ -86,10 +86,10 @@ const LibraryManage = () => {
             <Input label="검색어를 입력하세요" className="w-64" />
           </div>
           <div className="flex space-x-2">
-            <OutlinedButton onClick={() => console.log('OutlinedButton')}>도서 추가</OutlinedButton>
-            <OutlinedButton onClick={() => console.log('OutlinedButton')}>도서 삭제</OutlinedButton>
-            <OutlinedButton onClick={() => console.log('OutlinedButton')}>대출 관리</OutlinedButton>
-            <OutlinedButton onClick={() => console.log('OutlinedButton')}>반납 관리</OutlinedButton>
+            <OutlinedButton>도서 추가</OutlinedButton>
+            <OutlinedButton>도서 삭제</OutlinedButton>
+            <OutlinedButton>대출 관리</OutlinedButton>
+            <OutlinedButton>반납 관리</OutlinedButton>
           </div>
         </div>
         {/* 테이블 */}
