@@ -18,7 +18,7 @@ const SearchInput = ({ className, label, inputText, handleInputText, onActionSea
 
   return (
     <TextField
-      className={`${className}`}
+      className={className}
       label={label}
       value={inputText}
       onChange={handleInputText}
