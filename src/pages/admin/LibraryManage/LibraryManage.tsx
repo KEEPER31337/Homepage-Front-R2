@@ -21,7 +21,7 @@ const LibraryManage = () => {
   return (
     <div>
       <PageTitle>도서관리</PageTitle>
-      <div className="mb-5 flex w-full items-center justify-between ">
+      <div className="mb-5 flex w-full items-center justify-between">
         <SearchSection />
         <div className="flex space-x-2">
           <OutlinedButton>도서 추가</OutlinedButton>
