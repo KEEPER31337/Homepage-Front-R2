@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Dialog, DialogHeader, DialogBody, DialogFooter, Typography } from '@material-tailwind/react';
 import FilledButton from '@components/Button/FilledButton';
