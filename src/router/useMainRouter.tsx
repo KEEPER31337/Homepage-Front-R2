@@ -2,8 +2,10 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Home from '@pages/home/Home';
 import SeminarManage from '@pages/admin/SeminarManage';
+import Study from '@pages/Study/Study';
 import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
+
 import MainLayout from '@components/Layout/MainLayout';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import FitContainer from '@components/Layout/Container/FitContainer';
@@ -48,6 +50,10 @@ const useMainRouter = () =>
                   element: <BoardList />,
                 },
               ],
+            },
+            {
+              path: 'study',
+              element: <Study />,
             },
           ],
         },
