@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeProvider, Input, Select, Option } from '@material-tailwind/react';
+import { ThemeProvider, Select, Option } from '@material-tailwind/react';
 import Countdown from './Countdown';
 import SeminarButton from './SeminarButton';
 
@@ -18,21 +18,7 @@ const BossCardComponent = () => {
     setSeminarExist(true);
   };
 
-  const inputTheme = {
-    input: {
-      styles: {
-        base: {
-          container: {
-            minWidth: 'max-w-[42px]',
-          },
-          input: {
-            borderRadius: '!rounded-none',
-            bgColor: '!bg-white',
-            height: 'h-[52px]',
-          },
-        },
-      },
-    },
+  const selectTheme = {
     select: {
       styles: {
         base: {
@@ -57,13 +43,23 @@ const BossCardComponent = () => {
     },
   };
 
+  const inputStyle: React.CSSProperties = {
+    textAlign: 'center',
+    fontSize: '28px',
+    fontWeight: '600',
+    height: '52px',
+    maxWidth: '42px',
+    color: 'black',
+    background: 'white',
+  };
+
   return (
-    <ThemeProvider value={inputTheme}>
+    <ThemeProvider value={selectTheme}>
       <div className="mx-auto my-[22px] flex h-[52px] w-[192px] justify-between">
-        <Input disabled />
-        <Input disabled />
-        <Input disabled />
-        <Input disabled />
+        <input disabled style={inputStyle} />
+        <input disabled style={inputStyle} />
+        <input disabled style={inputStyle} />
+        <input disabled style={inputStyle} />
       </div>
       <SeminarButton onClick={startSeminar}>시작</SeminarButton>
       {seminarExist ? (
