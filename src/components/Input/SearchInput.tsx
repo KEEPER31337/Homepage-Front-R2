@@ -1,15 +1,14 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { KeyboardEvent } from 'react';
-import { TextField, InputAdornment } from '@mui/material';
+import { TextField, InputAdornment, StandardTextFieldProps } from '@mui/material';
 import { MdOutlineSearch } from 'react-icons/md';
 
-interface SearchInputProps {
-  className?: string;
-  label?: string;
+interface SearchInputProps extends StandardTextFieldProps {
   inputText: string;
   handleInputText: React.ChangeEventHandler<HTMLInputElement>;
   onActionSearch: () => void;
 }
-const SearchInput = ({ className, label, inputText, handleInputText, onActionSearch }: SearchInputProps) => {
+const SearchInput = ({ inputText, handleInputText, onActionSearch, ...standardTextFieldProps }: SearchInputProps) => {
   const handleOnKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onActionSearch();
@@ -18,8 +17,6 @@ const SearchInput = ({ className, label, inputText, handleInputText, onActionSea
 
   return (
     <TextField
-      className={className}
-      label={label}
       value={inputText}
       onChange={handleInputText}
       onKeyPress={handleOnKeyEnterPress}
@@ -31,6 +28,7 @@ const SearchInput = ({ className, label, inputText, handleInputText, onActionSea
         ),
       }}
       variant="standard"
+      {...standardTextFieldProps}
     />
   );
 };
