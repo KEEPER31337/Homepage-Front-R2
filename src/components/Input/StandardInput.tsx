@@ -8,7 +8,7 @@ interface StandardInputProps {
   error?: boolean;
   helperText?: string;
   name: string;
-  inputText: string;
+  value: string;
   handleInputText: React.ChangeEventHandler<HTMLInputElement>;
 }
 const StandardInput = ({
@@ -18,7 +18,7 @@ const StandardInput = ({
   error,
   name,
   helperText,
-  inputText,
+  value,
   handleInputText,
 }: StandardInputProps) => {
   return (
@@ -30,7 +30,7 @@ const StandardInput = ({
       error={error}
       helperText={error && helperText}
       name={name}
-      value={inputText}
+      value={value}
       onChange={handleInputText}
     />
   );
