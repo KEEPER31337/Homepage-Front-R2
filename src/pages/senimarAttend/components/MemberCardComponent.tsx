@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ThemeProvider, Typography, Button } from '@material-tailwind/react';
+import { ThemeProvider, Typography } from '@material-tailwind/react';
 import Countdown from './Countdown';
+import SeminarButton from './SeminarButton';
 
 const inputStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -24,9 +25,7 @@ const MemberCardComponent = () => {
         })}
       </div>
       <div className="mx-auto flex items-center justify-center text-small text-red-500">{componentIncorrectAlert}</div>
-      <Button className="mx-auto mb-[33px] block flex h-[34px] w-[71px] items-center whitespace-nowrap bg-pointBlue text-small font-semibold text-mainBlack">
-        출석
-      </Button>
+      <SeminarButton>출석</SeminarButton>
       <Countdown />
     </ThemeProvider>
   ) : (

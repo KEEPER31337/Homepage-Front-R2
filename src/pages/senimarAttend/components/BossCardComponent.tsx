@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ThemeProvider, Input, Select, Option, Button } from '@material-tailwind/react';
+import { ThemeProvider, Input, Select, Option } from '@material-tailwind/react';
 import Countdown from './Countdown';
+import SeminarButton from './SeminarButton';
 
 const BossCardComponent = () => {
   const [attendValue, setAttendValue] = useState('5분');
@@ -64,12 +65,7 @@ const BossCardComponent = () => {
         <Input disabled />
         <Input disabled />
       </div>
-      <Button
-        onClick={startSeminar}
-        className="font-small mx-auto mb-[19px] block flex h-[34px] w-[71px] items-center whitespace-nowrap bg-pointBlue text-mainBlack"
-      >
-        시작
-      </Button>
+      <SeminarButton onClick={startSeminar}>시작</SeminarButton>
       {seminarExist ? (
         <Countdown />
       ) : (
