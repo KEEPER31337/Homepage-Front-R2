@@ -4,11 +4,11 @@ import { TextField, InputAdornment, StandardTextFieldProps } from '@mui/material
 import { MdOutlineSearch } from 'react-icons/md';
 
 interface SearchInputProps extends StandardTextFieldProps {
-  inputText: string;
-  handleInputText: React.ChangeEventHandler<HTMLInputElement>;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
   onActionSearch: () => void;
 }
-const SearchInput = ({ inputText, handleInputText, onActionSearch, ...standardTextFieldProps }: SearchInputProps) => {
+const SearchInput = ({ value, onChange, onActionSearch, ...standardTextFieldProps }: SearchInputProps) => {
   const handleOnKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onActionSearch();
@@ -17,8 +17,8 @@ const SearchInput = ({ inputText, handleInputText, onActionSearch, ...standardTe
 
   return (
     <TextField
-      value={inputText}
-      onChange={handleInputText}
+      value={value}
+      onChange={onChange}
       onKeyPress={handleOnKeyEnterPress}
       InputProps={{
         endAdornment: (
