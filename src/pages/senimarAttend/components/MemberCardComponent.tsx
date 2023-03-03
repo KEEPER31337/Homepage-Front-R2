@@ -6,7 +6,7 @@ import SeminarInput from './SeminarInput';
 
 const MemberCardComponent = () => {
   const [componentIncorrectAlert, setComponentIncorrectAlert] = useState(<p className="mb-[22px]" />);
-  const [seminarExist, setSeminarExist] = useState(true); // TODO: api로 교체
+  const [seminarExist, setSeminarExist] = useState(false); // TODO: api로 교체
 
   return seminarExist ? (
     <>
@@ -16,7 +16,7 @@ const MemberCardComponent = () => {
       <Countdown />
     </>
   ) : (
-    <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
+    <Typography className="text-center text-h3 font-bold">세미나 비활성화 상태</Typography>
   );
 };
 

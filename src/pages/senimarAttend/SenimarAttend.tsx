@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import FilledButton from '@components/Button/FilledButton';
 import PageTitle from '@components/Typography/PageTitle';
-import { Typography } from '@material-tailwind/react';
+import { Typography } from '@mui/material';
 import SeminarCard from './components/SeminarCard';
 import BossCardComponent from './components/BossCardComponent';
 import MemberCardComponent from './components/MemberCardComponent';
