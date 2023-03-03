@@ -5,8 +5,8 @@ interface StandardInputProps {
   className?: string;
   label?: string;
   disabled?: boolean;
-  isVaild?: boolean;
-  vaildText?: string;
+  error?: boolean;
+  helperText?: string;
   name: string;
   inputText: string;
   handleInputText: React.ChangeEventHandler<HTMLInputElement>;
@@ -15,9 +15,9 @@ const StandardInput = ({
   className,
   label,
   disabled,
-  isVaild,
+  error,
   name,
-  vaildText,
+  helperText,
   inputText,
   handleInputText,
 }: StandardInputProps) => {
@@ -27,8 +27,8 @@ const StandardInput = ({
       className={className}
       label={label}
       disabled={disabled}
-      error={isVaild}
-      helperText={isVaild && vaildText}
+      error={error}
+      helperText={error && helperText}
       name={name}
       value={inputText}
       onChange={handleInputText}
