@@ -2,17 +2,12 @@ import React, { useState } from 'react';
 import { ThemeProvider, Select, Option } from '@material-tailwind/react';
 import Countdown from './Countdown';
 import SeminarButton from './SeminarButton';
+import SeminarSelector from './SeminarSelector';
 
 const BossCardComponent = () => {
-  const [attendValue, setAttendValue] = useState('5분');
-  const [lateAttendValue, setLateAttendValue] = useState('5분');
+  const [attendValue, setAttendValue] = useState<number>(5);
+  const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [seminarExist, setSeminarExist] = useState(false); // Todo: api 적용
-  const handleAttendChange = (value: string) => {
-    setAttendValue(value);
-  };
-  const handleLateChange = (value: string) => {
-    setLateAttendValue(value);
-  };
 
   const startSeminar = () => {
     setSeminarExist(true);
@@ -66,22 +61,12 @@ const BossCardComponent = () => {
         <Countdown />
       ) : (
         <>
-          <div className=" mx-auto flex w-[125px] items-end whitespace-nowrap">
-            <p className="mr-3">출석</p>
-            <Select variant="standard" value={attendValue} onChange={() => handleAttendChange}>
-              <Option value="5분">5분</Option>
-              <Option value="10분">10분</Option>
-              <Option value="15분">15분</Option>
-            </Select>
-          </div>
-          <div className="mx-auto flex w-[125px] items-end whitespace-nowrap">
-            <p className="mr-3">지각</p>
-            <Select variant="standard" value={lateAttendValue} onChange={() => handleLateChange}>
-              <Option value="5분">5분</Option>
-              <Option value="10분">10분</Option>
-              <Option value="15분">15분</Option>
-            </Select>
-          </div>
+          <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue}>
+            출석
+          </SeminarSelector>
+          <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue}>
+            지각
+          </SeminarSelector>
         </>
       )}
     </ThemeProvider>
