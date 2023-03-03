@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ThemeProvider, Input, Select, Option, Button } from '@material-tailwind/react';
+import Countdown from './Countdown';
 
 const BossCardComponent = () => {
   const [attendValue, setAttendValue] = useState('5분');
@@ -70,16 +71,7 @@ const BossCardComponent = () => {
         시작
       </Button>
       {seminarExist ? (
-        <>
-          <div className=" mx-auto mb-[11px] flex w-[108px] justify-center whitespace-nowrap">
-            <p className="mr-3">출석</p>
-            <p className="text-white">02:30</p>
-          </div>
-          <div className="mx-auto flex w-[108px] justify-center whitespace-nowrap">
-            <p className="mr-3">지각</p>
-            <p className="text-white">05:00</p>
-          </div>
-        </>
+        <Countdown />
       ) : (
         <>
           <div className=" mx-auto flex w-[125px] items-end whitespace-nowrap">

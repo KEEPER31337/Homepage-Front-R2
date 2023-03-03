@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ThemeProvider, Typography, Button } from '@material-tailwind/react';
+import Countdown from './Countdown';
 
 const inputStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -26,14 +27,7 @@ const MemberCardComponent = () => {
       <Button className="mx-auto mb-[33px] block flex h-[34px] w-[71px] items-center whitespace-nowrap bg-pointBlue text-small font-semibold text-mainBlack">
         출석
       </Button>
-      <div className=" mx-auto mb-[11px] flex w-[108px] justify-center whitespace-nowrap">
-        <p className="mr-3">출석</p>
-        <p className="text-white">02:30</p>
-      </div>
-      <div className="mx-auto flex w-[108px] justify-center whitespace-nowrap">
-        <p className="mr-3">지각</p>
-        <p className="text-white">05:00</p>
-      </div>
+      <Countdown />
     </ThemeProvider>
   ) : (
     <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
