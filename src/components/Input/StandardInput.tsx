@@ -9,7 +9,7 @@ interface StandardInputProps {
   helperText?: string;
   name: string;
   value: string;
-  handleInputText: React.ChangeEventHandler<HTMLInputElement>;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 const StandardInput = ({
   className,
@@ -19,7 +19,7 @@ const StandardInput = ({
   name,
   helperText,
   value,
-  handleInputText,
+  onChange,
 }: StandardInputProps) => {
   return (
     <TextField
@@ -31,7 +31,7 @@ const StandardInput = ({
       helperText={helperText}
       name={name}
       value={value}
-      onChange={handleInputText}
+      onChange={onChange}
     />
   );
 };
