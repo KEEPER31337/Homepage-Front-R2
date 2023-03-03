@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ThemeProvider, Select, Option } from '@material-tailwind/react';
 import Countdown from './Countdown';
 import SeminarButton from './SeminarButton';
 import SeminarSelector from './SeminarSelector';
@@ -14,33 +13,8 @@ const BossCardComponent = () => {
     setSeminarExist(true);
   };
 
-  const selectTheme = {
-    select: {
-      styles: {
-        base: {
-          container: {
-            minWidth: 'w-32',
-            maxHeight: 'h-[37px]',
-          },
-          select: {
-            color: 'text-white',
-            borderColor: '!border-white',
-          },
-          arrow: {
-            initial: {
-              margin: 'mt-[5px]',
-              fontColor: '!text-white',
-              height: 'h-[16px]',
-              innerWidth: 'w-[16px]',
-            },
-          },
-        },
-      },
-    },
-  };
-
   return (
-    <ThemeProvider value={selectTheme}>
+    <>
       <SeminarInput disabled />
       <SeminarButton onClick={startSeminar}>시작</SeminarButton>
       {seminarExist ? (
@@ -55,7 +29,7 @@ const BossCardComponent = () => {
           </SeminarSelector>
         </>
       )}
-    </ThemeProvider>
+    </>
   );
 };
 
