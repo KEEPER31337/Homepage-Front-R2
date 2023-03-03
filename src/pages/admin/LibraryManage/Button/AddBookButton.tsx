@@ -13,11 +13,11 @@ const AddBookButton = () => {
       <OutlinedButton onClick={() => handleAddBookModal()}>도서 추가</OutlinedButton>
 
       <ActionModal
-        open={addBookModal}
+        opened={addBookModal}
         handleOpen={handleAddBookModal}
         title="도서추가"
         buttonName="추가"
-        onClick={() => {
+        onActionButonClick={() => {
           console.log('도서 추가 api');
         }}
       >
