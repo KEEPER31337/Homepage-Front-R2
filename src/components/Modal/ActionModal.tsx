@@ -1,6 +1,7 @@
 import React from 'react';
-
-import { Button, Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
+import { Dialog, DialogHeader, DialogBody, DialogFooter, Typography } from '@material-tailwind/react';
+import FilledButton from '@components/Button/FilledButton';
+import TextButton from '@components/Button/TextButton';
 
 interface ActionModalProps {
   opened: boolean;
@@ -13,25 +14,17 @@ interface ActionModalProps {
 
 const ActionModal = ({ opened, handleOpen, title, children, buttonName, onActionButonClick }: ActionModalProps) => {
   return (
-    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-[#26262c]">
-      <div className="mt-7 ml-10 mb-2 mr-2">
-        <DialogHeader className="text-left font-bold text-[#4ceef9]">{title}</DialogHeader>
-        <DialogBody className="text-left text-base text-white">{children}</DialogBody>
-        <DialogFooter className="flex-end items-center gap-5">
-          <Button
-            variant="text"
-            onClick={handleOpen}
-            className="flex-shrink-0 flex-grow-0 rounded-sm text-center text-xs font-semibold text-[#4ceef9]"
-          >
-            취소
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={onActionButonClick}
-            className="flex-shrink-0 flex-grow-0 rounded-sm border-none bg-[#4ceef9] text-center text-xs font-semibold text-[#26262c]"
-          >
-            {buttonName}
-          </Button>
+    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack">
+      <div className="mt-5 ml-10 mb-2 mr-10">
+        <DialogHeader className="break-all text-pointBlue">
+          <Typography variant="h3">{title}</Typography>
+        </DialogHeader>
+        <DialogBody className="mb-20 break-all text-white">
+          <Typography variant="paragraph">{children}</Typography>
+        </DialogBody>
+        <DialogFooter className="absolute right-1 bottom-1">
+          <TextButton onClick={handleOpen}>취소</TextButton>
+          <FilledButton onClick={onActionButonClick}>{buttonName}</FilledButton>
         </DialogFooter>
       </div>
     </Dialog>
