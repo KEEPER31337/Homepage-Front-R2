@@ -4,9 +4,9 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import FilledButton from '@components/Button/FilledButton';
 import PageTitle from '@components/Typography/PageTitle';
 import { Typography } from '@mui/material';
-import SeminarCard from './components/SeminarCard';
-import BossCardComponent from './components/BossCardComponent';
-import MemberCardComponent from './components/MemberCardComponent';
+import SeminarCard from './Card/SeminarCard';
+import BossCardComponent from './Card/BossCardComponent';
+import MemberCardComponent from './Card/MemberCardComponent';
 
 const SeminarAttend = () => {
   const [seminarDate, setSeminarDate] = useState('today');

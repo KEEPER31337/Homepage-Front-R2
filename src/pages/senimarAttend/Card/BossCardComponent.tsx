@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Countdown from './Countdown';
-import SeminarButton from './SeminarButton';
-import SeminarSelector from './SeminarSelector';
-import SeminarInput from './SeminarInput';
+import Countdown from '../Countdown/Countdown';
+import SeminarButton from '../Button/SeminarButton';
+import SeminarSelector from '../Selector/SeminarSelector';
+import SeminarInput from '../Input/SeminarInput';
 
 const BossCardComponent = () => {
   const [attendValue, setAttendValue] = useState<number>(5);

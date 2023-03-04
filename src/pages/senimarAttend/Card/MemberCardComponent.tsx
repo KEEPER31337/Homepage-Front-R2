@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Typography } from '@mui/material';
-import Countdown from './Countdown';
-import SeminarButton from './SeminarButton';
-import SeminarInput from './SeminarInput';
+import Countdown from '../Countdown/Countdown';
+import SeminarButton from '../Button/SeminarButton';
+import SeminarInput from '../Input/SeminarInput';
 
 const MemberCardComponent = () => {
   const [componentIncorrectAlert, setComponentIncorrectAlert] = useState(<p className="mb-[22px]" />);
