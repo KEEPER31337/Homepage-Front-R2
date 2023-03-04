@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import FilledButton from '@components/Button/FilledButton';
 import PageTitle from '@components/Typography/PageTitle';
 import DoAttend from './DoAttend';
 import SetSeminar from './SetSeminar';
@@ -15,9 +16,9 @@ const SeminarAttend = () => {
 
   return (
     <>
-      <div className="flex justify-between"> 
-        <PageTitle>세미나 출석</PageTitle> 
-        <OutlinedButton>세미나 관리</OutlinedButton> 
+      <div className="flex justify-between">
+        <PageTitle>세미나 출석</PageTitle>
+        <OutlinedButton>세미나 관리</OutlinedButton>
       </div>
       <div className="flex h-screen items-center justify-center">
         {tempIsBoss ? (

@@ -7,6 +7,8 @@ import { ChildComponent } from '@components/Table/StandardTable.interface';
 import { columns, rows } from '@mocks/LibraryManageApi';
 
 import SearchSection from '@components/Section/SearchSection';
+import AddBookButton from './Button/AddBookButton';
+import DeleteBookButton from './Button/DeleteBookButton';
 
 const LibraryManage = () => {
   const childComponent = ({ key, value }: ChildComponent<BookListInfo>) => {
@@ -24,8 +26,8 @@ const LibraryManage = () => {
       <div className="mb-5 flex w-full items-center justify-between">
         <SearchSection />
         <div className="flex space-x-2">
-          <OutlinedButton>도서 추가</OutlinedButton>
-          <OutlinedButton>도서 삭제</OutlinedButton>
+          <AddBookButton />
+          <DeleteBookButton />
           <OutlinedButton>대출 관리</OutlinedButton>
           <OutlinedButton>반납 관리</OutlinedButton>
         </div>

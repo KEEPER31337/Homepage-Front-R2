@@ -11,11 +11,11 @@ const DeleteBookButton = () => {
       <OutlinedButton onClick={() => handleDeleteBookModal()}>도서 삭제</OutlinedButton>
 
       <ActionModal
-        open={deleteBookModal}
+        opened={deleteBookModal}
         handleOpen={handleDeleteBookModal}
         title="도서삭제"
         buttonName="삭제"
-        onClick={() => {
+        onActionButonClick={() => {
           console.log('도서 삭제 api');
         }}
       >
