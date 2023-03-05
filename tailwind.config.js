@@ -33,6 +33,9 @@ module.exports = withMT({
       minWidth: {
         sidebar: '320px',
       },
+      backgroundImage: {
+        galaxy: "url('/public/img/background_galaxy.png')",
+      },
     },
   },
   plugins: [],
