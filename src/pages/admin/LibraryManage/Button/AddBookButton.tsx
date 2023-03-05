@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { BookListInfo } from '@api/dto';
 
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -10,8 +10,7 @@ import TotalBookNumberSelector from '../components/TotalBookNumberSelector';
 type AddBookInfo = Pick<BookListInfo, 'title' | 'author'>;
 
 const AddBookButton = () => {
-  const [addBookModal, setAddBookModal] = useState(false);
-  const handleAddBookModal = () => setAddBookModal(!addBookModal);
+  const [open, toggleOpen] = useReducer((prev) => !prev, false);
 
   const [form, setForm] = React.useState<AddBookInfo>({
     title: '',
@@ -31,15 +30,15 @@ const AddBookButton = () => {
 
   return (
     <div className="flex">
-      <OutlinedButton onClick={() => handleAddBookModal()}>도서 추가</OutlinedButton>
+      <OutlinedButton onClick={() => toggleOpen()}>도서 추가</OutlinedButton>
 
       <ActionModal
-        opened={addBookModal}
-        handleOpen={handleAddBookModal}
+        opened={open}
+        handleOpen={toggleOpen}
         title="도서추가"
         buttonName="추가"
         onActionButonClick={() => {
-          console.log(title, author, totalBookNumber);
+          toggleOpen();
         }}
       >
         <div className="flex h-full w-full flex-col space-y-2 ">
