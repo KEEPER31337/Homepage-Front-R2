@@ -9,7 +9,7 @@ import TotalBookNumberSelector from '../components/TotalBookNumberSelector';
 
 type AddBookInfo = Pick<BookListInfo, 'title' | 'author'>;
 
-const AddBookButton = () => {
+const AddBookModal = () => {
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
 
   const [form, setForm] = React.useState<AddBookInfo>({
@@ -51,4 +51,4 @@ const AddBookButton = () => {
   );
 };
 
-export default AddBookButton;
+export default AddBookModal;
