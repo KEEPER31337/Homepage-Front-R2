@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useReducer, useState } from 'react';
 import { BookListInfo } from '@api/dto';
 import PageTitle from '@components/Typography/PageTitle';
 import StandardTable from '@components/Table/StandardTable';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import { ChildComponent } from '@components/Table/StandardTable.interface';
+import { ChildComponent, Row } from '@components/Table/StandardTable.interface';
 import { columns, rows } from '@mocks/LibraryManageApi';
 
 import SearchSection from '@components/Section/SearchSection';
 import AddBookModal from './Modal/AddBookModal';
 import DeleteBookModal from './Modal/DeleteBookModal';
+import EditBookInfoModal from './Modal/EditBookInfoModal';
 
 const LibraryManage = () => {
   const childComponent = ({ key, value }: ChildComponent<BookListInfo>) => {
@@ -18,6 +19,15 @@ const LibraryManage = () => {
       default:
         return value;
     }
+  };
+
+  const [openEditModal, toggleOpenEditModal] = useReducer((prev) => !prev, false);
+  const [EditModalRowData, setEditModalRowData] = useState<Row<BookListInfo>>({} as Row<BookListInfo>);
+
+  const handleClick = ({ rowData }: { rowData: Row<BookListInfo> }) => {
+    toggleOpenEditModal();
+    console.log(rowData);
+    setEditModalRowData(rowData);
   };
 
   return (
@@ -32,7 +42,17 @@ const LibraryManage = () => {
           <OutlinedButton>반납 관리</OutlinedButton>
         </div>
       </div>
-      <StandardTable<BookListInfo> columns={columns} rows={rows} childComponent={childComponent} />
+      <StandardTable<BookListInfo>
+        columns={columns}
+        rows={rows}
+        childComponent={childComponent}
+        onRowClick={handleClick}
+      />
+      <EditBookInfoModal
+        openEditModal={openEditModal}
+        toggleOpenEditModal={toggleOpenEditModal}
+        EditModalRowData={EditModalRowData}
+      />
     </div>
   );
 };
