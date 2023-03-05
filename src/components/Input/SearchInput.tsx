@@ -1,36 +1,37 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { KeyboardEvent } from 'react';
-import { TextField, InputAdornment } from '@mui/material';
+import { TextField, InputAdornment, StandardTextFieldProps, IconButton } from '@mui/material';
 import { MdOutlineSearch } from 'react-icons/md';
 
-interface SearchInputProps {
-  className?: string;
-  label?: string;
-  inputText: string;
-  handleInputText: React.ChangeEventHandler<HTMLInputElement>;
-  onActionSearch: () => void;
+interface SearchInputProps extends StandardTextFieldProps {
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onSearchButtonClick: () => void;
 }
-const SearchInput = ({ className, label, inputText, handleInputText, onActionSearch }: SearchInputProps) => {
+
+const SearchInput = ({ value, onChange, onSearchButtonClick, ...standardTextFieldProps }: SearchInputProps) => {
   const handleOnKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      onActionSearch();
+      onSearchButtonClick();
     }
   };
 
   return (
     <TextField
-      className={className}
-      label={label}
-      value={inputText}
-      onChange={handleInputText}
+      value={value}
+      onChange={onChange}
       onKeyPress={handleOnKeyEnterPress}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
-            <MdOutlineSearch className="h-5 w-5 text-pointBlue hover:cursor-pointer" onClick={onActionSearch} />
+            <IconButton onClick={onSearchButtonClick}>
+              <MdOutlineSearch size={20} className="fill-pointBlue" />
+            </IconButton>
           </InputAdornment>
         ),
       }}
       variant="standard"
+      {...standardTextFieldProps}
     />
   );
 };
