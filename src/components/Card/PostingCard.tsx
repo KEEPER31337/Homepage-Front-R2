@@ -43,13 +43,13 @@ const InteractionScore = ({ visitCount, commentCount }: InteractionScoreProps) =
   return (
     <div className="flex space-x-1.5 text-pointBlue">
       <div className="flex items-center">
-        <VscEye className="mr-0.5" size={12} color="#4CEEF9" />
+        <VscEye className="mr-0.5 fill-pointBlue" size={12} />
         <Typography className="mt-0.5 font-normal" variant="small">
           {visitCount}
         </Typography>
       </div>
       <div className="flex items-center">
-        <VscComment className="mr-0.5" size={12} color="#4CEEF9" />
+        <VscComment className="mr-0.5 fill-pointBlue" size={12} />
         <Typography className="mt-0.5 font-normal" variant="small">
           {commentCount}
         </Typography>
