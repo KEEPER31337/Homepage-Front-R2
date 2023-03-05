@@ -3,7 +3,7 @@ import React from 'react';
 import { TextField, StandardTextFieldProps } from '@mui/material';
 
 interface StandardInputProps extends StandardTextFieldProps {
-  name: string;
+  name?: string;
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
