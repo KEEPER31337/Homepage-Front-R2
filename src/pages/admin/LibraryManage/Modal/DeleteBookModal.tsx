@@ -2,7 +2,7 @@ import React, { useState, useReducer } from 'react';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ActionModal from '@components/Modal/ActionModal';
 
-const DeleteBookButton = () => {
+const DeleteBookModal = () => {
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
   return (
     <div className="flex">
@@ -23,4 +23,4 @@ const DeleteBookButton = () => {
   );
 };
 
-export default DeleteBookButton;
+export default DeleteBookModal;
