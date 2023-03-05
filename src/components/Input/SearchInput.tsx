@@ -8,6 +8,7 @@ interface SearchInputProps extends StandardTextFieldProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onSearchButtonClick: () => void;
 }
+
 const SearchInput = ({ value, onChange, onSearchButtonClick, ...standardTextFieldProps }: SearchInputProps) => {
   const handleOnKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
