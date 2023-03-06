@@ -14,7 +14,7 @@ interface ConfirmModalProps {
 
 const ConfirmModal = ({ opened, handleOpen, title, children, showButton }: ConfirmModalProps) => {
   return (
-    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack py-5 pl-10 pr-10">
+    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack py-5 px-10">
       <VscChromeClose className="absolute right-5" size="19" color="#4CEEF9" onClick={handleOpen} />
       <DialogHeader className="break-all font-bold text-pointBlue">
         <Typography variant="h3">{title}</Typography>
