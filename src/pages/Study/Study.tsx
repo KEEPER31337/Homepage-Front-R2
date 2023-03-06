@@ -7,7 +7,6 @@ import { SelectChangeEvent } from '@mui/material';
 import Selector from '@components/Selector/Selector';
 import StudyModal from './Modal/StudyModal';
 import StudyAccordion from './Accordion/StudyAccordion';
-import StudySelect from './share/StudySelect';
 import OldStudy from './OldStudy';
 
 const Study = () => {
@@ -36,7 +35,7 @@ const Study = () => {
 
   useEffect(() => {
     setSelectedStudyId(0);
-  }, []);
+  }, [currentYear, currentSeason]);
   return (
     <div>
       <PageTitle>스터디</PageTitle>
