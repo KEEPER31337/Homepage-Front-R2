@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { Dispatch, DispatchWithoutAction, SetStateAction, useReducer } from 'react';
 import {
   ThemeProvider,
   Accordion,
@@ -19,6 +19,8 @@ import { StudyChip } from '../share/StudyChip';
 interface StudyAccordionProps {
   study: StudyListInfo;
   memberId: number;
+  toggleOpen: DispatchWithoutAction;
+  setSelectedStudyId: Dispatch<SetStateAction<number>>;
 }
 interface StudyAccordionHeaderProps {
   study: StudyListInfo;
@@ -67,7 +69,7 @@ const AccordionHeaderContent = ({ study }: StudyAccordionHeaderProps) => {
   );
 };
 
-const AccordionBodyContent = ({ study, memberId }: StudyAccordionProps) => {
+const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudyId }: StudyAccordionProps) => {
   interface IconType {
     [key: string]: JSX.Element;
   }
@@ -79,6 +81,8 @@ const AccordionBodyContent = ({ study, memberId }: StudyAccordionProps) => {
     etc: <VscLink className="h-7 w-7" />,
   };
   const handleStudyModifyButtonClick = () => {
+    toggleOpen();
+    setSelectedStudyId(study.id);
     console.log(`${study.id}수정`);
   };
   const handleStudyDeleteButtonClick = () => {
@@ -124,7 +128,7 @@ const AccordionBodyContent = ({ study, memberId }: StudyAccordionProps) => {
   );
 };
 
-const StudyAccordion = ({ study, memberId }: StudyAccordionProps) => {
+const StudyAccordion = ({ study, memberId, toggleOpen, setSelectedStudyId }: StudyAccordionProps) => {
   const [open, setOpen] = useReducer((prev) => !prev, false);
 
   return (
@@ -134,7 +138,12 @@ const StudyAccordion = ({ study, memberId }: StudyAccordionProps) => {
           <AccordionHeaderContent study={study} />
         </AccordionHeader>
         <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
-          <AccordionBodyContent study={study} memberId={memberId} />
+          <AccordionBodyContent
+            study={study}
+            memberId={memberId}
+            toggleOpen={toggleOpen}
+            setSelectedStudyId={setSelectedStudyId}
+          />
         </AccordionBody>
       </Accordion>
     </ThemeProvider>

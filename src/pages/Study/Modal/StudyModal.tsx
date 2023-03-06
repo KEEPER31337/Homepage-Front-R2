@@ -34,7 +34,7 @@ const StudyModal = ({ open, isModify, handleOpen, studyId }: StudyModalProps): J
           <div className="w-[141px] space-y-[10px]">
             <Typography className="text-pointBlue">썸네일</Typography>
             <div className="flex h-[130px] w-[130px] items-center justify-center rounded-[10px] border-2 border-dashed border-pointBlue/30 text-pointBlue/30">
-              aaa
+              aaa{studyId}
             </div>
           </div>
         </div>

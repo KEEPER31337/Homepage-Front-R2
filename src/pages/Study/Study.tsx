@@ -9,11 +9,14 @@ import StudyModal from './Modal/StudyModal';
 import StudyAccordion from './Accordion/StudyAccordion';
 import OldStudy from './OldStudy';
 
+const OLD_YEAR_BOUND = 2022;
+
 const Study = () => {
   const [currentYear, setCurrentYear] = useState(0);
   const [currentSeason, setCurrentSeason] = useState(0);
+  const [currentStudyList, setCurrentStudyList] = useState(studyList);
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
-  const [selectedStudyId, setSelectedStudyId] = useState(0);
+  const [selectedStudyId, setSelectedStudyId] = useState(-1);
 
   const seasonList = [
     { id: 0, content: '1학기' },
@@ -29,13 +32,22 @@ const Study = () => {
   const handleSeasonChange = (event: SelectChangeEvent<unknown>) => {
     setCurrentSeason(Number(event.target.value as string));
   };
-  const handleSelectedStudyIdChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedStudyId(Number(event.target.value as string));
+  const handleStudyCreateButtonClick = () => {
+    toggleOpen();
+    setSelectedStudyId(-1);
   };
-
+  /* 처음 한 번만 동작하는 useEffect, 페이지 초기 값 셋팅 */
   useEffect(() => {
-    setSelectedStudyId(0);
+    setCurrentYear(0);
+    setCurrentSeason(0); /* TODO 현재 연도, 분기 가져와서 초기화 */
+    setCurrentStudyList(studyList); /* TODO 현재 연도/분기에 따른 스터디 리스트 불러와서 초기화 */
+  }, []);
+
+  /* 페이지 데이터(year, season)가 업데이트 될 때마다 동작하는 useEffect */
+  useEffect(() => {
+    setCurrentStudyList(studyList); /* TODO 현재 연도/분기에 따른 스터디 리스트 불러와서 초기화 */
   }, [currentYear, currentSeason]);
+
   return (
     <div>
       <PageTitle>스터디</PageTitle>
@@ -50,18 +62,31 @@ const Study = () => {
             onChange={handleSeasonChange}
           />
         </div>
-        {currentYear !== 0 && <OutlinedButton onClick={toggleOpen}>추가</OutlinedButton>}
+        {Number(yearList[currentYear].content) >= OLD_YEAR_BOUND && (
+          <OutlinedButton onClick={handleStudyCreateButtonClick}>추가</OutlinedButton>
+        )}
       </div>
-      {currentYear !== 0 ? (
-        <OldStudy list={studyList} memberId={myMemberId} />
+      {Number(yearList[currentYear].content) < OLD_YEAR_BOUND ? (
+        <OldStudy
+          list={currentStudyList}
+          memberId={myMemberId}
+          toggleOpen={toggleOpen}
+          setSelectedStudyId={setSelectedStudyId}
+        />
       ) : (
         <div>
-          {studyList?.map((study) => (
-            <StudyAccordion key={study.id} study={study} memberId={myMemberId} />
+          {currentStudyList?.map((study) => (
+            <StudyAccordion
+              key={study.id}
+              study={study}
+              memberId={myMemberId}
+              toggleOpen={toggleOpen}
+              setSelectedStudyId={setSelectedStudyId}
+            />
           ))}
         </div>
       )}
-      <StudyModal open={open} handleOpen={toggleOpen} isModify={false} studyId={undefined} />
+      <StudyModal open={open} handleOpen={toggleOpen} isModify={selectedStudyId !== -1} studyId={selectedStudyId} />
     </div>
   );
 };
