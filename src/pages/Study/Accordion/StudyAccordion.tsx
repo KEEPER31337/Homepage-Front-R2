@@ -9,8 +9,10 @@ import {
 } from '@material-tailwind/react';
 import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
+
 import { Divider } from '@mui/material';
 import { StudyListInfo } from '@mocks/StudyApi';
+import OutlinedButton from '@components/Button/OutlinedButton';
 import { StudyChip } from '../share/StudyChip';
 
 interface StudyAccordionProps {
@@ -28,6 +30,7 @@ const theme = {
             borderColor: 'border-white/[20%]',
             focus: 'focus:outline-0',
             hover: 'hover:text-white hover:bg-subGray',
+            padding: 'px-4',
           },
           active: {
             fontColor: 'text-white',
@@ -44,11 +47,11 @@ const theme = {
 
 const AccordionHeaderContent = ({ study }: StudyAccordionProps) => {
   return (
-    <div className="flex w-full space-x-6 pl-6 text-left">
-      <span className="h-16 w-16 bg-gray-300">이미지</span>
-      <div className="flex flex-col justify-between">
-        <Typography className="text-h3">{study.title}</Typography>
-        <div className="flex">
+    <div className="flex w-full space-x-6 pl-2 text-left">
+      <span className="max-w-16 max-h-16 bg-gray-300">이미지</span>
+      <div className="flex w-full items-center justify-between">
+        <Typography className="text-h3 font-bold">{study.title}</Typography>
+        <div className="flex items-center">
           <Typography className="mr-1 font-semibold">스터디장</Typography>
           <StudyChip value={study.headMember.realName} />
           <Divider className="!m-1 !border-white" orientation="vertical" flexItem />
@@ -70,12 +73,20 @@ const AccordionBodyContent = ({ study }: StudyAccordionProps) => {
     notion: <SiNotion className="h-7 w-7" />,
     etc: <VscLink className="h-7 w-7" />,
   };
+  const handleStudyModifyButtonClick = () => {
+    console.log(`${study.id}수정`);
+  };
+  const handleStudyDeleteButtonClick = () => {
+    console.log(`${study.id}삭제`);
+  };
 
   return (
     <div className="space-y-[30px]">
-      <div className="space-y-4">
-        <Typography className="font-semibold">스터디 소개</Typography>
-        <Typography className="border-l-2 border-pointBlue px-2">{study.information}</Typography>
+      <div className="flex justify-between">
+        <div className="space-y-4">
+          <Typography className="font-semibold">스터디 소개</Typography>
+          <Typography className="border-l-2 border-pointBlue px-2">{study.information}</Typography>
+        </div>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
