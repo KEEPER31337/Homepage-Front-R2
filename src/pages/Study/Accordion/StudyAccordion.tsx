@@ -11,7 +11,7 @@ import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-
 import { SiNotion } from 'react-icons/si';
 
 import { Divider } from '@mui/material';
-import { StudyListInfo } from '@mocks/StudyApi';
+import type { StudyListInfo } from '@mocks/StudyApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { Link } from 'react-router-dom';
 import { StudyChip } from '../share/StudyChip';
@@ -83,7 +83,6 @@ const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudyId 
   const handleStudyModifyButtonClick = () => {
     toggleOpen();
     setSelectedStudyId(study.id);
-    console.log(`${study.id}수정`);
   };
   const handleStudyDeleteButtonClick = () => {
     console.log(`${study.id}삭제`);
@@ -108,18 +107,18 @@ const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudyId 
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
         <div className="flex space-x-2">
-          {memberList?.map((member) => (
-            <StudyChip key={member.id} value={member.realName} />
+          {memberList?.map(({ id, realName }) => (
+            <StudyChip key={id} value={realName} />
           ))}
         </div>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">링크</Typography>
         <div className="flex space-x-4 text-pointBlue">
-          {study.link?.map((li) => (
-            <Link to={li.contents} target="_blank" key={li.title} className="flex items-center space-x-1">
-              <span>{LinkIconData[li.title] ? LinkIconData[li.title] : LinkIconData.etc}</span>
-              <span className="border-b border-pointBlue">{li.title}</span>
+          {study.link?.map(({ title, contents }) => (
+            <Link to={contents} target="_blank" key={title} className="flex items-center space-x-1">
+              <span>{LinkIconData[title] ? LinkIconData[title] : LinkIconData.etc}</span>
+              <span className="border-b border-pointBlue">{title}</span>
             </Link>
           ))}
         </div>
