@@ -3,8 +3,12 @@ import { ThemeProvider, Accordion, AccordionHeader, AccordionBody, Typography } 
 import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 import { Divider } from '@mui/material';
+import { StudyListInfo } from '@mocks/StudyApi';
 import { StudyChip } from '../share/StudyChip';
 
+interface StudyAccordionProps {
+  study: StudyListInfo;
+}
 const theme = {
   accordion: {
     styles: {
@@ -15,7 +19,7 @@ const theme = {
             fontColor: 'text-white',
             borderColor: 'border-white/[20%]',
             focus: 'focus:outline-0',
-            hover: 'hover:text-white hover:bg-gray-600',
+            hover: 'hover:text-white hover:bg-subGray',
           },
           active: {
             fontColor: 'text-white',
@@ -30,27 +34,28 @@ const theme = {
   },
 };
 
-const AccordionHeaderContent = () => {
+const AccordionHeaderContent = ({ study }: StudyAccordionProps) => {
   return (
     <div className="flex w-full space-x-6 pl-6 text-left">
       <span className="h-16 w-16 bg-gray-300">이미지</span>
       <div className="flex flex-col justify-between">
-        <Typography className="text-h3">CTF 스터디</Typography>
+        <Typography className="text-h3">{study.title}</Typography>
         <div className="flex">
           <Typography className="mr-1 font-semibold">스터디장</Typography>
-          <StudyChip value="김태연" />
+          <StudyChip value={study.headMember.realName} />
           <Divider className="!m-1 !border-white" orientation="vertical" flexItem />
-          <Typography className="font-semibold">현재 인원 8명</Typography>
+          <Typography className="font-semibold">현재 인원 {study.memberList.length}명</Typography>
         </div>
       </div>
     </div>
   );
 };
 
-const AccordionBodyContent = () => {
+const AccordionBodyContent = ({ study }: StudyAccordionProps) => {
   interface IconType {
     [key: string]: JSX.Element;
   }
+  const { memberList } = study;
 
   const LinkIconData: IconType = {
     github: <VscGithubInverted className="h-7 w-7" />,
@@ -58,30 +63,24 @@ const AccordionBodyContent = () => {
     etc: <VscLink className="h-7 w-7" />,
   };
 
-  const link = [
-    { title: 'github', contents: 'https//~' },
-    { title: 'notion', contents: 'https//~' },
-    { title: 'plato', contents: 'https//~' },
-  ];
-  const members = ['장서윤', '김은지', '송세연', '산다라박'];
   return (
     <div className="space-y-[30px]">
       <div className="space-y-4">
         <Typography className="font-semibold">스터디 소개</Typography>
-        <Typography className="border-l-2 border-pointBlue px-2">CTF 준비합니다</Typography>
+        <Typography className="border-l-2 border-pointBlue px-2">{study.information}</Typography>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
         <div className="flex space-x-2">
-          {members?.map((member: string) => (
-            <StudyChip key={member} value={member} />
+          {memberList?.map((member) => (
+            <StudyChip key={member.id} value={member.realName} />
           ))}
         </div>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">링크</Typography>
         <div className="flex space-x-4 text-pointBlue">
-          {link?.map((li) => (
+          {study.link?.map((li) => (
             <div key={li.title} className="flex items-center space-x-1">
               <span>{LinkIconData[li.title] ? LinkIconData[li.title] : LinkIconData.etc}</span>
               <span className="border-b border-pointBlue">{li.title}</span>
@@ -93,17 +92,17 @@ const AccordionBodyContent = () => {
   );
 };
 
-const StudyAccordion = () => {
+const StudyAccordion = ({ study }: StudyAccordionProps) => {
   const [open, setOpen] = useReducer((prev) => !prev, false);
 
   return (
     <ThemeProvider value={theme}>
       <Accordion open={open} icon={open ? <VscChevronUp /> : <VscChevronDown />}>
         <AccordionHeader className="h-20" onClick={setOpen}>
-          <AccordionHeaderContent />
+          <AccordionHeaderContent study={study} />
         </AccordionHeader>
         <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
-          <AccordionBodyContent />
+          <AccordionBodyContent study={study} />
         </AccordionBody>
       </Accordion>
     </ThemeProvider>

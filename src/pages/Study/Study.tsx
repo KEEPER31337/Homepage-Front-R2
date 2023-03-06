@@ -1,12 +1,16 @@
 import React, { useReducer, useState } from 'react';
 
-import { studyList, yearList } from '@mocks/StudyApi';
+import { studyList, StudyListInfo, yearList } from '@mocks/StudyApi';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StudyModal from './Modal/StudyModal';
 import StudyAccordion from './Accordion/StudyAccordion';
 import StudySelect from './share/StudySelect';
 import OldStudy from './OldStudy';
+
+interface StudyProps {
+  list: StudyListInfo[];
+}
 
 const Study = () => {
   const seasonList = ['1학기', '여름방학', '2학기', '겨울방학'];
@@ -25,11 +29,11 @@ const Study = () => {
         {currentYear !== '2021' && <OutlinedButton onClick={toggleOpen}>추가</OutlinedButton>}
       </div>
       {currentYear !== '2021' ? (
-        <OldStudy studyList={studyList} />
+        <OldStudy list={studyList} />
       ) : (
         <div>
           {studyList?.map((study) => (
-            <StudyAccordion key={study} />
+            <StudyAccordion key={study.id} study={study} />
           ))}
         </div>
       )}
