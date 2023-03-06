@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dialog, DialogHeader, DialogBody, DialogFooter, Typography } from '@material-tailwind/react';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Typography } from '@material-tailwind/react';
 import FilledButton from '@components/Button/FilledButton';
 import TextButton from '@components/Button/TextButton';
 
@@ -14,18 +15,18 @@ interface ActionModalProps {
 
 const ActionModal = ({ opened, handleOpen, title, children, buttonName, onActionButonClick }: ActionModalProps) => {
   return (
-    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack">
+    <Dialog open={opened} className="rounded-lg bg-subBlack">
       <div className="mt-5 ml-10 mb-2 mr-10">
-        <DialogHeader className="break-all text-pointBlue">
+        <DialogTitle component="div" className="break-all text-pointBlue">
           <Typography variant="h3">{title}</Typography>
-        </DialogHeader>
-        <DialogBody className="mb-20 break-all text-white">
+        </DialogTitle>
+        <DialogContent className="mb-20 break-all text-white">
           <Typography variant="paragraph">{children}</Typography>
-        </DialogBody>
-        <DialogFooter className="absolute right-1 bottom-1">
+        </DialogContent>
+        <DialogActions className="absolute right-1 bottom-1">
           <TextButton onClick={handleOpen}>취소</TextButton>
           <FilledButton onClick={onActionButonClick}>{buttonName}</FilledButton>
-        </DialogFooter>
+        </DialogActions>
       </div>
     </Dialog>
   );
