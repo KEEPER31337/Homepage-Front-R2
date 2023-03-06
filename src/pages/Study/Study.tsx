@@ -11,16 +11,18 @@ import StudySelect from './share/StudySelect';
 import OldStudy from './OldStudy';
 
 const Study = () => {
+  const [currentYear, setCurrentYear] = useState(0);
+  const [currentSeason, setCurrentSeason] = useState(0);
+  const [open, toggleOpen] = useReducer((prev) => !prev, false);
+  const [selectedStudyId, setSelectedStudyId] = useState(0);
+
   const seasonList = [
     { id: 0, content: '1학기' },
     { id: 1, content: '여름방학' },
     { id: 2, content: '2학기' },
     { id: 3, content: '겨울방학' },
   ];
-  const [currentYear, setCurrentYear] = useState(0);
-  const [currentSeason, setCurrentSeason] = useState(0);
-  const [open, toggleOpen] = useReducer((prev) => !prev, false);
-  const [selectedStudyId, setSelectedStudyId] = useState(0);
+  const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
 
   const handleYearChange = (event: SelectChangeEvent<unknown>) => {
     setCurrentYear(Number(event.target.value as string));
@@ -52,11 +54,11 @@ const Study = () => {
         {currentYear !== 0 && <OutlinedButton onClick={toggleOpen}>추가</OutlinedButton>}
       </div>
       {currentYear !== 0 ? (
-        <OldStudy list={studyList} />
+        <OldStudy list={studyList} memberId={myMemberId} />
       ) : (
         <div>
           {studyList?.map((study) => (
-            <StudyAccordion key={study.id} study={study} />
+            <StudyAccordion key={study.id} study={study} memberId={myMemberId} />
           ))}
         </div>
       )}

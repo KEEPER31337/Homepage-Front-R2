@@ -18,6 +18,10 @@ import { StudyChip } from '../share/StudyChip';
 
 interface StudyAccordionProps {
   study: StudyListInfo;
+  memberId: number;
+}
+interface StudyAccordionHeaderProps {
+  study: StudyListInfo;
 }
 
 const theme = {
@@ -46,7 +50,7 @@ const theme = {
   } satisfies AccordionStylesType,
 };
 
-const AccordionHeaderContent = ({ study }: StudyAccordionProps) => {
+const AccordionHeaderContent = ({ study }: StudyAccordionHeaderProps) => {
   return (
     <div className="flex w-full space-x-6 pl-2 text-left">
       <span className="max-w-16 max-h-16 bg-gray-300">이미지</span>
@@ -63,7 +67,7 @@ const AccordionHeaderContent = ({ study }: StudyAccordionProps) => {
   );
 };
 
-const AccordionBodyContent = ({ study }: StudyAccordionProps) => {
+const AccordionBodyContent = ({ study, memberId }: StudyAccordionProps) => {
   interface IconType {
     [key: string]: JSX.Element;
   }
@@ -88,10 +92,14 @@ const AccordionBodyContent = ({ study }: StudyAccordionProps) => {
           <Typography className="font-semibold">스터디 소개</Typography>
           <Typography className="border-l-2 border-pointBlue px-2">{study.information}</Typography>
         </div>
-        <div className="space-x-3">
-          <OutlinedButton onClick={handleStudyModifyButtonClick}>수정</OutlinedButton>
-          <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
-        </div>
+        {memberId === study.headMember.id ? (
+          <div className="space-x-3">
+            <OutlinedButton onClick={handleStudyModifyButtonClick}>수정</OutlinedButton>
+            <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
@@ -116,7 +124,7 @@ const AccordionBodyContent = ({ study }: StudyAccordionProps) => {
   );
 };
 
-const StudyAccordion = ({ study }: StudyAccordionProps) => {
+const StudyAccordion = ({ study, memberId }: StudyAccordionProps) => {
   const [open, setOpen] = useReducer((prev) => !prev, false);
 
   return (
@@ -126,7 +134,7 @@ const StudyAccordion = ({ study }: StudyAccordionProps) => {
           <AccordionHeaderContent study={study} />
         </AccordionHeader>
         <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
-          <AccordionBodyContent study={study} />
+          <AccordionBodyContent study={study} memberId={memberId} />
         </AccordionBody>
       </Accordion>
     </ThemeProvider>
