@@ -1,7 +1,12 @@
-import { BookListInfo } from '@api/dto';
+import { BookListInfo, BorrowBookInfo } from '@api/dto';
 
 interface BookListInfoColumn {
   key: keyof BookListInfo;
+  headerName: string;
+}
+
+interface BorrowBookInfoColumn {
+  key: keyof BorrowBookInfo;
   headerName: string;
 }
 
@@ -50,4 +55,25 @@ const rows: BookListInfo[] = [
   },
 ];
 
-export { columns, rows };
+const borrowBookInfoColumns: BorrowBookInfoColumn[] = [
+  { key: 'borrower', headerName: '대출자' },
+  { key: 'borrowDate', headerName: '대출일자' },
+  { key: 'returnDate', headerName: '반납일자' },
+];
+
+const borrowBookInfoRows: BorrowBookInfo[] = [
+  {
+    id: 1,
+    borrower: '회장님',
+    borrowDate: '2022.01.07',
+    returnDate: '2022.02.07',
+  },
+  {
+    id: 2,
+    borrower: '김은지',
+    borrowDate: '2022.01.07',
+    returnDate: '2022.02.07',
+  },
+];
+
+export { columns, rows, borrowBookInfoColumns, borrowBookInfoRows };

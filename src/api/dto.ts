@@ -29,3 +29,10 @@ export interface BookListInfo {
   information: string;
   enable: boolean;
 }
+
+export interface BorrowBookInfo {
+  id: number;
+  borrower: string;
+  borrowDate: string;
+  returnDate: string;
+}

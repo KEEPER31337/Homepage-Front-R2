@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ActionModal from '@components/Modal/ActionModal';
 import { Row } from '@components/Table/StandardTable.interface';
-import { BookListInfo } from '@api/dto';
+import { BookListInfo, BorrowBookInfo } from '@api/dto';
+import StandardTable from '@components/Table/StandardTable';
+import { borrowBookInfoColumns, borrowBookInfoRows } from '@mocks/LibraryManageApi';
 
 import StandardInput from '@components/Input/StandardInput';
 import TotalBookNumberSelector from '../components/TotalBookNumberSelector';
@@ -60,7 +62,10 @@ const EditBookInfoModal = ({ openEditModal, toggleOpenEditModal, EditModalRowDat
               <div className="text-subGray">대출불가</div>
             )}
           </div>
-          <div>대출정보</div>
+          <div>
+            대출정보
+            <StandardTable<BorrowBookInfo> columns={borrowBookInfoColumns} rows={borrowBookInfoRows} />
+          </div>
         </div>
       </ActionModal>
     </div>
