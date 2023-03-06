@@ -20,9 +20,7 @@ const ActionModal = ({ opened, handleOpen, title, children, buttonName, onAction
         <DialogTitle component="div" className="break-all text-pointBlue">
           <Typography variant="h3">{title}</Typography>
         </DialogTitle>
-        <DialogContent className="mb-20 break-all text-white">
-          <Typography variant="paragraph">{children}</Typography>
-        </DialogContent>
+        <DialogContent className="mb-20 break-all text-white">{children}</DialogContent>
         <DialogActions className="absolute right-1 bottom-1">
           <TextButton onClick={handleOpen}>취소</TextButton>
           <FilledButton onClick={onActionButonClick}>{buttonName}</FilledButton>
