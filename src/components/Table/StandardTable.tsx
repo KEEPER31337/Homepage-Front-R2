@@ -18,7 +18,7 @@ const StandardTable = <T extends Record<string, any>>({
   childComponent,
 }: StandardTableProps<T>) => {
   return (
-    <>
+    <div>
       <Table>
         <TableHead className="bg-middleBlack">
           <TableRow>
@@ -50,7 +50,7 @@ const StandardTable = <T extends Record<string, any>>({
         </TableBody>
       </Table>
       <StandardTablePagination rowsPerPage={10} />
-    </>
+    </div>
   );
 };
 
