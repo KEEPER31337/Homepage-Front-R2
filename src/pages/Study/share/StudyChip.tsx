@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeProvider, Chip } from '@material-tailwind/react';
+import { ThemeProvider, Chip, ChipStylesType } from '@material-tailwind/react';
 
 /**
  * TODO 공통 컴포넌트 제작 후 삭제 예정
@@ -45,7 +45,7 @@ const theme = {
         },
       },
     },
-  },
+  } satisfies ChipStylesType,
 };
 export const StudyChip = ({ value }: ChipProps) => {
   return (

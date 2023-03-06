@@ -1,5 +1,12 @@
 import React, { useReducer } from 'react';
-import { ThemeProvider, Accordion, AccordionHeader, AccordionBody, Typography } from '@material-tailwind/react';
+import {
+  ThemeProvider,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+  Typography,
+  AccordionStylesType,
+} from '@material-tailwind/react';
 import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 import { Divider } from '@mui/material';
@@ -9,6 +16,7 @@ import { StudyChip } from '../share/StudyChip';
 interface StudyAccordionProps {
   study: StudyListInfo;
 }
+
 const theme = {
   accordion: {
     styles: {
@@ -31,7 +39,7 @@ const theme = {
         },
       },
     },
-  },
+  } satisfies AccordionStylesType,
 };
 
 const AccordionHeaderContent = ({ study }: StudyAccordionProps) => {
@@ -44,7 +52,7 @@ const AccordionHeaderContent = ({ study }: StudyAccordionProps) => {
           <Typography className="mr-1 font-semibold">스터디장</Typography>
           <StudyChip value={study.headMember.realName} />
           <Divider className="!m-1 !border-white" orientation="vertical" flexItem />
-          <Typography className="font-semibold">현재 인원 {study.memberList.length}명</Typography>
+          <Typography className="font-semibold">현재 인원 {study.memberNumber}명</Typography>
         </div>
       </div>
     </div>
