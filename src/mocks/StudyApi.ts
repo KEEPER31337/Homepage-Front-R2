@@ -130,7 +130,12 @@ const studyList: StudyListInfo[] = [
     ],
   },
 ];
-const yearList = ['2022', '2021', '2020', '2019'];
+const yearList = [
+  { id: 0, content: '2022' },
+  { id: 1, content: '2021' },
+  { id: 2, content: '2020' },
+  { id: 3, content: '2019' },
+];
 
 export { studyList, yearList };
 export type { StudyLinkInfo, StudyMemberInfo, StudyListInfo };
