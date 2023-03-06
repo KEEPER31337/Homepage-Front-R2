@@ -20,8 +20,9 @@ interface StudyAccordionProps {
   study: StudyListInfo;
   memberId: number;
   toggleOpen: DispatchWithoutAction;
-  setSelectedStudyId: Dispatch<SetStateAction<number>>;
+  setSelectedStudy: Dispatch<SetStateAction<StudyListInfo>>;
 }
+
 interface StudyAccordionHeaderProps {
   study: StudyListInfo;
 }
@@ -69,23 +70,25 @@ const AccordionHeaderContent = ({ study }: StudyAccordionHeaderProps) => {
   );
 };
 
-const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudyId }: StudyAccordionProps) => {
+const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudy }: StudyAccordionProps) => {
   interface IconType {
     [key: string]: JSX.Element;
   }
-  const { memberList } = study;
+
+  const { information, headMember, memberList } = study;
 
   const LinkIconData: IconType = {
     github: <VscGithubInverted className="h-7 w-7" />,
     notion: <SiNotion className="h-7 w-7" />,
     etc: <VscLink className="h-7 w-7" />,
   };
+
   const handleStudyModifyButtonClick = () => {
     toggleOpen();
-    setSelectedStudyId(study.id);
+    setSelectedStudy(study);
   };
   const handleStudyDeleteButtonClick = () => {
-    console.log(`${study.id}삭제`);
+    console.log(`${study.title}삭제`);
   };
 
   return (
@@ -93,9 +96,9 @@ const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudyId 
       <div className="flex justify-between">
         <div className="space-y-4">
           <Typography className="font-semibold">스터디 소개</Typography>
-          <Typography className="border-l-2 border-pointBlue px-2">{study.information}</Typography>
+          <Typography className="border-l-2 border-pointBlue px-2">{information}</Typography>
         </div>
-        {memberId === study.headMember.id ? (
+        {memberId === headMember.id ? (
           <div className="space-x-3">
             <OutlinedButton onClick={handleStudyModifyButtonClick}>수정</OutlinedButton>
             <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
@@ -127,7 +130,7 @@ const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudyId 
   );
 };
 
-const StudyAccordion = ({ study, memberId, toggleOpen, setSelectedStudyId }: StudyAccordionProps) => {
+const StudyAccordion = ({ study, memberId, toggleOpen, setSelectedStudy }: StudyAccordionProps) => {
   const [open, setOpen] = useReducer((prev) => !prev, false);
 
   return (
@@ -141,7 +144,7 @@ const StudyAccordion = ({ study, memberId, toggleOpen, setSelectedStudyId }: Stu
             study={study}
             memberId={memberId}
             toggleOpen={toggleOpen}
-            setSelectedStudyId={setSelectedStudyId}
+            setSelectedStudy={setSelectedStudy}
           />
         </AccordionBody>
       </Accordion>

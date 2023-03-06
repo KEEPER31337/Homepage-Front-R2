@@ -4,6 +4,7 @@ import { SiNotion } from 'react-icons/si';
 import { Typography } from '@material-tailwind/react';
 
 import ActionModal from '@components/Modal/ActionModal';
+import { StudyListInfo } from '@mocks/StudyApi';
 import StudyInput from '../share/StudyInput';
 import StudyTextarea from '../share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
@@ -11,12 +12,12 @@ import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
 interface StudyModalProps {
   open: boolean;
   handleOpen: () => void;
-  isModify: boolean;
-  studyId: number | undefined;
+  selectedStudy?: Partial<StudyListInfo>;
 }
 
 const memberList = ['김은지', '장서윤', '송세연'];
-const StudyModal = ({ open, isModify, handleOpen, studyId }: StudyModalProps): JSX.Element => {
+const StudyModal = ({ open, handleOpen, selectedStudy }: StudyModalProps): JSX.Element => {
+  const isModify = JSON.stringify(selectedStudy) !== '{}';
   return (
     <ActionModal
       opened={open}
@@ -34,7 +35,7 @@ const StudyModal = ({ open, isModify, handleOpen, studyId }: StudyModalProps): J
           <div className="w-[141px] space-y-[10px]">
             <Typography className="text-pointBlue">썸네일</Typography>
             <div className="flex h-[130px] w-[130px] items-center justify-center rounded-[10px] border-2 border-dashed border-pointBlue/30 text-pointBlue/30">
-              aaa{studyId}
+              aaa{selectedStudy?.title}
             </div>
           </div>
         </div>

@@ -11,19 +11,20 @@ import OldStudy from './OldStudy';
 
 const OLD_YEAR_BOUND = 2022;
 
+const seasonList = [
+  { id: 0, content: '1학기' },
+  { id: 1, content: '여름방학' },
+  { id: 2, content: '2학기' },
+  { id: 3, content: '겨울방학' },
+];
+
 const Study = () => {
   const [currentYear, setCurrentYear] = useState(0);
   const [currentSeason, setCurrentSeason] = useState(0);
   const [currentStudyList, setCurrentStudyList] = useState(studyList);
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
-  const [selectedStudyId, setSelectedStudyId] = useState(-1);
+  const [selectedStudy, setSelectedStudy] = useState({});
 
-  const seasonList = [
-    { id: 0, content: '1학기' },
-    { id: 1, content: '여름방학' },
-    { id: 2, content: '2학기' },
-    { id: 3, content: '겨울방학' },
-  ];
   const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
 
   const handleYearChange = (event: SelectChangeEvent<unknown>) => {
@@ -34,7 +35,7 @@ const Study = () => {
   };
   const handleStudyCreateButtonClick = () => {
     toggleOpen();
-    setSelectedStudyId(-1);
+    setSelectedStudy({});
   };
   /* 처음 한 번만 동작하는 useEffect, 페이지 초기 값 셋팅 */
   useEffect(() => {
@@ -71,7 +72,7 @@ const Study = () => {
           list={currentStudyList}
           memberId={myMemberId}
           toggleOpen={toggleOpen}
-          setSelectedStudyId={setSelectedStudyId}
+          setSelectedStudy={setSelectedStudy}
         />
       ) : (
         <div>
@@ -81,12 +82,12 @@ const Study = () => {
               study={study}
               memberId={myMemberId}
               toggleOpen={toggleOpen}
-              setSelectedStudyId={setSelectedStudyId}
+              setSelectedStudy={setSelectedStudy}
             />
           ))}
         </div>
       )}
-      <StudyModal open={open} handleOpen={toggleOpen} isModify={selectedStudyId !== -1} studyId={selectedStudyId} />
+      <StudyModal open={open} handleOpen={toggleOpen} selectedStudy={selectedStudy} />
     </div>
   );
 };

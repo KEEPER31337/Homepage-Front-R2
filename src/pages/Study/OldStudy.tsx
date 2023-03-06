@@ -6,9 +6,9 @@ interface OldStudyProps {
   list: StudyListInfo[];
   memberId: number;
   toggleOpen: DispatchWithoutAction;
-  setSelectedStudyId: Dispatch<SetStateAction<number>>;
+  setSelectedStudy: Dispatch<SetStateAction<StudyListInfo>>;
 }
-const OldStudy = ({ list, memberId, toggleOpen, setSelectedStudyId }: OldStudyProps) => {
+const OldStudy = ({ list, memberId, toggleOpen, setSelectedStudy }: OldStudyProps) => {
   return (
     <div className="">
       오래된 스터디 목록
@@ -19,7 +19,7 @@ const OldStudy = ({ list, memberId, toggleOpen, setSelectedStudyId }: OldStudyPr
             study={study}
             memberId={memberId}
             toggleOpen={toggleOpen}
-            setSelectedStudyId={setSelectedStudyId}
+            setSelectedStudy={setSelectedStudy}
           />
         </Fragment>
       ))}
