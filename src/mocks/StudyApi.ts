@@ -36,7 +36,7 @@ const studyList: StudyListInfo[] = [
     id: 10,
     title: 'CTF 스터디',
     information: 'CTF 스터디입니당',
-    memberNumber: 1,
+    memberNumber: 4,
     registerTime: '2023-01-12T09:07:01.000766406',
     year: 2022,
     season: 3,
