@@ -13,6 +13,7 @@ import { SiNotion } from 'react-icons/si';
 import { Divider } from '@mui/material';
 import { StudyListInfo } from '@mocks/StudyApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import { Link } from 'react-router-dom';
 import { StudyChip } from '../share/StudyChip';
 
 interface StudyAccordionProps {
@@ -87,6 +88,10 @@ const AccordionBodyContent = ({ study }: StudyAccordionProps) => {
           <Typography className="font-semibold">스터디 소개</Typography>
           <Typography className="border-l-2 border-pointBlue px-2">{study.information}</Typography>
         </div>
+        <div className="space-x-3">
+          <OutlinedButton onClick={handleStudyModifyButtonClick}>수정</OutlinedButton>
+          <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
+        </div>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
@@ -100,10 +105,10 @@ const AccordionBodyContent = ({ study }: StudyAccordionProps) => {
         <Typography className="font-semibold">링크</Typography>
         <div className="flex space-x-4 text-pointBlue">
           {study.link?.map((li) => (
-            <div key={li.title} className="flex items-center space-x-1">
+            <Link to={li.contents} target="_blank" key={li.title} className="flex items-center space-x-1">
               <span>{LinkIconData[li.title] ? LinkIconData[li.title] : LinkIconData.etc}</span>
               <span className="border-b border-pointBlue">{li.title}</span>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

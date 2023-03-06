@@ -41,7 +41,7 @@ const studyList: StudyListInfo[] = [
     year: 2022,
     season: 3,
     link: [
-      { title: 'github', contents: 'https//~' },
+      { title: 'github', contents: `https://reactjs.org/docs/hooks-effect.html` },
       { title: 'notion', contents: 'https//~' },
       { title: 'plato', contents: 'https//~' },
     ],
