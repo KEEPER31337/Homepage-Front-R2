@@ -37,6 +37,8 @@ const EditBookInfoModal = ({ openEditModal, toggleOpenEditModal, EditModalRowDat
       title: EditModalRowData.title,
       author: EditModalRowData.author,
     });
+
+    setTotalBookNumber(Number(EditModalRowData?.borrowState?.split('/')[1]));
   }, [EditModalRowData]);
 
   return (
@@ -53,7 +55,7 @@ const EditBookInfoModal = ({ openEditModal, toggleOpenEditModal, EditModalRowDat
         <div className="flex h-full w-full flex-col space-y-2 ">
           <StandardInput name="title" value={form.title || ''} onChange={onChange} label="도서명" />
           <StandardInput name="author" value={form.author || ''} onChange={onChange} label="저자명" />
-          <TotalBookNumberSelector value={totalBookNumber} setValue={setTotalBookNumber} />
+          <TotalBookNumberSelector value={totalBookNumber || 1} setValue={setTotalBookNumber} />
           <div className="flex flex-row">
             대출현황 {EditModalRowData.borrowState}
             {EditModalRowData.enable ? (
