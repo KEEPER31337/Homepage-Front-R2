@@ -16,7 +16,7 @@ const ActionModal = ({ opened, onClose, title, children, actionButtonName, onAct
   return (
     <Dialog open={opened}>
       <DialogTitle className="text-pointBlue">{title}</DialogTitle>
-      <DialogContent>{children}</DialogContent>
+      <DialogContent className="min-h-[80px] min-w-[350px]">{children}</DialogContent>
       <DialogActions>
         <TextButton onClick={onClose}>취소</TextButton>
         <FilledButton onClick={onActionButonClick}>{actionButtonName}</FilledButton>
