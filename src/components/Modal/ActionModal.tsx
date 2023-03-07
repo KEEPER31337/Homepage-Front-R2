@@ -5,21 +5,21 @@ import TextButton from '@components/Button/TextButton';
 
 interface ActionModalProps {
   opened: boolean;
-  handleOpen: () => void;
+  onClose: () => void;
   title: string;
   children: React.ReactNode;
-  buttonName: string;
+  actionButtonName: string;
   onActionButonClick: () => void;
 }
 
-const ActionModal = ({ opened, handleOpen, title, children, buttonName, onActionButonClick }: ActionModalProps) => {
+const ActionModal = ({ opened, onClose, title, children, actionButtonName, onActionButonClick }: ActionModalProps) => {
   return (
     <Dialog open={opened}>
       <DialogTitle className="text-pointBlue">{title}</DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>
-        <TextButton onClick={handleOpen}>취소</TextButton>
-        <FilledButton onClick={onActionButonClick}>{buttonName}</FilledButton>
+        <TextButton onClick={onClose}>취소</TextButton>
+        <FilledButton onClick={onActionButonClick}>{actionButtonName}</FilledButton>
       </DialogActions>
     </Dialog>
   );
