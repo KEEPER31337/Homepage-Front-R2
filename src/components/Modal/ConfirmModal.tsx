@@ -18,7 +18,7 @@ const ConfirmModal = ({ opened, onHandleOpen, title, children }: ConfirmModalPro
       <DialogHeader className="break-all font-bold text-pointBlue">
         <Typography variant="h3">{title}</Typography>
       </DialogHeader>
-      <DialogBody className="min-h-[80px] break-all pt-1 text-white">{children}</DialogBody>
+      <DialogBody className="min-h-[80px] break-all pt-0 text-white">{children}</DialogBody>
     </Dialog>
   );
 };
