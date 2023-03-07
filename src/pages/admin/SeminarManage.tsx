@@ -1,14 +1,17 @@
 import React, { useReducer } from 'react';
 import StandardTable from '@components/Table/StandardTable';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import ActionModal from '@components/Modal/ActionModal';
 import { columns, rows } from '@mocks/SeminarManageApi';
 import PageTitle from '@components/Typography/PageTitle';
+import OutlinedButton from '@components/Button/OutlinedButton';
+import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
+import { DateTime } from 'luxon';
 
 const SeminarManage = () => {
   const listColumns = columns;
   const listRows = rows;
   const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
+  const [date, setDate] = React.useState<DateTime | null>(null);
 
   const [openSeminarAddModal, setOpenSeminarAddModal] = useReducer((prev) => !prev, false);
   const handleSeminarAddButtonClick = () => {
@@ -31,6 +34,9 @@ const SeminarManage = () => {
             setOpenSeminarAddModal();
           }}
         >
+          <div className="flex justify-center">
+            <StandardDatePicker date={date} setDate={setDate} label="날짜" />
+          </div>
         </ActionModal>
         <OutlinedButton>삭제</OutlinedButton>
       </div>
