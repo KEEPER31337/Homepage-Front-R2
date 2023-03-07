@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import StandardTable from '@components/Table/StandardTable';
+import OutlinedButton from '@components/Button/OutlinedButton';
+import ActionModal from '@components/Modal/ActionModal';
 import { columns, rows } from '@mocks/SeminarManageApi';
 import PageTitle from '@components/Typography/PageTitle';
-import OutlinedButton from '@components/Button/OutlinedButton';
 
 const SeminarManage = () => {
   const listColumns = columns;
   const listRows = rows;
   const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
 
+  const [openSeminarAddModal, setOpenSeminarAddModal] = useReducer((prev) => !prev, false);
   const handleSeminarAddButtonClick = () => {
     // TODO
   };
@@ -18,7 +20,18 @@ const SeminarManage = () => {
       <PageTitle>세미나 관리 {`(${currentTerm.year}년 ${currentTerm.season})`}</PageTitle>
       <StandardTable columns={listColumns} rows={listRows} />
       <div className="mt-4 flex justify-end space-x-2">
-        <OutlinedButton onClick={handleSeminarAddButtonClick}>추가</OutlinedButton>
+        <OutlinedButton onClick={setOpenSeminarAddModal}>추가</OutlinedButton>
+        <ActionModal
+          opened={openSeminarAddModal}
+          handleOpen={setOpenSeminarAddModal}
+          title="세미나 일정 추가"
+          buttonName="추가"
+          onActionButonClick={() => {
+            handleSeminarAddButtonClick();
+            setOpenSeminarAddModal();
+          }}
+        >
+        </ActionModal>
         <OutlinedButton>삭제</OutlinedButton>
       </div>
     </div>
