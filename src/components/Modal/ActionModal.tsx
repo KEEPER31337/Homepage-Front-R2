@@ -6,15 +6,24 @@ import TextButton from '@components/Button/TextButton';
 interface ActionModalProps {
   opened: boolean;
   onClose: () => void;
+  modalWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   title: string;
   children: React.ReactNode;
   actionButtonName: string;
   onActionButonClick: () => void;
 }
 
-const ActionModal = ({ opened, onClose, title, children, actionButtonName, onActionButonClick }: ActionModalProps) => {
+const ActionModal = ({
+  opened,
+  onClose,
+  modalWidth,
+  title,
+  children,
+  actionButtonName,
+  onActionButonClick,
+}: ActionModalProps) => {
   return (
-    <Dialog open={opened}>
+    <Dialog open={opened} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
       <DialogTitle className="text-pointBlue">{title}</DialogTitle>
       <DialogContent className="min-h-[80px] min-w-[350px]">{children}</DialogContent>
       <DialogActions>
