@@ -18,3 +18,13 @@ export interface PageBlockInfo {
   type: string;
   subtitleImages: SubTitleImagesInfo;
 }
+
+export interface BookListInfo {
+  id: number;
+  no: number;
+  title: string;
+  author: string;
+  total: string;
+  information: string;
+  enable: boolean;
+}
