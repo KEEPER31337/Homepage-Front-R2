@@ -5,9 +5,14 @@ import { useSearchParams } from 'react-router-dom';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import SearchSection from '@components/Section/SearchSection';
+import { useRecoilState } from 'recoil';
+import { TableType } from '@components/Table/StandardTable.interface';
+import tableTypeState from '@atoms/TableAtoms';
+import GridTable from '@components/Table/GridTable';
 import { dummyColumn, dummyRow } from '@mocks/BoardListApi';
 
 const BoardList = () => {
+  const [tableType] = useRecoilState<TableType>(tableTypeState);
   const [searchParams] = useSearchParams();
   const category: string | null = searchParams.get('category');
 
@@ -24,7 +29,7 @@ const BoardList = () => {
           <TableViewSwitchButton type="Grid" />
         </div>
       </div>
-      <StandardTable columns={dummyColumn} rows={dummyRow} />
+      {tableType === 'List' ? <StandardTable columns={dummyColumn} rows={dummyRow} /> : <GridTable rows={dummyRow} />}
     </div>
   );
 };
