@@ -23,7 +23,7 @@ const ActionModal = ({
   onActionButonClick,
 }: ActionModalProps) => {
   return (
-    <Dialog open={opened} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
+    <Dialog open={opened} PaperProps={{ className: 'px-2 py-1' }} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
       <DialogTitle className="text-pointBlue">{title}</DialogTitle>
       <DialogContent className="min-h-[80px] min-w-[350px]">{children}</DialogContent>
       <DialogActions>
