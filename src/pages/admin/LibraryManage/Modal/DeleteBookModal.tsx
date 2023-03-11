@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ActionModal from '@components/Modal/ActionModal';
 
