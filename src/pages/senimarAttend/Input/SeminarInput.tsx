@@ -11,7 +11,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 interface SeminarInputProps {
-  disabled: boolean;
+  disabled?: boolean;
 }
 const SeminarInput = ({ disabled }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3]; // key값 어떻게 줘야할지 모르겠어서 이렇게 했습니다 좋은방법좀ㅠㅠ

@@ -10,7 +10,7 @@ import MemberCardComponent from './Card/MemberCardComponent';
 
 const SeminarAttend = () => {
   const [seminarDate, setSeminarDate] = useState('today');
-  const [seminarActivated, setSeminarActivated] = useState(true); // TODO: api 적용
+  const seminarActivated = true; // TODO: useState, api 적용
   const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
 
   useEffect(() => {
