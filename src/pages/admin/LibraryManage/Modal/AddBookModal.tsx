@@ -14,7 +14,10 @@ const AddBookModal = () => {
     title: '',
     author: '',
   });
+  const { title, author } = form;
   const [totalBookNumber, setTotalBookNumber] = useState<number | undefined>(1);
+  const [validTitle, setValidTitle] = useState<boolean>(false);
+  const [validAuthor, setValidAuthor] = useState<boolean>(false);
 
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
 
@@ -24,6 +27,19 @@ const AddBookModal = () => {
       ...form,
       [name]: value,
     });
+  };
+
+  const validate = () => {
+    setValidTitle(title === '');
+    setValidAuthor(author === '');
+  };
+
+  const AddBookAPI = () => {
+    validate();
+    if (title !== '' && author !== '') {
+      // TODO 도서추가 API
+      toggleOpen();
+    }
   };
 
   return (
@@ -36,12 +52,26 @@ const AddBookModal = () => {
         title="도서추가"
         buttonName="추가"
         onActionButonClick={() => {
-          toggleOpen();
+          AddBookAPI();
         }}
       >
         <div className="flex h-full w-full flex-col space-y-2 ">
-          <StandardInput name="title" value={form.title} onChange={onChange} label="도서명" />
-          <StandardInput name="author" value={form.author} onChange={onChange} label="저자명" />
+          <StandardInput
+            label="도서명"
+            error={validTitle}
+            helperText={validTitle && '도서명을 입력해주세요'}
+            name="title"
+            value={title}
+            onChange={onChange}
+          />
+          <StandardInput
+            error={validAuthor}
+            helperText={validAuthor && '저자명을 입력해주세요'}
+            name="author"
+            value={author}
+            onChange={onChange}
+            label="저자명"
+          />
           <TotalBookNumberSelector value={totalBookNumber} setValue={setTotalBookNumber} />
         </div>
       </ActionModal>
