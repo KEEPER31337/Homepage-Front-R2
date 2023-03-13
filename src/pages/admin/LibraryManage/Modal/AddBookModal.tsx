@@ -1,6 +1,5 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 
-import OutlinedButton from '@components/Button/OutlinedButton';
 import ActionModal from '@components/Modal/ActionModal';
 import StandardInput from '@components/Input/StandardInput';
 import TotalBookNumberSelector from '@pages/admin/LibraryManage/components/TotalBookNumberSelector';
@@ -9,7 +8,12 @@ import { BookListInfo } from '@api/dto';
 
 type AddBookInfo = Pick<BookListInfo, 'title' | 'author'>;
 
-const AddBookModal = () => {
+interface AddBookModalProps {
+  open: boolean;
+  toggleOpen: () => void;
+}
+
+const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
   const [form, setForm] = React.useState<AddBookInfo>({
     title: '',
     author: '',
@@ -18,8 +22,6 @@ const AddBookModal = () => {
   const [totalBookNumber, setTotalBookNumber] = useState<number | undefined>(1);
   const [validTitle, setValidTitle] = useState<boolean>(false);
   const [validAuthor, setValidAuthor] = useState<boolean>(false);
-
-  const [open, toggleOpen] = useReducer((prev) => !prev, false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,8 +46,6 @@ const AddBookModal = () => {
 
   return (
     <div className="flex">
-      <OutlinedButton onClick={() => toggleOpen()}>도서 추가</OutlinedButton>
-
       <ActionModal
         opened={open}
         handleOpen={toggleOpen}

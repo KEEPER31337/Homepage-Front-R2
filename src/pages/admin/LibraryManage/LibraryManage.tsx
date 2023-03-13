@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { BookListInfo } from '@api/dto';
 import PageTitle from '@components/Typography/PageTitle';
 import StandardTable from '@components/Table/StandardTable';
@@ -20,16 +20,21 @@ const LibraryManage = () => {
     }
   };
 
+  const [openAddBook, toggleOpenAddBook] = useReducer((prev) => !prev, false);
+  const [openDeleteBook, toggleOpenDeleteBook] = useReducer((prev) => !prev, false);
   return (
     <div>
       <PageTitle>도서관리</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
         <SearchSection />
         <div className="flex space-x-2">
-          <AddBookModal />
-          <DeleteBookModal />
+          <OutlinedButton onClick={() => toggleOpenAddBook()}>도서 추가</OutlinedButton>
+          <OutlinedButton onClick={() => toggleOpenDeleteBook()}>도서 삭제</OutlinedButton>
           <OutlinedButton>대출 관리</OutlinedButton>
           <OutlinedButton>반납 관리</OutlinedButton>
+
+          <AddBookModal open={openAddBook} toggleOpen={toggleOpenAddBook} />
+          <DeleteBookModal open={openDeleteBook} toggleOpen={toggleOpenDeleteBook} />
         </div>
       </div>
       <StandardTable<BookListInfo> columns={columns} rows={rows} childComponent={childComponent} />
