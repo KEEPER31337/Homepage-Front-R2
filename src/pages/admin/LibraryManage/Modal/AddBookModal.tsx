@@ -47,10 +47,11 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
   return (
     <div className="flex">
       <ActionModal
-        opened={open}
-        handleOpen={toggleOpen}
+        open={open}
+        onClose={toggleOpen}
         title="도서추가"
-        buttonName="추가"
+        modalWidth="xs"
+        actionButtonName="추가"
         onActionButonClick={() => {
           AddBookAPI();
         }}

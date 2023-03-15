@@ -10,10 +10,11 @@ const DeleteBookModal = ({ open, toggleOpen }: DeleteBookModalProps) => {
   return (
     <div className="flex">
       <ActionModal
-        opened={open}
-        handleOpen={toggleOpen}
+        open={open}
+        onClose={toggleOpen}
         title="도서삭제"
-        buttonName="삭제"
+        modalWidth="xs"
+        actionButtonName="삭제"
         onActionButonClick={() => {
           toggleOpen();
         }}
