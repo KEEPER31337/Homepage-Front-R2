@@ -3,7 +3,7 @@ import Countdown from '../Countdown/Countdown';
 import SeminarButton from '../Button/SeminarButton';
 import SeminarInput from '../Input/SeminarInput';
 
-const MemberCardComponent = () => {
+const MemberCardContent = () => {
   const [componentIncorrectAlert, setComponentIncorrectAlert] = useState(<p className="mb-[22px]" />);
   const incorrectCodeAlert = <p className="my-[4px] ">출석코드가 맞지 않습니다. 다시 입력해주세요.</p>;
   const attendLimit = new Date(); // 임시
@@ -38,4 +38,4 @@ const MemberCardComponent = () => {
   );
 };
 
-export default MemberCardComponent;
+export default MemberCardContent;

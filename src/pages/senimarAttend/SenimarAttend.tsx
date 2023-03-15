@@ -5,8 +5,8 @@ import FilledButton from '@components/Button/FilledButton';
 import PageTitle from '@components/Typography/PageTitle';
 import { Typography } from '@mui/material';
 import SeminarCard from './Card/SeminarCard';
-import BossCardComponent from './Card/BossCardComponent';
-import MemberCardComponent from './Card/MemberCardComponent';
+import BossCardContent from './Card/BossCardContent';
+import MemberCardContent from './Card/MemberCardContent';
 
 const SeminarAttend = () => {
   const [seminarDate, setSeminarDate] = useState('today');
@@ -28,7 +28,7 @@ const SeminarAttend = () => {
           {seminarActivated ? (
             <>
               <Typography className="text-center text-paragraph text-white">{seminarDate} 세미나</Typography>
-              {isBoss ? <BossCardComponent /> : <MemberCardComponent />}
+              {isBoss ? <BossCardContent /> : <MemberCardContent />}
             </>
           ) : (
             <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>

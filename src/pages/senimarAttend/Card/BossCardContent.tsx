@@ -4,7 +4,7 @@ import SeminarButton from '../Button/SeminarButton';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
 
-const BossCardComponent = () => {
+const BossCardContent = () => {
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [seminarExist, setSeminarExist] = useState(false); // Todo: api 적용
@@ -33,4 +33,4 @@ const BossCardComponent = () => {
   );
 };
 
-export default BossCardComponent;
+export default BossCardContent;
