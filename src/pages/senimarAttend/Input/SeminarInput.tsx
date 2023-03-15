@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 const inputStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -12,15 +12,18 @@ const inputStyle: React.CSSProperties = {
 
 interface SeminarInputProps {
   disabled?: boolean;
+  helperText?: ReactNode;
 }
-const SeminarInput = ({ disabled }: SeminarInputProps) => {
-  const inputListKey = [0, 1, 2, 3]; // key값 어떻게 줘야할지 모르겠어서 이렇게 했습니다 좋은방법좀ㅠㅠ
-
+const SeminarInput = ({ disabled, helperText }: SeminarInputProps) => {
+  const inputListKey = [0, 1, 2, 3];
   return (
-    <div className="mx-auto my-[22px] flex h-[52px] w-[192px] justify-between">
-      {inputListKey.map((key) => {
-        return <input key={key} style={inputStyle} maxLength={1} disabled={disabled} />;
-      })}
+    <div className="mx-auto my-[22px]">
+      <div className="flex h-[52px] w-[192px] justify-between">
+        {inputListKey.map((key) => {
+          return <input key={key} style={inputStyle} maxLength={1} disabled={disabled} />;
+        })}
+      </div>
+      <div className="flex items-center justify-center text-small text-red-500">{helperText}</div>
     </div>
   );
 };

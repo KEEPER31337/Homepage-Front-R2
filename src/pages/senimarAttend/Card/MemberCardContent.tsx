@@ -11,7 +11,7 @@ const MemberCardContent = () => {
   const Attendance = (today: Date) => {
     if (today < attendLimit) {
       // 임시: api에서 출석 status 가져올수 있으면 if문 필요없음
-      if (1) {
+      if (0) {
         setComponentIncorrectAlert(<p />);
       } else {
         setComponentIncorrectAlert(incorrectCodeAlert);
@@ -24,8 +24,7 @@ const MemberCardContent = () => {
 
   return (
     <>
-      <SeminarInput />
-      <div className="mx-auto flex items-center justify-center text-small text-red-500">{componentIncorrectAlert}</div>
+      <SeminarInput helperText={componentIncorrectAlert} />
       <SeminarButton
         onClick={() => {
           Attendance(new Date());
