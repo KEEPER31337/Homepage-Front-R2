@@ -1,14 +1,37 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { TextField, StandardTextFieldProps } from '@mui/material';
+import { FormControl, InputLabel, Input, FormHelperText, InputProps } from '@mui/material';
 
-interface StandardInputProps extends StandardTextFieldProps {
+interface StandardInputProps extends InputProps {
+  label?: string;
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
+  error?: boolean;
+  helperText?: string;
 }
 
-const StandardInput = ({ value, onChange, ...standardTextFieldProps }: StandardInputProps) => {
-  return <TextField value={value} onChange={onChange} {...standardTextFieldProps} variant="standard" />;
+const StandardInput = ({
+  label,
+  value,
+  onChange,
+  error,
+  helperText,
+  className,
+  ...standardTextFieldProps
+}: StandardInputProps) => {
+  return (
+    <FormControl className={className} variant="standard">
+      <InputLabel>{label}</InputLabel>
+      <Input
+        className={error ? '' : 'before:!border-b-pointBlue'}
+        value={value}
+        onChange={onChange}
+        error={error}
+        {...standardTextFieldProps}
+      />
+      <FormHelperText error={error}>{helperText}</FormHelperText>
+    </FormControl>
+  );
 };
 
 export default StandardInput;
