@@ -11,6 +11,15 @@ const muiTheme = createTheme({
       contrastText: '#4CEEF9',
     },
   },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiInput-root:before': { borderColor: '#4CEEF9' },
+        },
+      },
+    },
+  },
 });
 
 export default muiTheme;
