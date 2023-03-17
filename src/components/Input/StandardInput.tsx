@@ -8,7 +8,19 @@ interface StandardInputProps extends StandardTextFieldProps {
 }
 
 const StandardInput = ({ value, onChange, ...standardTextFieldProps }: StandardInputProps) => {
-  return <TextField value={value} onChange={onChange} {...standardTextFieldProps} variant="standard" />;
+  return (
+    <TextField
+      sx={{
+        '& .MuiInput-underline:before': {
+          borderBottomColor: '#4CEEF9 !important',
+        },
+      }}
+      value={value}
+      onChange={onChange}
+      {...standardTextFieldProps}
+      variant="standard"
+    />
+  );
 };
 
 export default StandardInput;
