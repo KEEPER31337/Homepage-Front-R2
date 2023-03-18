@@ -37,7 +37,13 @@ const MemberCardContent = () => {
           출석
         </FilledButton>
       </div>
-      <Countdown />
+      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
+        <div className="grid content-between">
+          <div>출석</div>
+          <div>지각</div>
+        </div>
+        <Countdown />
+      </div>
     </>
   );
 };

@@ -5,7 +5,7 @@ import { SelectChangeEvent } from '@mui/material';
 interface SeminarSelectorProps {
   limitValue?: number;
   setLimitValue: React.Dispatch<React.SetStateAction<number>>;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const SeminarSelector = ({ limitValue, setLimitValue, children }: SeminarSelectorProps) => {
@@ -20,7 +20,7 @@ const SeminarSelector = ({ limitValue, setLimitValue, children }: SeminarSelecto
   };
 
   return (
-    <div className=" mx-auto flex h-[36px] items-end justify-center whitespace-nowrap">
+    <div className=" mx-auto flex h-[24px] items-end justify-center whitespace-nowrap">
       <p className="mr-[25px] mb-[5px] font-semibold">{children}</p>
       <Selector
         className="flex w-[92px] text-center"
