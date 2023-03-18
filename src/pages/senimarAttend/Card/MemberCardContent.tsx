@@ -9,10 +9,12 @@ const MemberCardContent = () => {
   const incorrectCodeAlert = <p className="my-[4px] ">출석코드가 맞지 않습니다. 다시 입력해주세요.</p>;
   const attendLimit = new Date(); // 임시
   attendLimit.setMinutes(attendLimit.getMinutes() + 5); // 임시
+  const inputCode = [0, 0, 0, 0];
+  const validCode = '1234'; // 임시
   const Attendance = (today: Date) => {
     if (today < attendLimit) {
       // 임시: api에서 출석 status 가져올수 있으면 if문 필요없음
-      if (0) {
+      if (inputCode.join('') === validCode) {
         setComponentIncorrectAlert(<p />);
       } else {
         setComponentIncorrectAlert(incorrectCodeAlert);
