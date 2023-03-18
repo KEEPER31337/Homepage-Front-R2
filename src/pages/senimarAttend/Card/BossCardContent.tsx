@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import FilledButton from '@components/Button/FilledButton';
 import Countdown from '../Countdown/Countdown';
-import SeminarButton from '../Button/SeminarButton';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
 
@@ -16,7 +16,9 @@ const BossCardContent = () => {
   return (
     <>
       <SeminarInput disabled />
-      <SeminarButton onClick={startSeminar}>시작</SeminarButton>
+      <div className="flex justify-center">
+        <FilledButton onClick={startSeminar}>시작</FilledButton>
+      </div>
       {seminarExist ? (
         <Countdown />
       ) : (

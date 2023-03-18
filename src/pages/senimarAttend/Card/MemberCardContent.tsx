@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FilledButton from '@components/Button/FilledButton';
 import Countdown from '../Countdown/Countdown';
 import SeminarButton from '../Button/SeminarButton';
 import SeminarInput from '../Input/SeminarInput';
@@ -25,13 +26,15 @@ const MemberCardContent = () => {
   return (
     <>
       <SeminarInput helperText={componentIncorrectAlert} />
-      <SeminarButton
-        onClick={() => {
-          Attendance(new Date());
-        }}
-      >
-        출석
-      </SeminarButton>
+      <div className="flex justify-center">
+        <FilledButton
+          onClick={() => {
+            Attendance(new Date());
+          }}
+        >
+          출석
+        </FilledButton>
+      </div>
       <Countdown />
     </>
   );
