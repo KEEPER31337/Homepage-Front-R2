@@ -1,32 +1,35 @@
 import React from 'react';
-import { Dialog, DialogHeader, DialogBody, DialogFooter, Typography } from '@material-tailwind/react';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import FilledButton from '@components/Button/FilledButton';
 import TextButton from '@components/Button/TextButton';
 
 interface ActionModalProps {
-  opened: boolean;
-  handleOpen: () => void;
+  open: boolean;
+  onClose: () => void;
+  modalWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   title: string;
   children: React.ReactNode;
-  buttonName: string;
+  actionButtonName: string;
   onActionButonClick: () => void;
 }
 
-const ActionModal = ({ opened, handleOpen, title, children, buttonName, onActionButonClick }: ActionModalProps) => {
+const ActionModal = ({
+  open,
+  onClose,
+  modalWidth,
+  title,
+  children,
+  actionButtonName,
+  onActionButonClick,
+}: ActionModalProps) => {
   return (
-    <Dialog open={opened} handler={handleOpen} className="rounded-lg bg-subBlack">
-      <div className="mt-5 ml-10 mb-2 mr-10">
-        <DialogHeader className="break-all text-pointBlue">
-          <Typography variant="h3">{title}</Typography>
-        </DialogHeader>
-        <DialogBody className="mb-20 break-all text-white">
-          <Typography variant="paragraph">{children}</Typography>
-        </DialogBody>
-        <DialogFooter className="absolute right-1 bottom-1">
-          <TextButton onClick={handleOpen}>취소</TextButton>
-          <FilledButton onClick={onActionButonClick}>{buttonName}</FilledButton>
-        </DialogFooter>
-      </div>
+    <Dialog open={open} PaperProps={{ className: 'px-2 py-1' }} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
+      <DialogTitle className="!font-bold text-pointBlue">{title}</DialogTitle>
+      <DialogContent className="min-h-[80px] min-w-[350px]">{children}</DialogContent>
+      <DialogActions>
+        <TextButton onClick={onClose}>취소</TextButton>
+        <FilledButton onClick={onActionButonClick}>{actionButtonName}</FilledButton>
+      </DialogActions>
     </Dialog>
   );
 };

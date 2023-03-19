@@ -1,18 +1,20 @@
-import React, { useReducer } from 'react';
-import OutlinedButton from '@components/Button/OutlinedButton';
+import React from 'react';
 import ActionModal from '@components/Modal/ActionModal';
 
-const DeleteBookModal = () => {
-  const [open, toggleOpen] = useReducer((prev) => !prev, false);
+interface DeleteBookModalProps {
+  open: boolean;
+  toggleOpen: () => void;
+}
+
+const DeleteBookModal = ({ open, toggleOpen }: DeleteBookModalProps) => {
   return (
     <div className="flex">
-      <OutlinedButton onClick={() => toggleOpen()}>도서 삭제</OutlinedButton>
-
       <ActionModal
-        opened={open}
-        handleOpen={toggleOpen}
+        open={open}
+        onClose={toggleOpen}
         title="도서삭제"
-        buttonName="삭제"
+        modalWidth="xs"
+        actionButtonName="삭제"
         onActionButonClick={() => {
           toggleOpen();
         }}

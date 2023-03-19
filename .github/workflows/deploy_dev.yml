@@ -1,0 +1,79 @@
+name: Deploy Keeper Development Client
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy_development:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Create Env File
+        run: |
+          touch .env
+          echo "${{ secrets.ENV_DEV }}" >> .env
+
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Build
+        run: CI= npm run build
+
+      - name: Compress
+        run: tar -zcvf ${GITHUB_SHA::8}.tar.gz build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        run: |
+          aws s3 mv --region ap-northeast-2 \
+          ${GITHUB_SHA::8}.tar.gz \
+          ${{ secrets.S3_DEV_FRONT_LOCATION }}/${GITHUB_SHA::8}.tar.gz
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_DEV }}
+          username: ${{ secrets.SSH_USERNAME_DEV }}
+          port: ${{ secrets.SSH_PORT_DEV }}
+          key: ${{ secrets.SSH_KEY_DEV }}
+          envs: GITHUB_SHA
+          script: |
+            cd ~/keeper/renewal/deploy
+            ./deploy_client.sh ${GITHUB_SHA::8} dev
+
+      - name: Notify Slack
+        if: always()
+        uses: 8398a7/action-slack@v3
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          status: ${{ job.status }}
+          author_name: Keeper Devlopment Frontend CICD
+          fields: repo, commit, message, author, action, took

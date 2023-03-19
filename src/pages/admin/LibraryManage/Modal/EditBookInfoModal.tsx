@@ -44,10 +44,10 @@ const EditBookInfoModal = ({ openEditModal, toggleOpenEditModal, EditModalRowDat
   return (
     <div className="flex">
       <ActionModal
-        opened={openEditModal}
-        handleOpen={toggleOpenEditModal}
+        open={openEditModal}
+        onClose={toggleOpenEditModal}
         title="도서수정"
-        buttonName="수정"
+        actionButtonName="수정"
         onActionButonClick={() => {
           console.log('도서 삭제 api', form.title, form.author);
         }}
