@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import StepProgress from '@components/Progress/StepProgress';
+import OutlinedButton from '@components/Button/OutlinedButton';
 
 const SignUp = () => {
   const TOTAL_STEPS = 3;
@@ -18,8 +19,13 @@ const SignUp = () => {
     <div className="grid h-screen place-content-center place-items-center">
       <Logo className="mb-9 w-48" />
       <Box className="h-[492px] w-[690px] border border-pointBlue px-24 py-14">
-        <StepProgress className="mb-2 w-32" currentStep={currentStep} totalStep={TOTAL_STEPS} />
-        <Typography className="whitespace-pre !font-semibold">{stepInfoMsg[currentStep]}</Typography>
+        <Stack className="relative h-full w-full">
+          <StepProgress className="mb-2 w-32" currentStep={currentStep} totalStep={TOTAL_STEPS} />
+          <Typography className="whitespace-pre !font-semibold">{stepInfoMsg[currentStep]}</Typography>
+          <div className="absolute right-0 bottom-0">
+            <OutlinedButton>다음</OutlinedButton>
+          </div>
+        </Stack>
       </Box>
     </div>
   );
