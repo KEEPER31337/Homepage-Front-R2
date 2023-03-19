@@ -20,6 +20,7 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
   });
   const { title, author } = form;
   const [totalBookNumber, setTotalBookNumber] = useState<number | undefined>(1);
+
   const [validTitle, setValidTitle] = useState<boolean>(false);
   const [validAuthor, setValidAuthor] = useState<boolean>(false);
 
@@ -56,24 +57,32 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
           AddBookAPI();
         }}
       >
-        <div className="flex h-full w-full flex-col space-y-2 ">
-          <StandardInput
-            label="도서명"
-            error={validTitle}
-            helperText={validTitle && '도서명을 입력해주세요'}
-            name="title"
-            value={title}
-            onChange={onChange}
-          />
-          <StandardInput
-            error={validAuthor}
-            helperText={validAuthor && '저자명을 입력해주세요'}
-            name="author"
-            value={author}
-            onChange={onChange}
-            label="저자명"
-          />
-          <TotalBookNumberSelector value={totalBookNumber} setValue={setTotalBookNumber} />
+        <div className="flex h-full w-full flex-col space-y-5">
+          <div className="flex flex-col">
+            도서명
+            <StandardInput
+              error={validTitle}
+              helperText={validTitle && '도서명을 입력해주세요'}
+              name="title"
+              value={title}
+              onChange={onChange}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            저자
+            <StandardInput
+              error={validAuthor}
+              helperText={validAuthor && '저자명을 입력해주세요'}
+              name="author"
+              value={author}
+              onChange={onChange}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            권수 <TotalBookNumberSelector value={totalBookNumber} setValue={setTotalBookNumber} />
+          </div>
         </div>
       </ActionModal>
     </div>
