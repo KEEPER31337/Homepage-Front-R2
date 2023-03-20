@@ -24,14 +24,16 @@ const BossCardContent = () => {
           <div>출석</div>
           <div>지각</div>
         </div>
-        {seminarExist ? (
-          <Countdown />
-        ) : (
-          <div className="grid content-between">
-            <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue} />
-            <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue} />
-          </div>
-        )}
+        <div className="grid content-between">
+          {seminarExist ? (
+            <Countdown />
+          ) : (
+            <>
+              <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue} />
+              <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue} />
+            </>
+          )}
+        </div>
       </div>
     </>
   );
