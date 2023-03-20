@@ -11,7 +11,8 @@ const MemberCardContent = () => {
   attendLimit.setMinutes(attendLimit.getMinutes() + 5); // 임시
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
-  const Attendance = (today: Date) => {
+
+  const handleAttendButtonClick = (today: Date) => {
     if (today < attendLimit) {
       // 임시: api에서 출석 status 가져올수 있으면 if문 필요없음
       if (inputCode.join('') === validCode) {
@@ -31,7 +32,7 @@ const MemberCardContent = () => {
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
-            Attendance(new Date());
+            handleAttendButtonClick(new Date());
           }}
         >
           출석
