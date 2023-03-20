@@ -36,7 +36,9 @@ const MemberCardContent = () => {
           <div>출석</div>
           <div>지각</div>
         </div>
-        <Countdown />
+        <div className="grid content-between">
+          <Countdown />
+        </div>
       </div>
     </>
   );
