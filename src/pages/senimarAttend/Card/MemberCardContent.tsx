@@ -4,30 +4,24 @@ import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 
 const MemberCardContent = () => {
-  const [componentIncorrectAlert, setComponentIncorrectAlert] = useState('');
-  const incorrectCodeAlert = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
+  const [isAttendable, setIsAttendable] = useState(false);
+  const [isCorrectCode, setIsCorrectCode] = useState(false);
+
+  const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
+  const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
   const attendLimit = new Date(); // 임시
   attendLimit.setMinutes(attendLimit.getMinutes() + 5); // 임시
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
 
-  const handleAttendButtonClick = (today: Date) => {
-    if (today < attendLimit) {
-      // 임시: api에서 출석 status 가져올수 있으면 if문 필요없음
-      if (inputCode.join('') === validCode) {
-        setComponentIncorrectAlert('');
-      } else {
-        setComponentIncorrectAlert(incorrectCodeAlert);
-        // TODO: Input 내용물 전부 지우기
-      }
-    } else {
-      setComponentIncorrectAlert('');
-    }
+  const handleAttendButtonClick = (nowTime: Date) => {
+    setIsAttendable(nowTime < attendLimit);
+    setIsCorrectCode(inputCode.join('') === validCode);
   };
 
   return (
     <>
-      <SeminarInput helperText={componentIncorrectAlert} />
+      <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
