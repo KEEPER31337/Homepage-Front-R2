@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import Countdown from '../Countdown/Countdown';
-import SeminarButton from '../Button/SeminarButton';
 import SeminarInput from '../Input/SeminarInput';
 
 const MemberCardContent = () => {
