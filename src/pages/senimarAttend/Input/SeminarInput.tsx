@@ -12,7 +12,7 @@ const inputStyle: React.CSSProperties = {
 
 interface SeminarInputProps {
   disabled?: boolean;
-  helperText?: ReactNode;
+  helperText?: string;
 }
 const SeminarInput = ({ disabled, helperText }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3];
