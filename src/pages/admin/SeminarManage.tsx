@@ -25,10 +25,10 @@ const SeminarManage = () => {
       <div className="mt-4 flex justify-end space-x-2">
         <OutlinedButton onClick={setOpenSeminarAddModal}>추가</OutlinedButton>
         <ActionModal
-          opened={openSeminarAddModal}
-          handleOpen={setOpenSeminarAddModal}
+          open={openSeminarAddModal}
+          onClose={setOpenSeminarAddModal}
           title="세미나 일정 추가"
-          buttonName="추가"
+          actionButtonName="추가"
           onActionButonClick={() => {
             handleSeminarAddButtonClick();
             setOpenSeminarAddModal();
