@@ -19,18 +19,22 @@ const BossCardContent = () => {
       <div className="flex justify-center">
         <FilledButton onClick={startSeminar}>시작</FilledButton>
       </div>
-      {seminarExist ? (
-        <Countdown />
-      ) : (
-        <>
-          <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue}>
-            출석
-          </SeminarSelector>
-          <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue}>
-            지각
-          </SeminarSelector>
-        </>
-      )}
+      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
+        <div className="grid content-between">
+          <div>출석</div>
+          <div>지각</div>
+        </div>
+        <div className="grid content-between">
+          {seminarExist ? (
+            <Countdown />
+          ) : (
+            <>
+              <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue} />
+              <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue} />
+            </>
+          )}
+        </div>
+      </div>
     </>
   );
 };

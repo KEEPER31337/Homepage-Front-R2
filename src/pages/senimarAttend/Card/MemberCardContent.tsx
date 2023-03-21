@@ -1,41 +1,45 @@
 import React, { useState } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import Countdown from '../Countdown/Countdown';
-import SeminarButton from '../Button/SeminarButton';
 import SeminarInput from '../Input/SeminarInput';
 
 const MemberCardContent = () => {
-  const [componentIncorrectAlert, setComponentIncorrectAlert] = useState(<p className="mb-[22px]" />);
-  const incorrectCodeAlert = <p className="my-[4px] ">출석코드가 맞지 않습니다. 다시 입력해주세요.</p>;
+  const [isAttendable, setIsAttendable] = useState(false);
+  const [isCorrectCode, setIsCorrectCode] = useState(false);
+
+  const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
+  const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
   const attendLimit = new Date(); // 임시
   attendLimit.setMinutes(attendLimit.getMinutes() + 5); // 임시
-  const Attendance = (today: Date) => {
-    if (today < attendLimit) {
-      // 임시: api에서 출석 status 가져올수 있으면 if문 필요없음
-      if (0) {
-        setComponentIncorrectAlert(<p />);
-      } else {
-        setComponentIncorrectAlert(incorrectCodeAlert);
-        // TODO: Input 내용물 전부 지우기
-      }
-    } else {
-      setComponentIncorrectAlert(<p />);
-    }
+  const inputCode = [0, 0, 0, 0];
+  const validCode = '1234'; // 임시
+
+  const handleAttendButtonClick = (nowTime: Date) => {
+    setIsAttendable(nowTime < attendLimit);
+    setIsCorrectCode(inputCode.join('') === validCode);
   };
 
   return (
     <>
-      <SeminarInput helperText={componentIncorrectAlert} />
+      <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
-            Attendance(new Date());
+            handleAttendButtonClick(new Date());
           }}
         >
           출석
         </FilledButton>
       </div>
-      <Countdown />
+      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
+        <div className="grid content-between">
+          <div>출석</div>
+          <div>지각</div>
+        </div>
+        <div className="grid content-between">
+          <Countdown />
+        </div>
+      </div>
     </>
   );
 };

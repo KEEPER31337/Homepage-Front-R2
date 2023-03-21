@@ -23,7 +23,7 @@ const SeminarInput = ({ disabled, helperText }: SeminarInputProps) => {
           return <input key={key} style={inputStyle} maxLength={1} disabled={disabled} />;
         })}
       </div>
-      <div className="flex items-center justify-center text-small text-red-500">{helperText}</div>
+      <div className="my-[4px] flex items-center justify-center text-small text-red-500">{helperText}</div>
     </div>
   );
 };
