@@ -14,6 +14,10 @@ const SeminarManage = () => {
   const [date, setDate] = React.useState<DateTime | null>(null);
 
   const [openSeminarAddModal, setOpenSeminarAddModal] = useState(false);
+  const [openSeminarDeleteModal, setOpenSeminarDeleteModal] = useState(false);
+  const handleSeminarDeleteButtonClick = () => {
+    // TODO
+  };
   const handleSeminarAddButtonClick = () => {
     // TODO
   };
@@ -38,7 +42,21 @@ const SeminarManage = () => {
             <StandardDatePicker date={date} setDate={setDate} label="날짜" />
           </div>
         </ActionModal>
-        <OutlinedButton>삭제</OutlinedButton>
+        <OutlinedButton onClick={() => setOpenSeminarDeleteModal(true)}>삭제</OutlinedButton>
+        <ActionModal
+          open={openSeminarDeleteModal}
+          onClose={() => setOpenSeminarDeleteModal(false)}
+          title="세미나 일정 삭제"
+          actionButtonName="삭제"
+          onActionButonClick={() => {
+            handleSeminarDeleteButtonClick();
+            setOpenSeminarDeleteModal(false);
+          }}
+        >
+          <div className="flex justify-center">
+            <StandardDatePicker date={date} setDate={setDate} label="날짜" />
+          </div>
+        </ActionModal>
       </div>
     </div>
   );
