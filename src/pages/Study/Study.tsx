@@ -19,20 +19,20 @@ const seasonList = [
 ];
 
 const Study = () => {
-  const [currentYear, setCurrentYear] = useState(0);
-  const [currentSeason, setCurrentSeason] = useState(0);
+  const [currentPeriod, setCurrentPeriod] = useState({ year: 0, season: 0 });
   const [currentStudyList, setCurrentStudyList] = useState(studyList);
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
   const [selectedStudy, setSelectedStudy] = useState({});
 
   const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
 
-  const handleYearChange = (event: SelectChangeEvent<unknown>) => {
-    setCurrentYear(Number(event.target.value as string));
-  };
-
-  const handleSeasonChange = (event: SelectChangeEvent<unknown>) => {
-    setCurrentSeason(Number(event.target.value as string));
+  const handlePeriodChange = (event: SelectChangeEvent<unknown>) => {
+    if (event.target.name === 'year') {
+      setCurrentPeriod({ ...currentPeriod, year: Number(event.target.value as string) });
+      return;
+    }
+    if (event.target.name === 'season')
+      setCurrentPeriod({ ...currentPeriod, season: Number(event.target.value as string) });
   };
 
   const handleStudyCreateButtonClick = () => {
@@ -41,29 +41,40 @@ const Study = () => {
   };
   /* 처음 한 번만 동작하는 useEffect, 페이지 초기 값 셋팅 */
   useEffect(() => {
-    setCurrentYear(0);
-    setCurrentSeason(0); /* TODO 현재 연도, 분기 가져와서 초기화 */
+    setCurrentPeriod({ year: 0, season: 0 }); /* TODO 현재 연도, 분기 가져와서 초기화 */
     setCurrentStudyList(studyList); /* TODO 현재 연도/분기에 따른 스터디 리스트 불러와서 초기화 */
   }, []);
 
   /* 페이지 데이터(year, season)가 업데이트 될 때마다 동작하는 useEffect */
   useEffect(() => {
     setCurrentStudyList(studyList); /* TODO 현재 연도/분기에 따른 스터디 리스트 불러와서 초기화 */
-  }, [currentYear, currentSeason]);
+  }, [currentPeriod]);
 
   return (
     <div>
       <PageTitle>스터디</PageTitle>
       <div className="mb-5 flex items-center justify-between">
         <div className="flex space-x-2">
-          <Selector className="w-24" options={yearList} value={currentYear} onChange={handleYearChange} />
-          <Selector className="w-24" options={seasonList} value={currentSeason} onChange={handleSeasonChange} />
+          <Selector
+            className="w-24"
+            name="year"
+            options={yearList}
+            value={currentPeriod.year}
+            onChange={handlePeriodChange}
+          />
+          <Selector
+            className="w-24"
+            name="season"
+            options={seasonList}
+            value={currentPeriod.season}
+            onChange={handlePeriodChange}
+          />
         </div>
-        {Number(yearList[currentYear].content) >= OLD_YEAR_BOUND && (
+        {Number(yearList[currentPeriod.year].content) >= OLD_YEAR_BOUND && (
           <OutlinedButton onClick={handleStudyCreateButtonClick}>추가</OutlinedButton>
         )}
       </div>
-      {Number(yearList[currentYear].content) < OLD_YEAR_BOUND ? (
+      {Number(yearList[currentPeriod.year].content) < OLD_YEAR_BOUND ? (
         <OldStudy
           list={currentStudyList}
           memberId={myMemberId}
