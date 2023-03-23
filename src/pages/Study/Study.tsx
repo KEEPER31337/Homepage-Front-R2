@@ -30,9 +30,11 @@ const Study = () => {
   const handleYearChange = (event: SelectChangeEvent<unknown>) => {
     setCurrentYear(Number(event.target.value as string));
   };
+
   const handleSeasonChange = (event: SelectChangeEvent<unknown>) => {
     setCurrentSeason(Number(event.target.value as string));
   };
+
   const handleStudyCreateButtonClick = () => {
     toggleOpen();
     setSelectedStudy({});
@@ -52,16 +54,10 @@ const Study = () => {
   return (
     <div>
       <PageTitle>스터디</PageTitle>
-      <div className="mb-5 flex  items-center justify-between">
+      <div className="mb-5 flex items-center justify-between">
         <div className="flex space-x-2">
-          <Selector className="w-24" label="" options={yearList} value={currentYear} onChange={handleYearChange} />
-          <Selector
-            className="w-24"
-            label=""
-            options={seasonList}
-            value={currentSeason}
-            onChange={handleSeasonChange}
-          />
+          <Selector className="w-24" options={yearList} value={currentYear} onChange={handleYearChange} />
+          <Selector className="w-24" options={seasonList} value={currentSeason} onChange={handleSeasonChange} />
         </div>
         {Number(yearList[currentYear].content) >= OLD_YEAR_BOUND && (
           <OutlinedButton onClick={handleStudyCreateButtonClick}>추가</OutlinedButton>

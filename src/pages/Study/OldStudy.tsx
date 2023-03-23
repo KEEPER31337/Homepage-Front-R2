@@ -1,5 +1,5 @@
 import React, { Dispatch, DispatchWithoutAction, Fragment, SetStateAction } from 'react';
-import type { StudyListInfo } from '@mocks/StudyApi';
+import type { StudyListInfo } from '@api/dto';
 import StudyAccordion from './Accordion/StudyAccordion';
 
 interface OldStudyProps {
@@ -15,12 +15,7 @@ const OldStudy = ({ list, memberId, toggleOpen, setSelectedStudy }: OldStudyProp
       {/* TODO 추후 게시판이 구현되면 컴포넌트를 그대로 가져와서 사용할 예정!! */}
       {list?.map((study) => (
         <Fragment key={study.id}>
-          <StudyAccordion
-            study={study}
-            memberId={memberId}
-            toggleOpen={toggleOpen}
-            setSelectedStudy={setSelectedStudy}
-          />
+          <p>{study.title}</p>
         </Fragment>
       ))}
     </div>

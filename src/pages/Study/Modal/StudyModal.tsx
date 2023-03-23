@@ -4,7 +4,7 @@ import { SiNotion } from 'react-icons/si';
 import { Typography } from '@material-tailwind/react';
 
 import ActionModal from '@components/Modal/ActionModal';
-import { StudyListInfo } from '@mocks/StudyApi';
+import { StudyListInfo } from '@api/dto';
 import StudyInput from '../share/StudyInput';
 import StudyTextarea from '../share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
@@ -35,7 +35,7 @@ const StudyModal = ({ open, handleOpen, selectedStudy }: StudyModalProps): JSX.E
           <div className="w-[141px] space-y-[10px]">
             <Typography className="text-pointBlue">썸네일</Typography>
             <div className="flex h-[130px] w-[130px] items-center justify-center rounded-[10px] border-2 border-dashed border-pointBlue/30 text-pointBlue/30">
-              aaa{selectedStudy?.title}
+              {selectedStudy?.title}
             </div>
           </div>
         </div>
@@ -81,7 +81,7 @@ const StudyModal = ({ open, handleOpen, selectedStudy }: StudyModalProps): JSX.E
                 <div className="w-[90px]">
                   <StudyInput size="md" variant="static" label="etc." placeholder="ex)Plato" />
                 </div>
-                <StudyInput size="md" variant="static" label="" placeholder="https://" />
+                <StudyInput size="md" variant="static" placeholder="https://" />
               </div>
             </div>
           </div>

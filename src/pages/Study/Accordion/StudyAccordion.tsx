@@ -11,10 +11,12 @@ import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-
 import { SiNotion } from 'react-icons/si';
 
 import { Divider } from '@mui/material';
-import type { StudyListInfo } from '@mocks/StudyApi';
+import type { StudyListInfo } from '@api/dto';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { Link } from 'react-router-dom';
 import { StudyChip } from '../share/StudyChip';
+
+// TODO MUI 라이브러리로 변경
 
 interface StudyAccordionProps {
   study: StudyListInfo;
@@ -53,7 +55,7 @@ const theme = {
   } satisfies AccordionStylesType,
 };
 
-const AccordionHeaderContent = ({ study }: StudyAccordionHeaderProps) => {
+const StudyAccordionHeader = ({ study }: StudyAccordionHeaderProps) => {
   return (
     <div className="flex w-full space-x-6 pl-2 text-left">
       <span className="max-w-16 max-h-16 bg-gray-300">이미지</span>
@@ -70,7 +72,7 @@ const AccordionHeaderContent = ({ study }: StudyAccordionHeaderProps) => {
   );
 };
 
-const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudy }: StudyAccordionProps) => {
+const StudyAccordionBody = ({ study, memberId, toggleOpen, setSelectedStudy }: StudyAccordionProps) => {
   interface IconType {
     [key: string]: JSX.Element;
   }
@@ -88,6 +90,7 @@ const AccordionBodyContent = ({ study, memberId, toggleOpen, setSelectedStudy }:
     setSelectedStudy(study);
   };
   const handleStudyDeleteButtonClick = () => {
+    // TODO 기능 구현 후 삭제 예정
     console.log(`${study.title}삭제`);
   };
 
@@ -137,10 +140,10 @@ const StudyAccordion = ({ study, memberId, toggleOpen, setSelectedStudy }: Study
     <ThemeProvider value={theme}>
       <Accordion open={open} icon={open ? <VscChevronUp /> : <VscChevronDown />}>
         <AccordionHeader className="h-20" onClick={setOpen}>
-          <AccordionHeaderContent study={study} />
+          <StudyAccordionHeader study={study} />
         </AccordionHeader>
         <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
-          <AccordionBodyContent
+          <StudyAccordionBody
             study={study}
             memberId={memberId}
             toggleOpen={toggleOpen}

@@ -1,36 +1,5 @@
-interface StudyLinkInfo {
-  title: string;
-  contents: string;
-}
-interface StudyMemberInfo {
-  id: number;
-  emailAddress: string;
-  nickName: string;
-  realName: string;
-  registerDate: string;
-  point: number;
-  level: number;
-  rank: string;
-  type: string;
-  jobs: string[];
-  thumbnailPath: string;
-  merit: number;
-  demerit: number;
-  generation: number;
-}
-interface StudyListInfo {
-  id: number;
-  title: string;
-  information: string;
-  memberNumber: number;
-  registerTime: string;
-  year: number;
-  season: number;
-  link: StudyLinkInfo[];
-  thumbnailPath: string;
-  headMember: StudyMemberInfo;
-  memberList: StudyMemberInfo[];
-}
+import { StudyListInfo } from '@api/dto';
+
 const studyList: StudyListInfo[] = [
   {
     id: 10,
@@ -220,4 +189,3 @@ const yearList = [
 ];
 
 export { studyList, yearList };
-export type { StudyLinkInfo, StudyMemberInfo, StudyListInfo };
