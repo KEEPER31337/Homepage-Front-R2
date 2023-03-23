@@ -27,7 +27,7 @@ const StudyModal = ({ open, handleOpen, selectedStudy }: StudyModalProps): JSX.E
       onActionButonClick={handleOpen}
     >
       <div className="space-y-6">
-        <div className="flex space-x-4">
+        <div className="flex space-x-2">
           <div className="w-full space-y-6">
             <StudyInput size="lg" variant="static" label="스터디명" placeholder="스터디 이름을 적어주세요." />
             <StudyTextarea variant="static" label="스터디 소개" placeholder="스터디 소개를 적어주세요." />
@@ -39,7 +39,7 @@ const StudyModal = ({ open, handleOpen, selectedStudy }: StudyModalProps): JSX.E
             </div>
           </div>
         </div>
-        <div className="flex space-x-4">
+        <div className="flex space-x-2">
           <div className="w-[108px] space-y-1">
             <Typography className="text-pointBlue">스터디장</Typography>
             <div className="flex border-b-2 border-pointBlue py-[6px]">
@@ -48,7 +48,7 @@ const StudyModal = ({ open, handleOpen, selectedStudy }: StudyModalProps): JSX.E
           </div>
           <div className="w-full space-y-1">
             <Typography className="text-pointBlue">스터디원</Typography>
-            <div className="flex space-x-1 border-b-2 border-pointBlue py-[6px]">
+            <div className="flex space-x-2 border-b-2 border-pointBlue py-[6px]">
               <StudyChip value="박재열" />
               {memberList.map((member) => (
                 <StudyChipDismissible
@@ -77,7 +77,7 @@ const StudyModal = ({ open, handleOpen, selectedStudy }: StudyModalProps): JSX.E
             </div>
             <div className="flex space-x-2">
               <VscLink className="h-[25px] w-[25px] text-pointBlue" />
-              <div className="flex w-full space-x-4">
+              <div className="flex w-full space-x-2">
                 <div className="w-[90px]">
                   <StudyInput size="md" variant="static" label="etc." placeholder="ex)Plato" />
                 </div>

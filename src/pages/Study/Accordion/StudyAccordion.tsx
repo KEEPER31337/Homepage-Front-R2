@@ -25,9 +25,7 @@ interface StudyAccordionProps {
   setSelectedStudy: Dispatch<SetStateAction<StudyListInfo>>;
 }
 
-interface StudyAccordionHeaderProps {
-  study: StudyListInfo;
-}
+type StudyAccordionHeaderProps = Pick<StudyAccordionProps, 'study'>;
 
 const theme = {
   accordion: {
@@ -57,7 +55,7 @@ const theme = {
 
 const StudyAccordionHeader = ({ study }: StudyAccordionHeaderProps) => {
   return (
-    <div className="flex w-full space-x-6 pl-2 text-left">
+    <div className="flex w-full space-x-2 pl-2 text-left">
       <span className="max-w-16 max-h-16 bg-gray-300">이미지</span>
       <div className="flex w-full items-center justify-between">
         <Typography className="text-h3 font-bold">{study.title}</Typography>
@@ -101,13 +99,11 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setSelectedStudy }: S
           <Typography className="font-semibold">스터디 소개</Typography>
           <Typography className="border-l-2 border-pointBlue px-2">{information}</Typography>
         </div>
-        {memberId === headMember.id ? (
-          <div className="space-x-3">
+        {memberId === headMember.id && (
+          <div className="space-x-2">
             <OutlinedButton onClick={handleStudyModifyButtonClick}>수정</OutlinedButton>
             <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
           </div>
-        ) : (
-          ''
         )}
       </div>
       <div className="space-y-4">
@@ -120,9 +116,9 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setSelectedStudy }: S
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">링크</Typography>
-        <div className="flex space-x-4 text-pointBlue">
+        <div className="flex space-x-2 text-pointBlue">
           {study.link?.map(({ title, contents }) => (
-            <Link to={contents} target="_blank" key={title} className="flex items-center space-x-1">
+            <Link to={contents} target="_blank" key={title} className="flex items-center space-x-2">
               <span>{LinkIconData[title] ? LinkIconData[title] : LinkIconData.etc}</span>
               <span className="border-b border-pointBlue">{title}</span>
             </Link>

@@ -8,6 +8,7 @@ interface OldStudyProps {
   toggleOpen: DispatchWithoutAction;
   setSelectedStudy: Dispatch<SetStateAction<StudyListInfo>>;
 }
+
 const OldStudy = ({ list, memberId, toggleOpen, setSelectedStudy }: OldStudyProps) => {
   return (
     <div className="">
