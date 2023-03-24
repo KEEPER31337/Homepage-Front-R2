@@ -24,7 +24,6 @@ export interface BookListInfo {
   no: number;
   title: string;
   author: string;
-
   borrowState: string;
   information: string;
   enable: boolean;
