@@ -81,7 +81,7 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
           </div>
 
           <div className="flex flex-col">
-            권수 <TotalBookNumberSelector value={totalBookNumber} setValue={setTotalBookNumber} />
+            권수 <TotalBookNumberSelector className="w-fit" value={totalBookNumber} setValue={setTotalBookNumber} />
           </div>
         </div>
       </ActionModal>
