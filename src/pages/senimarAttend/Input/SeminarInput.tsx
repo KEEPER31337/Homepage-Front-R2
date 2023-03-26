@@ -39,11 +39,11 @@ const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps)
           focusInput3.current?.focus();
           break;
         case 3:
-          setInputCode?.(inputCode.join(''));
           break;
         default:
           break;
       }
+      setInputCode?.(inputCode.join(''));
     }
   };
 
