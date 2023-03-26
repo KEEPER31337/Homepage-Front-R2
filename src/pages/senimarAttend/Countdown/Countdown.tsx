@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Countdown = () => {
-  return (
-    <>
-      <p className="text-white">02:30</p>
-      <p className="text-white">05:00</p>
-    </>
-  );
+import { DateTime } from 'luxon';
+
+interface countdownProps {
+  startTime: DateTime;
+  endTime: DateTime;
+}
+
+const Countdown = ({ startTime, endTime }: countdownProps) => {
+  const [nowTime, setNowTime] = useState(DateTime.now());
+  return <p className="text-white">02:30</p>;
 };
 
 export default Countdown;
