@@ -30,7 +30,6 @@ const Countdown = ({ startTime, endTime }: countdownProps) => {
     setDiff(endTime.diff(nowTime));
   }, [nowTime]);
 
-  // console.log(diff.toFormat('mm:ss'));
   return <p className="text-white">{startTime > nowTime ? endTime.diff(startTime).toFormat('mm:ss') : leftTime}</p>;
 };
 
