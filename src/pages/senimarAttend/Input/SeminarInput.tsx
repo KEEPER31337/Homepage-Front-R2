@@ -23,7 +23,6 @@ const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps)
   const focusInput3 = useRef<HTMLInputElement>(null);
   const inputList = [focusInput0, focusInput1, focusInput2, focusInput3];
   const [inputCode, setSeminarInput] = useState([0, 0, 0, 0]);
-  const validCode = '1234'; // 임시
 
   const moveNextInput = (value: string, index: number) => {
     if (value) {

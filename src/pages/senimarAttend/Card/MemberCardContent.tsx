@@ -17,7 +17,6 @@ const MemberCardContent = () => {
   const handleAttendButtonClick = (nowTime: Date) => {
     setIsAttendable(nowTime < attendLimit);
     setIsCorrectCode(inputCode === validCode);
-    console.log(inputCode);
   };
 
   return (
