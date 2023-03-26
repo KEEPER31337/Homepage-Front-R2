@@ -11,17 +11,16 @@ const MemberCardContent = () => {
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
   const attendLimit = new Date(); // 임시
   attendLimit.setMinutes(attendLimit.getMinutes() + 5); // 임시
-  const inputCode = [0, 0, 0, 0];
-  const validCode = '1234'; // 임시
 
   const handleAttendButtonClick = (nowTime: Date) => {
     setIsAttendable(nowTime < attendLimit);
-    setIsCorrectCode(inputCode.join('') === validCode);
+    setIsCorrectCode(isCorrectCode);
+    console.log(isCorrectCode);
   };
 
   return (
     <>
-      <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
+      <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} setIsCorrectCode={setIsCorrectCode} />
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {

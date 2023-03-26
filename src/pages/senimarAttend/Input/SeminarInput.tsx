@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 const inputStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -13,19 +13,23 @@ const inputStyle: React.CSSProperties = {
 interface SeminarInputProps {
   disabled?: boolean;
   helperText?: string;
+  setIsCorrectCode?: React.Dispatch<React.SetStateAction<boolean>>;
+  curCode?: string;
 }
-const SeminarInput = ({ disabled, helperText }: SeminarInputProps) => {
+const SeminarInput = ({ disabled, helperText, setIsCorrectCode, curCode }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3];
   const focusInput0 = useRef<HTMLInputElement>(null);
   const focusInput1 = useRef<HTMLInputElement>(null);
   const focusInput2 = useRef<HTMLInputElement>(null);
   const focusInput3 = useRef<HTMLInputElement>(null);
   const inputList = [focusInput0, focusInput1, focusInput2, focusInput3];
-  const inputCode = [0, 0, 0, 0];
+  const [inputCode, setSeminarInput] = useState([0, 0, 0, 0]);
+  const validCode = '1234'; // 임시
 
   const moveNextInput = (value: string, index: number) => {
     if (value) {
       inputCode[index] = Number(value);
+      setSeminarInput([...inputCode]);
       switch (index) {
         case 0:
           focusInput1.current?.focus();
@@ -35,6 +39,10 @@ const SeminarInput = ({ disabled, helperText }: SeminarInputProps) => {
           break;
         case 2:
           focusInput3.current?.focus();
+          break;
+        case 3:
+          if (inputCode.join('') === validCode) setIsCorrectCode?.(true);
+          else setIsCorrectCode?.(false);
           break;
         default:
           break;
