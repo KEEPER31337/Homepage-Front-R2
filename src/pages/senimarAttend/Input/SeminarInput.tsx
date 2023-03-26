@@ -13,10 +13,9 @@ const inputStyle: React.CSSProperties = {
 interface SeminarInputProps {
   disabled?: boolean;
   helperText?: string;
-  setIsCorrectCode?: React.Dispatch<React.SetStateAction<boolean>>;
-  curCode?: string;
+  setInputCode?: React.Dispatch<React.SetStateAction<string>>;
 }
-const SeminarInput = ({ disabled, helperText, setIsCorrectCode, curCode }: SeminarInputProps) => {
+const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3];
   const focusInput0 = useRef<HTMLInputElement>(null);
   const focusInput1 = useRef<HTMLInputElement>(null);
@@ -41,8 +40,7 @@ const SeminarInput = ({ disabled, helperText, setIsCorrectCode, curCode }: Semin
           focusInput3.current?.focus();
           break;
         case 3:
-          if (inputCode.join('') === validCode) setIsCorrectCode?.(true);
-          else setIsCorrectCode?.(false);
+          setInputCode?.(inputCode.join(''));
           break;
         default:
           break;
