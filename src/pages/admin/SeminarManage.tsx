@@ -16,6 +16,7 @@ const SeminarManage = () => {
   const [openSeminarAddModal, setOpenSeminarAddModal] = useState(false);
   const [openSeminarDeleteModal, setOpenSeminarDeleteModal] = useState(false);
   const handleSeminarDeleteButtonClick = () => {
+    setOpenSeminarDeleteModal(false);
     // TODO
   };
   const handleSeminarAddButtonClick = () => {
@@ -50,7 +51,6 @@ const SeminarManage = () => {
           actionButtonName="삭제"
           onActionButonClick={() => {
             handleSeminarDeleteButtonClick();
-            setOpenSeminarDeleteModal(false);
           }}
         >
           <div className="flex justify-center">
