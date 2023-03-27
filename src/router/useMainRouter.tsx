@@ -10,6 +10,7 @@ import MainLayout from '@components/Layout/MainLayout';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import FitContainer from '@components/Layout/Container/FitContainer';
 import BoardList from '@pages/board/BoardList';
+import Login from '@pages/login/Login';
 
 const useMainRouter = () =>
   useRoutes([
@@ -54,6 +55,10 @@ const useMainRouter = () =>
             {
               path: 'study',
               element: <Study />,
+            },
+            {
+              path: 'login',
+              element: <Login />,
             },
           ],
         },
