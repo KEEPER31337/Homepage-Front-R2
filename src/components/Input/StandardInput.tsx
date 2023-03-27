@@ -10,7 +10,7 @@ interface StandardInputProps extends StandardTextFieldProps {
 const StandardInput = ({ value, onChange, error, ...standardTextFieldProps }: StandardInputProps) => {
   return (
     <TextField
-      InputProps={error ? {} : { className: 'before:!border-pointBlue' }}
+      InputProps={error ? undefined : { className: 'before:!border-pointBlue' }}
       value={value}
       onChange={onChange}
       error={error}
