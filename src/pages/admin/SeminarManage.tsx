@@ -15,6 +15,7 @@ const SeminarManage = () => {
 
   const [openSeminarAddModal, setOpenSeminarAddModal] = useState(false);
   const handleSeminarAddButtonClick = () => {
+    setOpenSeminarAddModal(false);
     // TODO
   };
 
@@ -31,7 +32,6 @@ const SeminarManage = () => {
           actionButtonName="추가"
           onActionButonClick={() => {
             handleSeminarAddButtonClick();
-            setOpenSeminarAddModal(false);
           }}
         >
           <div className="flex justify-center">
