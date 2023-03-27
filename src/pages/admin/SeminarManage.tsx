@@ -11,7 +11,7 @@ const SeminarManage = () => {
   const listColumns = columns;
   const listRows = rows;
   const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
-  const [date, setDate] = React.useState<DateTime | null>(null);
+  const [date, setDate] = useState<DateTime | null>(null);
 
   const [openSeminarAddModal, setOpenSeminarAddModal] = useState(false);
   const handleSeminarAddButtonClick = () => {
