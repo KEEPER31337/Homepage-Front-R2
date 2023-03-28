@@ -13,6 +13,7 @@ const muiTheme = createTheme({
   },
   typography: {
     fontFamily: ['IBM Plex Sans KR', 'system-ui', 'sans-serif'].join(','),
+    fontSize: 14,
   },
 });
 
