@@ -18,10 +18,10 @@ module.exports = withMT({
         base: 'IBM Plex Sans KR, system-ui, sans-serif',
       },
       fontSize: {
-        h1: '28px',
-        h3: '20px',
-        paragraph: '16px',
-        small: '10px',
+        h1: '2rem',
+        h3: '1.428rem',
+        paragraph: '1rem',
+        small: '0.714rem',
       },
       spacing: {
         header: '66px',
