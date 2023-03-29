@@ -91,10 +91,17 @@ const Login = () => {
               value={password}
               onChange={onChange}
             />
-            <OutlinedButton>로그인</OutlinedButton>
+            <Button variant="outlined" sx={{ height: 56 }}>
+              로그인
+            </Button>
             <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="로그인 상태 유지" />
           </Stack>
           <HorizonLine />
+          <Stack direction="row" spacing={2}>
+            <p>아이디·비밀번호 찾기</p>
+            <p>|</p>
+            <p>회원가입</p>
+          </Stack>
         </Box>
       </Container>
     </ThemeProvider>
