@@ -13,7 +13,12 @@ const Selector = ({ label, value, onChange, options, className, ...selectProps }
   return (
     <FormControl className={className} variant="standard">
       <InputLabel>{label}</InputLabel>
-      <Select className="before:!border-pointBlue" value={value ?? ''} onChange={onChange} {...selectProps}>
+      <Select
+        className={`before:!border-pointBlue ${label ?? '!mt-0'}`}
+        value={value ?? ''}
+        onChange={onChange}
+        {...selectProps}
+      >
         {options.map((option) => (
           <MenuItem key={option.id} value={option.id}>
             {option.content}
