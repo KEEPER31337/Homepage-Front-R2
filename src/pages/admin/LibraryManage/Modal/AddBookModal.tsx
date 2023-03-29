@@ -14,7 +14,7 @@ interface AddBookModalProps {
 }
 
 const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
-  const [form, setForm] = React.useState<AddBookInfo>({
+  const [form, setForm] = useState<AddBookInfo>({
     title: '',
     author: '',
   });
