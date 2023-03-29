@@ -14,11 +14,11 @@ interface AddBookModalProps {
 }
 
 const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
-  const [bookInfo, setBookInfo] = useState<AddBookInfo>({
+  const [addBookInfo, setAddBookInfo] = useState<AddBookInfo>({
     title: '',
     author: '',
   });
-  const { title, author } = bookInfo;
+  const { title, author } = addBookInfo;
   const [totalBookNumber, setTotalBookNumber] = useState<number | undefined>(1);
 
   const [validTitle, setValidTitle] = useState<boolean>(false);
@@ -26,14 +26,14 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
 
   const onChangeAddBookInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setBookInfo({
-      ...bookInfo,
+    setAddBookInfo({
+      ...addBookInfo,
       [name]: value,
     });
   };
 
   const onReset = () => {
-    setBookInfo({
+    setAddBookInfo({
       title: '',
       author: '',
     });
