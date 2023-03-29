@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useState } from 'react';
 import { BookListInfo } from '@api/dto';
 import PageTitle from '@components/Typography/PageTitle';
 import StandardTable from '@components/Table/StandardTable';
@@ -19,22 +19,21 @@ const LibraryManage = () => {
         return value;
     }
   };
-
-  const [openAddBook, toggleOpenAddBook] = useReducer((prev) => !prev, false);
-  const [openDeleteBook, toggleOpenDeleteBook] = useReducer((prev) => !prev, false);
+  const [addBookModalopen, setAddBookModalopen] = useState(false);
+  const [deleteBookModalopen, setDeleteBookModalopen] = useState(false);
   return (
     <div>
       <PageTitle>도서관리</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
         <SearchSection />
         <div className="flex space-x-2">
-          <OutlinedButton onClick={() => toggleOpenAddBook()}>도서 추가</OutlinedButton>
-          <OutlinedButton onClick={() => toggleOpenDeleteBook()}>도서 삭제</OutlinedButton>
+          <OutlinedButton onClick={() => setAddBookModalopen(true)}>도서 추가</OutlinedButton>
+          <OutlinedButton onClick={() => setDeleteBookModalopen(true)}>도서 삭제</OutlinedButton>
           <OutlinedButton>대출 관리</OutlinedButton>
           <OutlinedButton>반납 관리</OutlinedButton>
 
-          <AddBookModal open={openAddBook} toggleOpen={toggleOpenAddBook} />
-          <DeleteBookModal open={openDeleteBook} toggleOpen={toggleOpenDeleteBook} />
+          <AddBookModal open={addBookModalopen} onClose={() => setAddBookModalopen(false)} />
+          <DeleteBookModal open={deleteBookModalopen} onClose={() => setDeleteBookModalopen(false)} />
         </div>
       </div>
       <StandardTable<BookListInfo> columns={columns} rows={rows} childComponent={childComponent} />

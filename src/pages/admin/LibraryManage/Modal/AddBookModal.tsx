@@ -10,10 +10,10 @@ type AddBookInfo = Pick<BookListInfo, 'title' | 'author'>;
 
 interface AddBookModalProps {
   open: boolean;
-  toggleOpen: () => void;
+  onClose: () => void;
 }
 
-const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
+const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
   const [addBookInfo, setAddBookInfo] = useState<AddBookInfo>({
     title: '',
     author: '',
@@ -49,7 +49,7 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
     validate();
     if (title !== '' && author !== '') {
       // TODO 도서추가 API
-      toggleOpen();
+      onClose();
       onReset();
     }
   };
@@ -58,7 +58,7 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
     <div className="flex">
       <ActionModal
         open={open}
-        onClose={toggleOpen}
+        onClose={onClose}
         title="도서추가"
         modalWidth="xs"
         actionButtonName="추가"
