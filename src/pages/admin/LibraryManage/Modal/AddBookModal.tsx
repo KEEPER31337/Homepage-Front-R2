@@ -32,6 +32,14 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
     });
   };
 
+  const onReset = () => {
+    setForm({
+      title: '',
+      author: '',
+    });
+    setTotalBookNumber(1);
+  };
+
   const validate = () => {
     setValidTitle(title === '');
     setValidAuthor(author === '');
@@ -42,6 +50,7 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
     if (title !== '' && author !== '') {
       // TODO 도서추가 API
       toggleOpen();
+      onReset();
     }
   };
 
