@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import StandardInput from '@components/Input/StandardInput';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import Box from '@mui/material/Box';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@material-tailwind/react';
-import theme from '@material-tailwind/react/theme';
 import Container from '@mui/material/Container';
-import Header from '@components/Layout/Header';
 import Stack from '@mui/material/Stack';
+import { Button, TextField } from '@mui/material';
 
 const HorizonLine = () => {
   return (
@@ -56,21 +53,22 @@ const Login = () => {
 
   return (
     <ThemeProvider>
-      <Header />
+      <CssBaseline />
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 30,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Logo className="h-20" />
+          <Logo className="mb-4 h-20" />
 
           <Stack component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} width="100%">
-            <StandardInput
+            <TextField
+              sx={{ mb: 2 }}
+              variant="filled"
               label="아이디"
               required
               fullWidth
@@ -82,7 +80,9 @@ const Login = () => {
               onChange={onChange}
               onBlur={validateId}
             />
-            <StandardInput
+            <TextField
+              sx={{ mb: 2 }}
+              variant="filled"
               label="비밀번호"
               required
               fullWidth
