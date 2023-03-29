@@ -32,6 +32,10 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+    console.log({
+      id: data.get('id'),
+      password: data.get('password'),
+    });
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
