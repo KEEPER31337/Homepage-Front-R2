@@ -25,6 +25,10 @@ const useMainRouter = () =>
               index: true,
               element: <Home />,
             },
+            {
+              path: 'login',
+              element: <Login />,
+            },
           ],
         },
         {
@@ -55,10 +59,6 @@ const useMainRouter = () =>
             {
               path: 'study',
               element: <Study />,
-            },
-            {
-              path: 'login',
-              element: <Login />,
             },
           ],
         },
