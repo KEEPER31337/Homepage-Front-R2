@@ -9,8 +9,8 @@ interface countdownProps {
 
 const Countdown = ({ startTime, endTime }: countdownProps) => {
   const [nowTime, setNowTime] = useState(DateTime.now());
-  const id: { current: NodeJS.Timeout | undefined } = useRef();
-  const [diff, setDiff] = useState<Duration>(endTime.diff(startTime));
+  const id = useRef<NodeJS.Timeout>();
+  const [timeDiff, setTimeDiff] = useState<Duration>(endTime.diff(startTime));
   const [leftTime, setLeftTime] = useState('');
 
   const changeNowTime = () => {
@@ -23,11 +23,11 @@ const Countdown = ({ startTime, endTime }: countdownProps) => {
   }, [nowTime]);
 
   useEffect(() => {
-    if (id.current) setLeftTime(endTime > nowTime ? diff.toFormat('mm:ss') : '마감');
-  }, [diff]);
+    if (id.current) setLeftTime(endTime > nowTime ? timeDiff.toFormat('mm:ss') : '마감');
+  }, [timeDiff]);
 
   useEffect(() => {
-    setDiff(endTime.diff(nowTime));
+    setTimeDiff(endTime.diff(nowTime));
   }, [nowTime]);
 
   return <p className="text-white">{startTime > nowTime ? endTime.diff(startTime).toFormat('mm:ss') : leftTime}</p>;
