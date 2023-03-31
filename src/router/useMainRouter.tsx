@@ -26,6 +26,14 @@ const useMainRouter = () =>
               index: true,
               element: <Home />,
             },
+            {
+              path: 'signUp',
+              element: <SignUp />,
+            },
+            {
+              path: 'login',
+              element: <Login />,
+            },
           ],
         },
         {
