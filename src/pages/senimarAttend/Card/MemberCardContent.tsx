@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
+import SeminarAttendStatues from '../Status/SeminarAttendStatus';
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
@@ -10,18 +11,25 @@ const MemberCardContent = () => {
   const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
   const attendLimit = new Date(); // 임시
-  attendLimit.setMinutes(attendLimit.getMinutes() + 5); // 임시
+  const lateLimit = new Date(); // 임시
+  lateLimit.setMinutes(attendLimit.getSeconds() + 5); // 임시
+  attendLimit.setMinutes(attendLimit.getSeconds() + 15); // 임시
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
+  const [attendStatus, setAttendStatus] = useState('출석전');
 
   const handleAttendButtonClick = (nowTime: Date) => {
     setIsAttendable(nowTime < attendLimit);
+    if (nowTime < lateLimit) setAttendStatus('출석');
+    else if (isAttendable) setAttendStatus('지각');
+    else setAttendStatus('결석');
     setIsCorrectCode(inputCode.join('') === validCode);
   };
 
   return (
     <>
       <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
+      <SeminarAttendStatues status={attendStatus} />
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
