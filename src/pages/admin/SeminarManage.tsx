@@ -17,6 +17,7 @@ const SeminarManage = () => {
   const handleSeminarAddButtonClick = () => {
     setOpenSeminarAddModal(false);
     // TODO
+    setDate(null);
   };
 
   return (
@@ -27,7 +28,10 @@ const SeminarManage = () => {
         <OutlinedButton onClick={() => setOpenSeminarAddModal(true)}>추가</OutlinedButton>
         <ActionModal
           open={openSeminarAddModal}
-          onClose={() => setOpenSeminarAddModal(false)}
+          onClose={() => {
+            setOpenSeminarAddModal(false);
+            setDate(null);
+          }}
           title="세미나 일정 추가"
           actionButtonName="추가"
           onActionButonClick={() => {
