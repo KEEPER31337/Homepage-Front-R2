@@ -17,34 +17,23 @@ interface SeminarInputProps {
 }
 const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3];
-  const focusInput0 = useRef<HTMLInputElement>(null);
-  const focusInput1 = useRef<HTMLInputElement>(null);
-  const focusInput2 = useRef<HTMLInputElement>(null);
-  const focusInput3 = useRef<HTMLInputElement>(null);
-  const inputList = [focusInput0, focusInput1, focusInput2, focusInput3];
   const [inputCode, setSeminarInput] = useState([0, 0, 0, 0]);
 
-  const moveNextInput = (value: string, index: number) => {
-    if (value) {
-      inputCode[index] = Number(value);
-      setSeminarInput([...inputCode]);
-      switch (index) {
-        case 0:
-          focusInput1.current?.focus();
-          break;
-        case 1:
-          focusInput2.current?.focus();
-          break;
-        case 2:
-          focusInput3.current?.focus();
-          break;
-        case 3:
-          break;
-        default:
-          break;
-      }
-      setInputCode?.(inputCode.join(''));
+  const moveNextInput = (event: React.KeyboardEvent<HTMLInputElement>, key: number) => {
+    const target = event.target as HTMLInputElement;
+    if (target.value.length === target.maxLength && target.nextElementSibling) {
+      const nxtSibling = target.nextElementSibling as HTMLInputElement;
+      nxtSibling.focus();
     }
+    if (event.keyCode === 8) {
+      if (target.value.length !== target.maxLength && target.previousElementSibling) {
+        const prvSibling = target.previousElementSibling as HTMLInputElement;
+        prvSibling.focus();
+      }
+    }
+    inputCode[key] = Number(target.value);
+    setSeminarInput([...inputCode]);
+    setInputCode?.(inputCode.join(''));
   };
 
   return (
@@ -57,10 +46,10 @@ const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps)
               style={inputStyle}
               maxLength={1}
               disabled={disabled}
-              onChange={(e) => {
-                moveNextInput(e.target.value, key);
+              name={`'input'${key}`}
+              onKeyUp={(e) => {
+                moveNextInput(e, key);
               }}
-              ref={inputList[key]}
             />
           );
         })}
