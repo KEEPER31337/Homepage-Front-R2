@@ -46,7 +46,6 @@ const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps)
               style={inputStyle}
               maxLength={1}
               disabled={disabled}
-              name={`'input'${key}`}
               onKeyUp={(e) => {
                 moveNextInput(e, key);
               }}
