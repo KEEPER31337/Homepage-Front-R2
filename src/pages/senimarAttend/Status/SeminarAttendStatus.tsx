@@ -26,7 +26,7 @@ const SeminarAttendStatus = ({ status, className }: AttendStatuesProps) => {
     </div>
   );
   const setAlert: { [id: string]: JSX.Element } = {
-    출석전: <div />,
+    출석전: <div>ㅤ</div>,
     지각: lateStatusAlert,
     출석: attendStatusAlert,
     결석: absentStatusAlert,
