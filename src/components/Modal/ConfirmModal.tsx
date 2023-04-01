@@ -14,7 +14,7 @@ interface ConfirmModalProps {
 const ConfirmModal = ({ open, onClose, modalWidth, title, children }: ConfirmModalProps) => {
   return (
     <Dialog open={open} PaperProps={{ className: 'px-2 py-1' }} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
-      <div className="flex justify-end">
+      <div className="absolute right-0 m-3">
         <IconButton className="w-9" onClick={onClose}>
           <VscChromeClose className="fill-pointBlue" size={19} />
         </IconButton>
