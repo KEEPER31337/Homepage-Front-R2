@@ -3,23 +3,24 @@ import { VscCheck, VscChromeClose } from 'react-icons/vsc';
 
 interface AttendStatuesProps {
   status: string;
+  className: string;
 }
 
-const SeminarAttendStatus = ({ status }: AttendStatuesProps) => {
+const SeminarAttendStatus = ({ status, className }: AttendStatuesProps) => {
   const attendStatusAlert = (
-    <div className="text-pointBlue">
+    <div className={`${className} text-pointBlue`}>
       <VscCheck />
       <p className="ml-1">출석</p>
     </div>
   );
   const lateStatusAlert = (
-    <div className="text-[#FFA500]">
+    <div className={`${className} text-[#FFA500]`}>
       <VscCheck />
       <p className="ml-1">지각</p>
     </div>
   );
   const absentStatusAlert = (
-    <div className="text-red-500">
+    <div className={`${className} text-red-500`}>
       <VscChromeClose />
       <p className="ml-1 ">결석</p>
     </div>

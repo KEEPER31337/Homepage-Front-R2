@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FilledButton from '@components/Button/FilledButton';
+import { DateTime } from 'luxon';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatues from '../Status/SeminarAttendStatus';
@@ -10,17 +11,16 @@ const MemberCardContent = () => {
 
   const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
-  const attendLimit = new Date(); // 임시
-  const lateLimit = new Date(); // 임시
-  lateLimit.setMinutes(attendLimit.getSeconds() + 5); // 임시
-  attendLimit.setMinutes(attendLimit.getSeconds() + 15); // 임시
+  const startTime = DateTime.now(); // 임시
+  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 2 }); // 임시:이후 api에서 가져옴
+  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 10 }); // 임시: 이후 api에서 가져옴
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
   const [attendStatus, setAttendStatus] = useState('출석전');
 
-  const handleAttendButtonClick = (nowTime: Date) => {
-    setIsAttendable(nowTime < attendLimit);
-    if (nowTime < lateLimit) setAttendStatus('출석');
+  const handleAttendButtonClick = (nowTime: DateTime) => {
+    setIsAttendable(nowTime < lateLimit);
+    if (nowTime < attendLimit) setAttendStatus('출석');
     else if (isAttendable) setAttendStatus('지각');
     else setAttendStatus('결석');
     setIsCorrectCode(inputCode.join('') === validCode);
@@ -29,11 +29,11 @@ const MemberCardContent = () => {
   return (
     <>
       <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
-      <SeminarAttendStatues status={attendStatus} />
+      <SeminarAttendStatues status={attendStatus} className="flex items-center justify-center" />
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
-            handleAttendButtonClick(new Date());
+            handleAttendButtonClick(DateTime.now());
           }}
         >
           출석
