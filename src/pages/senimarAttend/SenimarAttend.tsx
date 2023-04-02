@@ -23,7 +23,7 @@ const SeminarAttend = () => {
         <PageTitle>세미나 출석</PageTitle>
         <OutlinedButton>세미나 관리</OutlinedButton>
       </div>
-      <div className="flex h-screen items-center justify-center">
+      <div className="mt-[107px] flex w-[1231px] items-center justify-between">
         <SeminarCard>
           {seminarActivated ? (
             <>
@@ -34,12 +34,32 @@ const SeminarAttend = () => {
             <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
           )}
         </SeminarCard>
-        {isBoss ? (
-          <FilledButton onClick={() => setIsBoss(false)}>회원권한페이지로</FilledButton>
-        ) : (
-          <FilledButton onClick={() => setIsBoss(true)}>회장권한페이지로</FilledButton>
-        )}
+        <SeminarCard>
+          {seminarActivated ? (
+            <>
+              <Typography className="text-center text-paragraph text-white">{seminarDate} 세미나</Typography>
+              {isBoss ? <BossCardContent /> : <MemberCardContent />}
+            </>
+          ) : (
+            <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
+          )}
+        </SeminarCard>
+        <SeminarCard>
+          {seminarActivated ? (
+            <>
+              <Typography className="text-center text-paragraph text-white">{seminarDate} 세미나</Typography>
+              {isBoss ? <BossCardContent /> : <MemberCardContent />}
+            </>
+          ) : (
+            <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
+          )}
+        </SeminarCard>
       </div>
+      {isBoss ? (
+        <FilledButton onClick={() => setIsBoss(false)}>회원권한페이지로</FilledButton>
+      ) : (
+        <FilledButton onClick={() => setIsBoss(true)}>회장권한페이지로</FilledButton>
+      )}
     </>
   );
 };
