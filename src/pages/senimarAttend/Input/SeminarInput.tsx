@@ -25,7 +25,7 @@ const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps)
       const nxtSibling = target.nextElementSibling as HTMLInputElement;
       nxtSibling.focus();
     }
-    if (event.keyCode === 8) {
+    if (event.key === 'Backspace') {
       if (target.value.length !== target.maxLength && target.previousElementSibling) {
         const prvSibling = target.previousElementSibling as HTMLInputElement;
         prvSibling.focus();
