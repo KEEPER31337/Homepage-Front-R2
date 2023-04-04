@@ -5,16 +5,10 @@ import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { SelectChangeEvent } from '@mui/material';
 import Selector from '@components/Selector/Selector';
-import { StudyListInfo } from '@api/dto';
+import { ModalInfo } from './Study.interface';
 import StudyModal from './Modal/StudyModal';
 import StudyAccordion from './Accordion/StudyAccordion';
 import OldStudy from './OldStudy';
-
-/* study 공통 */
-export interface ModalInfo {
-  mode: 'add' | 'modify';
-  selectedStudy: StudyListInfo | Record<string, never>;
-}
 
 const OLD_YEAR_BOUND = 2022;
 
@@ -29,22 +23,17 @@ const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: 0, season: 0 });
   const [currentStudyList, setCurrentStudyList] = useState(studyList);
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
-  const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'add', selectedStudy: {} });
+  const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'add' });
 
   const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
 
   const handlePeriodChange = (event: SelectChangeEvent<unknown>) => {
-    if (event.target.name === 'year') {
-      setCurrentPeriod({ ...currentPeriod, year: Number(event.target.value as string) });
-      return;
-    }
-    if (event.target.name === 'season')
-      setCurrentPeriod({ ...currentPeriod, season: Number(event.target.value as string) });
+    setCurrentPeriod({ ...currentPeriod, year: Number(event.target.value as string) });
   };
 
   const handleStudyCreateButtonClick = () => {
     toggleOpen();
-    setModalInfo({ mode: 'add', selectedStudy: {} });
+    setModalInfo({ mode: 'add' });
   };
   /* 처음 한 번만 동작하는 useEffect, 페이지 초기 값 셋팅 */
   useEffect(() => {

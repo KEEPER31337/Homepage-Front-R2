@@ -4,7 +4,7 @@ import { SiNotion } from 'react-icons/si';
 import { Typography } from '@material-tailwind/react';
 
 import ActionModal from '@components/Modal/ActionModal';
-import { ModalInfo } from '../Study';
+import { ModalInfo } from '../Study.interface';
 import StudyInput from '../share/StudyInput';
 import StudyTextarea from '../share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
@@ -41,15 +41,15 @@ const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
           </div>
         </div>
         <div className="flex space-x-2">
-          <div className="w-[108px] space-y-1">
+          <div className="w-[108px] space-y-2">
             <Typography className="text-pointBlue">스터디장</Typography>
-            <div className="flex border-b-2 border-pointBlue py-[6px]">
+            <div className="flex border-b-2 border-pointBlue pb-[6px]">
               <StudyChip value="박재열" />
             </div>
           </div>
-          <div className="w-full space-y-1">
+          <div className="w-full space-y-2">
             <Typography className="text-pointBlue">스터디원</Typography>
-            <div className="flex space-x-2 border-b-2 border-pointBlue py-[6px]">
+            <div className="flex space-x-2 border-b-2 border-pointBlue pb-[6px]">
               <StudyChip value="박재열" />
               {memberList.map((member) => (
                 <StudyChipDismissible

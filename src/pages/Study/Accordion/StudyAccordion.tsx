@@ -14,7 +14,7 @@ import { Divider } from '@mui/material';
 import type { StudyListInfo } from '@api/dto';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { Link } from 'react-router-dom';
-import { ModalInfo } from '../Study';
+import { ModalInfo } from '../Study.interface';
 import { StudyChip } from '../share/StudyChip';
 
 // TODO MUI 라이브러리로 변경
@@ -89,7 +89,7 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setModalInfo }: Study
     setModalInfo({ mode: 'modify', selectedStudy: study });
   };
   const handleStudyDeleteButtonClick = () => {
-    // TODO 기능 구현 후 삭제 예정
+    // TODO 스터디 제거 API 호출 후 새로고침(기능 구현 후 console 삭제 예정)
     console.log(`${study.title}삭제`);
   };
 

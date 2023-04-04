@@ -1,7 +1,6 @@
 import React, { Dispatch, DispatchWithoutAction, Fragment, SetStateAction } from 'react';
 import type { StudyListInfo } from '@api/dto';
-import { ModalInfo } from './Study';
-import StudyAccordion from './Accordion/StudyAccordion';
+import { ModalInfo } from './Study.interface';
 
 interface OldStudyProps {
   list: StudyListInfo[];
@@ -12,7 +11,7 @@ interface OldStudyProps {
 
 const OldStudy = ({ list, memberId, toggleOpen, setModalInfo }: OldStudyProps) => {
   return (
-    <div className="">
+    <div>
       오래된 스터디 목록
       {/* TODO 추후 게시판이 구현되면 컴포넌트를 그대로 가져와서 사용할 예정!! */}
       {list?.map((study) => (
