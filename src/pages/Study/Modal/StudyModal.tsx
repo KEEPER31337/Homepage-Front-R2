@@ -21,10 +21,10 @@ const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
   const isModify = mode === 'modify';
   return (
     <ActionModal
-      opened={open}
-      handleOpen={handleOpen}
+      open={open}
+      onClose={handleOpen}
       title={isModify ? '스터디 수정' : '스터디 생성'}
-      buttonName={isModify ? '적용하기' : '생성하기'}
+      actionButtonName={isModify ? '적용하기' : '생성하기'}
       onActionButonClick={handleOpen}
     >
       <div className="space-y-6">

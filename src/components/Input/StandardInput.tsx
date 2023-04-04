@@ -7,8 +7,17 @@ interface StandardInputProps extends StandardTextFieldProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const StandardInput = ({ value, onChange, ...standardTextFieldProps }: StandardInputProps) => {
-  return <TextField value={value} onChange={onChange} {...standardTextFieldProps} variant="standard" />;
+const StandardInput = ({ value, onChange, error, ...standardTextFieldProps }: StandardInputProps) => {
+  return (
+    <TextField
+      InputProps={error ? undefined : { className: 'before:!border-pointBlue' }}
+      value={value}
+      onChange={onChange}
+      error={error}
+      {...standardTextFieldProps}
+      variant="standard"
+    />
+  );
 };
 
 export default StandardInput;
