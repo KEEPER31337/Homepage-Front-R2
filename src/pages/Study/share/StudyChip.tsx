@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeProvider, Chip, ChipStylesType } from '@material-tailwind/react';
+import { Chip } from '@mui/material';
 
 /**
  * TODO 공통 컴포넌트 제작 후 삭제 예정
@@ -11,63 +11,23 @@ interface ChipDismissibleProps {
   value: string;
   onClick: () => void;
 }
-const theme = {
-  chip: {
-    styles: {
-      base: {
-        font: 'text-[12px]',
-        width: 'w-fit',
-        height: 'h-[22px]',
-        paddingRight: 'px-[8px]',
-        paddingTop: 'py-[2px]',
-        display: 'flex',
-        alignItems: 'items-center',
-      },
-      variants: {
-        filled: {
-          blue: {
-            borderRadius: 'rounded-[4px]',
-            background: 'bg-pointBlue',
-            opacity: 'bg-opacity-30',
-            color: 'text-white',
-          },
-        },
-      },
-      closeButtonColor: {
-        blue: {
-          display: 'flex',
-          height: 'h-[14px]',
-          weight: 'w-[14px]',
-          borderRadius: 'rounded-[2px]',
-          fontColor: 'text-pointBlue',
-          bgColor: 'bg-subBlack',
-          hover: 'hover:bg-middleBlack',
-        },
-      },
-    },
-  } satisfies ChipStylesType,
-};
+
 export const StudyChip = ({ value }: ChipProps) => {
   return (
-    <ThemeProvider value={theme}>
-      <Chip value={value} />
-    </ThemeProvider>
+    <Chip
+      className="!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px]"
+      label={value}
+    />
   );
 };
 export const StudyChipDismissible = ({ value, onClick }: ChipDismissibleProps) => {
-  const [show, setShow] = useState(true);
   return (
-    <ThemeProvider value={theme}>
-      <Chip
-        show={show}
-        dismissible={{
-          onClose: () => {
-            setShow(false);
-            if (onClick) onClick();
-          },
-        }}
-        value={value}
-      />
-    </ThemeProvider>
+    <Chip
+      className="!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px]"
+      onDelete={() => {
+        if (onClick) onClick();
+      }}
+      label={value}
+    />
   );
 };
