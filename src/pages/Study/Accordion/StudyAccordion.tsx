@@ -72,7 +72,7 @@ const StudyAccordionHeader = ({ study }: StudyAccordionHeaderProps) => {
 
 const StudyAccordionBody = ({ study, memberId, toggleOpen, setSelectedStudy }: StudyAccordionProps) => {
   interface IconType {
-    [key: string]: JSX.Element;
+    [key: string]: React.ReactNode;
   }
 
   const { information, headMember, memberList } = study;

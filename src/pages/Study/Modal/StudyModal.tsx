@@ -9,15 +9,21 @@ import StudyInput from '../share/StudyInput';
 import StudyTextarea from '../share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
 
+type ModalInfo = {
+  mode: 'add' | 'modify';
+  selectedStudy: StudyListInfo;
+};
+
 interface StudyModalProps {
   open: boolean;
   handleOpen: () => void;
-  selectedStudy?: Partial<StudyListInfo>;
+  modalInfo: ModalInfo;
 }
 
 const memberList = ['김은지', '장서윤', '송세연'];
-const StudyModal = ({ open, handleOpen, selectedStudy }: StudyModalProps): JSX.Element => {
-  const isModify = JSON.stringify(selectedStudy) !== '{}';
+const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
+  const { mode, selectedStudy } = modalInfo;
+  const isModify = mode === 'modify';
   return (
     <ActionModal
       opened={open}
