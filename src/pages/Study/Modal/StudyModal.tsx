@@ -4,15 +4,10 @@ import { SiNotion } from 'react-icons/si';
 import { Typography } from '@material-tailwind/react';
 
 import ActionModal from '@components/Modal/ActionModal';
-import { StudyListInfo } from '@api/dto';
+import { ModalInfo } from '../Study';
 import StudyInput from '../share/StudyInput';
 import StudyTextarea from '../share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
-
-type ModalInfo = {
-  mode: 'add' | 'modify';
-  selectedStudy: StudyListInfo;
-};
 
 interface StudyModalProps {
   open: boolean;

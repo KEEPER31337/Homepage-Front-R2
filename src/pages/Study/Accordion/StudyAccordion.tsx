@@ -14,6 +14,7 @@ import { Divider } from '@mui/material';
 import type { StudyListInfo } from '@api/dto';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { Link } from 'react-router-dom';
+import { ModalInfo } from '../Study';
 import { StudyChip } from '../share/StudyChip';
 
 // TODO MUI 라이브러리로 변경
@@ -22,7 +23,7 @@ interface StudyAccordionProps {
   study: StudyListInfo;
   memberId: number;
   toggleOpen: DispatchWithoutAction;
-  setSelectedStudy: Dispatch<SetStateAction<StudyListInfo>>;
+  setModalInfo: Dispatch<SetStateAction<ModalInfo>>;
 }
 
 type StudyAccordionHeaderProps = Pick<StudyAccordionProps, 'study'>;
@@ -70,7 +71,7 @@ const StudyAccordionHeader = ({ study }: StudyAccordionHeaderProps) => {
   );
 };
 
-const StudyAccordionBody = ({ study, memberId, toggleOpen, setSelectedStudy }: StudyAccordionProps) => {
+const StudyAccordionBody = ({ study, memberId, toggleOpen, setModalInfo }: StudyAccordionProps) => {
   interface IconType {
     [key: string]: React.ReactNode;
   }
@@ -85,7 +86,7 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setSelectedStudy }: S
 
   const handleStudyModifyButtonClick = () => {
     toggleOpen();
-    setSelectedStudy(study);
+    setModalInfo({ mode: 'modify', selectedStudy: study });
   };
   const handleStudyDeleteButtonClick = () => {
     // TODO 기능 구현 후 삭제 예정
@@ -129,7 +130,7 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setSelectedStudy }: S
   );
 };
 
-const StudyAccordion = ({ study, memberId, toggleOpen, setSelectedStudy }: StudyAccordionProps) => {
+const StudyAccordion = ({ study, memberId, toggleOpen, setModalInfo }: StudyAccordionProps) => {
   const [open, setOpen] = useReducer((prev) => !prev, false);
 
   return (
@@ -139,12 +140,7 @@ const StudyAccordion = ({ study, memberId, toggleOpen, setSelectedStudy }: Study
           <StudyAccordionHeader study={study} />
         </AccordionHeader>
         <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
-          <StudyAccordionBody
-            study={study}
-            memberId={memberId}
-            toggleOpen={toggleOpen}
-            setSelectedStudy={setSelectedStudy}
-          />
+          <StudyAccordionBody study={study} memberId={memberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
         </AccordionBody>
       </Accordion>
     </ThemeProvider>

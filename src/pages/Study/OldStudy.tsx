@@ -1,15 +1,16 @@
 import React, { Dispatch, DispatchWithoutAction, Fragment, SetStateAction } from 'react';
 import type { StudyListInfo } from '@api/dto';
+import { ModalInfo } from './Study';
 import StudyAccordion from './Accordion/StudyAccordion';
 
 interface OldStudyProps {
   list: StudyListInfo[];
   memberId: number;
   toggleOpen: DispatchWithoutAction;
-  setSelectedStudy: Dispatch<SetStateAction<StudyListInfo>>;
+  setModalInfo: Dispatch<SetStateAction<ModalInfo>>;
 }
 
-const OldStudy = ({ list, memberId, toggleOpen, setSelectedStudy }: OldStudyProps) => {
+const OldStudy = ({ list, memberId, toggleOpen, setModalInfo }: OldStudyProps) => {
   return (
     <div className="">
       오래된 스터디 목록

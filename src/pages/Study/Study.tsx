@@ -5,9 +5,16 @@ import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { SelectChangeEvent } from '@mui/material';
 import Selector from '@components/Selector/Selector';
+import { StudyListInfo } from '@api/dto';
 import StudyModal from './Modal/StudyModal';
 import StudyAccordion from './Accordion/StudyAccordion';
 import OldStudy from './OldStudy';
+
+/* study 공통 */
+export interface ModalInfo {
+  mode: 'add' | 'modify';
+  selectedStudy: StudyListInfo | Record<string, never>;
+}
 
 const OLD_YEAR_BOUND = 2022;
 
@@ -22,7 +29,7 @@ const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: 0, season: 0 });
   const [currentStudyList, setCurrentStudyList] = useState(studyList);
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
-  const [selectedStudy, setSelectedStudy] = useState({});
+  const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'add', selectedStudy: {} });
 
   const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
 
@@ -37,7 +44,7 @@ const Study = () => {
 
   const handleStudyCreateButtonClick = () => {
     toggleOpen();
-    setSelectedStudy({});
+    setModalInfo({ mode: 'add', selectedStudy: {} });
   };
   /* 처음 한 번만 동작하는 useEffect, 페이지 초기 값 셋팅 */
   useEffect(() => {
@@ -75,12 +82,7 @@ const Study = () => {
         )}
       </div>
       {Number(yearList[currentPeriod.year].content) < OLD_YEAR_BOUND ? (
-        <OldStudy
-          list={currentStudyList}
-          memberId={myMemberId}
-          toggleOpen={toggleOpen}
-          setSelectedStudy={setSelectedStudy}
-        />
+        <OldStudy list={currentStudyList} memberId={myMemberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
       ) : (
         <div>
           {currentStudyList?.map((study) => (
@@ -89,12 +91,12 @@ const Study = () => {
               study={study}
               memberId={myMemberId}
               toggleOpen={toggleOpen}
-              setSelectedStudy={setSelectedStudy}
+              setModalInfo={setModalInfo}
             />
           ))}
         </div>
       )}
-      <StudyModal open={open} handleOpen={toggleOpen} selectedStudy={selectedStudy} />
+      <StudyModal open={open} handleOpen={toggleOpen} modalInfo={modalInfo} />
     </div>
   );
 };
