@@ -28,7 +28,8 @@ const Study = () => {
   const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
 
   const handlePeriodChange = (event: SelectChangeEvent<unknown>) => {
-    setCurrentPeriod({ ...currentPeriod, year: Number(event.target.value as string) });
+    const { name, value } = event.target;
+    setCurrentPeriod({ ...currentPeriod, [name]: Number(value as string) });
   };
 
   const handleStudyCreateButtonClick = () => {
