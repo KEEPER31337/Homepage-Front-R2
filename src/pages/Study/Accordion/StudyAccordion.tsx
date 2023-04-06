@@ -86,7 +86,7 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setModalInfo }: Study
 
   const handleStudyModifyButtonClick = () => {
     toggleOpen();
-    setModalInfo({ mode: 'modify', selectedStudy: study });
+    setModalInfo({ mode: 'Modify', selectedStudy: study });
   };
   const handleStudyDeleteButtonClick = () => {
     // TODO 스터디 제거 API 호출 후 새로고침(기능 구현 후 console 삭제 예정)

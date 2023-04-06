@@ -23,7 +23,7 @@ const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: 0, season: 0 });
   const [currentStudyList, setCurrentStudyList] = useState(studyList);
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
-  const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'add' });
+  const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'Add' });
 
   const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
 
@@ -33,7 +33,7 @@ const Study = () => {
 
   const handleStudyCreateButtonClick = () => {
     toggleOpen();
-    setModalInfo({ mode: 'add' });
+    setModalInfo({ mode: 'Add' });
   };
   /* 처음 한 번만 동작하는 useEffect, 페이지 초기 값 셋팅 */
   useEffect(() => {

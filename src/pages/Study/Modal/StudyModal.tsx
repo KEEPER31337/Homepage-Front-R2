@@ -18,7 +18,7 @@ interface StudyModalProps {
 const memberList = ['김은지', '장서윤', '송세연'];
 const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
   const { mode, selectedStudy } = modalInfo;
-  const isModify = mode === 'modify';
+  const isModify = mode === 'Modify';
   return (
     <ActionModal
       open={open}
