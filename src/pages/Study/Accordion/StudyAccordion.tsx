@@ -1,13 +1,9 @@
 import React, { Dispatch, DispatchWithoutAction, SetStateAction, useReducer } from 'react';
-import {
-  ThemeProvider,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-  Typography,
-  AccordionStylesType,
-} from '@material-tailwind/react';
-import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import { VscChevronDown, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 
 import { Divider } from '@mui/material';
@@ -16,8 +12,6 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import { Link } from 'react-router-dom';
 import { ModalInfo } from '../Study.interface';
 import { StudyChip } from '../share/StudyChip';
-
-// TODO MUI 라이브러리로 변경
 
 interface StudyAccordionProps {
   study: StudyListInfo;
@@ -28,42 +22,16 @@ interface StudyAccordionProps {
 
 type StudyAccordionHeaderProps = Pick<StudyAccordionProps, 'study'>;
 
-const theme = {
-  accordion: {
-    styles: {
-      base: {
-        container: {},
-        header: {
-          initial: {
-            fontColor: 'text-white',
-            borderColor: 'border-white/[20%]',
-            focus: 'focus:outline-0',
-            hover: 'hover:text-white hover:bg-subGray',
-            padding: 'px-4',
-          },
-          active: {
-            fontColor: 'text-white',
-          },
-        },
-        body: {
-          bgColor: 'bg-middleBlack',
-          fontColor: 'text-white',
-        },
-      },
-    },
-  } satisfies AccordionStylesType,
-};
-
 const StudyAccordionHeader = ({ study }: StudyAccordionHeaderProps) => {
   return (
     <div className="flex w-full space-x-2 pl-2 text-left">
-      <span className="max-w-16 max-h-16 bg-gray-300">이미지</span>
-      <div className="flex w-full items-center justify-between">
+      <span className="!max-w-16 !min-w-16 !h-16 !max-h-16 !w-16 bg-gray-300">이미지</span>
+      <div className="flex w-full items-center justify-between space-x-2 pr-2">
         <Typography className="text-h3 font-bold">{study.title}</Typography>
-        <div className="flex items-center">
-          <Typography className="mr-1 font-semibold">스터디장</Typography>
+        <div className="flex items-center space-x-2">
+          <Typography className="font-semibold">스터디장</Typography>
           <StudyChip value={study.headMember.realName} />
-          <Divider className="!m-1 !border-white" orientation="vertical" flexItem />
+          <Divider className="!border-white" orientation="vertical" flexItem />
           <Typography className="font-semibold">현재 인원 {study.memberNumber}명</Typography>
         </div>
       </div>
@@ -131,19 +99,18 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setModalInfo }: Study
 };
 
 const StudyAccordion = ({ study, memberId, toggleOpen, setModalInfo }: StudyAccordionProps) => {
-  const [open, setOpen] = useReducer((prev) => !prev, false);
-
   return (
-    <ThemeProvider value={theme}>
-      <Accordion open={open} icon={open ? <VscChevronUp /> : <VscChevronDown />}>
-        <AccordionHeader className="h-20" onClick={setOpen}>
-          <StudyAccordionHeader study={study} />
-        </AccordionHeader>
-        <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
-          <StudyAccordionBody study={study} memberId={memberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
-        </AccordionBody>
-      </Accordion>
-    </ThemeProvider>
+    <Accordion className="!shadow-none">
+      <AccordionSummary
+        className="!h-20 !border-b !border-white/[20%] !bg-subBlack !px-4 !text-white hover:!bg-subGray hover:!text-white focus:!outline-0"
+        expandIcon={<VscChevronDown />}
+      >
+        <StudyAccordionHeader study={study} />
+      </AccordionSummary>
+      <AccordionDetails className="!space-y-[30px] !bg-middleBlack !py-[30px] !px-[41px] !text-white">
+        <StudyAccordionBody study={study} memberId={memberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
+      </AccordionDetails>
+    </Accordion>
   );
 };
 
