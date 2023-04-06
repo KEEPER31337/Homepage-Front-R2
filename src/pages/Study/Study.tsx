@@ -33,7 +33,7 @@ const Study = () => {
 
   const handleStudyCreateButtonClick = () => {
     toggleOpen();
-    setModalInfo({ mode: 'add' });
+    setModalInfo({ mode: 'Add' });
   };
   /* 처음 한 번만 동작하는 useEffect, 페이지 초기 값 셋팅 */
   useEffect(() => {
