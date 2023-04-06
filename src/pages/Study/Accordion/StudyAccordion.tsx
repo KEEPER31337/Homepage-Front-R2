@@ -30,9 +30,11 @@ const StudyAccordionHeader = ({ study }: StudyAccordionHeaderProps) => {
         <Typography className="text-h3 font-bold">{study.title}</Typography>
         <div className="flex items-center space-x-2">
           <Typography className="font-semibold">스터디장</Typography>
-          <StudyChip value={study.headMember.realName} />
+          <StudyChip font="Semibold" value={study.headMember.realName} />
           <Divider className="!border-white" orientation="vertical" flexItem />
-          <Typography className="font-semibold">현재 인원 {study.memberNumber}명</Typography>
+          <Typography>
+            현재 인원 <span className="font-semibold">{study.memberNumber}명</span>
+          </Typography>
         </div>
       </div>
     </div>
@@ -47,9 +49,9 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setModalInfo }: Study
   const { information, headMember, memberList } = study;
 
   const LinkIconData: IconType = {
-    github: <VscGithubInverted className="h-7 w-7" />,
-    notion: <SiNotion className="h-7 w-7" />,
-    etc: <VscLink className="h-7 w-7" />,
+    github: <VscGithubInverted className="h-5 w-5" />,
+    notion: <SiNotion className="h-5 w-5" />,
+    etc: <VscLink className="h-5 w-5" />,
   };
 
   const handleStudyModifyButtonClick = () => {
@@ -85,9 +87,9 @@ const StudyAccordionBody = ({ study, memberId, toggleOpen, setModalInfo }: Study
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">링크</Typography>
-        <div className="flex space-x-2 text-pointBlue">
+        <div className="flex space-x-3 text-pointBlue">
           {study.link?.map(({ title, contents }) => (
-            <Link to={contents} target="_blank" key={title} className="flex items-center space-x-2">
+            <Link to={contents} target="_blank" key={title} className="flex items-center space-x-1">
               <span>{LinkIconData[title] ? LinkIconData[title] : LinkIconData.etc}</span>
               <span className="border-b border-pointBlue">{title}</span>
             </Link>

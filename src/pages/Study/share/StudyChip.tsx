@@ -6,24 +6,31 @@ import { Chip } from '@mui/material';
  */
 interface ChipProps {
   value: string;
+  font?: 'Normal' | 'Semibold';
 }
+
 interface ChipDismissibleProps {
   value: string;
+  font?: 'Normal' | 'Semibold';
   onClick: () => void;
 }
 
-export const StudyChip = ({ value }: ChipProps) => {
+export const StudyChip = ({ font, value }: ChipProps) => {
   return (
     <Chip
-      className="!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px]"
+      className={`${
+        font === 'Semibold' ? 'font-semibold' : ''
+      } !flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px]`}
       label={value}
     />
   );
 };
-export const StudyChipDismissible = ({ value, onClick }: ChipDismissibleProps) => {
+export const StudyChipDismissible = ({ font, value, onClick }: ChipDismissibleProps) => {
   return (
     <Chip
-      className="!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px]"
+      className={`${
+        font === 'Semibold' ? 'font-semibold' : ''
+      } "!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px]`}
       onDelete={() => {
         if (onClick) onClick();
       }}
