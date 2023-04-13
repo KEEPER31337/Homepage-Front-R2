@@ -28,7 +28,7 @@ const SignUp = () => {
       <Box className="h-[492px] w-[690px] border border-pointBlue px-24 py-14">
         <Stack className="relative h-full w-full">
           <StepProgress className="mb-2 w-32" currentStep={currentStep} totalStep={TOTAL_STEPS} />
-          <Typography className="whitespace-pre !font-semibold">{stepInfoMsg[currentStep]}</Typography>
+          <Typography className="!mb-8 whitespace-pre !font-semibold">{stepInfoMsg[currentStep]}</Typography>
           {stepInputSection[currentStep]}
           <div className="absolute right-0 bottom-0">
             <OutlinedButton>다음</OutlinedButton>
