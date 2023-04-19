@@ -1,7 +1,5 @@
 import React, { Dispatch, DispatchWithoutAction, SetStateAction, useReducer } from 'react';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { VscChevronDown, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
@@ -25,7 +23,7 @@ type StudyAccordionHeaderProps = Pick<StudyAccordionProps, 'study'>;
 const StudyAccordionHeader = ({ study }: StudyAccordionHeaderProps) => {
   return (
     <div className="flex w-full space-x-2 pl-2 text-left">
-      <span className="!max-w-16 !min-w-16 !h-16 !max-h-16 !w-16 bg-gray-300">이미지</span>
+      <span className="max-w-16 min-w-16 h-16 max-h-16 w-16 bg-gray-300">이미지</span>
       <div className="flex w-full items-center justify-between space-x-2 pr-2">
         <Typography className="text-h3 font-bold">{study.title}</Typography>
         <div className="flex items-center space-x-2">
