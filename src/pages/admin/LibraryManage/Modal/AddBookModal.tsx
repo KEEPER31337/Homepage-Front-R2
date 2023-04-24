@@ -45,7 +45,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
     setValidAuthor(author === '');
   };
 
-  const AddBookAPI = () => {
+  const handleAddBookButtonClick = () => {
     validate();
     if (title !== '' && author !== '') {
       // TODO 도서추가 API
@@ -62,9 +62,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
         title="도서추가"
         modalWidth="xs"
         actionButtonName="추가"
-        onActionButonClick={() => {
-          AddBookAPI();
-        }}
+        onActionButonClick={handleAddBookButtonClick}
       >
         <div className="flex h-full w-full flex-col space-y-5">
           <div className="flex flex-col">
