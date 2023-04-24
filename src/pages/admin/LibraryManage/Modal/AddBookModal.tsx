@@ -63,7 +63,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
       actionButtonName="추가"
       onActionButonClick={handleAddBookButtonClick}
     >
-      <div className="flex h-full w-full flex-col space-y-5">
+      <div className="flex flex-col space-y-5">
         <div className="flex flex-col">
           도서명
           <StandardInput
