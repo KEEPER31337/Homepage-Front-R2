@@ -1,10 +1,9 @@
-import React, { Dispatch, DispatchWithoutAction, SetStateAction, useReducer } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import React, { Dispatch, DispatchWithoutAction, SetStateAction } from 'react';
+import { Accordion, AccordionSummary, AccordionDetails, Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { VscChevronDown, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 
-import { Divider } from '@mui/material';
 import type { StudyListInfo } from '@api/dto';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { Link } from 'react-router-dom';
