@@ -34,16 +34,17 @@ const StudyAccordionHeader = ({ study, memberId, toggleOpen, setModalInfo }: Stu
     <div className="flex w-full space-x-2 pl-2 text-left">
       <span className="max-w-16 min-w-16 h-16 max-h-16 w-16 bg-gray-300">이미지</span>
       <div className="flex w-full items-center justify-between space-x-2 pr-2">
-        <Typography className="text-h3 font-bold">{study.title}</Typography>
-
-        <div className="flex items-center space-x-2">
+        <div className="flex space-x-[22px]">
+          <Typography className="!text-h3 !font-semibold">{study.title}</Typography>
           {memberId === headMember.id && (
             <div className="space-x-2 pr-2">
               <OutlinedButton onClick={handleStudyModifyButtonClick}>수정</OutlinedButton>
               <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
             </div>
           )}
-          <Typography className="font-semibold">스터디장</Typography>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Typography className="!font-semibold">스터디장</Typography>
           <StudyChip fontWeight="Semibold" value={study.headMember.realName} />
           <Divider className="!border-white" orientation="vertical" flexItem />
           <Typography>
