@@ -45,7 +45,7 @@ const StudyAccordionHeader = ({ study, memberId, toggleOpen, setModalInfo }: Stu
             </div>
           )}
           <Typography className="font-semibold">스터디장</Typography>
-          <StudyChip font="Semibold" value={study.headMember.realName} />
+          <StudyChip fontWeight="Semibold" value={study.headMember.realName} />
           <Divider className="!border-white" orientation="vertical" flexItem />
           <Typography>
             현재 인원 <span className="font-semibold">{study.memberNumber}명</span>
