@@ -24,7 +24,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
   const [validTitle, setValidTitle] = useState<boolean>(false);
   const [validAuthor, setValidAuthor] = useState<boolean>(false);
 
-  const onChangeAddBookInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setAddBookInfo({
       ...addBookInfo,
@@ -72,7 +72,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
               helperText={validTitle && '도서명을 입력해주세요'}
               name="title"
               value={title}
-              onChange={onChangeAddBookInfo}
+              onChange={handleAddBookInfoChange}
             />
           </div>
 
@@ -83,7 +83,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
               helperText={validAuthor && '저자명을 입력해주세요'}
               name="author"
               value={author}
-              onChange={onChangeAddBookInfo}
+              onChange={handleAddBookInfoChange}
             />
           </div>
 
