@@ -27,7 +27,12 @@ const ActionModal = ({
   onActionButonClick,
 }: ActionModalProps) => {
   return (
-    <Dialog open={open} PaperProps={{ className: 'px-2 py-1' }} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
+    <Dialog
+      open={open}
+      PaperProps={{ className: '!bg-subBlack brightness-125 !bg-none px-2 py-1' }}
+      fullWidth={Boolean(modalWidth)}
+      maxWidth={modalWidth}
+    >
       <DialogTitle className="flex items-center gap-x-2 !font-bold text-pointBlue">
         {startAdornment}
         {title}
