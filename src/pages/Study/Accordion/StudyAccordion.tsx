@@ -29,7 +29,6 @@ const StudyAccordionHeader = ({ study, memberId, toggleOpen, setModalInfo }: Stu
   };
   const handleStudyDeleteButtonClick = () => {
     // TODO 스터디 제거 API 호출 후 새로고침(기능 구현 후 console 삭제 예정)
-    console.log(`${study.title}삭제`);
   };
 
   return (
