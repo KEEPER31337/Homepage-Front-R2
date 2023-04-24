@@ -55,44 +55,42 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
   };
 
   return (
-    <div className="flex">
-      <ActionModal
-        open={open}
-        onClose={onClose}
-        title="도서추가"
-        modalWidth="xs"
-        actionButtonName="추가"
-        onActionButonClick={handleAddBookButtonClick}
-      >
-        <div className="flex h-full w-full flex-col space-y-5">
-          <div className="flex flex-col">
-            도서명
-            <StandardInput
-              error={validTitle}
-              helperText={validTitle && '도서명을 입력해주세요'}
-              name="title"
-              value={title}
-              onChange={handleAddBookInfoChange}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            저자
-            <StandardInput
-              error={validAuthor}
-              helperText={validAuthor && '저자명을 입력해주세요'}
-              name="author"
-              value={author}
-              onChange={handleAddBookInfoChange}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            권수 <TotalBookNumberSelector className="w-fit" value={totalBookNumber} setValue={setTotalBookNumber} />
-          </div>
+    <ActionModal
+      open={open}
+      onClose={onClose}
+      title="도서추가"
+      modalWidth="xs"
+      actionButtonName="추가"
+      onActionButonClick={handleAddBookButtonClick}
+    >
+      <div className="flex h-full w-full flex-col space-y-5">
+        <div className="flex flex-col">
+          도서명
+          <StandardInput
+            error={validTitle}
+            helperText={validTitle && '도서명을 입력해주세요'}
+            name="title"
+            value={title}
+            onChange={handleAddBookInfoChange}
+          />
         </div>
-      </ActionModal>
-    </div>
+
+        <div className="flex flex-col">
+          저자
+          <StandardInput
+            error={validAuthor}
+            helperText={validAuthor && '저자명을 입력해주세요'}
+            name="author"
+            value={author}
+            onChange={handleAddBookInfoChange}
+          />
+        </div>
+
+        <div className="flex flex-col">
+          권수 <TotalBookNumberSelector className="w-fit" value={totalBookNumber} setValue={setTotalBookNumber} />
+        </div>
+      </div>
+    </ActionModal>
   );
 };
 
