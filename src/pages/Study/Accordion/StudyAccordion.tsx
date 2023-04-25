@@ -1,6 +1,5 @@
 import React, { Dispatch, DispatchWithoutAction, SetStateAction } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Divider } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { Accordion, AccordionSummary, AccordionDetails, Divider, Typography } from '@mui/material';
 import { VscChevronDown, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 
