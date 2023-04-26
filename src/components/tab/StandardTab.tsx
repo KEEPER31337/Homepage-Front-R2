@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabs, Tab, Box } from '@mui/material';
 
 interface StandardTabProps {
   options: { id: number; label: string }[];
+  tab: number;
+  setTab: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const StandardTab = ({ options }: StandardTabProps) => {
-  const [currentTab, setCurrentTab] = useState(0);
-
+const StandardTab = ({ options, tab, setTab }: StandardTabProps) => {
   const handleChange = (event: React.SyntheticEvent, newTab: number) => {
-    setCurrentTab(newTab);
+    setTab(newTab);
   };
 
   return (
     <Box className="w-fit">
-      <Tabs value={currentTab} onChange={handleChange}>
+      <Tabs value={tab} onChange={handleChange}>
         {options.map((option) => (
           <Tab key={option.id} className="w-[120px] !text-base" label={option.label} />
         ))}
