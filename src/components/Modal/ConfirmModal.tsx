@@ -14,7 +14,7 @@ const ConfirmModal = ({ open, onClose, modalWidth, title, children }: ConfirmMod
   return (
     <Dialog open={open} PaperProps={{ className: 'px-2 py-1' }} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
       <div className="absolute right-3 top-3">
-        <IconButton className="w-9" onClick={onClose}>
+        <IconButton onClick={onClose}>
           <VscChromeClose className="fill-pointBlue" size={19} />
         </IconButton>
       </div>
