@@ -1,7 +1,6 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { VscChromeClose } from 'react-icons/vsc';
-import { IconButton } from '@mui/material';
 
 interface ConfirmModalProps {
   open: boolean;
