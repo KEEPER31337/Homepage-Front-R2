@@ -70,11 +70,9 @@ const StudyAccordionBody = ({ study }: StudyAccordionBodyProps) => {
 
   return (
     <div className="space-y-[30px]">
-      <div className="flex justify-between">
-        <div className="space-y-4">
-          <Typography className="font-semibold">스터디 소개</Typography>
-          <Typography className="border-l-2 border-pointBlue px-2">{information}</Typography>
-        </div>
+      <div className="flex justify-between space-y-4">
+        <Typography className="font-semibold">스터디 소개</Typography>
+        <Typography className="border-l-2 border-pointBlue px-2">{information}</Typography>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
