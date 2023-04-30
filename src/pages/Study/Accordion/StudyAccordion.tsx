@@ -21,9 +21,9 @@ type StudyAccordionBodyProps = Pick<StudyAccordionProps, 'study'>;
 const StudyAccordionHeader = ({ study, memberId, toggleOpen, setModalInfo }: StudyAccordionProps) => {
   const { headMember } = study;
 
-  const handleStudyModifyButtonClick = () => {
+  const handleStudyEditButtonClick = () => {
     toggleOpen();
-    setModalInfo({ mode: 'Modify', selectedStudy: study });
+    setModalInfo({ mode: 'Edit', selectedStudy: study });
   };
   const handleStudyDeleteButtonClick = () => {
     // TODO 스터디 제거 API 호출 후 새로고침(기능 구현 후 console 삭제 예정)
@@ -37,7 +37,7 @@ const StudyAccordionHeader = ({ study, memberId, toggleOpen, setModalInfo }: Stu
           <Typography className="!text-h3 !font-semibold">{study.title}</Typography>
           {memberId === headMember.id && (
             <div className="space-x-2 pr-2">
-              <OutlinedButton onClick={handleStudyModifyButtonClick}>수정</OutlinedButton>
+              <OutlinedButton onClick={handleStudyEditButtonClick}>수정</OutlinedButton>
               <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
             </div>
           )}
