@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Box from '@mui/material/Box';
+import { Checkbox, FormControlLabel, Button, TextField, Box, CssBaseline, Container, Stack } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@material-tailwind/react';
-import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
-import { Button, TextField } from '@mui/material';
 
 const HorizonLine = () => {
   return (
@@ -23,6 +17,7 @@ const HorizonLine = () => {
 };
 
 const Login = () => {
+  const [isValidId, setIsValidId] = useState<boolean>(false);
   const [form, setForm] = useState({
     id: '',
     password: '',
@@ -32,10 +27,8 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    console.log({
-      id: data.get('id'),
-      password: data.get('password'),
-    });
+    data.append('id', id);
+    data.append('password', password);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,9 +39,8 @@ const Login = () => {
     });
   };
 
-  const [validId, setValidId] = useState<boolean>(false);
-  const validateId = () => {
-    setValidId(/[^ㄱ-ㅎ가-힣a-zA-Z]/g.test(id));
+  const handleIdValidation = () => {
+    setIsValidId(/[^ㄱ-ㅎ가-힣a-zA-Z]/g.test(id));
   };
 
   return (
@@ -73,12 +65,12 @@ const Login = () => {
               required
               fullWidth
               placeholder="ID"
-              error={validId}
-              helperText={validId ? '아이디를 입력해주세요' : ''}
+              error={isValidId}
+              helperText={isValidId ? '아이디를 입력해주세요' : ''}
               name="id"
               value={id}
               onChange={onChange}
-              onBlur={validateId}
+              onBlur={handleIdValidation}
             />
             <TextField
               sx={{ mb: 2 }}
