@@ -66,7 +66,7 @@ const useMainRouter = () =>
           element: <FitContainer />,
           children: [
             {
-              path: 'seminarAttend',
+              path: 'seminar',
               element: <SeminarAttend />,
             },
           ],
