@@ -1,5 +1,5 @@
 export interface Column<T> {
-  key: keyof T;
+  key: keyof T | 'checkbox';
   headerName: string;
 }
 
