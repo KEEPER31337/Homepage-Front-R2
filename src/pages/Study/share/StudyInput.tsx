@@ -8,7 +8,7 @@ import { ThemeProvider, Input } from '@material-tailwind/react';
 interface InputProps {
   variant: 'standard' | 'outlined' | 'static';
   size: 'md' | 'lg';
-  label: string;
+  label?: string;
   placeholder: string;
 }
 
