@@ -18,6 +18,7 @@ const Countdown = ({ startTime, endTime }: countdownProps) => {
   };
 
   useEffect(() => {
+    setTimeDiff(endTime.diff(nowTime));
     id.current = setInterval(changeNowTime, 1000);
     return () => clearInterval(id.current);
   }, [nowTime]);
@@ -25,10 +26,6 @@ const Countdown = ({ startTime, endTime }: countdownProps) => {
   useEffect(() => {
     if (id.current) setLeftTime(endTime > nowTime ? timeDiff.toFormat('mm:ss') : '마감');
   }, [timeDiff]);
-
-  useEffect(() => {
-    setTimeDiff(endTime.diff(nowTime));
-  }, [nowTime]);
 
   return <p className="text-white">{startTime > nowTime ? endTime.diff(startTime).toFormat('mm:ss') : leftTime}</p>;
 };
