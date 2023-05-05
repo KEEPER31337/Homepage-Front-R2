@@ -31,7 +31,7 @@ const SeminarAttend = () => {
         <PageTitle>세미나 출석</PageTitle>
         <OutlinedButton>세미나 관리</OutlinedButton>
       </div>
-      <div className="mt-[180px] flex justify-center">
+      <div className="mt-[180px] flex justify-between">
         <SeminarCard>
           {seminarActivated ? (
             <>
@@ -42,7 +42,7 @@ const SeminarAttend = () => {
             <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
           )}
         </SeminarCard>
-        <SeminarCard>
+        <SeminarCard className="mt-[-50px]">
           {seminarActivated ? (
             <>
               <Typography className="text-center text-paragraph text-white">{recentSeminarDate} 세미나</Typography>
@@ -62,12 +62,12 @@ const SeminarAttend = () => {
             <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
           )}
         </SeminarCard>
-        {isBoss ? (
-          <FilledButton onClick={() => setIsBoss(false)}>회원권한페이지로</FilledButton>
-        ) : (
-          <FilledButton onClick={() => setIsBoss(true)}>회장권한페이지로</FilledButton>
-        )}
       </div>
+      {isBoss ? (
+        <FilledButton onClick={() => setIsBoss(false)}>회원권한페이지로</FilledButton>
+      ) : (
+        <FilledButton onClick={() => setIsBoss(true)}>회장권한페이지로</FilledButton>
+      )}
     </>
   );
 };
