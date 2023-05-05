@@ -27,11 +27,13 @@ const SeminarAttend = () => {
         <SeminarCard>
           {seminarActivated ? (
             <>
-              <Typography className="text-center text-paragraph text-white">{seminarDate} 세미나</Typography>
+              <Typography className="mt-[40px] text-center !text-h3 !font-bold text-white">
+                {seminarDate} 세미나
+              </Typography>
               {isBoss ? <BossCardContent /> : <MemberCardContent />}
             </>
           ) : (
-            <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
+            <Typography className="text-center !text-h3 !font-bold">예정된 세미나가 없습니다.</Typography>
           )}
         </SeminarCard>
         {isBoss ? (
