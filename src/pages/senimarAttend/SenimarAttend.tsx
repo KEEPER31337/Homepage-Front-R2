@@ -11,9 +11,6 @@ import MemberCardContent from './Card/MemberCardContent';
 const SeminarAttend = () => {
   const seminarDate = DateTime.now(); // 이후 삭제
   const seminarActivated = true; // TODO: useState, api 적용
-  // 최근(중앙 배치) 세미나: recentSeminar
-  // 예정(왼쪽 배치) 세미나: futureSeminar
-  // 이전(오른쪽 배치) 세미나: pastSeminar
   const [recentSeminarDate, setRecentSeminarDate] = useState('today'); // TODO: api 적용
   const [futureSeminarDate, setFutureSeminarDate] = useState('towmorrow');
   const [pastSeminarDate, setPastSeminarDate] = useState('yesterday');
@@ -21,8 +18,8 @@ const SeminarAttend = () => {
 
   useEffect(() => {
     setRecentSeminarDate(DateTime.now().toFormat('yy.MM.dd'));
-    setFutureSeminarDate(seminarDate.minus({ days: 1 }).toFormat('yy.MM.dd'));
-    setPastSeminarDate(seminarDate.plus({ days: 1 }).toFormat('yy.MM.dd'));
+    setFutureSeminarDate(seminarDate.plus({ days: 1 }).toFormat('yy.MM.dd'));
+    setPastSeminarDate(seminarDate.minus({ days: 1 }).toFormat('yy.MM.dd'));
   }, []);
 
   return (
