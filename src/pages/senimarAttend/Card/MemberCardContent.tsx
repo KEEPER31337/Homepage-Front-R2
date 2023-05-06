@@ -22,16 +22,7 @@ const MemberCardContent = () => {
   return (
     <>
       <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
-      <div className="flex justify-center">
-        <FilledButton
-          onClick={() => {
-            handleAttendButtonClick(new Date());
-          }}
-        >
-          출석
-        </FilledButton>
-      </div>
-      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
+      <div className="mx-auto mt-[32px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
           <div>지각</div>
@@ -39,6 +30,15 @@ const MemberCardContent = () => {
         <div className="grid content-between">
           <Countdown />
         </div>
+      </div>
+      <div className="mt-[39px] flex justify-center">
+        <FilledButton
+          onClick={() => {
+            handleAttendButtonClick(new Date());
+          }}
+        >
+          출석
+        </FilledButton>
       </div>
     </>
   );

@@ -17,7 +17,7 @@ interface SeminarInputProps {
 const SeminarInput = ({ disabled, helperText }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3];
   return (
-    <div className="mx-auto my-[22px]">
+    <div className="">
       <div className="flex h-[52px] w-[192px] justify-between">
         {inputListKey.map((key) => {
           return <input key={key} style={inputStyle} maxLength={1} disabled={disabled} />;

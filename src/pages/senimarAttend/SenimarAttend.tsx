@@ -23,13 +23,12 @@ const SeminarAttend = () => {
         <PageTitle>세미나 출석</PageTitle>
         <OutlinedButton>세미나 관리</OutlinedButton>
       </div>
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex h-screen items-center justify-center text-center">
         <SeminarCard>
           {seminarActivated ? (
             <>
-              <Typography className="mt-[40px] text-center !text-h3 !font-bold text-white">
-                {seminarDate} 세미나
-              </Typography>
+              <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarDate} 세미나</Typography>
+              <p className="mt-[26px] mb-[14px] text-paragraph">출석 코드</p>
               {isBoss ? <BossCardContent /> : <MemberCardContent />}
             </>
           ) : (
