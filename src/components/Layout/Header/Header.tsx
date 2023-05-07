@@ -17,7 +17,11 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="fixed" className="h-header border-b border-pointBlue !bg-mainBlack !bg-none">
+    <AppBar
+      position="fixed"
+      className="h-header border-b border-pointBlue !bg-mainBlack !bg-none"
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar className="flex justify-between">
         <Link to="/">
           <Logo className="h-8" />

@@ -12,7 +12,7 @@ interface SelectorProps extends SelectProps {
 const Selector = ({ label, value, onChange, options, className, ...selectProps }: SelectorProps) => {
   return (
     <FormControl className={className} variant="standard">
-      <InputLabel>{label}</InputLabel>
+      {label && <InputLabel>{label}</InputLabel>}
       <Select className="before:!border-pointBlue" value={value ?? ''} onChange={onChange} {...selectProps}>
         {options.map((option) => (
           <MenuItem key={option.id} value={option.id}>
