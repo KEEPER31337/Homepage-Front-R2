@@ -13,13 +13,11 @@ const StandardTab = ({ options, tab, setTab }: StandardTabProps) => {
   };
 
   return (
-    <Box className="w-fit">
-      <Tabs value={tab} onChange={handleChange}>
-        {options.map((option) => (
-          <Tab key={option.id} className="w-[120px] !text-base" label={option.label} />
-        ))}
-      </Tabs>
-    </Box>
+    <Tabs value={tab} onChange={handleChange}>
+      {options.map((option) => (
+        <Tab key={option.id} className="w-[120px] !text-base" label={option.label} />
+      ))}
+    </Tabs>
   );
 };
 
