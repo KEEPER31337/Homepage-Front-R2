@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import ActionModal from '@components/Modal/ActionModal';
 import { Row } from '@components/Table/StandardTable.interface';
 import { BookListInfo, BorrowBookInfo } from '@api/dto';
@@ -12,12 +11,12 @@ import TotalBookNumberSelector from '../components/TotalBookNumberSelector';
 type AddBookInfo = Pick<BookListInfo, 'title' | 'author'>;
 
 interface SelectorProps {
-  openEditModal: boolean;
-  toggleOpenEditModal: () => void;
+  open: boolean;
+  onClose: () => void;
   EditModalRowData: Row<BookListInfo>;
 }
 
-const EditBookInfoModal = ({ openEditModal, toggleOpenEditModal, EditModalRowData }: SelectorProps) => {
+const EditBookInfoModal = ({ open, onClose, EditModalRowData }: SelectorProps) => {
   const [form, setForm] = React.useState<AddBookInfo>({
     title: '',
     author: '',
@@ -44,8 +43,8 @@ const EditBookInfoModal = ({ openEditModal, toggleOpenEditModal, EditModalRowDat
   return (
     <div className="flex">
       <ActionModal
-        open={openEditModal}
-        onClose={toggleOpenEditModal}
+        open={open}
+        onClose={onClose}
         title="도서수정"
         actionButtonName="수정"
         onActionButonClick={() => {

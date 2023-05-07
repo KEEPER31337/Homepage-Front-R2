@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import { BookListInfo } from '@api/dto';
 import PageTitle from '@components/Typography/PageTitle';
 import StandardTable from '@components/Table/StandardTable';
@@ -21,27 +21,29 @@ const LibraryManage = () => {
     }
   };
 
-  const [openEditModal, toggleOpenEditModal] = useReducer((prev) => !prev, false);
   const [EditModalRowData, setEditModalRowData] = useState<Row<BookListInfo>>({} as Row<BookListInfo>);
 
+  const [addBookModalopen, setAddBookModalopen] = useState(false);
+  const [deleteBookModalopen, setDeleteBookModalopen] = useState(false);
+  const [editBookModalopen, setEditBookModalopen] = useState(false);
+
   const handleClick = ({ rowData }: { rowData: Row<BookListInfo> }) => {
-    toggleOpenEditModal();
-    console.log(rowData);
+    setEditBookModalopen(true);
     setEditModalRowData(rowData);
   };
-
-  const [openAddBook, toggleOpenAddBook] = useReducer((prev) => !prev, false);
-  const [openDeleteBook, toggleOpenDeleteBook] = useReducer((prev) => !prev, false);
   return (
     <div>
       <PageTitle>도서관리</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
         <SearchSection />
         <div className="flex space-x-2">
-          <OutlinedButton onClick={() => toggleOpenAddBook()}>도서 추가</OutlinedButton>
-          <OutlinedButton onClick={() => toggleOpenDeleteBook()}>도서 삭제</OutlinedButton>
+          <OutlinedButton onClick={() => setAddBookModalopen(true)}>도서 추가</OutlinedButton>
+          <OutlinedButton onClick={() => setDeleteBookModalopen(true)}>도서 삭제</OutlinedButton>
           <OutlinedButton>대출 관리</OutlinedButton>
           <OutlinedButton>반납 관리</OutlinedButton>
+
+          <AddBookModal open={addBookModalopen} onClose={() => setAddBookModalopen(false)} />
+          <DeleteBookModal open={deleteBookModalopen} onClose={() => setDeleteBookModalopen(false)} />
         </div>
       </div>
       <StandardTable<BookListInfo>
@@ -51,8 +53,8 @@ const LibraryManage = () => {
         onRowClick={handleClick}
       />
       <EditBookInfoModal
-        openEditModal={openEditModal}
-        toggleOpenEditModal={toggleOpenEditModal}
+        open={editBookModalopen}
+        onClose={() => setEditBookModalopen(false)}
         EditModalRowData={EditModalRowData}
       />
     </div>

@@ -10,26 +10,34 @@ type AddBookInfo = Pick<BookListInfo, 'title' | 'author'>;
 
 interface AddBookModalProps {
   open: boolean;
-  toggleOpen: () => void;
+  onClose: () => void;
 }
 
-const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
-  const [form, setForm] = React.useState<AddBookInfo>({
+const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
+  const [addBookInfo, setAddBookInfo] = useState<AddBookInfo>({
     title: '',
     author: '',
   });
-  const { title, author } = form;
+  const { title, author } = addBookInfo;
   const [totalBookNumber, setTotalBookNumber] = useState<number | undefined>(1);
 
   const [validTitle, setValidTitle] = useState<boolean>(false);
   const [validAuthor, setValidAuthor] = useState<boolean>(false);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm({
-      ...form,
+    setAddBookInfo({
+      ...addBookInfo,
       [name]: value,
     });
+  };
+
+  const onReset = () => {
+    setAddBookInfo({
+      title: '',
+      author: '',
+    });
+    setTotalBookNumber(1);
   };
 
   const validate = () => {
@@ -37,55 +45,52 @@ const AddBookModal = ({ open, toggleOpen }: AddBookModalProps) => {
     setValidAuthor(author === '');
   };
 
-  const AddBookAPI = () => {
+  const handleAddBookButtonClick = () => {
     validate();
     if (title !== '' && author !== '') {
       // TODO 도서추가 API
-      toggleOpen();
+      onClose();
+      onReset();
     }
   };
 
   return (
-    <div className="flex">
-      <ActionModal
-        open={open}
-        onClose={toggleOpen}
-        title="도서추가"
-        modalWidth="xs"
-        actionButtonName="추가"
-        onActionButonClick={() => {
-          AddBookAPI();
-        }}
-      >
-        <div className="flex h-full w-full flex-col space-y-5">
-          <div className="flex flex-col">
-            도서명
-            <StandardInput
-              error={validTitle}
-              helperText={validTitle && '도서명을 입력해주세요'}
-              name="title"
-              value={title}
-              onChange={onChange}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            저자
-            <StandardInput
-              error={validAuthor}
-              helperText={validAuthor && '저자명을 입력해주세요'}
-              name="author"
-              value={author}
-              onChange={onChange}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            권수 <TotalBookNumberSelector className="w-fit" value={totalBookNumber} setValue={setTotalBookNumber} />
-          </div>
+    <ActionModal
+      open={open}
+      onClose={onClose}
+      title="도서추가"
+      modalWidth="xs"
+      actionButtonName="추가"
+      onActionButonClick={handleAddBookButtonClick}
+    >
+      <div className="flex flex-col space-y-5">
+        <div className="flex flex-col">
+          도서명
+          <StandardInput
+            error={validTitle}
+            helperText={validTitle && '도서명을 입력해주세요'}
+            name="title"
+            value={title}
+            onChange={handleAddBookInfoChange}
+          />
         </div>
-      </ActionModal>
-    </div>
+
+        <div className="flex flex-col">
+          저자
+          <StandardInput
+            error={validAuthor}
+            helperText={validAuthor && '저자명을 입력해주세요'}
+            name="author"
+            value={author}
+            onChange={handleAddBookInfoChange}
+          />
+        </div>
+
+        <div className="flex flex-col">
+          권수 <TotalBookNumberSelector className="w-fit" value={totalBookNumber} setValue={setTotalBookNumber} />
+        </div>
+      </div>
+    </ActionModal>
   );
 };
 
