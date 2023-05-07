@@ -3,12 +3,15 @@ import { DateTime } from 'luxon';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import FilledButton from '@components/Button/FilledButton';
 import PageTitle from '@components/Typography/PageTitle';
-import DoAttend from './DoAttend';
-import SetSeminar from './SetSeminar';
+import { Typography } from '@mui/material';
+import SeminarCard from './Card/SeminarCard';
+import BossCardContent from './Card/BossCardContent';
+import MemberCardContent from './Card/MemberCardContent';
 
 const SeminarAttend = () => {
   const [seminarDate, setSeminarDate] = useState('today');
-  const [tempIsBoss, setTempIsBoss] = useState(true);
+  const seminarActivated = true; // TODO: useState, api 적용
+  const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
 
   useEffect(() => {
     setSeminarDate(DateTime.now().toFormat('yy.MM.dd'));
@@ -21,16 +24,20 @@ const SeminarAttend = () => {
         <OutlinedButton>세미나 관리</OutlinedButton>
       </div>
       <div className="flex h-screen items-center justify-center">
-        {tempIsBoss ? (
-          <div>
-            <FilledButton onClick={() => setTempIsBoss(false)}>회원권한페이지로</FilledButton>
-            <SetSeminar seminarDate={seminarDate} />
-          </div>
+        <SeminarCard>
+          {seminarActivated ? (
+            <>
+              <Typography className="text-center text-paragraph text-white">{seminarDate} 세미나</Typography>
+              {isBoss ? <BossCardContent /> : <MemberCardContent />}
+            </>
+          ) : (
+            <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
+          )}
+        </SeminarCard>
+        {isBoss ? (
+          <FilledButton onClick={() => setIsBoss(false)}>회원권한페이지로</FilledButton>
         ) : (
-          <div>
-            <FilledButton onClick={() => setTempIsBoss(true)}>회장권한페이지로</FilledButton>
-            <DoAttend seminarDate={seminarDate} />
-          </div>
+          <FilledButton onClick={() => setIsBoss(true)}>회장권한페이지로</FilledButton>
         )}
       </div>
     </>
