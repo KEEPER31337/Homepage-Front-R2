@@ -34,9 +34,7 @@ const SeminarManage = () => {
           }}
           title="세미나 일정 추가"
           actionButtonName="추가"
-          onActionButonClick={() => {
-            handleSeminarAddButtonClick();
-          }}
+          onActionButonClick={handleSeminarAddButtonClick}
         >
           <div className="flex justify-center">
             <StandardDatePicker date={date} setDate={setDate} label="날짜" />
