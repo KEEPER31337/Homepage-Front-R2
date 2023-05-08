@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Checkbox, FormControlLabel, Button, TextField, Box, CssBaseline, Container, Stack } from '@mui/material';
+import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import { ThemeProvider } from '@material-tailwind/react';
+import BackgroundInput from '@components/Input/BackgroundInput';
 
 const HorizonLine = () => {
   return (
@@ -18,6 +18,7 @@ const HorizonLine = () => {
 
 const Login = () => {
   const [isValidId, setIsValidId] = useState<boolean>(false);
+  const [isKeepLogin, setIsKeepLogin] = useState<boolean>(false);
   const [form, setForm] = useState({
     id: '',
     password: '',
@@ -31,7 +32,7 @@ const Login = () => {
     data.append('password', password);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setForm({
       ...form,
@@ -39,13 +40,16 @@ const Login = () => {
     });
   };
 
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsKeepLogin(!e.target.checked);
+  };
+
   const handleIdValidation = () => {
     setIsValidId(/[^ㄱ-ㅎ가-힣a-zA-Z]/g.test(id));
   };
 
   return (
-    <ThemeProvider>
-      <CssBaseline />
+    <CssBaseline>
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -55,38 +59,40 @@ const Login = () => {
             alignItems: 'center',
           }}
         >
-          <Logo className="mb-4 h-20" />
+          <Logo className="mb-5 h-20" />
 
-          <Stack component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} width="100%">
-            <TextField
+          <Stack component="form" onSubmit={handleSubmit} width="100%">
+            <BackgroundInput
               sx={{ mb: 2 }}
-              variant="filled"
               label="아이디"
               required
               fullWidth
               placeholder="ID"
               error={isValidId}
-              helperText={isValidId ? '아이디를 입력해주세요' : ''}
+              helperText={isValidId && '아이디를 입력해주세요'}
               name="id"
               value={id}
-              onChange={onChange}
+              onChange={handleChange}
               onBlur={handleIdValidation}
             />
-            <TextField
+            <BackgroundInput
               sx={{ mb: 2 }}
-              variant="filled"
               label="비밀번호"
               required
               fullWidth
               placeholder="PW"
               name="password"
               value={password}
-              onChange={onChange}
+              onChange={handleChange}
+              onBlur={handleIdValidation}
             />
             <Button variant="outlined" sx={{ height: 56 }}>
               로그인
             </Button>
-            <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="로그인 상태 유지" />
+            <FormControlLabel
+              control={<Checkbox value={isKeepLogin} color="primary" onChange={handleCheckboxChange} />}
+              label="로그인 상태 유지"
+            />
           </Stack>
           <HorizonLine />
           <Stack direction="row" spacing={2}>
@@ -96,7 +102,7 @@ const Login = () => {
           </Stack>
         </Box>
       </Container>
-    </ThemeProvider>
+    </CssBaseline>
   );
 };
 
