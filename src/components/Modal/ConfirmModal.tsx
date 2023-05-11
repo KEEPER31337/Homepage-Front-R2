@@ -18,11 +18,9 @@ const ConfirmModal = ({ open, onClose, modalWidth, title, children }: ConfirmMod
       fullWidth={Boolean(modalWidth)}
       maxWidth={modalWidth}
     >
-      <div className="absolute right-3 top-3 ml-3">
-        <IconButton onClick={onClose}>
-          <VscChromeClose className="fill-pointBlue" size={28} />
-        </IconButton>
-      </div>
+      <IconButton className="!absolute right-3 top-3" onClick={onClose}>
+        <VscChromeClose className="fill-pointBlue" size={28} />
+      </IconButton>
       <DialogTitle className="!font-bold text-pointBlue">{title}</DialogTitle>
       <DialogContent className="min-h-[80px] min-w-[350px]">{children}</DialogContent>
     </Dialog>
