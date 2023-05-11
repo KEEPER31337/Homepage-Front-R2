@@ -12,7 +12,12 @@ interface ConfirmModalProps {
 
 const ConfirmModal = ({ open, onClose, modalWidth, title, children }: ConfirmModalProps) => {
   return (
-    <Dialog open={open} PaperProps={{ className: 'px-2 py-1' }} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
+    <Dialog
+      open={open}
+      PaperProps={{ className: '!bg-subBlack brightness-125 !bg-none px-2 py-1' }}
+      fullWidth={Boolean(modalWidth)}
+      maxWidth={modalWidth}
+    >
       <div className="absolute right-3 top-3 ml-3">
         <IconButton onClick={onClose}>
           <VscChromeClose className="fill-pointBlue" size={28} />
