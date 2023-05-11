@@ -2,22 +2,25 @@
 import React from 'react';
 import { TextField, StandardTextFieldProps } from '@mui/material';
 
-interface StandardInputProps extends StandardTextFieldProps {
+interface BackgroundInputProps extends StandardTextFieldProps {
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const StandardInput = ({ value, onChange, error, ...standardTextFieldProps }: StandardInputProps) => {
+const BackgroundInput = ({ value, onChange, error, ...standardTextFieldProps }: BackgroundInputProps) => {
   return (
     <TextField
-      InputProps={error ? undefined : { className: 'before:!border-pointBlue' }}
+      InputProps={{
+        className: `${!error && 'before:!border-pointBlue bg-pointBlue/5'} h-12`,
+      }}
       value={value}
       onChange={onChange}
       error={error}
       {...standardTextFieldProps}
       variant="standard"
+      sx={{ '.MuiFormLabel-root[data-shrink=false]': { top: 8 } }}
     />
   );
 };
 
-export default StandardInput;
+export default BackgroundInput;

@@ -11,6 +11,9 @@ const muiTheme = createTheme({
       contrastText: '#4CEEF9',
     },
   },
+  typography: {
+    fontFamily: ['IBM Plex Sans KR', 'system-ui', 'sans-serif'].join(','),
+  },
 });
 
 export default muiTheme;
