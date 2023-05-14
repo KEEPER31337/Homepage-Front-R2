@@ -8,6 +8,8 @@ interface ActionModalProps {
   onClose: () => void;
   modalWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   title: string;
+  startAdornment?: React.ReactNode;
+  endAdornment?: React.ReactNode;
   children: React.ReactNode;
   actionButtonName: string;
   onActionButonClick: () => void;
@@ -18,13 +20,24 @@ const ActionModal = ({
   onClose,
   modalWidth,
   title,
+  startAdornment,
+  endAdornment,
   children,
   actionButtonName,
   onActionButonClick,
 }: ActionModalProps) => {
   return (
-    <Dialog open={open} PaperProps={{ className: 'px-2 py-1' }} fullWidth={Boolean(modalWidth)} maxWidth={modalWidth}>
-      <DialogTitle className="!font-bold text-pointBlue">{title}</DialogTitle>
+    <Dialog
+      open={open}
+      PaperProps={{ className: '!bg-subBlack brightness-125 !bg-none px-2 py-1' }}
+      fullWidth={Boolean(modalWidth)}
+      maxWidth={modalWidth}
+    >
+      <DialogTitle className="flex items-center gap-x-2 !font-bold text-pointBlue">
+        {startAdornment}
+        {title}
+        {endAdornment}
+      </DialogTitle>
       <DialogContent className="min-h-[80px] min-w-[350px]">{children}</DialogContent>
       <DialogActions>
         <TextButton onClick={onClose}>취소</TextButton>
