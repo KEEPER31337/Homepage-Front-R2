@@ -19,7 +19,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
     author: '',
   });
   const { title, author } = addBookInfo;
-  const [totalBookNumber, setTotalBookNumber] = useState<number | undefined>(1);
+  const [totalBookNumber, setTotalBookNumber] = useState<number>(1);
 
   const [validTitle, setValidTitle] = useState<boolean>(false);
   const [validAuthor, setValidAuthor] = useState<boolean>(false);

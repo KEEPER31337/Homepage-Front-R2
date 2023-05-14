@@ -4,7 +4,7 @@ import { SelectChangeEvent } from '@mui/material';
 
 interface TotalBookNumberProps {
   value?: number;
-  setValue: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setValue: React.Dispatch<React.SetStateAction<number>>;
   className?: string;
 }
 
