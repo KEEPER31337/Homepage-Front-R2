@@ -32,7 +32,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
     });
   };
 
-  const onReset = () => {
+  const resetAddBookInfo = () => {
     setAddBookInfo({
       title: '',
       author: '',
@@ -50,7 +50,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
     if (title !== '' && author !== '') {
       // TODO 도서추가 API
       onClose();
-      onReset();
+      resetAddBookInfo();
     }
   };
 
