@@ -16,7 +16,8 @@ const MemberCardContent = () => {
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
 
-  const handleAttendButtonClick = (nowTime: DateTime) => {
+  const handleAttendButtonClick = () => {
+    const nowTime = DateTime.now();
     setIsAttendable(nowTime < attendLimit);
     setIsCorrectCode(inputCode.join('') === validCode);
   };
@@ -27,7 +28,7 @@ const MemberCardContent = () => {
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
-            handleAttendButtonClick(DateTime.now());
+            handleAttendButtonClick();
           }}
         >
           출석
