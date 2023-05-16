@@ -1,12 +1,12 @@
 import React from 'react';
 import { VscCheck, VscChromeClose } from 'react-icons/vsc';
 
-interface AttendStatuesProps {
+interface SeminarAttendStatusProps {
   status: string;
   className: string;
 }
 
-const SeminarAttendStatus = ({ status, className }: AttendStatuesProps) => {
+const SeminarAttendStatus = ({ status, className }: SeminarAttendStatusProps) => {
   const attendStatusAlert = (
     <div className={`${className} text-pointBlue`}>
       <VscCheck />
