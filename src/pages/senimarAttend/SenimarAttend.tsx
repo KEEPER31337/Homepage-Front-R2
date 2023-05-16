@@ -28,11 +28,11 @@ const SeminarAttend = () => {
           {seminarActivated ? (
             <>
               <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarDate} 세미나</Typography>
-              <p className="mt-[26px] mb-[14px] text-paragraph">출석 코드</p>
+              <p className="mt-[26px] mb-[14px]">출석 코드</p>
               {isBoss ? <BossCardContent /> : <MemberCardContent />}
             </>
           ) : (
-            <Typography className="text-center !text-h3 !font-bold">예정된 세미나가 없습니다.</Typography>
+            <Typography className="!text-h3 !font-bold">예정된 세미나가 없습니다.</Typography>
           )}
         </SeminarCard>
         {isBoss ? (
