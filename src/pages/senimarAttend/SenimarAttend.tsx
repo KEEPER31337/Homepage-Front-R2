@@ -15,7 +15,7 @@ const SeminarAttend = () => {
   // 예정(왼쪽 배치) 세미나: futureSeminar
   // 이전(오른쪽 배치) 세미나: pastSeminar
   const [recentSeminarDate, setRecentSeminarDate] = useState('today'); // TODO: api 적용
-  const [futureSeminarDate, setFutureSeminarDate] = useState('towmorrow');
+  const [futureSeminarDate, setFutureSeminarDate] = useState('tomorrow');
   const [pastSeminarDate, setPastSeminarDate] = useState('yesterday');
   const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
 
