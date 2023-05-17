@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useDropzone } from 'react-dropzone';
+import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
+
 import { StudyListInfo } from '@api/dto';
 
 interface ImageUploaderProps {
+  title?: string;
   isEdit: boolean;
   selectedStudy?: StudyListInfo;
   setThumbnail: React.Dispatch<Blob>;
@@ -24,7 +26,7 @@ const validateName = (fileName: string) => {
   return validated;
 };
 
-const ImageUploader = ({ isEdit, selectedStudy, setThumbnail }: ImageUploaderProps) => {
+const ImageUploader = ({ title, isEdit, selectedStudy, setThumbnail }: ImageUploaderProps) => {
   const [thumbnailBase64, setThumbnailBase64] = useState<string>(); // 파일 base64
   // const [thumbnail, setThumbnail] = useState(null);
 
@@ -89,61 +91,50 @@ const ImageUploader = ({ isEdit, selectedStudy, setThumbnail }: ImageUploaderPro
   const { getRootProps, isDragActive } = useDropzone({ onDrop });
 
   const rootProps = {
-    ...getRootProps({
-      onClick: (event) => event.stopPropagation(),
-    }),
+    ...getRootProps(),
     multiple: false,
     accept: 'image/jpg, image/jpeg, image/png',
   };
 
   return (
-    <div
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...rootProps}
-      className={`${
-        isDragActive ? 'bg-blue-300 bg-opacity-50' : ''
-      } dark:border-slate-500 flex h-40 w-40 items-center justify-center rounded-xl border-4 border-dashed`}
-    >
-      {thumbnailBase64 ? (
-        <>
-          <div className="peer h-full w-full">
-            <img
-              className={`${isDragActive ? 'opacity-50' : ''}   h-full w-full rounded-xl p-1 shadow-lg`}
-              src={thumbnailBase64}
-              alt="thumbnail"
-            />
+    <>
+      <div className="flex items-center justify-between">
+        <span className="text-paragraph">{title || '썸네일'}</span>
+        <button className="text-small underline underline-offset-4" type="button" onClick={deleteClickHandler}>
+          기본 이미지로
+        </button>
+      </div>
+      <div
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...rootProps}
+        className={`${isDragActive ? 'bg-pointBlue/[30%] bg-opacity-50' : ''} ${
+          thumbnailBase64 ? '' : 'border-[2px]'
+        } flex h-32 w-32 items-center justify-center border-dashed !border-pointBlue/[30%]`}
+      >
+        {thumbnailBase64 ? (
+          <img
+            className={`${isDragActive ? 'opacity-50' : ''}   h-full w-full shadow-lg`}
+            src={thumbnailBase64}
+            alt="thumbnail"
+          />
+        ) : (
+          <div className="text-small text-pointBlue/[30%]">
+            {isDragActive ? (
+              <p className="flex items-center text-center">이미지를 놓으세요</p>
+            ) : (
+              <p className="flex items-center">
+                <div className="mx-2 inline-block text-center">
+                  <MdOutlineAddPhotoAlternate className="mx-auto mb-1 h-[30px] w-[30px]" />
+                  클릭 또는 드래그하여
+                  <br />
+                  이미지를 첨부하세요
+                </div>
+              </p>
+            )}
           </div>
-
-          {/* eslint-disable-next-line react/button-has-type */}
-          <button
-            className="absolute  hidden h-40 w-40 rounded-xl bg-red-300 bg-opacity-50 text-xl text-red-500 hover:inline-block peer-hover:inline-block"
-            onClick={deleteClickHandler}
-          >
-            삭제
-          </button>
-        </>
-      ) : (
-        // eslint-disable-next-line react/jsx-no-useless-fragment
-        <>
-          {isDragActive ? (
-            <p className="text-slate-500 dark:text-slate-300 flex items-center text-center">
-              파일을
-              <br />
-              놓으세요
-            </p>
-          ) : (
-            <p className="text-slate-500 flex items-center">
-              <div className=" m-1 inline-block text-center">
-                <br />
-                썸네일을
-                <br />
-                드래그 해주세요
-              </div>
-            </p>
-          )}
-        </>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 export default ImageUploader;
