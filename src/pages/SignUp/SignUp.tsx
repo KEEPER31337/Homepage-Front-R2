@@ -5,6 +5,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import StepProgress from '@components/Progress/StepProgress';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import SignUpFirstInputSection from './Section/SignUpFirstInputSection';
+import SignUpSecondInputSection from './Section/SignUpSecondInputSection';
 
 const SignUp = () => {
   const TOTAL_STEPS = 3;
@@ -19,7 +20,7 @@ const SignUp = () => {
   const stepInputSection = {
     // TODO 스텝 별 인풋 컴포넌트 추가 예정
     1: <SignUpFirstInputSection />,
-    2: null,
+    2: <SignUpSecondInputSection />,
     3: null,
   };
 
