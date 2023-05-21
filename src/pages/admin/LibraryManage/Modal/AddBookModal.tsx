@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Typography } from '@mui/material';
 import ActionModal from '@components/Modal/ActionModal';
 import StandardInput from '@components/Input/StandardInput';
 import TotalBookNumberSelector from '@pages/admin/LibraryManage/components/TotalBookNumberSelector';
@@ -63,31 +64,32 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
       actionButtonName="추가"
       onActionButonClick={handleAddBookButtonClick}
     >
-      <div className="flex flex-col space-y-5">
-        <div className="flex flex-col">
-          도서명
+      <div className="space-y-5">
+        <div>
+          <Typography>도서명</Typography>
           <StandardInput
             error={validTitle}
             helperText={validTitle && '도서명을 입력해주세요'}
             name="title"
             value={title}
             onChange={handleAddBookInfoChange}
+            className="w-full"
           />
         </div>
-
-        <div className="flex flex-col">
-          저자
+        <div>
+          <Typography>저자</Typography>
           <StandardInput
             error={validAuthor}
             helperText={validAuthor && '저자명을 입력해주세요'}
             name="author"
             value={author}
             onChange={handleAddBookInfoChange}
+            className="w-full"
           />
         </div>
-
-        <div className="flex flex-col">
-          권수 <TotalBookNumberSelector className="w-fit" value={totalBookNumber} setValue={setTotalBookNumber} />
+        <div>
+          <Typography>권수</Typography>
+          <TotalBookNumberSelector className="w-fit" value={totalBookNumber} setValue={setTotalBookNumber} />
         </div>
       </div>
     </ActionModal>
