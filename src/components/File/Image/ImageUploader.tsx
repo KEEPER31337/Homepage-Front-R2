@@ -2,13 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 
-import { StudyListInfo } from '@api/dto';
 import utilApi from '@mocks/UtilApi';
 
 interface ImageUploaderProps {
   title?: string;
   isEdit: boolean;
-  selectedStudy?: StudyListInfo;
+  thumbnailPath?: string;
   setThumbnail: React.Dispatch<Blob>;
 }
 
@@ -27,12 +26,12 @@ const validateName = (fileName: string) => {
   return validated;
 };
 
-const ImageUploader = ({ title, isEdit, selectedStudy, setThumbnail }: ImageUploaderProps) => {
+const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUploaderProps) => {
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
 
   useEffect(() => {
-    if (isEdit && selectedStudy) {
-      const list = selectedStudy.thumbnailPath.split('/');
+    if (isEdit && thumbnailPath) {
+      const list = thumbnailPath.split('/');
       const data = utilApi.getThumbnail(list[list.length - 1]);
       setThumbnail(data);
       const reader = new FileReader();
