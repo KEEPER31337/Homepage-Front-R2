@@ -19,7 +19,6 @@ const SignUp = () => {
   };
 
   const stepInputSection = {
-    // TODO 스텝 별 인풋 컴포넌트 추가 예정
     1: <SignUpFirstInputSection />,
     2: <SignUpSecondInputSection />,
     3: <SignUpThirdInputSection />,
