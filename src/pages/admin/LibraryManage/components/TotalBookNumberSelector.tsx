@@ -3,7 +3,7 @@ import Selector from '@components/Selector/Selector';
 import { SelectChangeEvent } from '@mui/material';
 
 interface TotalBookNumberProps {
-  value?: number;
+  value: number;
   setValue: React.Dispatch<React.SetStateAction<number>>;
   className?: string;
 }
