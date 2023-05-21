@@ -6,6 +6,7 @@ import StepProgress from '@components/Progress/StepProgress';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import SignUpFirstInputSection from './Section/SignUpFirstInputSection';
 import SignUpSecondInputSection from './Section/SignUpSecondInputSection';
+import SignUpThirdInputSection from './Section/SignUpThirdInputSection';
 
 const SignUp = () => {
   const TOTAL_STEPS = 3;
@@ -21,7 +22,7 @@ const SignUp = () => {
     // TODO 스텝 별 인풋 컴포넌트 추가 예정
     1: <SignUpFirstInputSection />,
     2: <SignUpSecondInputSection />,
-    3: null,
+    3: <SignUpThirdInputSection />,
   };
 
   return (
