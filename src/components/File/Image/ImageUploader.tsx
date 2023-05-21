@@ -102,7 +102,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
       >
         {thumbnailBase64 ? (
           <img
-            className={`${isDragActive ? 'opacity-50' : ''}   h-full w-full shadow-lg`}
+            className={`${isDragActive ? 'opacity-50' : ''} h-full w-full object-cover shadow-lg`}
             src={thumbnailBase64}
             alt="thumbnail"
           />
