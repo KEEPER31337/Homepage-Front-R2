@@ -89,7 +89,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
         </div>
         <div>
           <Typography>권수</Typography>
-          <TotalBookNumberSelector className="w-fit" value={totalBookNumber} setValue={setTotalBookNumber} />
+          <TotalBookNumberSelector value={totalBookNumber} setValue={setTotalBookNumber} />
         </div>
       </div>
     </ActionModal>

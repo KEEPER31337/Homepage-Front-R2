@@ -5,10 +5,9 @@ import { SelectChangeEvent } from '@mui/material';
 interface TotalBookNumberProps {
   value: number;
   setValue: React.Dispatch<React.SetStateAction<number>>;
-  className?: string;
 }
 
-const TotalBookNumberSelector = ({ value, setValue, className }: TotalBookNumberProps) => {
+const TotalBookNumberSelector = ({ value, setValue }: TotalBookNumberProps) => {
   const bookNumberList = [
     { id: 1, content: '1권' },
     { id: 2, content: '2권' },
@@ -26,9 +25,7 @@ const TotalBookNumberSelector = ({ value, setValue, className }: TotalBookNumber
     setValue(Number(event.target.value as string));
   };
 
-  return (
-    <Selector className={className} options={bookNumberList} value={value} onChange={handleTotalBookNumberChange} />
-  );
+  return <Selector options={bookNumberList} value={value} onChange={handleTotalBookNumberChange} />;
 };
 
 export default TotalBookNumberSelector;
