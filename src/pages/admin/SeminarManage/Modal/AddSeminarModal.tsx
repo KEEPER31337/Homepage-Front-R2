@@ -10,6 +10,10 @@ interface AddSeminarModalProps {
 
 const AddSeminarModal = ({ open, toggleOpen }: AddSeminarModalProps) => {
   const [date, setDate] = useState<DateTime | null>(null);
+  const handleClose = () => {
+    toggleOpen(false);
+    setDate(null);
+  };
   const handleSeminarAddButtonClick = () => {
     toggleOpen();
     // TODO
@@ -20,10 +24,7 @@ const AddSeminarModal = ({ open, toggleOpen }: AddSeminarModalProps) => {
     <div>
       <ActionModal
         open={open}
-        onClose={() => {
-          toggleOpen();
-          setDate(null);
-        }}
+        onClose={handleClose}
         title="세미나 일정 추가"
         actionButtonName="추가"
         onActionButonClick={handleSeminarAddButtonClick}
