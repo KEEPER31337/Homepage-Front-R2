@@ -11,6 +11,7 @@ import FullContainer from '@components/Layout/Container/FullContainer';
 import FitContainer from '@components/Layout/Container/FitContainer';
 import BoardList from '@pages/board/BoardList';
 import SignUp from '@pages/SignUp/SignUp';
+import Rank from '@pages/rank/Rank';
 
 const useMainRouter = () =>
   useRoutes([
@@ -68,6 +69,15 @@ const useMainRouter = () =>
             {
               path: 'seminarAttend',
               element: <SeminarAttend />,
+            },
+          ],
+        },
+        {
+          element: <FitContainer />,
+          children: [
+            {
+              path: 'rank',
+              element: <Rank />,
             },
           ],
         },
