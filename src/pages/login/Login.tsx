@@ -17,7 +17,6 @@ const HorizonLine = () => {
 };
 
 const Login = () => {
-  const [isValidId, setIsValidId] = useState<boolean>(false);
   const [isKeepLogin, setIsKeepLogin] = useState<boolean>(false);
   const [form, setForm] = useState({
     id: '',
@@ -41,11 +40,7 @@ const Login = () => {
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsKeepLogin(!e.target.checked);
-  };
-
-  const handleIdValidation = () => {
-    setIsValidId(/[^ㄱ-ㅎ가-힣a-zA-Z]/g.test(id));
+    setIsKeepLogin(e.target.checked);
   };
 
   return (
@@ -63,20 +58,15 @@ const Login = () => {
 
           <Stack component="form" onSubmit={handleSubmit} width="100%">
             <BackgroundInput
-              sx={{ mb: 2 }}
               label="아이디"
               required
               fullWidth
               placeholder="ID"
-              error={isValidId}
-              helperText={isValidId && '아이디를 입력해주세요'}
               name="id"
               value={id}
               onChange={handleChange}
-              onBlur={handleIdValidation}
             />
             <BackgroundInput
-              sx={{ mb: 2 }}
               label="비밀번호"
               required
               fullWidth
@@ -84,9 +74,8 @@ const Login = () => {
               name="password"
               value={password}
               onChange={handleChange}
-              onBlur={handleIdValidation}
             />
-            <Button variant="outlined" sx={{ height: 56 }}>
+            <Button variant="outlined" sx={{ height: 56, mt: 2 }}>
               로그인
             </Button>
             <FormControlLabel
