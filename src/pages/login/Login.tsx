@@ -90,7 +90,7 @@ const Login = () => {
               로그인
             </Button>
             <FormControlLabel
-              control={<Checkbox value={isKeepLogin} color="primary" onChange={handleCheckboxChange} />}
+              control={<Checkbox checked={isKeepLogin} color="primary" onChange={handleCheckboxChange} />}
               label="로그인 상태 유지"
             />
           </Stack>
