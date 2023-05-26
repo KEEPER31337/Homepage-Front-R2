@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
+import { Link } from 'react-router-dom';
 
 const HorizonLine = () => {
   return (
@@ -85,9 +86,9 @@ const Login = () => {
           </Stack>
           <HorizonLine />
           <Stack direction="row" spacing={2}>
-            <p>아이디·비밀번호 찾기</p>
+            <Link to="/">아이디·비밀번호 찾기</Link>
             <p>|</p>
-            <p>회원가입</p>
+            <Link to="/signUp">회원가입</Link>
           </Stack>
         </Box>
       </Container>
