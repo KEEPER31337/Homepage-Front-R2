@@ -50,7 +50,7 @@ const Login = () => {
 
   return (
     <CssBaseline>
-      <Container component="main" maxWidth="xs">
+      <Container maxWidth="xs">
         <Box
           sx={{
             marginTop: 30,
