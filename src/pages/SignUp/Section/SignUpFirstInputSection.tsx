@@ -1,16 +1,32 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Stack } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
 
 import BackgroundInput from '@components/Input/BackgroundInput';
 
 const SignUpFirstInputSection = () => {
+  const { control } = useForm({ mode: 'onBlur' });
+
   return (
-    <Stack className="space-y-4">
-      <BackgroundInput
-        value=""
-        label="아이디"
-        onChange={() => {
-          // TODO
+    <Stack component="form" className="space-y-4">
+      <Controller
+        name="loginId"
+        defaultValue=""
+        control={control}
+        rules={{
+          required: '필수 정보입니다.',
+          minLength: {
+            value: 4,
+            message: '4글자 이상 입력해주세요.',
+          },
+          pattern: {
+            value: /^[a-zA-Z0-9_]{4,12}$/,
+            message: '4~12자 영어, 숫자, _ 만 가능합니다.',
+          },
+        }}
+        render={({ field, fieldState: { error } }) => {
+          return <BackgroundInput label="아이디" {...field} error={Boolean(error)} helperText={error?.message} />;
         }}
       />
       <BackgroundInput
