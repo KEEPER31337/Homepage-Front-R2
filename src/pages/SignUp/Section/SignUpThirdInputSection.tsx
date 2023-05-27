@@ -5,7 +5,7 @@ import BackgroundInput from '@components/Input/BackgroundInput';
 
 const SignUpThirdInputSection = () => {
   return (
-    <Stack className=" space-y-4">
+    <Stack spacing={2}>
       {/* TODO 인증요청 버튼 포함 이메일 인풋 */}
       <BackgroundInput
         value=""

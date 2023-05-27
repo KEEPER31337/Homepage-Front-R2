@@ -5,7 +5,7 @@ import BackgroundInput from '@components/Input/BackgroundInput';
 
 const SignUpFirstInputSection = () => {
   return (
-    <Stack className="space-y-4">
+    <Stack spacing={2}>
       <BackgroundInput
         value=""
         label="아이디"
