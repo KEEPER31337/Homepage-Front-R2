@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 
 import utilApi from '@mocks/UtilApi';
+import WarningModal from '@components/Modal/WarningModal';
 
 interface ImageUploaderProps {
   title?: string;
@@ -16,7 +17,7 @@ const validateName = (fileName: string) => {
   const fileParts = fileName.split('.');
   let fileExtension = '';
 
-  if (fileParts.length > 1) fileExtension = fileParts[fileParts.length - 1];
+  if (fileParts.length > 1) fileExtension = fileParts.at(-1) as string;
   let validated = false;
   if (fileExtension !== '') {
     extensions.forEach((ext) => {
@@ -28,6 +29,7 @@ const validateName = (fileName: string) => {
 
 const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUploaderProps) => {
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
+  const [openWarning, setOpenWarning] = useState<boolean>(false);
 
   useEffect(() => {
     if (isEdit && thumbnailPath) {
@@ -69,7 +71,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
         };
         reader.readAsDataURL(file);
       } else {
-        alert('이미지 파일(.png/.jpg/.jpeg)만 업로드 가능합니다.');
+        setOpenWarning(true);
       }
     });
   }, []);
@@ -83,6 +85,14 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
 
   return (
     <div className="w-full space-y-[10px]">
+      <WarningModal
+        open={openWarning}
+        onClose={() => setOpenWarning(false)}
+        actionButtonName="확인"
+        onActionButonClick={() => setOpenWarning(false)}
+      >
+        이미지 파일(.png/.jpg/.jpeg)만 업로드 가능합니다.
+      </WarningModal>
       <div className="flex w-full items-center justify-between ">
         <span className="text-paragraph">{title || '썸네일'}</span>
         <button
@@ -94,7 +104,6 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
         </button>
       </div>
       <div
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...rootProps}
         className={`${isDragActive ? 'bg-pointBlue/[30%] bg-opacity-50' : ''} ${
           thumbnailBase64 ? '' : 'border-[2px]'
