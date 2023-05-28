@@ -2,7 +2,7 @@ import React from 'react';
 import { VscCheck, VscChromeClose } from 'react-icons/vsc';
 
 interface SeminarAttendStatusProps {
-  status: string;
+  status: '출석전' | '지각' | '출석' | '결석';
   className: string;
 }
 

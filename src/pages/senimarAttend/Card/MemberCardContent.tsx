@@ -16,7 +16,7 @@ const MemberCardContent = () => {
   const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 10 }); // 임시: 이후 api에서 가져옴
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
-  const [attendStatus, setAttendStatus] = useState('출석전');
+  const [attendStatus, setAttendStatus] = useState<'출석전' | '지각' | '출석' | '결석'>('출석전');
 
   const handleAttendButtonClick = (nowTime: DateTime) => {
     setIsAttendable(nowTime < lateLimit);
