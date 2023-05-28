@@ -29,11 +29,23 @@ const SignUpFirstInputSection = () => {
           return <BackgroundInput label="아이디" {...field} error={Boolean(error)} helperText={error?.message} />;
         }}
       />
-      <BackgroundInput
-        value=""
-        label="비밀번호"
-        onChange={() => {
-          // TODO
+      <Controller
+        name="password"
+        defaultValue=""
+        control={control}
+        rules={{
+          required: '필수 정보입니다.',
+          minLength: {
+            value: 8,
+            message: '8글자 이상 입력해주세요.',
+          },
+          pattern: {
+            value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,
+            message: '8~20자 영문과 숫자를 사용하세요.',
+          },
+        }}
+        render={({ field, fieldState: { error } }) => {
+          return <BackgroundInput label="비밀번호" {...field} error={Boolean(error)} helperText={error?.message} />;
         }}
       />
       <BackgroundInput
