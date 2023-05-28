@@ -3,7 +3,7 @@ import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
-import SeminarAttendStatues from '../Status/SeminarAttendStatus';
+import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
@@ -29,7 +29,7 @@ const MemberCardContent = () => {
   return (
     <>
       <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
-      <SeminarAttendStatues status={attendStatus} className="flex items-center justify-center" />
+      <SeminarAttendStatus status={attendStatus} className="flex items-center justify-center" />
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
