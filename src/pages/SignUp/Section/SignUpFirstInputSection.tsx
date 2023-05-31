@@ -47,7 +47,15 @@ const SignUpFirstInputSection = () => {
           },
         }}
         render={({ field, fieldState: { error } }) => {
-          return <BackgroundInput label="비밀번호" {...field} error={Boolean(error)} helperText={error?.message} />;
+          return (
+            <BackgroundInput
+              type="password"
+              label="비밀번호"
+              {...field}
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          );
         }}
       />
       <Controller
@@ -67,6 +75,7 @@ const SignUpFirstInputSection = () => {
         render={({ field, fieldState: { error } }) => {
           return (
             <BackgroundInput
+              type="password"
               label="비밀번호 확인"
               {...field}
               error={Boolean(error)}
