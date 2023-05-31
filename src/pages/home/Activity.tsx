@@ -5,8 +5,8 @@ import { SubTitleImagesInfo } from '@api/dto';
 const SubTitleImageCard = ({ subtitleImage }: { subtitleImage: SubTitleImagesInfo }) => {
   return (
     <div className="w-full whitespace-pre-line px-10 leading-10">
-      <p className="mb-8 text-2xl font-bold text-pointBlue">{subtitleImage?.subtitle}</p>
-      <p className="bg-gradient-to-b from-gray-500 to-white bg-clip-text text-transparent">
+      <p className="mb-8 text-3xl font-bold text-pointBlue">{subtitleImage?.subtitle}</p>
+      <p className="bg-gradient-to-b from-gray-500 to-white bg-clip-text text-xl text-transparent">
         {subtitleImage?.staticWriteContents?.map((staticWriteInfo) => `${staticWriteInfo?.content}\n`)}
       </p>
     </div>
