@@ -4,6 +4,7 @@ import { Stack } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 
 import BackgroundInput from '@components/Input/BackgroundInput';
+import OutlinedButton from '@components/Button/OutlinedButton';
 
 const SignUpFirstInputSection = () => {
   const { control, getValues } = useForm({ mode: 'onBlur' });
@@ -74,6 +75,10 @@ const SignUpFirstInputSection = () => {
           );
         }}
       />
+
+      <div className="absolute right-0 bottom-0">
+        <OutlinedButton>다음</OutlinedButton>
+      </div>
     </Stack>
   );
 };

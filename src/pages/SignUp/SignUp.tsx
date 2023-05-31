@@ -3,7 +3,6 @@ import React from 'react';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { Box, Stack, Typography } from '@mui/material';
 import StepProgress from '@components/Progress/StepProgress';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import SignUpFirstInputSection from './Section/SignUpFirstInputSection';
 import SignUpSecondInputSection from './Section/SignUpSecondInputSection';
 import SignUpThirdInputSection from './Section/SignUpThirdInputSection';
@@ -32,9 +31,6 @@ const SignUp = () => {
           <StepProgress className="mb-2 w-32" currentStep={currentStep} totalStep={TOTAL_STEPS} />
           <Typography className="!mb-8 whitespace-pre !font-semibold">{stepInfoMsg[currentStep]}</Typography>
           {stepInputSection[currentStep]}
-          <div className="absolute right-0 bottom-0">
-            <OutlinedButton>다음</OutlinedButton>
-          </div>
         </Stack>
       </Box>
     </div>
