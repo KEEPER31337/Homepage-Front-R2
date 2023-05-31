@@ -16,7 +16,7 @@ const SignUpFirstInputSection = () => {
     control,
     getValues,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
 
   const handleFirstStepFormSubmit: SubmitHandler<FieldValues> = ({ loginId, password }) => {
@@ -99,7 +99,7 @@ const SignUpFirstInputSection = () => {
       />
 
       <div className="absolute right-0 bottom-0">
-        <OutlinedButton type="submit" disabled={isSubmitting}>
+        <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
           다음
         </OutlinedButton>
       </div>
