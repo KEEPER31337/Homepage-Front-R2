@@ -11,7 +11,7 @@ const SignUpFirstInputSection = () => {
   const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
 
   return (
-    <Stack component="form" className="space-y-4">
+    <Stack component="form" spacing={2}>
       <Controller
         name="loginId"
         defaultValue=""

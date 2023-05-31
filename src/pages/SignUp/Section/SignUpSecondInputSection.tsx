@@ -5,7 +5,7 @@ import BackgroundInput from '@components/Input/BackgroundInput';
 
 const SignUpSecondInputSection = () => {
   return (
-    <Stack className="space-y-4">
+    <Stack spacing={2}>
       <Stack spacing={2} direction="row" justifyContent="space-between">
         <BackgroundInput
           className="w-full"
