@@ -1,17 +1,29 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import { Stack } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
+import { useSetRecoilState } from 'recoil';
 
 import BackgroundInput from '@components/Input/BackgroundInput';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import signUpPageState from '../SignUp.recoil';
 
 const SignUpFirstInputSection = () => {
-  const { control, getValues } = useForm({ mode: 'onBlur' });
+  const {
+    control,
+    getValues,
+    handleSubmit,
+  } = useForm({ mode: 'onBlur' });
   const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
 
+  const setSignUpPageState = useSetRecoilState(signUpPageState);
+
+  const handleFirstStepFormSubmit: SubmitHandler<FieldValues> = ({ loginId, password }) => {
+    setSignUpPageState((prev) => ({ ...prev, loginId, password }));
+  };
+
   return (
-    <Stack component="form" spacing={2}>
+    <Stack component="form" spacing={2} onSubmit={handleSubmit(handleFirstStepFormSubmit)}>
       <Controller
         name="loginId"
         defaultValue=""
@@ -86,7 +98,7 @@ const SignUpFirstInputSection = () => {
       />
 
       <div className="absolute right-0 bottom-0">
-        <OutlinedButton>다음</OutlinedButton>
+        <OutlinedButton type="submit">다음</OutlinedButton>
       </div>
     </Stack>
   );
