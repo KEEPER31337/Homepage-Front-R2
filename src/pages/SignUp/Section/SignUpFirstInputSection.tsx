@@ -9,15 +9,15 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import signUpPageState from '../SignUp.recoil';
 
 const SignUpFirstInputSection = () => {
+  const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
+  const setSignUpPageState = useSetRecoilState(signUpPageState);
+
   const {
     control,
     getValues,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm({ mode: 'onBlur' });
-  const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
-
-  const setSignUpPageState = useSetRecoilState(signUpPageState);
 
   const handleFirstStepFormSubmit: SubmitHandler<FieldValues> = ({ loginId, password }) => {
     setSignUpPageState((prev) => ({ ...prev, loginId, password }));
