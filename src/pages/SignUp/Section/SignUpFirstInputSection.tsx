@@ -8,7 +8,11 @@ import BackgroundInput from '@components/Input/BackgroundInput';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import signUpPageState from '../SignUp.recoil';
 
-const SignUpFirstInputSection = () => {
+interface SignUpFirstInputSectionProps {
+  setCurrentStep: React.Dispatch<React.SetStateAction<1 | 2 | 3>>;
+}
+
+const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProps) => {
   const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
   const setSignUpPageState = useSetRecoilState(signUpPageState);
 
@@ -21,6 +25,7 @@ const SignUpFirstInputSection = () => {
 
   const handleFirstStepFormSubmit: SubmitHandler<FieldValues> = ({ loginId, password }) => {
     setSignUpPageState((prev) => ({ ...prev, loginId, password }));
+    setCurrentStep(2);
   };
 
   return (
