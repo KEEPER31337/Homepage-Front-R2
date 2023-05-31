@@ -13,6 +13,7 @@ const SignUpFirstInputSection = () => {
     control,
     getValues,
     handleSubmit,
+    formState: { isSubmitting },
   } = useForm({ mode: 'onBlur' });
   const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
 
@@ -98,7 +99,9 @@ const SignUpFirstInputSection = () => {
       />
 
       <div className="absolute right-0 bottom-0">
-        <OutlinedButton type="submit">다음</OutlinedButton>
+        <OutlinedButton type="submit" disabled={isSubmitting}>
+          다음
+        </OutlinedButton>
       </div>
     </Stack>
   );
