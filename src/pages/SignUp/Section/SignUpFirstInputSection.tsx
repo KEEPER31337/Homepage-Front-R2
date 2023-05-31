@@ -1,12 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 
 import BackgroundInput from '@components/Input/BackgroundInput';
 
 const SignUpFirstInputSection = () => {
-  const { control } = useForm({ mode: 'onBlur' });
+  const { control, getValues } = useForm({ mode: 'onBlur' });
+  const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
 
   return (
     <Stack component="form" className="space-y-4">
@@ -48,11 +49,29 @@ const SignUpFirstInputSection = () => {
           return <BackgroundInput label="비밀번호" {...field} error={Boolean(error)} helperText={error?.message} />;
         }}
       />
-      <BackgroundInput
-        value=""
-        label="비밀번호 확인"
-        onChange={() => {
-          // TODO
+      <Controller
+        name="passwordConfirm"
+        defaultValue=""
+        control={control}
+        rules={{
+          required: '필수 정보입니다.',
+          validate: {
+            confirmMatchPassward: (value) => {
+              if (getValues('password') !== value) return '비밀번호가 일치하지 않습니다.';
+              setPasswordConfirmSuccessMsg('비밀번호가 일치합니다.');
+              return undefined;
+            },
+          },
+        }}
+        render={({ field, fieldState: { error } }) => {
+          return (
+            <BackgroundInput
+              label="비밀번호 확인"
+              {...field}
+              error={Boolean(error)}
+              helperText={error?.message || passwordConfirmSuccessMsg}
+            />
+          );
         }}
       />
     </Stack>
