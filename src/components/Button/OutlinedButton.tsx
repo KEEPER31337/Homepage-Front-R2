@@ -11,7 +11,7 @@ const OutlinedButton = ({ children, onClick, disabled }: OutlinedButtonProps) =>
   return (
     <Button
       variant="outlined"
-      className="!focus:ring-0 !h-fit !rounded-sm !border-pointBlue !py-2 !px-6 !text-small !font-semibold !leading-4 !text-pointBlue"
+      className="!rounded-sm !border-pointBlue !py-2 !px-6 !text-small !font-semibold !leading-4"
       onClick={onClick}
       disabled={disabled}
     >
