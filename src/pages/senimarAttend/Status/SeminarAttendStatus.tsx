@@ -2,7 +2,7 @@ import React from 'react';
 import { VscCheck, VscChromeClose } from 'react-icons/vsc';
 
 interface SeminarAttendStatusProps {
-  status: '출석전' | '지각' | '출석' | '결석';
+  status: '지각' | '출석' | '결석';
   className: string;
 }
 
@@ -26,7 +26,6 @@ const SeminarAttendStatus = ({ status, className }: SeminarAttendStatusProps) =>
     </div>
   );
   const setAlert: { [id: string]: JSX.Element } = {
-    출석전: <div>ㅤ</div>,
     지각: lateStatusAlert,
     출석: attendStatusAlert,
     결석: absentStatusAlert,

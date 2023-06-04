@@ -11,11 +11,11 @@ const MemberCardContent = () => {
   const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
   const startTime = DateTime.now(); // 임시
-  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 2 }); // 임시:이후 api에서 가져옴
-  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 10 }); // 임시: 이후 api에서 가져옴
+  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 1 }); // 임시:이후 api에서 가져옴
+  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 20 }); // 임시: 이후 api에서 가져옴
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
-  const [attendStatus, setAttendStatus] = useState<'출석전' | '지각' | '출석' | '결석'>('출석전');
+  const [attendStatus, setAttendStatus] = useState<undefined | '지각' | '출석' | '결석'>(undefined);
 
   const handleAttendButtonClick = (nowTime: DateTime) => {
     setIsAttendable(nowTime < lateLimit);
@@ -28,16 +28,19 @@ const MemberCardContent = () => {
   return (
     <>
       <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
-      <SeminarAttendStatus status={attendStatus} className="flex items-center justify-center" />
-      <div className="flex justify-center">
-        <FilledButton
-          onClick={() => {
-            handleAttendButtonClick(DateTime.now());
-          }}
-        >
-          출석
-        </FilledButton>
-      </div>
+      {attendStatus !== undefined ? (
+        <SeminarAttendStatus status={attendStatus} className="flex items-center justify-center" />
+      ) : (
+        <div className="flex justify-center">
+          <FilledButton
+            onClick={() => {
+              handleAttendButtonClick(DateTime.now());
+            }}
+          >
+            출석
+          </FilledButton>
+        </div>
+      )}
       <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
