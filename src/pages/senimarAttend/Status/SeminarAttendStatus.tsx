@@ -1,37 +1,38 @@
 import React from 'react';
 import { VscCheck, VscChromeClose } from 'react-icons/vsc';
 
+type ActivityStatus = '지각' | '출석' | '결석';
+
 interface SeminarAttendStatusProps {
-  status: '지각' | '출석' | '결석';
-  className: string;
+  status: ActivityStatus;
 }
 
-const SeminarAttendStatus = ({ status, className }: SeminarAttendStatusProps) => {
-  const attendStatusAlert = (
-    <div className={`${className} text-pointBlue`}>
-      <VscCheck />
-      <p className="ml-1">출석</p>
-    </div>
-  );
-  const lateStatusAlert = (
-    <div className={`${className} text-[#FFA500]`}>
-      <VscCheck />
-      <p className="ml-1">지각</p>
-    </div>
-  );
-  const absentStatusAlert = (
-    <div className={`${className} text-subRed`}>
-      <VscChromeClose />
-      <p className="ml-1 ">결석</p>
-    </div>
-  );
-  const setAlert: { [id: string]: JSX.Element } = {
-    지각: lateStatusAlert,
-    출석: attendStatusAlert,
-    결석: absentStatusAlert,
+const SeminarAttendStatus = ({ status }: SeminarAttendStatusProps) => {
+  const statusInfo: {
+    [K in ActivityStatus]: { color: string; icon: JSX.Element };
+  } = {
+    출석: {
+      color: 'pointBlue',
+      icon: <VscCheck />,
+    },
+    지각: {
+      color: '[#FFA500]',
+      icon: <VscCheck />,
+    },
+    결석: {
+      color: 'subRed',
+      icon: <VscChromeClose />,
+    },
   };
 
-  return setAlert[status];
+  const { color, icon } = statusInfo[status];
+
+  return (
+    <div className={`flex items-center justify-center text-${color}`}>
+      {icon}
+      <p className="ml-1">{status}</p>
+    </div>
+  );
 };
 
 export default SeminarAttendStatus;

@@ -29,7 +29,7 @@ const MemberCardContent = () => {
     <>
       <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
       {attendStatus !== undefined ? (
-        <SeminarAttendStatus status={attendStatus} className="flex items-center justify-center" />
+        <SeminarAttendStatus status={attendStatus} />
       ) : (
         <div className="flex justify-center">
           <FilledButton
