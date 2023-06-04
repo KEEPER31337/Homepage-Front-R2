@@ -22,13 +22,13 @@ const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps)
   const moveNextInput = (event: React.KeyboardEvent<HTMLInputElement>, key: number) => {
     const target = event.target as HTMLInputElement;
     if (target.value.length === target.maxLength && target.nextElementSibling) {
-      const nxtSibling = target.nextElementSibling as HTMLInputElement;
-      nxtSibling.focus();
+      const nextSibling = target.nextElementSibling as HTMLInputElement;
+      nextSibling.focus();
     }
     if (event.key === 'Backspace') {
       if (target.value.length !== target.maxLength && target.previousElementSibling) {
-        const prvSibling = target.previousElementSibling as HTMLInputElement;
-        prvSibling.focus();
+        const previousSibling = target.previousElementSibling as HTMLInputElement;
+        previousSibling.focus();
       }
     }
     inputCode[key] = Number(target.value);
