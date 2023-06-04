@@ -20,7 +20,7 @@ const MemberCardContent = () => {
   const handleAttendButtonClick = (nowTime: DateTime) => {
     setIsAttendable(nowTime < lateLimit);
     if (nowTime < attendLimit) setAttendStatus('출석');
-    else if (isAttendable) setAttendStatus('지각');
+    else if (nowTime < lateLimit) setAttendStatus('지각');
     else setAttendStatus('결석');
     setIsCorrectCode(inputCode.join('') === validCode);
   };
