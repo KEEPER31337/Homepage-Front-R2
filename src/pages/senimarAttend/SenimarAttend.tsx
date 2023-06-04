@@ -28,7 +28,11 @@ const SeminarAttend = () => {
         <PageTitle>세미나 출석</PageTitle>
         <OutlinedButton>세미나 관리</OutlinedButton>
       </div>
-      <div className="mt-[180px] flex justify-between">
+      <div
+        className={`mt-[180px] flex justify-between [&>*:nth-child(${Math.round(
+          cardDateOrder.length / 2,
+        )})]:mt-[-50px] `}
+      >
         {cardDateOrder.map((date) => {
           return (
             <SeminarCard>
