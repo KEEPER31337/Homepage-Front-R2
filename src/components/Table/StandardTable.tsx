@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { Column, Row, ChildComponent } from './StandardTable.interface';
@@ -17,14 +17,20 @@ const StandardTable = <T extends Record<string, any>>({
   onRowClick,
   childComponent,
 }: StandardTableProps<T>) => {
+  const isCheckboxColumn = (columnKey: Column<T>['key']) => columnKey === 'checkbox';
+
   return (
     <div>
       <Table>
         <TableHead className="bg-middleBlack">
           <TableRow>
             {columns.map((column) => (
-              <TableCell className="!border-subBlack !text-white" key={column.key as string}>
-                {column.headerName}
+              <TableCell
+                padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
+                className="!border-subBlack !text-white"
+                key={column.key as string}
+              >
+                {isCheckboxColumn(column.key) ? <Checkbox /> : column.headerName}
               </TableCell>
             ))}
           </TableRow>
@@ -38,10 +44,20 @@ const StandardTable = <T extends Record<string, any>>({
             >
               {columns.map((column) => {
                 return (
-                  <TableCell className="!border-subBlack bg-mainBlack !text-white" key={column.key as string}>
-                    {childComponent
-                      ? childComponent({ key: column.key, value: row[column.key], rowData: row })
-                      : row[column.key]}
+                  <TableCell
+                    padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
+                    className="!border-subBlack bg-mainBlack !text-white"
+                    key={column.key as string}
+                  >
+                    {isCheckboxColumn(column.key) ? (
+                      <Checkbox />
+                    ) : (
+                      <div>
+                        {childComponent
+                          ? childComponent({ key: column.key, value: row[column.key], rowData: row })
+                          : row[column.key]}
+                      </div>
+                    )}
                   </TableCell>
                 );
               })}
