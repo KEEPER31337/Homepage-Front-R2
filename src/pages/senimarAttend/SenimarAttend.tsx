@@ -15,7 +15,7 @@ const SeminarAttend = () => {
   const [futureSeminarDate, setFutureSeminarDate] = useState('towmorrow');
   const [pastSeminarDate, setPastSeminarDate] = useState('yesterday');
   const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
-
+  const cardDateOrder = [pastSeminarDate, recentSeminarDate, futureSeminarDate];
   useEffect(() => {
     setRecentSeminarDate(DateTime.now().toFormat('yy.MM.dd'));
     setFutureSeminarDate(seminarDate.plus({ days: 1 }).toFormat('yy.MM.dd'));
@@ -29,36 +29,20 @@ const SeminarAttend = () => {
         <OutlinedButton>세미나 관리</OutlinedButton>
       </div>
       <div className="mt-[180px] flex justify-between">
-        <SeminarCard>
-          {seminarActivated ? (
-            <>
-              <Typography className="text-center text-paragraph text-white">{pastSeminarDate} 세미나</Typography>
-              {isBoss ? <BossCardContent /> : <MemberCardContent />}
-            </>
-          ) : (
-            <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
-          )}
-        </SeminarCard>
-        <SeminarCard className="mt-[-50px]">
-          {seminarActivated ? (
-            <>
-              <Typography className="text-center text-paragraph text-white">{recentSeminarDate} 세미나</Typography>
-              {isBoss ? <BossCardContent /> : <MemberCardContent />}
-            </>
-          ) : (
-            <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
-          )}
-        </SeminarCard>
-        <SeminarCard>
-          {seminarActivated ? (
-            <>
-              <Typography className="text-center text-paragraph text-white">{futureSeminarDate} 세미나</Typography>
-              {isBoss ? <BossCardContent /> : <MemberCardContent />}
-            </>
-          ) : (
-            <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
-          )}
-        </SeminarCard>
+        {cardDateOrder.map((date) => {
+          return (
+            <SeminarCard>
+              {seminarActivated ? (
+                <>
+                  <Typography className="text-center text-paragraph text-white">{date} 세미나</Typography>
+                  {isBoss ? <BossCardContent /> : <MemberCardContent />}
+                </>
+              ) : (
+                <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
+              )}
+            </SeminarCard>
+          );
+        })}
       </div>
       {isBoss ? (
         <FilledButton onClick={() => setIsBoss(false)}>회원권한페이지로</FilledButton>
