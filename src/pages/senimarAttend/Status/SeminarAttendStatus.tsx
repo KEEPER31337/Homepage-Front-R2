@@ -20,7 +20,7 @@ const SeminarAttendStatus = ({ status, className }: SeminarAttendStatusProps) =>
     </div>
   );
   const absentStatusAlert = (
-    <div className={`${className} text-red-500`}>
+    <div className={`${className} text-subRed`}>
       <VscChromeClose />
       <p className="ml-1 ">결석</p>
     </div>
