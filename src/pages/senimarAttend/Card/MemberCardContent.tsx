@@ -11,12 +11,12 @@ const MemberCardContent = () => {
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
   const attendLimit = new Date(); // 임시
   attendLimit.setMinutes(attendLimit.getMinutes() + 5); // 임시
-  const [inputCode, setInputCode] = useState('');
+  const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const validCode = '1234'; // 임시
 
   const handleAttendButtonClick = (nowTime: Date) => {
     setIsAttendable(nowTime < attendLimit);
-    setIsCorrectCode(inputCode === validCode);
+    setIsCorrectCode(inputCode.join('') === validCode);
   };
 
   return (

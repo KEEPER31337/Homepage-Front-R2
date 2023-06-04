@@ -13,7 +13,7 @@ const inputStyle: React.CSSProperties = {
 interface SeminarInputProps {
   disabled?: boolean;
   helperText?: string;
-  setInputCode?: React.Dispatch<React.SetStateAction<string>>;
+  setInputCode?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3];
@@ -33,7 +33,7 @@ const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps)
     }
     inputCode[key] = Number(target.value);
     setSeminarInput([...inputCode]);
-    setInputCode?.(inputCode.join(''));
+    setInputCode?.([...inputCode]);
   };
 
   return (
