@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography } from '@material-tailwind/react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface TopCardProps<T extends Record<string, any>> {
@@ -15,11 +16,13 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
         <div className="flex h-full w-full bg-mainBlack p-4">
           <div className="flex h-full w-full flex-col justify-between">
             <div className="flex">
-              <p className="border-[1px] border-pointBlue px-3 py-1 text-xl text-pointBlue">{index + 1}</p>
-              <p className="my-auto ml-2 text-2xl font-bold">{item.name}</p>
-              <p className="my-auto ml-2">{item.no}기</p>
+              <Typography className="border-[1px] border-pointBlue px-3 py-1 text-xl font-semibold text-pointBlue">
+                {index + 1}
+              </Typography>
+              <Typography className="my-auto ml-2 text-2xl font-bold">{item.name}</Typography>
+              <Typography className="my-auto ml-2">{item.no}기</Typography>
             </div>
-            <p className="text-pointBlue">{message}</p>
+            <Typography className="font-semibold text-pointBlue">{message}</Typography>
           </div>
           <img alt="profile" src="/img/sampleProfile.svg" className="mr-2 h-full object-contain" />
         </div>
