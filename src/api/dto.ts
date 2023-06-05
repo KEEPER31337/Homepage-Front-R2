@@ -28,3 +28,39 @@ export interface BookListInfo {
   information: string;
   enable: boolean;
 }
+
+export interface StudyLinkInfo {
+  title: string;
+  contents: string;
+}
+
+export interface StudyMemberInfo {
+  id: number;
+  emailAddress: string;
+  nickName: string;
+  realName: string;
+  registerDate: string;
+  point: number;
+  level: number;
+  rank: string;
+  type: string;
+  jobs: string[];
+  thumbnailPath: string;
+  merit: number;
+  demerit: number;
+  generation: number;
+}
+
+export interface StudyListInfo {
+  id: number;
+  title: string;
+  information: string;
+  memberNumber: number;
+  registerTime: string;
+  year: number;
+  season: number;
+  link: StudyLinkInfo[];
+  thumbnailPath: string;
+  headMember: StudyMemberInfo;
+  memberList: StudyMemberInfo[];
+}
