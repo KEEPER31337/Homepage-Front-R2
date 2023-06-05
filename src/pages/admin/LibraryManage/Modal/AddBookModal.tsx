@@ -22,8 +22,8 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
   const { title, author } = addBookInfo;
   const [totalBookNumber, setTotalBookNumber] = useState<number>(1);
 
-  const [validTitle, setValidTitle] = useState<boolean>(false);
-  const [validAuthor, setValidAuthor] = useState<boolean>(false);
+  const [isInvalidTitle, setIsInvalidTitle] = useState<boolean>(false);
+  const [isInvalidAuthor, setIsInvalidAuthor] = useState<boolean>(false);
 
   const handleAddBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,8 +42,8 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
   };
 
   const validate = () => {
-    setValidTitle(title === '');
-    setValidAuthor(author === '');
+    setIsInvalidTitle(title === '');
+    setIsInvalidAuthor(author === '');
   };
 
   const handleAddBookButtonClick = () => {
@@ -68,8 +68,8 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
         <div>
           <Typography>도서명</Typography>
           <StandardInput
-            error={validTitle}
-            helperText={validTitle && '도서명을 입력해주세요'}
+            error={isInvalidTitle}
+            helperText={isInvalidTitle && '도서명을 입력해주세요'}
             name="title"
             value={title}
             onChange={handleAddBookInfoChange}
@@ -79,8 +79,8 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
         <div>
           <Typography>저자</Typography>
           <StandardInput
-            error={validAuthor}
-            helperText={validAuthor && '저자명을 입력해주세요'}
+            error={isInvalidAuthor}
+            helperText={isInvalidAuthor && '저자명을 입력해주세요'}
             name="author"
             value={author}
             onChange={handleAddBookInfoChange}
