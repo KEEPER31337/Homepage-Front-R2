@@ -44,11 +44,12 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
   const validate = () => {
     setIsInvalidTitle(title === '');
     setIsInvalidAuthor(author === '');
+    return title !== '' && author !== '';
   };
 
   const handleAddBookButtonClick = () => {
-    validate();
-    if (title !== '' && author !== '') {
+    const isValid = validate();
+    if (isValid) {
       // TODO 도서추가 API
       onClose();
       resetAddBookInfo();
