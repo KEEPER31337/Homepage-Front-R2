@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import FilledButton from '@components/Button/FilledButton';
+import { DateTime } from 'luxon';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
   const [isCorrectCode, setIsCorrectCode] = useState(false);
-
   const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
-  const attendLimit = new Date(); // 임시
-  attendLimit.setMinutes(attendLimit.getMinutes() + 5); // 임시
+  const [startTime, setStartTime] = useState(DateTime.now());
+  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
+  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
+
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
 
-  const handleAttendButtonClick = (nowTime: Date) => {
+  const handleAttendButtonClick = () => {
+    const nowTime = DateTime.now();
     setIsAttendable(nowTime < attendLimit);
     setIsCorrectCode(inputCode.join('') === validCode);
   };
@@ -25,7 +28,7 @@ const MemberCardContent = () => {
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
-            handleAttendButtonClick(new Date());
+            handleAttendButtonClick();
           }}
         >
           출석
@@ -36,8 +39,9 @@ const MemberCardContent = () => {
           <div>출석</div>
           <div>지각</div>
         </div>
-        <div className="grid content-between">
-          <Countdown />
+        <div className="grid content-between text-right">
+          <Countdown startTime={startTime} endTime={attendLimit} />
+          <Countdown startTime={attendLimit} endTime={lateLimit} />
         </div>
       </div>
     </>
