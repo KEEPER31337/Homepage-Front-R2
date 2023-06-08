@@ -3,6 +3,7 @@ import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack 
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const HorizonLine = () => {
   return (
@@ -44,6 +45,19 @@ const Login = () => {
     setIsKeepLogin(e.target.checked);
   };
 
+  const handleClickLogin = () => {
+    axios
+      .post('/sign-in', {
+        loginId: form.id,
+        password,
+      })
+      .then((response) => {
+        console.log(response);
+        const { accessToken: string } = response.headers['set-cookie'];
+        axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+      });
+  };
+
   return (
     <CssBaseline>
       <Container maxWidth="xs">
@@ -76,7 +90,7 @@ const Login = () => {
               value={password}
               onChange={handleChange}
             />
-            <Button variant="outlined" sx={{ height: 56, mt: 2 }}>
+            <Button variant="outlined" sx={{ height: 56, mt: 2 }} onClick={handleClickLogin}>
               로그인
             </Button>
             <FormControlLabel
