@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Home from '@pages/home/Home';
-import SeminarManage from '@pages/admin/SeminarManage';
+import SeminarManage from '@pages/admin/SeminarManage/SeminarManage';
 import Study from '@pages/Study/Study';
 import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
