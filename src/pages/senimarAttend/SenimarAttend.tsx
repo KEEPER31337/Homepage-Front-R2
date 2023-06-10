@@ -35,7 +35,7 @@ const SeminarAttend = () => {
       >
         {cardDateOrder.map((date) => {
           return (
-            <SeminarCard>
+            <SeminarCard key={date}>
               {seminarActivated ? (
                 <>
                   <Typography className="text-center text-paragraph text-white">{date} 세미나</Typography>
