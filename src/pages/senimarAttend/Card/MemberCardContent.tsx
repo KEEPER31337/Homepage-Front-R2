@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
+import ActivityStatus from '../Status/ActivityStatus.type';
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
@@ -15,7 +16,7 @@ const MemberCardContent = () => {
   const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 20 }); // 임시: 이후 api에서 가져옴
   const inputCode = [0, 0, 0, 0];
   const validCode = '1234'; // 임시
-  const [attendStatus, setAttendStatus] = useState<undefined | '지각' | '출석' | '결석'>(undefined);
+  const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
 
   const handleAttendButtonClick = (nowTime: DateTime) => {
     setIsAttendable(nowTime < lateLimit);

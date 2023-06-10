@@ -1,7 +1,6 @@
 import React from 'react';
 import { VscCheck, VscChromeClose } from 'react-icons/vsc';
-
-type ActivityStatus = '지각' | '출석' | '결석';
+import ActivityStatus from './ActivityStatus.type';
 
 interface SeminarAttendStatusProps {
   status: ActivityStatus;
