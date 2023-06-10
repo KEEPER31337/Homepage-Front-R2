@@ -20,11 +20,16 @@ const MemberCardContent = () => {
     const nowTime = DateTime.now();
     setIsAttendable(nowTime < attendLimit);
     setIsCorrectCode(inputCode.join('') === validCode);
+    console.log(inputCode);
   };
 
   return (
     <>
-      <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} setInputCode={setInputCode} />
+      <SeminarInput
+        helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''}
+        setInputCode={setInputCode}
+        inputCode={inputCode}
+      />
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {

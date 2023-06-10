@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const inputStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -14,10 +14,10 @@ interface SeminarInputProps {
   disabled?: boolean;
   helperText?: string;
   setInputCode?: React.Dispatch<React.SetStateAction<number[]>>;
+  inputCode: number[];
 }
-const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps) => {
+const SeminarInput = ({ disabled, helperText, setInputCode, inputCode }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3];
-  const [inputCode, setSeminarInput] = useState([0, 0, 0, 0]);
 
   const moveNextInput = (event: React.KeyboardEvent<HTMLInputElement>, key: number) => {
     const target = event.target as HTMLInputElement;
@@ -31,9 +31,9 @@ const SeminarInput = ({ disabled, helperText, setInputCode }: SeminarInputProps)
         previousSibling.focus();
       }
     }
-    inputCode[key] = Number(target.value);
-    setSeminarInput([...inputCode]);
-    setInputCode?.([...inputCode]);
+    const copyInputCode = [...inputCode];
+    copyInputCode[key] = Number(target.value);
+    setInputCode?.(copyInputCode);
   };
 
   return (
