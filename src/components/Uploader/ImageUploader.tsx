@@ -13,24 +13,17 @@ interface ImageUploaderProps {
   setThumbnail: React.Dispatch<Blob>;
 }
 
-const validateName = (fileName: string) => {
-  const extensions = ['jpeg', 'jpg', 'png'];
-  const fileParts = fileName.split('.');
-  let fileExtension = '';
+type ImageWarningType = 'Multiple' | 'WrongExtension';
 
-  if (fileParts.length > 1) fileExtension = fileParts.at(-1) as string;
-  let validated = false;
-  if (fileExtension !== '') {
-    extensions.forEach((ext) => {
-      if (ext === fileExtension) validated = true;
-    });
-  }
-  return validated;
-};
+interface ImageWarningInfo {
+  isOpen: boolean;
+  type: ImageWarningType;
+}
 
 const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUploaderProps) => {
+  const MAX_IMAGE_COUNT = 1;
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
-  const [openWarning, setOpenWarning] = useState<boolean>(false);
+  const [openWarning, setOpenWarning] = useState<ImageWarningInfo>({ isOpen: false, type: 'Multiple' });
 
   useEffect(() => {
     if (isEdit && thumbnailPath) {
@@ -56,43 +49,48 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setThumbnailBase64('');
     acceptedFiles.forEach((file: File) => {
-      if (validateName(file.name)) {
-        setThumbnail(file);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const array = [];
-          for (let i = 0; i < (reader.result as string).length; i += 1) {
-            array.push((reader.result as string).charCodeAt(i));
-          }
-          const base64 = reader.result;
-          if (base64) {
-            const base64Sub = base64.toString();
-            setThumbnailBase64(base64Sub);
-          }
-        };
-        reader.readAsDataURL(file);
-      } else {
-        setOpenWarning(true);
-      }
+      setThumbnail(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const array = [];
+        for (let i = 0; i < (reader.result as string).length; i += 1) {
+          array.push((reader.result as string).charCodeAt(i));
+        }
+        const base64 = reader.result;
+        if (base64) {
+          const base64Sub = base64.toString();
+          setThumbnailBase64(base64Sub);
+        }
+      };
+      reader.readAsDataURL(file);
     });
   }, []);
-  const { getRootProps, isDragActive } = useDropzone({ onDrop });
-
-  const rootProps = {
-    ...getRootProps(),
+  const { getRootProps, isDragActive } = useDropzone({
+    onDrop,
     multiple: false,
-    accept: 'image/jpg, image/jpeg, image/png',
-  };
+    accept: {
+      'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
+    },
+    onDropRejected: (files) => {
+      if (files.length > MAX_IMAGE_COUNT) {
+        setOpenWarning({ isOpen: true, type: 'Multiple' });
+      } else {
+        setOpenWarning({ isOpen: true, type: 'WrongExtension' });
+      }
+    },
+  });
 
   return (
     <div className="space-y-[10px]">
       <WarningModal
-        open={openWarning}
-        onClose={() => setOpenWarning(false)}
+        open={openWarning.isOpen}
+        onClose={() => setOpenWarning({ ...openWarning, isOpen: false })}
         actionButtonName="확인"
-        onActionButonClick={() => setOpenWarning(false)}
+        onActionButonClick={() => setOpenWarning({ ...openWarning, isOpen: false })}
       >
-        이미지 파일(.png/.jpg/.jpeg)만 업로드 가능합니다.
+        {openWarning.type === 'Multiple'
+          ? '썸네일 이미지는 한 개만 업로드할 수 있습니다.'
+          : '이미지 파일(png, jpg, jpeg, gif)만 업로드 가능합니다.'}
       </WarningModal>
       <div className="flex items-center justify-between">
         <Typography className="text-paragraph">{title || '썸네일'}</Typography>
@@ -105,7 +103,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
         </button>
       </div>
       <div
-        {...rootProps}
+        {...getRootProps()}
         className={`
           ${isDragActive ? 'bg-pointBlue/30' : ''} 
           ${thumbnailBase64 ? '' : 'border-2'} 
