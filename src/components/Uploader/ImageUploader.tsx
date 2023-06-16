@@ -112,16 +112,16 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
       >
         {thumbnailBase64 ? (
           <img
-            className={`${isDragActive ? 'opacity-50' : ''} h-full w-full object-cover shadow-lg`}
+            className={`${isDragActive ? 'opacity-50' : ''} h-full w-full object-cover`}
             src={thumbnailBase64}
             alt="thumbnail"
           />
         ) : (
           <div className="flex items-center text-pointBlue/[30%]">
             {isDragActive ? (
-              <Typography className="text-center text-small">이미지를 놓으세요</Typography>
+              <Typography className="mx-2 text-center text-small">이미지를 놓으세요</Typography>
             ) : (
-              <div className="mx-2 inline-block text-center">
+              <div className="text-center">
                 <MdOutlineAddPhotoAlternate className="mx-auto mb-1 h-[30px] w-[30px]" />
                 <Typography className="text-small">
                   클릭 또는 드래그하여
