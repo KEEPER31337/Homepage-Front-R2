@@ -4,6 +4,7 @@ import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 
 import utilApi from '@mocks/UtilApi';
 import WarningModal from '@components/Modal/WarningModal';
+import { Typography } from '@material-tailwind/react';
 
 interface ImageUploaderProps {
   title?: string;
@@ -47,7 +48,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
     }
   }, []);
 
-  const deleteClickHandler = () => {
+  const handleToDefaultImageClick = () => {
     setThumbnailBase64('');
     setThumbnail(new Blob());
   };
@@ -93,12 +94,12 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
       >
         이미지 파일(.png/.jpg/.jpeg)만 업로드 가능합니다.
       </WarningModal>
-      <div className="flex w-full items-center justify-between ">
-        <span className="text-paragraph">{title || '썸네일'}</span>
+      <div className="flex w-full items-center justify-between">
+        <Typography className="text-paragraph">{title || '썸네일'}</Typography>
         <button
           className="text-small underline underline-offset-4 hover:text-pointBlue"
           type="button"
-          onClick={deleteClickHandler}
+          onClick={handleToDefaultImageClick}
         >
           기본 이미지로
         </button>
@@ -116,18 +117,18 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
             alt="thumbnail"
           />
         ) : (
-          <div className="text-small text-pointBlue/[30%]">
+          <div className="flex items-center text-pointBlue/[30%]">
             {isDragActive ? (
-              <p className="flex items-center text-center">이미지를 놓으세요</p>
+              <Typography className="text-center text-small">이미지를 놓으세요</Typography>
             ) : (
-              <p className="flex items-center">
-                <div className="mx-2 inline-block text-center">
-                  <MdOutlineAddPhotoAlternate className="mx-auto mb-1 h-[30px] w-[30px]" />
+              <div className="mx-2 inline-block text-center">
+                <MdOutlineAddPhotoAlternate className="mx-auto mb-1 h-[30px] w-[30px]" />
+                <Typography className="text-small">
                   클릭 또는 드래그하여
                   <br />
                   이미지를 첨부하세요
-                </div>
-              </p>
+                </Typography>
+              </div>
             )}
           </div>
         )}
