@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button } from '@material-tailwind/react';
+import { Button } from '@mui/material';
 
 interface OutlinedButtonProps {
   children: ReactNode;
@@ -11,9 +11,9 @@ interface OutlinedButtonProps {
 const FilledButton = ({ children, onClick, disabled, type }: OutlinedButtonProps) => {
   return (
     <Button
-      variant="filled"
+      variant="contained"
+      className="h-fit !rounded-sm !py-2 !px-6 !text-small !font-semibold !leading-4 !text-subBlack hover:!opacity-80 hover:!shadow-none"
       type={type}
-      className="h-fit rounded-sm bg-pointBlue py-2 font-base text-subBlack hover:opacity-80 hover:shadow-none"
       onClick={onClick}
       disabled={disabled}
     >

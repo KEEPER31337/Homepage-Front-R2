@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button } from '@material-tailwind/react';
+import { Button } from '@mui/material';
 
 interface TextButtonProps {
   children: ReactNode;
@@ -12,8 +12,8 @@ const TextButton = ({ children, onClick, disabled, type }: TextButtonProps) => {
   return (
     <Button
       variant="text"
+      className="h-fit !rounded-sm !py-2 !px-6 !text-small !font-semibold !leading-4 hover:!bg-pointBlue/10 active:!bg-pointBlue/30"
       type={type}
-      className="h-fit rounded-sm py-2 font-base text-pointBlue hover:bg-pointBlue/10 active:bg-pointBlue/30"
       onClick={onClick}
       disabled={disabled}
     >
