@@ -5,15 +5,17 @@ interface OutlinedButtonProps {
   children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
   startIcon?: JSX.Element;
   endIcon?: JSX.Element;
 }
 
-const OutlinedButton = ({ children, onClick, disabled, startIcon, endIcon }: OutlinedButtonProps) => {
+const OutlinedButton = ({ children, onClick, disabled, type, startIcon, endIcon }: OutlinedButtonProps) => {
   return (
     <Button
       variant="outlined"
-      className="!focus:ring-0 !h-fit !rounded-sm !border-pointBlue !py-2 !px-6 !text-small !font-semibold !leading-4 !text-pointBlue"
+      className="h-fit !rounded-sm !border-pointBlue !py-2 !px-6 !text-small !font-semibold !leading-4"
+      type={type}
       onClick={onClick}
       disabled={disabled}
       startIcon={startIcon}
