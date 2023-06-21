@@ -15,7 +15,9 @@ const OutlinedButton = ({ children, onClick, disabled, type, small, startIcon, e
   return (
     <Button
       variant="outlined"
-      className={`${small && '!text-small'} h-fit !rounded-sm !border-pointBlue !py-2 !px-6 !font-semibold`}
+      className={`${small && '!text-small'} ${
+        !disabled && '!border-pointBlue'
+      } h-fit !rounded-sm !py-2 !px-6 !font-semibold`}
       type={type}
       onClick={onClick}
       disabled={disabled}
