@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import { Stack } from '@mui/material';
 import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
