@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import ActionModal from '@components/Modal/ActionModal';
 import StandardInput from '@components/Input/StandardInput';
-import TotalBookNumberSelector from '@pages/admin/LibraryManage/components/Selector/TotalBookNumberSelector';
+import TotalBookNumberSelector from '@pages/admin/LibraryManage/Selector/TotalBookNumberSelector';
 
 import { BookListInfo } from '@api/dto';
 
