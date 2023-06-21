@@ -6,9 +6,11 @@ interface OutlinedButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  startIcon?: JSX.Element;
+  endIcon?: JSX.Element;
 }
 
-const OutlinedButton = ({ children, onClick, disabled, type }: OutlinedButtonProps) => {
+const OutlinedButton = ({ children, onClick, disabled, type, startIcon, endIcon }: OutlinedButtonProps) => {
   return (
     <Button
       variant="outlined"
@@ -16,6 +18,8 @@ const OutlinedButton = ({ children, onClick, disabled, type }: OutlinedButtonPro
       type={type}
       onClick={onClick}
       disabled={disabled}
+      startIcon={startIcon}
+      endIcon={endIcon}
     >
       {children}
     </Button>
