@@ -20,7 +20,7 @@ const muiTheme = createTheme({
       fontSize: '20px',
     },
     paragraph: {
-      fontSize: '16px',
+      fontSize: '14px',
     },
     small: {
       fontSize: '10px',

@@ -20,7 +20,7 @@ module.exports = withMT({
       fontSize: {
         h1: '28px',
         h3: '20px',
-        paragraph: '16px',
+        paragraph: '14px',
         small: '10px',
       },
       spacing: {
