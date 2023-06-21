@@ -26,6 +26,15 @@ const muiTheme = createTheme({
       fontSize: '10px',
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '1rem',
+        },
+      },
+    },
+  },
 });
 
 declare module '@mui/material/styles' {
