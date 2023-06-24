@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BookListInfo } from '@api/dto';
 import PageTitle from '@components/Typography/PageTitle';
 import StandardTable from '@components/Table/StandardTable';
@@ -7,6 +7,8 @@ import { ChildComponent } from '@components/Table/StandardTable.interface';
 import { columns, rows } from '@mocks/LibraryManageApi';
 
 import SearchSection from '@components/Section/SearchSection';
+import AddBookModal from './Modal/AddBookModal';
+import DeleteBookModal from './Modal/DeleteBookModal';
 
 const LibraryManage = () => {
   const childComponent = ({ key, value }: ChildComponent<BookListInfo>) => {
@@ -17,17 +19,21 @@ const LibraryManage = () => {
         return value;
     }
   };
-
+  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
+  const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
   return (
     <div>
       <PageTitle>도서관리</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
         <SearchSection />
         <div className="flex space-x-2">
-          <OutlinedButton>도서 추가</OutlinedButton>
-          <OutlinedButton>도서 삭제</OutlinedButton>
+          <OutlinedButton onClick={() => setAddBookModalOpen(true)}>도서 추가</OutlinedButton>
+          <OutlinedButton onClick={() => setDeleteBookModalOpen(true)}>도서 삭제</OutlinedButton>
           <OutlinedButton>대출 관리</OutlinedButton>
           <OutlinedButton>반납 관리</OutlinedButton>
+
+          <AddBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
+          <DeleteBookModal open={deleteBookModalOpen} onClose={() => setDeleteBookModalOpen(false)} />
         </div>
       </div>
       <StandardTable<BookListInfo> columns={columns} rows={rows} childComponent={childComponent} />

@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { Box, Stack, Typography } from '@mui/material';
 import StepProgress from '@components/Progress/StepProgress';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import SignUpFirstInputSection from './Section/SignUpFirstInputSection';
 import SignUpSecondInputSection from './Section/SignUpSecondInputSection';
 import SignUpThirdInputSection from './Section/SignUpThirdInputSection';
@@ -11,7 +10,7 @@ import SignUpThirdInputSection from './Section/SignUpThirdInputSection';
 const SignUp = () => {
   const TOTAL_STEPS = 3;
 
-  const currentStep = 1; // TODO 추후 state로 관리
+  const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
   const stepInfoMsg = {
     1: '로그인에 사용할\n아이디와 비밀번호를 등록해 주세요.',
     2: '프로필 정보를 등록해 주세요.',
@@ -19,7 +18,7 @@ const SignUp = () => {
   };
 
   const stepInputSection = {
-    1: <SignUpFirstInputSection />,
+    1: <SignUpFirstInputSection setCurrentStep={setCurrentStep} />,
     2: <SignUpSecondInputSection />,
     3: <SignUpThirdInputSection />,
   };
@@ -32,9 +31,6 @@ const SignUp = () => {
           <StepProgress className="mb-2 w-32" currentStep={currentStep} totalStep={TOTAL_STEPS} />
           <Typography className="!mb-8 whitespace-pre !font-semibold">{stepInfoMsg[currentStep]}</Typography>
           {stepInputSection[currentStep]}
-          <div className="absolute right-0 bottom-0">
-            <OutlinedButton>다음</OutlinedButton>
-          </div>
         </Stack>
       </Box>
     </div>
