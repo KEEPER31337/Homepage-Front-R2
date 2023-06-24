@@ -1,6 +1,6 @@
 import React from 'react';
 import { VscCheck, VscChromeClose } from 'react-icons/vsc';
-import ActivityStatus from './ActivityStatus.interface';
+import ActivityStatus from '../SeminarAttend.interface';
 
 interface SeminarAttendStatusProps {
   status: ActivityStatus;

@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
-import ActivityStatus from '../Status/ActivityStatus.interface';
+import ActivityStatus from '../SeminarAttend.interface';
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
