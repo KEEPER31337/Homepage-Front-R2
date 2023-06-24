@@ -18,7 +18,8 @@ const MemberCardContent = () => {
   const validCode = '1234'; // 임시
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
 
-  const handleAttendButtonClick = (nowTime: DateTime) => {
+  const handleAttendButtonClick = () => {
+    const nowTime = DateTime.now();
     setIsAttendable(nowTime < lateLimit);
     if (nowTime < attendLimit) setAttendStatus('출석');
     else if (nowTime < lateLimit) setAttendStatus('지각');
@@ -35,7 +36,7 @@ const MemberCardContent = () => {
         <div className="flex justify-center">
           <FilledButton
             onClick={() => {
-              handleAttendButtonClick(DateTime.now());
+              handleAttendButtonClick();
             }}
           >
             출석
