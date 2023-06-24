@@ -15,7 +15,7 @@ const SeminarAttendStatus = ({ status }: SeminarAttendStatusProps) => {
       icon: <VscCheck />,
     },
     지각: {
-      color: '[#FFA500]',
+      color: 'subOrange',
       icon: <VscCheck />,
     },
     결석: {
