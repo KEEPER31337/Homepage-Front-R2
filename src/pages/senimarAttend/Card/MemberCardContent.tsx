@@ -20,7 +20,6 @@ const MemberCardContent = () => {
     const nowTime = DateTime.now();
     setIsAttendable(nowTime < attendLimit);
     setIsCorrectCode(inputCode.join('') === validCode);
-    console.log(inputCode);
   };
 
   return (
