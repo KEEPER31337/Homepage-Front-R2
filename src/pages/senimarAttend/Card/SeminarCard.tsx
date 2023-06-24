@@ -12,7 +12,7 @@ const SeminarCard = ({ children }: SeminarCardProps) => {
     <Card
       className={`flex h-[426px] w-96 items-center justify-center !bg-middleBlack !bg-none ${
         seminarExist && 'opacity-50'
-      } `}
+      }`}
     >
       <CardContent className="h-[315px]">{children}</CardContent>
     </Card>
