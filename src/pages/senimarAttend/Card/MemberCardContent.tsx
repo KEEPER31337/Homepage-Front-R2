@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
+import ActivityStatus from '../SeminarAttend.interface';
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
@@ -16,9 +17,10 @@ const MemberCardContent = () => {
 
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const validCode = '1234'; // 임시
-  const [attendStatus, setAttendStatus] = useState<undefined | '지각' | '출석' | '결석'>(undefined);
+  const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
 
-  const handleAttendButtonClick = (nowTime: DateTime) => {
+  const handleAttendButtonClick = () => {
+    const nowTime = DateTime.now();
     setIsAttendable(nowTime < lateLimit);
     if (nowTime < attendLimit) setAttendStatus('출석');
     else if (nowTime < lateLimit) setAttendStatus('지각');
@@ -39,7 +41,7 @@ const MemberCardContent = () => {
         <div className="flex justify-center">
           <FilledButton
             onClick={() => {
-              handleAttendButtonClick(DateTime.now());
+              handleAttendButtonClick();
             }}
           >
             출석

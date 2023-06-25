@@ -1,7 +1,6 @@
 import React from 'react';
 import { VscCheck, VscChromeClose } from 'react-icons/vsc';
-
-type ActivityStatus = '지각' | '출석' | '결석';
+import ActivityStatus from '../SeminarAttend.interface';
 
 interface SeminarAttendStatusProps {
   status: ActivityStatus;
@@ -16,7 +15,7 @@ const SeminarAttendStatus = ({ status }: SeminarAttendStatusProps) => {
       icon: <VscCheck />,
     },
     지각: {
-      color: '[#FFA500]',
+      color: 'subOrange',
       icon: <VscCheck />,
     },
     결석: {
