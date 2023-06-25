@@ -41,7 +41,9 @@ const Header = () => {
             </IconButton>
           </div>
         ) : (
-          <FilledButton>LOGIN</FilledButton>
+          <Link to="/login">
+            <FilledButton>LOGIN</FilledButton>
+          </Link>
         )}
       </Toolbar>
       <AccountMenu anchorEl={anchorEl} open={open} onClose={handleMenuClose} />
