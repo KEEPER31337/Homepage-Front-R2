@@ -10,10 +10,11 @@ const MemberCardContent = () => {
   const [isCorrectCode, setIsCorrectCode] = useState(false);
   const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
-  const startTime = DateTime.now(); // 임시
-  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 1 }); // 임시:이후 api에서 가져옴
-  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 20 }); // 임시: 이후 api에서 가져옴
-  const inputCode = [0, 0, 0, 0];
+  const [startTime, setStartTime] = useState(DateTime.now());
+  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
+  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
+
+  const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const validCode = '1234'; // 임시
   const [attendStatus, setAttendStatus] = useState<undefined | '지각' | '출석' | '결석'>(undefined);
 
@@ -27,7 +28,11 @@ const MemberCardContent = () => {
 
   return (
     <>
-      <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
+      <SeminarInput
+        helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''}
+        setInputCode={setInputCode}
+        inputCode={inputCode}
+      />
       {attendStatus !== undefined ? (
         <SeminarAttendStatus status={attendStatus} />
       ) : (

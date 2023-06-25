@@ -19,7 +19,7 @@ const BossCardContent = () => {
 
   return (
     <>
-      <SeminarInput disabled />
+      <SeminarInput disabled inputCode={[0, 0, 0, 0]} />
       <div className="flex justify-center">
         <FilledButton onClick={startSeminar}>시작</FilledButton>
       </div>
