@@ -13,7 +13,7 @@ const MemberCardContent = () => {
   const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
   const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
 
-  const inputCode = [0, 0, 0, 0];
+  const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const validCode = '1234'; // 임시
 
   const handleAttendButtonClick = () => {
@@ -24,7 +24,11 @@ const MemberCardContent = () => {
 
   return (
     <>
-      <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
+      <SeminarInput
+        helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''}
+        setInputCode={setInputCode}
+        inputCode={inputCode}
+      />
       <div className="flex justify-center">
         <FilledButton
           onClick={() => {
