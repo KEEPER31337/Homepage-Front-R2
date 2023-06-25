@@ -3,6 +3,8 @@ import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
+import SeminarAttendStatus from '../Status/SeminarAttendStatus';
+import ActivityStatus from '../SeminarAttend.interface';
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
@@ -13,27 +15,39 @@ const MemberCardContent = () => {
   const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
   const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
 
-  const inputCode = [0, 0, 0, 0];
+  const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const validCode = '1234'; // 임시
+  const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
 
   const handleAttendButtonClick = () => {
     const nowTime = DateTime.now();
-    setIsAttendable(nowTime < attendLimit);
+    setIsAttendable(nowTime < lateLimit);
+    if (nowTime < attendLimit) setAttendStatus('출석');
+    else if (nowTime < lateLimit) setAttendStatus('지각');
+    else setAttendStatus('결석');
     setIsCorrectCode(inputCode.join('') === validCode);
   };
 
   return (
     <>
-      <SeminarInput helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''} />
-      <div className="flex justify-center">
-        <FilledButton
-          onClick={() => {
-            handleAttendButtonClick();
-          }}
-        >
-          출석
-        </FilledButton>
-      </div>
+      <SeminarInput
+        helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''}
+        setInputCode={setInputCode}
+        inputCode={inputCode}
+      />
+      {attendStatus !== undefined ? (
+        <SeminarAttendStatus status={attendStatus} />
+      ) : (
+        <div className="flex justify-center">
+          <FilledButton
+            onClick={() => {
+              handleAttendButtonClick();
+            }}
+          >
+            출석
+          </FilledButton>
+        </div>
+      )}
       <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
