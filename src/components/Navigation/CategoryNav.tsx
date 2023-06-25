@@ -13,6 +13,7 @@ const CategoryNav = ({ category }: CategoryNavProps) => {
   return (
     <ListItem className="flex flex-col" disablePadding>
       <ListItemButton
+        selected={open}
         className="w-full"
         onClick={() => {
           setOpen((prev) => !prev);
