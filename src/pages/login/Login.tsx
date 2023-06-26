@@ -53,7 +53,7 @@ const Login = () => {
       })
       .then((response) => {
         console.log(response);
-        const { accessToken: string } = response.headers['set-cookie'];
+        const { accessToken } = response.data.accessToken; // accessToken이 어디담겨 있지?
         axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
       });
   };
