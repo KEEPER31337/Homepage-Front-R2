@@ -24,7 +24,7 @@ export interface BookListInfo {
   no: number;
   title: string;
   author: string;
-  total: string;
+  borrowState: string;
   information: string;
   enable: boolean;
 }
@@ -63,4 +63,19 @@ export interface StudyListInfo {
   thumbnailPath: string;
   headMember: StudyMemberInfo;
   memberList: StudyMemberInfo[];
+}
+
+export interface SignUpInfo {
+  loginId: string;
+  email: string;
+  realName: string;
+  nickname: string;
+  authCode: string;
+  birthday: string;
+  studentId: string;
+  password: string;
+}
+
+export interface SignUpDuplication {
+  duplicate: boolean;
 }
