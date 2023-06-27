@@ -78,7 +78,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
   }, []);
 
   return (
-    <div className="space-y-[10px]">
+    <div className="flex h-full flex-col space-y-[10px]">
       <WarningModal
         open={openWarning.isOpen}
         onClose={() => setOpenWarning({ ...openWarning, isOpen: false })}
@@ -89,7 +89,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
           ? '썸네일 이미지는 한 개만 업로드할 수 있습니다.'
           : '이미지 파일(png, jpg, jpeg, gif)만 업로드 가능합니다.'}
       </WarningModal>
-      <div className="flex items-center justify-between">
+      <div className="flex shrink items-center justify-between">
         <Typography className="text-paragraph">{title || '썸네일'}</Typography>
         <button
           className="text-small underline underline-offset-4 hover:text-pointBlue"
@@ -104,7 +104,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
         className={`
           ${isDragActive ? 'bg-pointBlue/30' : ''} 
           ${thumbnailBase64 ? '' : 'border-2'} 
-          flex h-32 items-center justify-center border-dashed !border-pointBlue/30
+          flex h-full items-center justify-center border-dashed !border-pointBlue/30
         `}
       >
         {thumbnailBase64 ? (
