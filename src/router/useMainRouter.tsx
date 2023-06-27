@@ -12,6 +12,7 @@ import FitContainer from '@components/Layout/Container/FitContainer';
 import BoardList from '@pages/board/BoardList';
 import SignUp from '@pages/SignUp/SignUp';
 import Login from '@pages/login/Login';
+import Game from '@pages/Game/Game';
 
 const useMainRouter = () =>
   useRoutes([
@@ -64,6 +65,10 @@ const useMainRouter = () =>
             {
               path: 'study',
               element: <Study />,
+            },
+            {
+              path: 'game',
+              element: <Game />,
             },
           ],
         },
