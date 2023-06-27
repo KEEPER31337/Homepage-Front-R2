@@ -25,6 +25,42 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
   const [openWarning, setOpenWarning] = useState<ImageWarningInfo>({ isOpen: false, type: 'Multiple' });
 
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setThumbnailBase64('');
+    acceptedFiles.forEach((file: File) => {
+      setThumbnail(file);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        const base64 = reader.result;
+        if (base64) {
+          const base64Sub = base64.toString();
+          setThumbnailBase64(base64Sub);
+        }
+      };
+    });
+  }, []);
+
+  const { getRootProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: {
+      'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
+    },
+    onDropRejected: (files) => {
+      if (files.length > MAX_IMAGE_COUNT) {
+        setOpenWarning({ isOpen: true, type: 'Multiple' });
+      } else {
+        setOpenWarning({ isOpen: true, type: 'WrongExtension' });
+      }
+    },
+  });
+
+  const handleToDefaultImageClick = () => {
+    setThumbnailBase64('');
+    setThumbnail(new Blob());
+  };
+
   useEffect(() => {
     if (isEdit && thumbnailPath) {
       const list = thumbnailPath.split('/');
@@ -40,41 +76,6 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
       reader.readAsDataURL(data);
     }
   }, []);
-
-  const handleToDefaultImageClick = () => {
-    setThumbnailBase64('');
-    setThumbnail(new Blob());
-  };
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setThumbnailBase64('');
-    acceptedFiles.forEach((file: File) => {
-      setThumbnail(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result;
-        if (base64) {
-          const base64Sub = base64.toString();
-          setThumbnailBase64(base64Sub);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  }, []);
-  const { getRootProps, isDragActive } = useDropzone({
-    onDrop,
-    multiple: false,
-    accept: {
-      'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
-    },
-    onDropRejected: (files) => {
-      if (files.length > MAX_IMAGE_COUNT) {
-        setOpenWarning({ isOpen: true, type: 'Multiple' });
-      } else {
-        setOpenWarning({ isOpen: true, type: 'WrongExtension' });
-      }
-    },
-  });
 
   return (
     <div className="space-y-[10px]">
