@@ -52,10 +52,6 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
       setThumbnail(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        const array = [];
-        for (let i = 0; i < (reader.result as string).length; i += 1) {
-          array.push((reader.result as string).charCodeAt(i));
-        }
         const base64 = reader.result;
         if (base64) {
           const base64Sub = base64.toString();
