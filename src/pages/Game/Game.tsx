@@ -19,12 +19,12 @@ const Game = () => {
       <Stack direction="row" justifyContent="flex-end">
         <>
           <Typography marginRight={0.5}>보유포인트 :</Typography>
-          <Typography fontWeight="bold">{point}</Typography>
+          <Typography className="!font-semibold">{point}</Typography>
         </>
         <Divider className="bg-white" sx={{ marginX: 1, marginY: 0.5 }} orientation="vertical" flexItem />
         <>
           <Typography marginRight={0.5}>오늘 결과 :</Typography>
-          <Typography fontWeight="bold" className={todayTotalGamePoint >= 0 ? 'text-pointBlue' : 'text-subRed'}>
+          <Typography className={`!font-semibold ${todayTotalGamePoint >= 0 ? 'text-pointBlue' : 'text-subRed'}`}>
             {todayTotalGamePoint}
           </Typography>
         </>
