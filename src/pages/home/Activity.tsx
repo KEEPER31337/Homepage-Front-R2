@@ -24,11 +24,11 @@ const SubTitleImageCard = ({ subtitleImage }: { subtitleImage: SubTitleImagesInf
 };
 
 const Activity = () => {
-  const { data } = useGetBlockListQuery({ type: 'activity' });
+  const { data: activityList } = useGetBlockListQuery({ type: 'activity' });
 
   return (
     <div className="bg-mainBlack">
-      {data?.subtitleImages?.map((subtitleImage) => (
+      {activityList?.subtitleImages?.map((subtitleImage) => (
         <SubTitleImageCard key={subtitleImage.id} subtitleImage={subtitleImage} />
       ))}
     </div>
