@@ -1,12 +1,14 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   extends: [
     'airbnb',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
   rules: {
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
@@ -26,6 +28,23 @@ module.exports = {
       },
     ],
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['craco.config.ts', 'prettier.config.js'] }],
+    'import/order': [
+      'error',
+      {
+        groups: ['external', 'internal', 'index', 'sibling', 'parent', 'builtin', 'object', 'type'],
+        pathGroups: [
+          {
+            pattern: 'react',
+            group: 'external',
+            position: 'before',
+          },
+        ],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+        },
+      },
+    ],
   },
   settings: {
     'import/resolver': {
