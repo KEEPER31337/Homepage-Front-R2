@@ -4,6 +4,7 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import FilledButton from '@components/Button/FilledButton';
 import PageTitle from '@components/Typography/PageTitle';
 import { Typography } from '@mui/material';
+import { useGetSeminarInfo } from '@api/seminar';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
@@ -11,13 +12,13 @@ import MemberCardContent from './Card/MemberCardContent';
 const SeminarAttend = () => {
   const seminarDate = DateTime.now(); // 이후 삭제
   const seminarActivated = true; // TODO: useState, api 적용
-  const [recentSeminarDate, setRecentSeminarDate] = useState('today'); // TODO: api 적용
+  const recentSeminarDate = useGetSeminarInfo({ id: 2 }).data?.openTime; // TODO: 이후 api 적용
   const [futureSeminarDate, setFutureSeminarDate] = useState('towmorrow');
   const [pastSeminarDate, setPastSeminarDate] = useState('yesterday');
   const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
   const cardDateOrder = [pastSeminarDate, recentSeminarDate, futureSeminarDate];
+
   useEffect(() => {
-    setRecentSeminarDate(DateTime.now().toFormat('yy.MM.dd'));
     setFutureSeminarDate(seminarDate.plus({ days: 1 }).toFormat('yy.MM.dd'));
     setPastSeminarDate(seminarDate.minus({ days: 1 }).toFormat('yy.MM.dd'));
   }, []);

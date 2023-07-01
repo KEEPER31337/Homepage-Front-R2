@@ -6,10 +6,16 @@ const seminarKeys = {
   getSeminar: ['getSeminar', 'id'] as const,
 };
 
-const useGetSeminarInfo = ({ seminarId }: { seminarId: number }) => {
-  const fetcher = () => axios.get(`/seminars/${seminarId}`).then(({ data }) => data);
+const useGetSeminarInfo = ({ id }: { id: number }) => {
+  const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
 
   return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
 };
 
-export default { useGetSeminarInfo };
+const useGetSeminarInfo2 = ({ id }: { id: number }) => {
+  const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
+
+  return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
+};
+
+export { useGetSeminarInfo, useGetSeminarInfo2 };
