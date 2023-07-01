@@ -13,6 +13,7 @@ import BoardList from '@pages/board/BoardList';
 import SignUp from '@pages/SignUp/SignUp';
 import Login from '@pages/login/Login';
 import Game from '@pages/Game/Game';
+import SearchAccount from '@pages/login/SearchAccount';
 
 const useMainRouter = () =>
   useRoutes([
@@ -34,6 +35,10 @@ const useMainRouter = () =>
             {
               path: 'login',
               element: <Login />,
+            },
+            {
+              path: 'searchAccount',
+              element: <SearchAccount />,
             },
           ],
         },
