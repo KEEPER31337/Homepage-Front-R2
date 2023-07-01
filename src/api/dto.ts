@@ -79,3 +79,14 @@ export interface SignUpInfo {
 export interface SignUpDuplication {
   duplicate: boolean;
 }
+
+export interface SeminarInfo {
+  id: number;
+  openTime: string;
+  attendanceCloseTime: string;
+  latenessCloseTime: string;
+  attendanceCode: string;
+  name: string;
+  registerTime: string;
+  updateTime: string;
+}
