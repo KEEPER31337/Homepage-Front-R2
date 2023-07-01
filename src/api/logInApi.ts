@@ -6,7 +6,6 @@ export const login = async ({ loginId, password }: { loginId: string; password: 
   try {
     const response = await axios.post('/sign-in', { loginId, password }, { withCredentials: true });
     const { accessToken } = response.data;
-    console.log(1);
     setCookie('accessToken', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 

@@ -3,7 +3,6 @@ import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack 
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { login } from '@api/logInApi';
 
 const HorizonLine = () => {
@@ -120,9 +119,13 @@ const Login = () => {
           </Stack>
           <HorizonLine />
           <Stack direction="row" spacing={2}>
-            <Link to="/">아이디·비밀번호 찾기</Link>
+            <Link to="/">
+              <p className="hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
+            </Link>
             <p>|</p>
-            <Link to="/signUp">회원가입</Link>
+            <Link to="/signUp">
+              <p className="hover:underline hover:duration-300">회원가입</p>
+            </Link>
           </Stack>
         </Box>
       </Container>
