@@ -20,13 +20,18 @@ const MemberCardContent = () => {
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
 
   const handleAttendButtonClick = () => {
+    setIsCorrectCode(inputCode.join('') === validCode);
     const nowTime = DateTime.now();
     setIsAttendable(nowTime < lateLimit);
-    if (nowTime < attendLimit) setAttendStatus('출석');
-    else if (nowTime < lateLimit) setAttendStatus('지각');
-    else setAttendStatus('결석');
-    setIsCorrectCode(inputCode.join('') === validCode);
+    if (inputCode.join('') === validCode) {
+      // TODO: 출석 api 연동
+      if (nowTime < attendLimit) setAttendStatus('출석');
+      else if (nowTime < lateLimit) setAttendStatus('지각');
+      else setAttendStatus('결석');
+    }
   };
+
+  // TODO: 출석 종료시 자동 결석처리, 문구 결석으로 바꾸기
 
   return (
     <>
@@ -35,19 +40,7 @@ const MemberCardContent = () => {
         setInputCode={setInputCode}
         inputCode={inputCode}
       />
-      {attendStatus !== undefined ? (
-        <SeminarAttendStatus status={attendStatus} />
-      ) : (
-        <div className="flex justify-center">
-          <FilledButton
-            onClick={() => {
-              handleAttendButtonClick();
-            }}
-          >
-            출석
-          </FilledButton>
-        </div>
-      )}
+
       <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
@@ -58,6 +51,19 @@ const MemberCardContent = () => {
           <Countdown startTime={attendLimit} endTime={lateLimit} />
         </div>
       </div>
+      {attendStatus !== undefined ? (
+        <SeminarAttendStatus status={attendStatus} />
+      ) : (
+        <div className="mt-[39px] flex justify-center">
+          <FilledButton
+            onClick={() => {
+              handleAttendButtonClick();
+            }}
+          >
+            출석
+          </FilledButton>
+        </div>
+      )}
     </>
   );
 };

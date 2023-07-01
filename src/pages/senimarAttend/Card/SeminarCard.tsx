@@ -10,7 +10,7 @@ const SeminarCard = ({ children }: SeminarCardProps) => {
 
   return (
     <Card
-      className={`flex h-[426px] w-96 items-center justify-center !bg-middleBlack !bg-none ${
+      className={`flex h-[390px] w-[345px] justify-center !rounded-[10px] !bg-middleBlack !bg-none ${
         seminarExist && 'opacity-50'
       }`}
     >
