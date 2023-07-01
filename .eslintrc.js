@@ -55,7 +55,6 @@ module.exports = {
           },
         ],
         pathGroupsExcludedImportTypes: ['react'],
-        'newlines-between': 'always',
         alphabetize: {
           order: 'asc',
         },
