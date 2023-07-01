@@ -82,10 +82,15 @@ const Rank = () => {
           <div className="flex h-full flex-col justify-between">
             {tab === 1
               ? pointTop4.map((item, index) => (
-                  <TopCard<PointRankInfo> item={item} message={`${item.point}pt 획득`} index={index} />
+                  <TopCard<PointRankInfo> key={item.id} item={item} message={`${item.point}pt 획득`} index={index} />
                 ))
               : attendTop4.map((item, index) => (
-                  <TopCard<AttendRankInfo> item={item} message={`${item.attend}일째 개근`} index={index} />
+                  <TopCard<AttendRankInfo>
+                    key={item.id}
+                    item={item}
+                    message={`${item.attend}일째 개근`}
+                    index={index}
+                  />
                 ))}
           </div>
         </div>
