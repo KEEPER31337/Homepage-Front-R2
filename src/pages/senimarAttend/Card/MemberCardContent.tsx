@@ -52,10 +52,10 @@ const MemberCardContent = () => {
           <Countdown startTime={attendLimit} endTime={lateLimit} />
         </div>
       </div>
-      {attendStatus !== undefined ? (
-        <SeminarAttendStatus status={attendStatus} />
-      ) : (
-        <div className="mt-[39px] flex justify-center">
+      <div className="mt-[39px] flex justify-center">
+        {attendStatus !== undefined ? (
+          <SeminarAttendStatus status={attendStatus} />
+        ) : (
           <FilledButton
             onClick={() => {
               handleAttendButtonClick();
@@ -63,8 +63,8 @@ const MemberCardContent = () => {
           >
             출석
           </FilledButton>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };
