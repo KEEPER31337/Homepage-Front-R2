@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { login } from '@api/logInApi';
 
 const HorizonLine = () => {
   return (
@@ -45,17 +46,36 @@ const Login = () => {
     setIsKeepLogin(e.target.checked);
   };
 
-  const handleClickLogin = () => {
-    axios
-      .post('/sign-in', {
-        loginId: form.id,
-        password,
-      })
-      .then((response) => {
-        console.log(response);
-        const { accessToken } = response.data.accessToken; // accessToken이 어디담겨 있지?
-        axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-      });
+  const validation = () => {
+    const isError = false;
+
+    return !isError;
+  };
+
+  const handleClickLogin = async () => {
+    if (validation()) {
+      const response = await login({ loginId: id, password });
+      if (response) {
+        const navigate = useNavigate();
+        navigate('/');
+      }
+      // axios
+      //   .post(
+      //     '/sign-in',
+      //     {
+      //       loginId: form.id.replace(/ /gi, ''),
+      //       password: form.password.replace(/ /gi, ''),
+      //     },
+      //     { withCredentials: true },
+      //   )
+      //   .then((response) => {
+      //     axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`;
+      //     return response.data;
+      //   })
+      //   .catch((e) => {
+      //     return '아이디 혹은 비밀번호를 확인하세요.';
+      //   });
+    }
   };
 
   return (
