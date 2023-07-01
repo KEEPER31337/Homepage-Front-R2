@@ -3,11 +3,11 @@ import React from 'react';
 const inputStyle: React.CSSProperties = {
   textAlign: 'center',
   fontSize: '28px',
-  fontWeight: '600',
   height: '52px',
   maxWidth: '42px',
-  color: 'black',
-  background: 'white',
+  color: 'white',
+  background: '#26262C',
+  borderBottom: '1px solid #4CEEF9',
 };
 
 interface SeminarInputProps {
@@ -37,7 +37,7 @@ const SeminarInput = ({ disabled, helperText, setInputCode, inputCode }: Seminar
   };
 
   return (
-    <div className="mx-auto my-[22px]">
+    <div>
       <div className="flex h-[52px] w-[192px] justify-between">
         {inputListKey.map((key) => {
           return (

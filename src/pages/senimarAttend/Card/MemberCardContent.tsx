@@ -35,19 +35,7 @@ const MemberCardContent = () => {
         setInputCode={setInputCode}
         inputCode={inputCode}
       />
-      {attendStatus !== undefined ? (
-        <SeminarAttendStatus status={attendStatus} />
-      ) : (
-        <div className="flex justify-center">
-          <FilledButton
-            onClick={() => {
-              handleAttendButtonClick();
-            }}
-          >
-            출석
-          </FilledButton>
-        </div>
-      )}
+
       <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
@@ -58,6 +46,19 @@ const MemberCardContent = () => {
           <Countdown startTime={attendLimit} endTime={lateLimit} />
         </div>
       </div>
+      {attendStatus !== undefined ? (
+        <SeminarAttendStatus status={attendStatus} />
+      ) : (
+        <div className="mt-[39px] flex justify-center">
+          <FilledButton
+            onClick={() => {
+              handleAttendButtonClick();
+            }}
+          >
+            출석
+          </FilledButton>
+        </div>
+      )}
     </>
   );
 };

@@ -24,17 +24,14 @@ const SeminarAttend = () => {
 
   return (
     <>
-      <div className="flex justify-between">
-        <PageTitle>세미나 출석</PageTitle>
-        <OutlinedButton>세미나 관리</OutlinedButton>
-      </div>
-      <div className="mt-[180px] flex justify-between [&>*:nth-child(2)]:mt-[-50px]">
+      <div className="mt-[180px] flex justify-between text-center [&>*:nth-child(2)]:mt-[-50px]">
         {cardDateOrder.map((date) => {
           return (
             <SeminarCard key={date}>
               {seminarActivated ? (
                 <>
-                  <Typography className="text-center text-paragraph text-white">{date} 세미나</Typography>
+                  <Typography className="!mt-[16px] !text-h3 !font-bold ">{date} 세미나</Typography>
+                  <p className="mt-[26px] mb-[14px]">출석 코드</p>
                   {isBoss ? <BossCardContent /> : <MemberCardContent />}
                 </>
               ) : (
