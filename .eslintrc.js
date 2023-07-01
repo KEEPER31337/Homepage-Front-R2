@@ -38,6 +38,16 @@ module.exports = {
             group: 'external',
             position: 'before',
           },
+          {
+            pattern: '@pages/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: '@components/**',
+            group: 'internal',
+            position: 'after',
+          },
         ],
         pathGroupsExcludedImportTypes: ['react'],
         'newlines-between': 'always',
