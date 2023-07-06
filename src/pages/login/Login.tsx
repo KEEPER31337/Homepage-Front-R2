@@ -58,22 +58,6 @@ const Login = () => {
         const navigate = useNavigate();
         navigate('/');
       }
-      // axios
-      //   .post(
-      //     '/sign-in',
-      //     {
-      //       loginId: form.id.replace(/ /gi, ''),
-      //       password: form.password.replace(/ /gi, ''),
-      //     },
-      //     { withCredentials: true },
-      //   )
-      //   .then((response) => {
-      //     axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`;
-      //     return response.data;
-      //   })
-      //   .catch((e) => {
-      //     return '아이디 혹은 비밀번호를 확인하세요.';
-      //   });
     }
   };
 
