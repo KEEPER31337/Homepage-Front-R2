@@ -12,7 +12,6 @@ import axios from 'axios';
 import './tailwind.css';
 import materialTailwindTheme from '@constants/materialTailwindTheme';
 import muiTheme from '@constants/muiTheme';
-import { CookiesProvider } from 'react-cookie';
 import App from './App';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -36,9 +35,7 @@ root.render(
           <MUIThemeProvider theme={muiTheme}>
             <BrowserRouter>
               <QueryClientProvider client={queryClient}>
-                <CookiesProvider>
-                  <App />
-                </CookiesProvider>
+                <App />
               </QueryClientProvider>
             </BrowserRouter>
           </MUIThemeProvider>
