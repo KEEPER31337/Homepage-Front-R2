@@ -20,13 +20,18 @@ const MemberCardContent = () => {
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
 
   const handleAttendButtonClick = () => {
+    setIsCorrectCode(inputCode.join('') === validCode);
     const nowTime = DateTime.now();
     setIsAttendable(nowTime < lateLimit);
-    if (nowTime < attendLimit) setAttendStatus('출석');
-    else if (nowTime < lateLimit) setAttendStatus('지각');
-    else setAttendStatus('결석');
-    setIsCorrectCode(inputCode.join('') === validCode);
+    if (inputCode.join('') === validCode) {
+      // TODO: 출석 api 연동
+      if (nowTime < attendLimit) setAttendStatus('출석');
+      else if (nowTime < lateLimit) setAttendStatus('지각');
+      else setAttendStatus('결석');
+    }
   };
+
+  // TODO: 출석 종료시 자동 결석처리, 문구 결석으로 바꾸기
 
   return (
     <>
