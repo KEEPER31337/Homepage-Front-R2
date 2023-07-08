@@ -26,13 +26,6 @@ const Login = () => {
   });
   const { id, password } = form;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    data.append('id', id);
-    data.append('password', password);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setForm({
@@ -74,7 +67,7 @@ const Login = () => {
         >
           <Logo className="mb-5 h-20" />
 
-          <Stack component="form" onSubmit={handleSubmit} width="100%">
+          <Stack component="form" onSubmit={handleClickLogin} width="100%">
             <BackgroundInput
               label="아이디"
               required

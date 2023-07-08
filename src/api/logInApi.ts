@@ -1,13 +1,9 @@
 import axios from 'axios';
 
-// eslint-disable-next-line import/prefer-default-export
-export const login = async ({ loginId, password }: { loginId: string; password: string }) => {
+// eslint-disable-next-line import/prefer-default-export, func-names, consistent-return
+export const login = async function ({ loginId, password }: { loginId: string; password: string }) {
   try {
-    const response = await axios.post('/sign-in', { loginId, password }, { withCredentials: true });
-    const { accessToken } = response.data;
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
-    return response.data;
+    await axios.post(`${process.env.REACT_APP_API_URL}/sign-in`, { loginId, password }, { withCredentials: true });
   } catch (error) {
     return '아이디 혹은 비밀번호를 확인하세요.';
   }
