@@ -25,6 +25,7 @@ const Login = () => {
     password: '',
   });
   const { id, password } = form;
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -46,11 +47,8 @@ const Login = () => {
 
   const handleClickLogin = async () => {
     if (validation()) {
-      const response = await login({ loginId: id, password });
-      if (response) {
-        const navigate = useNavigate();
-        navigate('/');
-      }
+      await login({ loginId: id, password });
+      navigate('/');
     }
   };
 
