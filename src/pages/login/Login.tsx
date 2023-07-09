@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { loginMutation } from '@api/logInApi';
 
 const HorizonLine = () => {
@@ -25,7 +25,6 @@ const Login = () => {
     password: '',
   });
   const { id, password } = form;
-  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -48,7 +47,6 @@ const Login = () => {
   const handleClickLogin = () => {
     if (validation()) {
       loginMutation.mutate({ loginId: id, password });
-      navigate('/');
     }
   };
 
