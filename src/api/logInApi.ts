@@ -8,7 +8,7 @@ export const login = function ({ loginId, password }: { loginId: string; passwor
 };
 
 export const loginMutation = useMutation(login, {
-  onError: (error, variable, context) => {
+  onError: () => {
     alert('아이디 또는 비밀번호를 확인해주세요.');
   },
   onSuccess: () => {
