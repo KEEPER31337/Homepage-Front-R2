@@ -19,7 +19,6 @@ const Library = () => {
         <BookCard />
         <BookCard />
         <BookCard />
-        {}
       </div>
       <StandardTablePagination />
     </div>
