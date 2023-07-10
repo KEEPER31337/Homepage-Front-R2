@@ -28,6 +28,7 @@ const CommentSection = () => {
         <CardActions className="border-t border-subBlack bg-middleBlack">
           <CommentWriteCardAction
             textFieldProps={{ placeholder: '댓글...' }}
+            writeButtonName="댓글 작성"
             onWriteButtonClick={handleWriteCommentClick}
           />
         </CardActions>

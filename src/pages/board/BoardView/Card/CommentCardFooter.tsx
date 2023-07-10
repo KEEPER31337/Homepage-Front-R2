@@ -24,6 +24,7 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
       {replyOpen ? (
         <CommentWriteCardAction
           textFieldProps={{ placeholder: '대댓글...' }}
+          writeButtonName="대댓글 작성"
           onWriteButtonClick={handleWriteReplyClick}
         />
       ) : (
