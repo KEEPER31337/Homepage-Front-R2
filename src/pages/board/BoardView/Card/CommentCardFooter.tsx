@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Avatar, CardActions, TextField, Typography } from '@mui/material';
-import OutlinedButton from '@components/Button/OutlinedButton';
+import { Avatar, CardActions, Typography } from '@mui/material';
 import { CommentInfo } from '@api/dto';
+import CommentWriteCardAction from './CommentWriteCardAction';
 
 interface CommentCardFooterProps {
   commentInfo: CommentInfo;
@@ -22,19 +22,10 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
   return (
     <CardActions className="border-t border-subBlack bg-middleBlack">
       {replyOpen ? (
-        <div className="w-full space-y-4 p-1">
-          <TextField
-            className="bg-mainBlack"
-            placeholder="대댓글..."
-            fullWidth
-            multiline
-            rows={4}
-            onClick={handleReplyClick}
-          />
-          <div className="flex justify-end">
-            <OutlinedButton onClick={handleWriteReplyClick}>대댓글 작성</OutlinedButton>
-          </div>
-        </div>
+        <CommentWriteCardAction
+          textFieldProps={{ placeholder: '대댓글...' }}
+          onWriteButtonClick={handleWriteReplyClick}
+        />
       ) : (
         <>
           <Avatar alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />
