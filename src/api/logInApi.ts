@@ -2,9 +2,8 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
-// eslint-disable-next-line import/prefer-default-export, func-names, consistent-return
-export const login = function ({ loginId, password }: { loginId: string; password: string }) {
-  return axios.post(`${process.env.REACT_APP_API_URL}/sign-in`, { loginId, password }, { withCredentials: true });
+export const login = ({ loginId, password }: { loginId: string; password: string }) => {
+  return axios.post(`/sign-in`, { loginId, password }, { withCredentials: true });
 };
 
 export const loginMutation = useMutation(login, {

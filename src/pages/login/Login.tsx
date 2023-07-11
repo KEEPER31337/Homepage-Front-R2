@@ -44,7 +44,7 @@ const Login = () => {
     return !isError;
   };
 
-  const handleClickLogin = () => {
+  const handleLoginClick = () => {
     if (validation()) {
       loginMutation.mutate({ loginId: id, password });
     }
@@ -63,7 +63,7 @@ const Login = () => {
         >
           <Logo className="mb-5 h-20" />
 
-          <Stack component="form" onSubmit={handleClickLogin} width="100%">
+          <Stack component="form" onSubmit={handleLoginClick} width="100%">
             <BackgroundInput
               label="아이디"
               required
@@ -82,7 +82,7 @@ const Login = () => {
               value={password}
               onChange={handleChange}
             />
-            <Button variant="outlined" sx={{ height: 56, mt: 2 }} onClick={handleClickLogin}>
+            <Button variant="outlined" sx={{ height: 56, mt: 2 }} onClick={handleLoginClick}>
               로그인
             </Button>
             <FormControlLabel
