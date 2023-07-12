@@ -3,7 +3,7 @@ import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack 
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import { Link } from 'react-router-dom';
-import { loginMutation } from '@api/logInApi';
+import useLoginMutation from '@api/logInApi';
 
 const HorizonLine = () => {
   return (
@@ -25,6 +25,7 @@ const Login = () => {
     password: '',
   });
   const { id, password } = form;
+  const { mutate: login } = useLoginMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -46,7 +47,7 @@ const Login = () => {
 
   const handleLoginClick = () => {
     if (validation()) {
-      loginMutation.mutate({ loginId: id, password });
+      login({ loginId: form.id, password: form.password });
     }
   };
 
