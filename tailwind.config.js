@@ -26,13 +26,13 @@ module.exports = withMT({
       },
       spacing: {
         header: '66px',
-        sidebar: '320px',
+        sidebar: '240px',
       },
       maxWidth: {
         container: '1080px',
       },
       minWidth: {
-        sidebar: '320px',
+        sidebar: '240px',
       },
       backgroundImage: {
         galaxy: "url('/public/img/background_galaxy.png')",
