@@ -13,6 +13,7 @@ module.exports = withMT({
         pointBlue: '#4CEEF9',
         subGray: '#575E69',
         subRed: '#EF4444',
+        subOrange: '#FFA500',
       },
       fontFamily: {
         base: 'IBM Plex Sans KR, system-ui, sans-serif',
@@ -20,18 +21,18 @@ module.exports = withMT({
       fontSize: {
         h1: '28px',
         h3: '20px',
-        paragraph: '16px',
+        paragraph: '14px',
         small: '10px',
       },
       spacing: {
         header: '66px',
-        sidebar: '320px',
+        sidebar: '240px',
       },
       maxWidth: {
         container: '1080px',
       },
       minWidth: {
-        sidebar: '320px',
+        sidebar: '240px',
       },
       backgroundImage: {
         galaxy: "url('/public/img/background_galaxy.png')",

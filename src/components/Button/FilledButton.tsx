@@ -1,17 +1,22 @@
 import React, { ReactNode } from 'react';
-import { Button } from '@material-tailwind/react';
+import { Button } from '@mui/material';
 
 interface OutlinedButtonProps {
   children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  small?: boolean;
 }
 
-const FilledButton = ({ children, onClick, disabled }: OutlinedButtonProps) => {
+const FilledButton = ({ children, onClick, disabled, type, small }: OutlinedButtonProps) => {
   return (
     <Button
-      variant="filled"
-      className="h-fit rounded-sm bg-pointBlue py-2 font-base text-subBlack hover:opacity-80 hover:shadow-none"
+      variant="contained"
+      className={`${
+        small && '!text-small'
+      } h-fit !rounded-sm !py-2 !px-6 !font-semibold !text-subBlack hover:!opacity-80 hover:!shadow-none disabled:!bg-subGray`}
+      type={type}
       onClick={onClick}
       disabled={disabled}
     >
