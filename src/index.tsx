@@ -1,22 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { ThemeProvider as MaterialTailwindProvider } from '@material-tailwind/react';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
 
 import './tailwind.css';
-import materialTailwindTheme from '@constants/materialTailwindTheme';
 import muiTheme from '@constants/muiTheme';
 import App from './App';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,20 +22,19 @@ const queryClient = new QueryClient({
   },
 });
 
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
       <LocalizationProvider dateAdapter={AdapterLuxon}>
-        <MaterialTailwindProvider value={materialTailwindTheme}>
-          <MUIThemeProvider theme={muiTheme}>
-            <BrowserRouter>
-              <QueryClientProvider client={queryClient}>
-                <App />
-              </QueryClientProvider>
-            </BrowserRouter>
-          </MUIThemeProvider>
-        </MaterialTailwindProvider>
+        <MUIThemeProvider theme={muiTheme}>
+          <BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+              <App />
+            </QueryClientProvider>
+          </BrowserRouter>
+        </MUIThemeProvider>
       </LocalizationProvider>
     </RecoilRoot>
   </React.StrictMode>,
+  document.getElementById('root') as HTMLElement,
 );
