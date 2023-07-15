@@ -11,14 +11,14 @@ const DiscriptionRoleDutyTooltip = styled(({ className, ...props }: TooltipProps
     maxWidth: 800,
     border: '2px solid',
     borderColor: muiTheme.palette.primary.main,
-    backgroundColor: muiTheme.palette.info.light,
+    backgroundColor: muiTheme.palette.secondary.main,
   },
   [`& .${tooltipClasses.arrow}`]: {
     borderColor: muiTheme.palette.primary.main,
     '&::before': {
       border: '2px solid',
       borderColor: muiTheme.palette.primary.main,
-      backgroundColor: muiTheme.palette.info.light,
+      backgroundColor: muiTheme.palette.secondary.main,
     },
   },
   /* 기존의 ui 였던 작대기 동그라미 봉을 구현하려던 코드  */
