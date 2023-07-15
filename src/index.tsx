@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
@@ -14,8 +14,6 @@ import App from './App';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -24,7 +22,7 @@ const queryClient = new QueryClient({
   },
 });
 
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
       <LocalizationProvider dateAdapter={AdapterLuxon}>
@@ -38,4 +36,5 @@ root.render(
       </LocalizationProvider>
     </RecoilRoot>
   </React.StrictMode>,
+  document.getElementById('root') as HTMLElement,
 );
