@@ -1,11 +1,11 @@
 import React from 'react';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
-import { Typography } from '@material-tailwind/react';
 
+import { Typography } from '@mui/material';
 import ActionModal from '@components/Modal/ActionModal';
+import StandardInput from '@components/Input/StandardInput';
 import { ModalInfo } from '../Study.interface';
-import StudyInput from '../share/StudyInput';
 import StudyTextarea from '../share/StudyTextarea';
 import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
 
@@ -30,8 +30,15 @@ const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
       <div className="space-y-6">
         <div className="flex space-x-2">
           <div className="w-full space-y-6">
-            <StudyInput size="lg" variant="static" label="스터디명" placeholder="스터디 이름을 적어주세요." />
-            <StudyTextarea variant="static" label="스터디 소개" placeholder="스터디 소개를 적어주세요." />
+            <StandardInput
+              label="스터디명"
+              placeholder="스터디 이름을 적어주세요."
+              value=""
+              onChange={() => {
+                // TODO
+              }}
+            />
+            <StudyTextarea variant="standard" label="스터디 소개" placeholder="스터디 소개를 적어주세요." />
           </div>
           <div className="w-[141px] space-y-[10px]">
             <Typography className="text-pointBlue">썸네일</Typography>
@@ -70,19 +77,46 @@ const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
           <div className="space-y-4">
             <div className="flex space-x-2">
               <VscGithubInverted className="h-[25px] w-[25px] text-pointBlue" />
-              <StudyInput size="md" variant="static" label="Github" placeholder="https://" />
+              <StandardInput
+                label="Github"
+                placeholder="https://"
+                value=""
+                onChange={() => {
+                  // TODO
+                }}
+              />
             </div>
             <div className="flex space-x-2">
               <SiNotion className="h-[25px] w-[25px] text-pointBlue" />
-              <StudyInput size="md" variant="static" label="Notion" placeholder="https://" />
+              <StandardInput
+                label="Notion"
+                placeholder="https://"
+                value=""
+                onChange={() => {
+                  // TODO
+                }}
+              />
             </div>
             <div className="flex space-x-2">
               <VscLink className="h-[25px] w-[25px] text-pointBlue" />
               <div className="flex w-full space-x-2">
                 <div className="w-[90px]">
-                  <StudyInput size="md" variant="static" label="etc." placeholder="ex)Plato" />
+                  <StandardInput
+                    label="etc."
+                    placeholder="ex)Plato"
+                    value=""
+                    onChange={() => {
+                      // TODO
+                    }}
+                  />
                 </div>
-                <StudyInput size="md" variant="static" placeholder="https://" />
+                <StandardInput
+                  placeholder="https://"
+                  value=""
+                  onChange={() => {
+                    // TODO
+                  }}
+                />
               </div>
             </div>
           </div>
