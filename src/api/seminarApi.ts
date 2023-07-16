@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { SeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminar: ['getSeminar', 'id'] as const,
+  startSeminar: ['startSeminar'] as const,
 };
 
 const useGetSeminarInfo = ({ id }: { id: number }) => {
@@ -12,10 +13,20 @@ const useGetSeminarInfo = ({ id }: { id: number }) => {
   return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
 };
 
-const useGetSeminarInfo2 = ({ id }: { id: number }) => {
-  const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
+const startSeminar = ({ id }: { id: number }) => {
+  const fetcher = ({
+    attendanceCloseTime,
+    latenessCloseTime,
+  }: {
+    attendanceCloseTime: string;
+    latenessCloseTime: string;
+  }) => axios.post(`/seminars/${id}`, { attendanceCloseTime, latenessCloseTime });
 
-  return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
+  return useMutation(fetcher, {
+    onSuccess: (response) => {
+      return response.data.attendanceCode;
+    },
+  });
 };
 
-export { useGetSeminarInfo, useGetSeminarInfo2 };
+export { useGetSeminarInfo, startSeminar };

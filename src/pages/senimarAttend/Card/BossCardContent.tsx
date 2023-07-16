@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
+import { startSeminar } from '@api/seminarApi';
 import Countdown from '../Countdown/Countdown';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
@@ -10,11 +11,19 @@ const BossCardContent = () => {
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [seminarExist, setSeminarExist] = useState(false); // Todo: api 적용
   const [startTime, setStartTime] = useState(DateTime.now());
-  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
-  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
-  const startSeminar = () => {
+  const [attendLimit, setAttendLimit] = useState(DateTime.now());
+  const [lateLimit, setLateLimit] = useState(DateTime.now());
+  const { mutate: setSeminarTime } = startSeminar({ id: 2 });
+
+  const onStartSeminar = () => {
     setSeminarExist(true);
     setStartTime(DateTime.now());
+    setAttendLimit(startTime.plus({ minutes: attendValue }));
+    setLateLimit(startTime.plus({ minutes: lateAttendValue + attendValue }));
+    setSeminarTime({
+      attendanceCloseTime: attendLimit.toFormat('yyyy-MM-dd HH:mm:ss'),
+      latenessCloseTime: lateLimit.toFormat('yyyy-MM-dd HH:mm:ss'),
+    });
   };
 
   return (
@@ -40,7 +49,7 @@ const BossCardContent = () => {
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        <FilledButton onClick={startSeminar}>시작</FilledButton>
+        <FilledButton onClick={onStartSeminar}>시작</FilledButton>
       </div>
     </>
   );

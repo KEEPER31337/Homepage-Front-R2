@@ -14,7 +14,7 @@ const SeminarAttend = () => {
   const [futureSeminarDate, setFutureSeminarDate] = useState('towmorrow');
   const [pastSeminarDate, setPastSeminarDate] = useState('yesterday');
   const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
-  const cardDateOrder = [pastSeminarDate, recentSeminarDate, futureSeminarDate];
+  const cardDateOrder = [pastSeminarDate, recentSeminarDate, futureSeminarDate]; // 해당 세미나 날짜 또는 id 담기
 
   useEffect(() => {
     setFutureSeminarDate(seminarDate.plus({ days: 1 }).toFormat('yy.MM.dd'));
@@ -25,6 +25,7 @@ const SeminarAttend = () => {
     <>
       <div className="mt-[180px] flex justify-between text-center [&>*:nth-child(2)]:mt-[-50px]">
         {cardDateOrder.map((date) => {
+          // CardContent 파라미터로 id 또는 date 전달
           return (
             <SeminarCard key={date}>
               {seminarActivated ? (
