@@ -14,9 +14,13 @@ const FileUploader = () => {
 
   const { getRootProps, isDragActive } = useDropzone({ onDrop });
 
+  const handleDeleteUploadFileClick = (fileName: string) => {
+    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
+  };
+
   return (
     <div className="space-y-4">
-      {files.length > 0 && <FileUploadListTable files={files} />}
+      {files.length > 0 && <FileUploadListTable files={files} onDeleteButtonClick={handleDeleteUploadFileClick} />}
       <div
         {...getRootProps()}
         className={`flex h-28 w-full items-center justify-center border border-dashed border-pointBlue text-pointBlue ${

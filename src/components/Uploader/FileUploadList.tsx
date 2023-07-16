@@ -5,9 +5,10 @@ import { formatFileSize } from '@utils/converter';
 
 interface FileUploadListTableProps {
   files: File[];
+  onDeleteButtonClick: (fileName: string) => void;
 }
 
-const FileUploadListTable = ({ files }: FileUploadListTableProps) => {
+const FileUploadListTable = ({ files, onDeleteButtonClick }: FileUploadListTableProps) => {
   return (
     <TableContainer className="h-52 bg-middleBlack">
       <Table stickyHeader size="small">
@@ -24,7 +25,7 @@ const FileUploadListTable = ({ files }: FileUploadListTableProps) => {
               <TableCell>{file.name}</TableCell>
               <TableCell>{formatFileSize(file.size)}</TableCell>
               <TableCell>
-                <IconButton>
+                <IconButton onClick={() => onDeleteButtonClick(file.name)}>
                   <VscTrash size={20} className="fill-subRed" />
                 </IconButton>
               </TableCell>
