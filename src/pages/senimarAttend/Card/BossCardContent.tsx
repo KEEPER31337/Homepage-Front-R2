@@ -13,7 +13,7 @@ const BossCardContent = () => {
   const [startTime, setStartTime] = useState(DateTime.now());
   const [attendLimit, setAttendLimit] = useState(DateTime.now());
   const [lateLimit, setLateLimit] = useState(DateTime.now());
-  const { mutate: setSeminarTime } = startSeminar({ id: 2 });
+  const { mutate: setSeminarTime } = startSeminar({ id: 2 }); // Todo: 이후 id 파라미터로 받아옴
 
   const onStartSeminar = () => {
     setSeminarExist(true);
@@ -25,6 +25,8 @@ const BossCardContent = () => {
       latenessCloseTime: lateLimit.toFormat('yyyy-MM-dd HH:mm:ss'),
     });
   };
+
+  // Todo: 이용가능한 세미나 조회 api
 
   return (
     <>
