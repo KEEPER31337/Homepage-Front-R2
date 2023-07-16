@@ -13,7 +13,10 @@ const SubCategoryNav = ({ subcategory }: SubCategoryNavProps) => {
 
   return (
     <ListItemButton component={Link} to={`/${subcategory.path}`} className="w-full">
-      <ListItemText className={isCurrentPath ? 'text-pointBlue' : ''} primary={`• ${subcategory.name}`} />
+      <ListItemText
+        className={`whitespace-pre ${isCurrentPath ? 'text-pointBlue' : ''}`}
+        primary={`•\t${subcategory.name}`}
+      />
     </ListItemButton>
   );
 };
