@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdOutlineSearch, MdOutlineArrowDropDown } from 'react-icons/md';
+import { MdOutlineArrowDropDown, MdOutlineSearch } from 'react-icons/md';
 
 const SearchSection = () => {
   return (

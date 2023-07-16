@@ -1,4 +1,4 @@
-import type { TypographyStylesType, InputStylesType } from '@material-tailwind/react';
+import type { InputStylesType, TypographyStylesType } from '@material-tailwind/react';
 
 interface CustomTheme {
   typography: TypographyStylesType;

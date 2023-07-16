@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import FilledButton from '@components/Button/FilledButton';
-import PageTitle from '@components/Typography/PageTitle';
 import { Typography } from '@mui/material';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
