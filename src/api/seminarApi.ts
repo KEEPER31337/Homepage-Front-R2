@@ -4,6 +4,7 @@ import { SeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminar: ['getSeminar', 'id'] as const,
+  getAvailableSeminar: ['getSeminar', 'available'] as const,
   startSeminar: ['startSeminar'] as const,
 };
 
@@ -11,6 +12,12 @@ const useGetSeminarInfo = ({ id }: { id: number }) => {
   const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
 
   return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
+};
+
+const getAvailableSeminarInfo = () => {
+  const fetcher = () => axios.get('/seminars/available').then(({ data }) => data);
+
+  return useQuery<SeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
 };
 
 const startSeminar = ({ id }: { id: number }) => {
@@ -29,4 +36,4 @@ const startSeminar = ({ id }: { id: number }) => {
   });
 };
 
-export { useGetSeminarInfo, startSeminar };
+export { useGetSeminarInfo, getAvailableSeminarInfo, startSeminar };
