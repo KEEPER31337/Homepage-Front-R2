@@ -25,11 +25,7 @@ const BossCardContent = () => {
     <>
       <SeminarInput
         disabled
-        inputCode={
-          availableSeminarData?.id
-            ? availableSeminarData?.attendanceCode.split('').map((num) => Number(num))
-            : [0, 0, 0, 0]
-        }
+        inputCode={availableSeminarData?.id ? availableSeminarData?.attendanceCode.split('') : ['', '', '', '']}
       />
       <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
