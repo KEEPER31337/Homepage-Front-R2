@@ -4,7 +4,7 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import FilledButton from '@components/Button/FilledButton';
 import PageTitle from '@components/Typography/PageTitle';
 import { Typography } from '@mui/material';
-import { useGetSeminarInfo } from '@api/seminar';
+import { useGetSeminarInfo } from '@api/seminarApi';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
@@ -12,7 +12,7 @@ import MemberCardContent from './Card/MemberCardContent';
 const SeminarAttend = () => {
   const seminarDate = DateTime.now(); // 이후 삭제
   const seminarActivated = true; // TODO: useState, api 적용
-  const recentSeminarDate = useGetSeminarInfo({ id: 2 }).data?.openTime; // TODO: 이후 api 적용
+  const recentSeminarDate = useGetSeminarInfo({ id: 2 }).data?.openTime.slice(2, 10).replaceAll('-', '.'); // TODO: 이후 최근/예정/이전 세미나 날짜 조회 api로 교체
   const [futureSeminarDate, setFutureSeminarDate] = useState('towmorrow');
   const [pastSeminarDate, setPastSeminarDate] = useState('yesterday');
   const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
