@@ -14,6 +14,7 @@ import SignUp from '@pages/SignUp/SignUp';
 import Login from '@pages/login/Login';
 import Game from '@pages/Game/Game';
 import BoardWrite from '@pages/BoardWrite/BoardWrite';
+import BoardView from '@pages/board/BoardView/BoardView';
 
 const useMainRouter = () =>
   useRoutes([
@@ -64,6 +65,10 @@ const useMainRouter = () =>
                 {
                   path: 'write',
                   element: <BoardWrite />,
+                },
+                {
+                  path: 'view',
+                  element: <BoardView />,
                 },
               ],
             },
