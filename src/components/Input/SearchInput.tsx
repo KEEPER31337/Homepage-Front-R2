@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { KeyboardEvent } from 'react';
-import { TextField, InputAdornment, StandardTextFieldProps, IconButton } from '@mui/material';
+import { IconButton, InputAdornment, StandardTextFieldProps, TextField } from '@mui/material';
 import { MdOutlineSearch } from 'react-icons/md';
 
 interface SearchInputProps extends StandardTextFieldProps {

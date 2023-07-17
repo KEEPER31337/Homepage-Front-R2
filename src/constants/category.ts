@@ -3,6 +3,7 @@ export interface CategoryMenu {
   name: string;
   path?: string;
 }
+
 export interface Category extends CategoryMenu {
   subCategories: CategoryMenu[];
 }

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Divider, IconButton, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography } from '@mui/material';
 import StandardTab from '@components/Tab/StandardTab';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ConfirmModal from '@components/Modal/ConfirmModal';
-import { VscCheck } from 'react-icons/vsc';
 
 const Game = () => {
   const [tab, setTab] = useState(0);
