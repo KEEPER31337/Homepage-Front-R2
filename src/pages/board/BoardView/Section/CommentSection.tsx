@@ -16,7 +16,7 @@ const CommentSection = () => {
   return (
     <div>
       <div className="mb-4 flex items-center">
-        <Typography variant="h3" fontWeight="bold" marginRight={1}>
+        <Typography variant="h3" marginRight={1} className="!font-semibold">
           댓글
         </Typography>
         <CustomBadge>{commentCount}</CustomBadge>
