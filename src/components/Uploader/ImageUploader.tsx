@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 
 import utilApi from '@mocks/UtilApi';
 import WarningModal from '@components/Modal/WarningModal';
-import { Typography } from '@material-tailwind/react';
+import { Typography } from '@mui/material';
 
 interface ImageUploaderProps {
   title?: string;
@@ -120,7 +120,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
             ) : (
               <div className="text-center">
                 <MdOutlineAddPhotoAlternate className="mx-auto mb-1 h-[30px] w-[30px]" />
-                <Typography className="text-small">
+                <Typography variant="small">
                   클릭 또는 드래그하여
                   <br />
                   이미지를 첨부하세요

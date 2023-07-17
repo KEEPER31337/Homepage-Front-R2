@@ -1,6 +1,5 @@
 import React from 'react';
-import { Avatar, Card, CardContent, CardMedia } from '@mui/material';
-import { Typography } from '@material-tailwind/react';
+import { Avatar, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { VscComment, VscEye } from 'react-icons/vsc';
 import { DateTime } from 'luxon';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
@@ -13,7 +12,7 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
 const CardMainInfo = ({ type, title }: CardMainInfoProps) => {
   return (
     <div>
-      <Typography className="-mt-2 h-3 font-medium text-pointBlue" variant="small">
+      <Typography className="!-mt-2 h-3 font-medium text-pointBlue" variant="small">
         {type ?? ''}
       </Typography>
       <Typography className="font-semibold" variant="paragraph">
@@ -44,13 +43,13 @@ const InteractionScore = ({ visitCount, commentCount }: InteractionScoreProps) =
     <div className="flex space-x-1.5 text-pointBlue">
       <div className="flex items-center">
         <VscEye className="mr-0.5 fill-pointBlue" size={12} />
-        <Typography className="mt-0.5 font-normal" variant="small">
+        <Typography className="!mt-0.5 font-normal" variant="small">
           {visitCount}
         </Typography>
       </div>
       <div className="flex items-center">
         <VscComment className="mr-0.5 fill-pointBlue" size={12} />
-        <Typography className="mt-0.5 font-normal" variant="small">
+        <Typography className="!mt-0.5 font-normal" variant="small">
           {commentCount}
         </Typography>
       </div>
