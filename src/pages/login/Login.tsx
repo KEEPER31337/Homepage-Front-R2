@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack } from '@mui/material';
+import { Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Stack } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import { Link } from 'react-router-dom';
