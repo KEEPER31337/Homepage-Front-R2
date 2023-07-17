@@ -102,7 +102,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         }}
       />
 
-      <div className="absolute right-0 bottom-0">
+      <div className="absolute bottom-0 right-0">
         <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
           다음
         </OutlinedButton>
