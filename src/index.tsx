@@ -13,6 +13,7 @@ import muiTheme from '@constants/muiTheme';
 import App from './App';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.withCredentials = true;
 
 const queryClient = new QueryClient({
   defaultOptions: {
