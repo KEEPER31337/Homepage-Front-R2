@@ -7,16 +7,16 @@ import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
 
 const BossCardContent = () => {
-  const [attendValue, setAttendValue] = useState<number>(5);
-  const [lateAttendValue, setLateAttendValue] = useState<number>(5);
+  const [attendValue, setAttendValue] = useState<number>(30);
+  const [lateAttendValue, setLateAttendValue] = useState<number>(30);
   const [startTime, setStartTime] = useState(DateTime.now());
   const { mutate: setSeminarTime } = startSeminar(2); // Todo: 이후 id 파라미터로 받아옴
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
   const onStartSeminar = () => {
     setStartTime(DateTime.now());
     setSeminarTime({
-      attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
-      latenessCloseTime: startTime.plus({ minutes: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
+      attendanceCloseTime: startTime.plus({ seconds: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
+      latenessCloseTime: startTime.plus({ seconds: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
     });
   };
 
