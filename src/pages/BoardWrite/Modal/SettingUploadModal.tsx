@@ -8,16 +8,19 @@ import { UploadPostSettings } from '@api/dto';
 interface SettingUploadModalProps {
   open: boolean;
   onClose: () => void;
+  onUploadButonClick: () => void;
   postSettingInfo: UploadPostSettings | null;
   setPostSettingInfo: React.Dispatch<React.SetStateAction<UploadPostSettings | null>>;
 }
 
-const SettingUploadModal = ({ open, onClose, postSettingInfo, setPostSettingInfo }: SettingUploadModalProps) => {
+const SettingUploadModal = ({
+  open,
+  onClose,
+  onUploadButonClick,
+  postSettingInfo,
+  setPostSettingInfo,
+}: SettingUploadModalProps) => {
   const [, setThumbnail] = useState<Blob>();
-
-  const handleActionButonClick = () => {
-    // TODO
-  };
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
@@ -31,9 +34,9 @@ const SettingUploadModal = ({ open, onClose, postSettingInfo, setPostSettingInfo
     <ActionModal
       open={open}
       onClose={onClose}
-      title="설정 확인 및 업로드"
-      actionButtonName="업로드"
-      onActionButonClick={handleActionButonClick}
+      title={`설정 확인 및 ${postSettingInfo?.isTemp ? '임시저장' : '업로드'}`}
+      actionButtonName={postSettingInfo?.isTemp ? '임시저장' : '업로드'}
+      onActionButonClick={onUploadButonClick}
     >
       <div className="mb-5 h-36">
         <ImageUploader isEdit={false} setThumbnail={setThumbnail} />

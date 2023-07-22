@@ -15,8 +15,16 @@ const BoardWrite = () => {
   const [postSettingInfo, setPostSettingInfo] = useState<UploadPostSettings | null>(null);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
 
-  const handleCompleteButtonClick = () => {
+  const handleUploadButonClick = () => {
+    // TODO
+  };
+
+  const handleSaveButtonClick = ({ isTemp }: { isTemp: boolean }) => {
     setSettingModalOpen(true);
+    setPostSettingInfo((prev) => ({
+      ...prev,
+      isTemp,
+    }));
   };
 
   const handleSettingModalClose = () => {
@@ -48,12 +56,13 @@ const BoardWrite = () => {
         <FileUploader />
       </div>
       <div className="flex justify-end space-x-2">
-        <OutlinedButton>임시저장</OutlinedButton>
-        <OutlinedButton onClick={handleCompleteButtonClick}>작성완료</OutlinedButton>
+        <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })}>임시저장</OutlinedButton>
+        <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: false })}>작성완료</OutlinedButton>
       </div>
       <SettingUploadModal
         open={settingModalOpen}
         onClose={handleSettingModalClose}
+        onUploadButonClick={handleUploadButonClick}
         postSettingInfo={postSettingInfo}
         setPostSettingInfo={setPostSettingInfo}
       />
