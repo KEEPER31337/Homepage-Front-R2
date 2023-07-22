@@ -10,7 +10,7 @@ const BossCardContent = () => {
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
-  const { mutate: setSeminarTime } = startSeminar({ id: 2 }); // Todo: 이후 id 파라미터로 받아옴
+  const { mutate: setSeminarTime } = startSeminar(2); // Todo: 이후 id 파라미터로 받아옴
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
   const onStartSeminar = () => {
     setStartTime(DateTime.now());
