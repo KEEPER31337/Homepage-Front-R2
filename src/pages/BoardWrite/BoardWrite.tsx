@@ -6,11 +6,13 @@ import StandardInput from '@components/Input/StandardInput';
 import StandardEditor from '@components/Editor/StandardEditor';
 import FileUploader from '@components/Uploader/FileUploader';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import { UploadPostSettings } from '@api/dto';
 import SettingUploadModal from './Modal/SettingUploadModal';
 
 const BoardWrite = () => {
   const boardName = '자유게시판'; // TODO 게시판 이름 불러오기
   const editorRef = useRef<Editor>();
+  const [postSettingInfo, setPostSettingInfo] = useState<UploadPostSettings | null>(null);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
 
   const handleCompleteButtonClick = () => {
@@ -49,7 +51,12 @@ const BoardWrite = () => {
         <OutlinedButton>임시저장</OutlinedButton>
         <OutlinedButton onClick={handleCompleteButtonClick}>작성완료</OutlinedButton>
       </div>
-      <SettingUploadModal open={settingModalOpen} onClose={handleSettingModalClose} />
+      <SettingUploadModal
+        open={settingModalOpen}
+        onClose={handleSettingModalClose}
+        postSettingInfo={postSettingInfo}
+        setPostSettingInfo={setPostSettingInfo}
+      />
     </div>
   );
 };
