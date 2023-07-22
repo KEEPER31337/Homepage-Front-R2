@@ -10,6 +10,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.4.3",
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/react-editor": "^3.2.3",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.3",
     "@types/react": "^17.0.62",
