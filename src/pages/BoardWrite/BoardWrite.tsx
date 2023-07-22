@@ -6,17 +6,30 @@ import StandardInput from '@components/Input/StandardInput';
 import StandardEditor from '@components/Editor/StandardEditor';
 import FileUploader from '@components/Uploader/FileUploader';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import useUploadPostMutation from '@api/postApi';
 import { UploadPostSettings } from '@api/dto';
 import SettingUploadModal from './Modal/SettingUploadModal';
 
 const BoardWrite = () => {
   const boardName = '자유게시판'; // TODO 게시판 이름 불러오기
-  const editorRef = useRef<Editor>();
+  const categoryId = 116; // TODO 게시판 ID 연결하기
+
+  const [postTitle, setPostTitle] = useState('');
   const [postSettingInfo, setPostSettingInfo] = useState<UploadPostSettings | null>(null);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
 
+  const editorRef = useRef<Editor>();
+  const { mutate: uploadPostMutation } = useUploadPostMutation();
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPostTitle(e.target.value);
+  };
+
   const handleUploadButonClick = () => {
-    // TODO
+    const content = editorRef.current?.getInstance().getMarkdown() || '';
+
+    // TODO isTemp 여부에 따라 content 옵셔널 처리, 업로드 이후 동작 처리
+    uploadPostMutation({ categoryId, title: postTitle, content, ...postSettingInfo });
   };
 
   const handleSaveButtonClick = ({ isTemp }: { isTemp: boolean }) => {
@@ -39,13 +52,7 @@ const BoardWrite = () => {
           <Typography fontWeight="semibold" className="!mr-2">
             제목
           </Typography>
-          <StandardInput
-            className="w-[498px]"
-            value=""
-            onChange={() => {
-              // TODO
-            }}
-          />
+          <StandardInput className="w-[498px]" value={postTitle} onChange={handleTitleChange} />
         </Stack>
       </div>
       <StandardEditor height="470px" forwardedRef={editorRef as React.MutableRefObject<Editor>} />

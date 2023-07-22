@@ -102,5 +102,5 @@ export interface UploadPostSettings {
 export interface UploadPost extends UploadPostSettings {
   title: string;
   content: string;
-  categoryId: string;
+  categoryId: number;
 }
