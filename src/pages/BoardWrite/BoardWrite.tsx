@@ -42,7 +42,7 @@ const BoardWrite = () => {
       <Typography fontWeight="semibold" className="!mb-2 !mt-5">
         파일첨부
       </Typography>
-      <div className="mb-5 h-32">
+      <div className="mb-5">
         <FileUploader />
       </div>
       <div className="flex justify-end space-x-2">
