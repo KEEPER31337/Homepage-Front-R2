@@ -16,6 +16,7 @@ interface SeminarInputProps {
   setInputCode?: React.Dispatch<React.SetStateAction<number[]>>;
   inputCode: number[];
 }
+
 const SeminarInput = ({ disabled, helperText, setInputCode, inputCode }: SeminarInputProps) => {
   const inputListKey = [0, 1, 2, 3];
 
