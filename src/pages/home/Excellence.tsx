@@ -1,12 +1,15 @@
+import { useGetBlockListQuery } from '@api/aboutApi';
 import React from 'react';
 
 const demoTitle = '동아리 지원';
 const demoContents = '도서 및 기자재 지원\n스터디룸 비용 지원\n회식비 지원';
 
 const Excellence = () => {
+  const { data: excellenceList } = useGetBlockListQuery({ type: 'excellence' });
+
   return (
     <div className="flex w-full flex-row bg-mainBlack">
-      <img src="/img/sample.png" alt="" className="w-[60%]" />
+      <img src="/img/main/excellence.png" alt="" className="w-[60%]" />
       <div className="flex w-full flex-col place-content-center px-10">
         <div className="w-full whitespace-pre-line border-b-2 border-pointBlue py-8 text-left leading-7">
           <p className="ml-5 mb-8 text-2xl font-bold text-pointBlue">{demoTitle}</p>

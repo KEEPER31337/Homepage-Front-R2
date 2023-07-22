@@ -16,7 +16,7 @@ const useGetTitleTypesQuery = () => {
 const useGetBlockListQuery = ({ type }: { type: string }) => {
   const fetcher = () => axios.get(`/about/titles/types/${type}`).then(({ data }) => data);
 
-  return useQuery<PageBlockInfo>(aboutKeys.blockList, fetcher);
+  return useQuery<PageBlockInfo>([aboutKeys.blockList, type], fetcher);
 };
 
 export { useGetTitleTypesQuery, useGetBlockListQuery };

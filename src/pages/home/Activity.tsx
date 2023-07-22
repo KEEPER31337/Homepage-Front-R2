@@ -3,13 +3,21 @@ import React from 'react';
 import LogoNeon from '@assets/logo/logo_neon.svg';
 import { SubTitleImagesInfo } from '@api/dto';
 
-const SubTitleImageCard = ({ subtitleImage }: { subtitleImage: SubTitleImagesInfo }) => {
+const imagePath = [
+  null,
+  null,
+  '/img/main/activity_study.png',
+  '/img/main/activity_seminar.png',
+  '/img/main/activity_docs.png',
+];
+
+const SubTitleImageCard = ({ subtitleImage, index }: { subtitleImage: SubTitleImagesInfo; index: number }) => {
   return (
-    <div className="group grid h-[960px] grid-cols-[45%_55%]">
+    <div className="group grid grid-cols-[45%_55%]">
       <div className="flex place-content-center place-items-center group-even:order-last">
         <img
-          className={subtitleImage?.thumbnailPath ? 'w-full object-cover' : 'w-96 object-contain'}
-          src={subtitleImage?.thumbnailPath || LogoNeon}
+          className={imagePath?.[subtitleImage?.id] ? 'w-full object-cover' : 'h-[960px] w-96 object-contain'}
+          src={imagePath?.[subtitleImage?.id] || LogoNeon}
           alt={subtitleImage?.subtitle}
         />
       </div>
@@ -28,8 +36,8 @@ const Activity = () => {
 
   return (
     <div className="bg-mainBlack">
-      {activityList?.subtitleImages?.map((subtitleImage) => (
-        <SubTitleImageCard key={subtitleImage.id} subtitleImage={subtitleImage} />
+      {activityList?.subtitleImages?.map((subtitleImage, index) => (
+        <SubTitleImageCard key={subtitleImage.id} index={index} subtitleImage={subtitleImage} />
       ))}
     </div>
   );

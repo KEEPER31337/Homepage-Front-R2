@@ -7,8 +7,8 @@ const Home = () => {
   return (
     <div className="flex w-full flex-col bg-galaxy bg-contain bg-repeat">
       <Intro />
-      <Excellence />
       <Activity />
+      <Excellence />
     </div>
   );
 };
