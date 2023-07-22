@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
-import { attendSeminar, getAvailableSeminarInfo } from '@api/seminarApi';
+import { attendSeminar, editAttendStatus, getAvailableSeminarInfo } from '@api/seminarApi';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
@@ -11,7 +11,8 @@ const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
   const [isCorrectCode, setIsCorrectCode] = useState(false);
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
-  const { mutate: attend, isSuccess, data } = attendSeminar(2);
+  const { mutate: attend, isSuccess, data: attendancyData } = attendSeminar(2);
+  const { mutate: editStatus } = editAttendStatus(2);
   const startTime = DateTime.fromISO(availableSeminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(availableSeminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(availableSeminarData?.latenessCloseTime || '');
@@ -30,9 +31,13 @@ const MemberCardContent = () => {
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
     setIsCorrectCode(isSuccess);
-    if (isSuccess && isValidActivityStatus(data.statusText)) {
-      setAttendStatus(data.statusText);
+    if (isSuccess && isValidActivityStatus(attendancyData.statusText)) {
+      setAttendStatus(attendancyData.statusText);
     }
+  };
+
+  const deleteAttendance = () => {
+    editStatus({ excuse: 'test', statusType: null });
   };
 
   // TODO: 출석 종료시 자동 결석처리, 문구 결석으로 바꾸기
@@ -65,6 +70,13 @@ const MemberCardContent = () => {
             }}
           >
             출석
+          </FilledButton>
+          <FilledButton
+            onClick={() => {
+              deleteAttendance();
+            }}
+          >
+            출석기록 삭제
           </FilledButton>
         </div>
       )}
