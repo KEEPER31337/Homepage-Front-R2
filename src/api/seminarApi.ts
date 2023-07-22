@@ -20,7 +20,7 @@ const getAvailableSeminarInfo = () => {
   return useQuery<SeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
 };
 
-const startSeminar = ({ id }: { id: number }) => {
+const startSeminar = (id: number) => {
   const fetcher = ({
     attendanceCloseTime,
     latenessCloseTime,
@@ -36,4 +36,14 @@ const startSeminar = ({ id }: { id: number }) => {
   });
 };
 
-export { useGetSeminarInfo, getAvailableSeminarInfo, startSeminar };
+const attendSeminar = (id: number) => {
+  const fetcher = (attendanceCode: string) => axios.post(`{/seminars/${id}/attendances}`, { attendanceCode });
+
+  return useMutation(fetcher, {
+    onSuccess: (response) => {
+      return response.data;
+    },
+  });
+};
+
+export { useGetSeminarInfo, getAvailableSeminarInfo, startSeminar, attendSeminar };
