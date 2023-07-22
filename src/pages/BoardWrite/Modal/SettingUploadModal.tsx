@@ -30,6 +30,14 @@ const SettingUploadModal = ({
     }));
   };
 
+  const handleSecretPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPostSettingInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <ActionModal
       open={open}
@@ -69,12 +77,11 @@ const SettingUploadModal = ({
           />
           {postSettingInfo?.isSecret && (
             <StandardInput
-              value=""
+              name="password"
+              value={postSettingInfo?.password || ''}
               type="password"
               placeholder="게시글 비밀번호"
-              onChange={() => {
-                // TODO
-              }}
+              onChange={handleSecretPasswordChange}
             />
           )}
         </span>
