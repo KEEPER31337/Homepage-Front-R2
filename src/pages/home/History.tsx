@@ -6,7 +6,7 @@ const dummyList = new Array(10).fill(0);
 const History = () => {
   return (
     <div className="w-full">
-      <div className="w-full pl-40">
+      <div className="w-full bg-gradient-to-b from-middleBlack via-middleBlack to-90% pl-40 pt-60">
         {dummyList.map((v, index) => (
           <div>
             <div className="flex place-items-center">
