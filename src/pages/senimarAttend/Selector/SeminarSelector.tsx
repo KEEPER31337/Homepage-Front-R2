@@ -21,10 +21,9 @@ const SeminarSelector = ({ limitValue, setLimitValue, children }: SeminarSelecto
 
   return (
     <div className=" mx-auto flex h-[24px] items-end justify-center whitespace-nowrap">
-      <p className="mr-[25px] mb-[5px] font-semibold">{children}</p>
+      <p className="mb-[5px] mr-[25px] font-semibold">{children}</p>
       <Selector
         className="flex w-[92px] text-center"
-        label=""
         value={limitValue}
         onChange={handleTimeLimitChange}
         options={timeLimitlist}

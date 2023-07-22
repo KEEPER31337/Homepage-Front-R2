@@ -1,73 +1,40 @@
-import React, { useState } from 'react';
-import { ThemeProvider, Chip } from '@material-tailwind/react';
+import React from 'react';
+import { Chip } from '@mui/material';
 
 /**
  * TODO 공통 컴포넌트 제작 후 삭제 예정
  */
 interface ChipProps {
   value: string;
+  fontWeight?: 'Normal' | 'Semibold';
 }
+
 interface ChipDismissibleProps {
   value: string;
+  fontWeight?: 'Normal' | 'Semibold';
   onClick: () => void;
 }
-const theme = {
-  chip: {
-    styles: {
-      base: {
-        font: 'text-[12px]',
-        width: 'w-fit',
-        height: 'h-[22px]',
-        paddingRight: 'px-[8px]',
-        paddingTop: 'py-[2px]',
-        display: 'flex',
-        alignItems: 'items-center',
-      },
-      variants: {
-        filled: {
-          blue: {
-            borderRadius: 'rounded-[4px]',
-            background: 'bg-pointBlue',
-            opacity: 'bg-opacity-30',
-            color: 'text-white',
-          },
-        },
-      },
-      closeButtonColor: {
-        blue: {
-          display: 'flex',
-          height: 'h-[14px]',
-          weight: 'w-[14px]',
-          borderRadius: 'rounded-[2px]',
-          fontColor: 'text-pointBlue',
-          bgColor: 'bg-subBlack',
-          hover: 'hover:bg-middleBlack',
-        },
-      },
-    },
-  },
-};
-export const StudyChip = ({ value }: ChipProps) => {
+
+export const StudyChip = ({ fontWeight, value }: ChipProps) => {
   return (
-    <ThemeProvider value={theme}>
-      <Chip value={value} />
-    </ThemeProvider>
+    <Chip
+      className={`${
+        fontWeight === 'Semibold' ? 'font-semibold' : ''
+      } !flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px]`}
+      label={value}
+    />
   );
 };
-export const StudyChipDismissible = ({ value, onClick }: ChipDismissibleProps) => {
-  const [show, setShow] = useState(true);
+export const StudyChipDismissible = ({ fontWeight, value, onClick }: ChipDismissibleProps) => {
   return (
-    <ThemeProvider value={theme}>
-      <Chip
-        show={show}
-        dismissible={{
-          onClose: () => {
-            setShow(false);
-            if (onClick) onClick();
-          },
-        }}
-        value={value}
-      />
-    </ThemeProvider>
+    <Chip
+      className={`${
+        fontWeight === 'Semibold' ? 'font-semibold' : ''
+      } "!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px]`}
+      onDelete={() => {
+        if (onClick) onClick();
+      }}
+      label={value}
+    />
   );
 };

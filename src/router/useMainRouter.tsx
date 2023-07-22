@@ -11,6 +11,10 @@ import FullContainer from '@components/Layout/Container/FullContainer';
 import FitContainer from '@components/Layout/Container/FitContainer';
 import BoardList from '@pages/board/BoardList';
 import SignUp from '@pages/SignUp/SignUp';
+import Login from '@pages/login/Login';
+import Game from '@pages/Game/Game';
+import BoardWrite from '@pages/BoardWrite/BoardWrite';
+import BoardView from '@pages/board/BoardView/BoardView';
 
 const useMainRouter = () =>
   useRoutes([
@@ -28,6 +32,10 @@ const useMainRouter = () =>
             {
               path: 'signUp',
               element: <SignUp />,
+            },
+            {
+              path: 'login',
+              element: <Login />,
             },
           ],
         },
@@ -54,11 +62,23 @@ const useMainRouter = () =>
                   path: 'list',
                   element: <BoardList />,
                 },
+                {
+                  path: 'write',
+                  element: <BoardWrite />,
+                },
+                {
+                  path: 'view',
+                  element: <BoardView />,
+                },
               ],
             },
             {
               path: 'study',
               element: <Study />,
+            },
+            {
+              path: 'game',
+              element: <Game />,
             },
           ],
         },
@@ -66,7 +86,7 @@ const useMainRouter = () =>
           element: <FitContainer />,
           children: [
             {
-              path: 'seminarAttend',
+              path: 'seminar',
               element: <SeminarAttend />,
             },
           ],

@@ -1,91 +1,95 @@
-import React, { useReducer } from 'react';
-import { ThemeProvider, Accordion, AccordionHeader, AccordionBody, Typography } from '@material-tailwind/react';
-import { VscChevronDown, VscChevronUp, VscGithubInverted, VscLink } from 'react-icons/vsc';
+import React, { Dispatch, DispatchWithoutAction, SetStateAction } from 'react';
+import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
+import { VscChevronDown, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
-import { Divider } from '@mui/material';
+
+import type { StudyListInfo } from '@api/dto';
+import OutlinedButton from '@components/Button/OutlinedButton';
+import { Link } from 'react-router-dom';
+import { ModalInfo } from '../Study.interface';
 import { StudyChip } from '../share/StudyChip';
 
-const theme = {
-  accordion: {
-    styles: {
-      base: {
-        container: {},
-        header: {
-          initial: {
-            fontColor: 'text-white',
-            borderColor: 'border-white/[20%]',
-            focus: 'focus:outline-0',
-            hover: 'hover:text-white hover:bg-gray-600',
-          },
-          active: {
-            fontColor: 'text-white',
-          },
-        },
-        body: {
-          bgColor: 'bg-middleBlack',
-          fontColor: 'text-white',
-        },
-      },
-    },
-  },
-};
+interface StudyAccordionProps {
+  study: StudyListInfo;
+  memberId: number;
+  toggleOpen: DispatchWithoutAction;
+  setModalInfo: Dispatch<SetStateAction<ModalInfo>>;
+}
 
-const AccordionHeaderContent = () => {
+type StudyAccordionBodyProps = Pick<StudyAccordionProps, 'study'>;
+
+const StudyAccordionHeader = ({ study, memberId, toggleOpen, setModalInfo }: StudyAccordionProps) => {
+  const { headMember } = study;
+
+  const handleStudyEditButtonClick = () => {
+    toggleOpen();
+    setModalInfo({ mode: 'Edit', selectedStudy: study });
+  };
+  const handleStudyDeleteButtonClick = () => {
+    // TODO 스터디 제거 API 호출 후 새로고침(기능 구현 후 console 삭제 예정)
+  };
+
   return (
-    <div className="flex w-full space-x-6 pl-6 text-left">
-      <span className="h-16 w-16 bg-gray-300">이미지</span>
-      <div className="flex flex-col justify-between">
-        <Typography className="text-h3">CTF 스터디</Typography>
-        <div className="flex">
-          <Typography className="mr-1 font-semibold">스터디장</Typography>
-          <StudyChip value="김태연" />
-          <Divider className="!m-1 !border-white" orientation="vertical" flexItem />
-          <Typography className="font-semibold">현재 인원 8명</Typography>
+    <div className="flex w-full space-x-2 pl-2 text-left">
+      <span className="max-w-16 min-w-16 h-16 max-h-16 w-16 bg-gray-300">이미지</span>
+      <div className="flex w-full items-center justify-between space-x-2 pr-2">
+        <div className="flex space-x-[22px]">
+          <Typography className="!text-h3 !font-semibold">{study.title}</Typography>
+          {memberId === headMember.id && (
+            <div className="space-x-2 pr-2">
+              <OutlinedButton onClick={handleStudyEditButtonClick}>수정</OutlinedButton>
+              <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center space-x-2">
+          <Typography className="!font-semibold">스터디장</Typography>
+          <StudyChip fontWeight="Semibold" value={study.headMember.realName} />
+          <Divider className="!border-white" orientation="vertical" flexItem />
+          <Typography>
+            현재 인원 <span className="font-semibold">{study.memberNumber}명</span>
+          </Typography>
         </div>
       </div>
     </div>
   );
 };
 
-const AccordionBodyContent = () => {
+const StudyAccordionBody = ({ study }: StudyAccordionBodyProps) => {
   interface IconType {
-    [key: string]: JSX.Element;
+    [key: string]: React.ReactNode;
   }
 
+  const { information, memberList } = study;
+
   const LinkIconData: IconType = {
-    github: <VscGithubInverted className="h-7 w-7" />,
-    notion: <SiNotion className="h-7 w-7" />,
-    etc: <VscLink className="h-7 w-7" />,
+    github: <VscGithubInverted className="h-5 w-5" />,
+    notion: <SiNotion className="h-5 w-5" />,
+    etc: <VscLink className="h-5 w-5" />,
   };
 
-  const link = [
-    { title: 'github', contents: 'https//~' },
-    { title: 'notion', contents: 'https//~' },
-    { title: 'plato', contents: 'https//~' },
-  ];
-  const members = ['장서윤', '김은지', '송세연', '산다라박'];
   return (
     <div className="space-y-[30px]">
-      <div className="space-y-4">
+      <div className="flex justify-between space-y-4">
         <Typography className="font-semibold">스터디 소개</Typography>
-        <Typography className="border-l-2 border-pointBlue px-2">CTF 준비합니다</Typography>
+        <Typography className="border-l-2 border-pointBlue px-2">{information}</Typography>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">스터디원</Typography>
         <div className="flex space-x-2">
-          {members?.map((member: string) => (
-            <StudyChip key={member} value={member} />
+          {memberList?.map(({ id, realName }) => (
+            <StudyChip key={id} value={realName} />
           ))}
         </div>
       </div>
       <div className="space-y-4">
         <Typography className="font-semibold">링크</Typography>
-        <div className="flex space-x-4 text-pointBlue">
-          {link?.map((li) => (
-            <div key={li.title} className="flex items-center space-x-1">
-              <span>{LinkIconData[li.title] ? LinkIconData[li.title] : LinkIconData.etc}</span>
-              <span className="border-b border-pointBlue">{li.title}</span>
-            </div>
+        <div className="flex space-x-3 text-pointBlue">
+          {study.link?.map(({ title, contents }) => (
+            <Link to={contents} target="_blank" key={title} className="flex items-center space-x-1">
+              <span>{LinkIconData[title] ? LinkIconData[title] : LinkIconData.etc}</span>
+              <span className="border-b border-pointBlue">{title}</span>
+            </Link>
           ))}
         </div>
       </div>
@@ -93,20 +97,19 @@ const AccordionBodyContent = () => {
   );
 };
 
-const StudyAccordion = () => {
-  const [open, setOpen] = useReducer((prev) => !prev, false);
-
+const StudyAccordion = ({ study, memberId, toggleOpen, setModalInfo }: StudyAccordionProps) => {
   return (
-    <ThemeProvider value={theme}>
-      <Accordion open={open} icon={open ? <VscChevronUp /> : <VscChevronDown />}>
-        <AccordionHeader className="h-20" onClick={setOpen}>
-          <AccordionHeaderContent />
-        </AccordionHeader>
-        <AccordionBody className="space-y-[30px] py-[30px] px-[41px]">
-          <AccordionBodyContent />
-        </AccordionBody>
-      </Accordion>
-    </ThemeProvider>
+    <Accordion className="!shadow-none">
+      <AccordionSummary
+        className="!h-20 !border-b !border-white/[20%] !bg-subBlack !px-4 !text-white hover:!bg-subGray hover:!text-white focus:!outline-0"
+        expandIcon={<VscChevronDown />}
+      >
+        <StudyAccordionHeader study={study} memberId={memberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
+      </AccordionSummary>
+      <AccordionDetails className="!space-y-[30px] !bg-middleBlack !px-[41px] !py-[30px] !text-white">
+        <StudyAccordionBody study={study} />
+      </AccordionDetails>
+    </Accordion>
   );
 };
 

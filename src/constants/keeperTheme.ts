@@ -7,4 +7,4 @@ export const KEEPER_COLOR = {
   subRed: '#EF4444',
 };
 
-export const SIDEBAR_WIDTH = 320;
+export const SIDEBAR_WIDTH = 240;
