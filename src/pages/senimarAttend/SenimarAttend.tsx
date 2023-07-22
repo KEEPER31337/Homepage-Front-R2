@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import FilledButton from '@components/Button/FilledButton';
-import PageTitle from '@components/Typography/PageTitle';
 import { Typography } from '@mui/material';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
@@ -31,7 +29,7 @@ const SeminarAttend = () => {
               {seminarActivated ? (
                 <>
                   <Typography className="!mt-[16px] !text-h3 !font-bold ">{date} 세미나</Typography>
-                  <p className="mt-[26px] mb-[14px]">출석 코드</p>
+                  <p className="mb-[14px] mt-[26px]">출석 코드</p>
                   {isBoss ? <BossCardContent /> : <MemberCardContent />}
                 </>
               ) : (
