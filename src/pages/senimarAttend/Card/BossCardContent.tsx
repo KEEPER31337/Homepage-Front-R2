@@ -11,15 +11,18 @@ const BossCardContent = () => {
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
   const { mutate: setSeminarTime } = startSeminar({ id: 2 }); // Todo: 이후 id 파라미터로 받아옴
-  const { data: availableSeminarData } = getAvailableSeminarInfo();
+  const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
   const onStartSeminar = () => {
     setStartTime(DateTime.now());
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
       latenessCloseTime: startTime.plus({ minutes: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
     });
-    getAvailableSeminarInfo();
   };
+
+  useEffect(() => {
+    availableSeminarRefetch();
+  }, [availableSeminarData]);
 
   return (
     <>
