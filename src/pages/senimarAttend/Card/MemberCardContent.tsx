@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
+import { getAvailableSeminarInfo } from '@api/seminarApi';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
@@ -9,15 +10,19 @@ import ActivityStatus from '../SeminarAttend.interface';
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
   const [isCorrectCode, setIsCorrectCode] = useState(false);
+  const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
+  const startTime = DateTime.fromISO(availableSeminarData?.openTime || '');
+  const attendLimit = DateTime.fromISO(availableSeminarData?.attendanceCloseTime || '');
+  const lateLimit = DateTime.fromISO(availableSeminarData?.latenessCloseTime || '');
+  const validCode = availableSeminarData?.attendanceCode;
   const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
-  const [startTime, setStartTime] = useState(DateTime.now());
-  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
-  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
-
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
-  const validCode = '1234'; // 임시
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
+
+  useEffect(() => {
+    availableSeminarRefetch();
+  }, [availableSeminarData]);
 
   const handleAttendButtonClick = () => {
     setIsCorrectCode(inputCode.join('') === validCode);
