@@ -37,7 +37,7 @@ const startSeminar = (id: number) => {
 };
 
 const attendSeminar = (id: number) => {
-  const fetcher = (attendanceCode: string) => axios.post(`{/seminars/${id}/attendances}`, { attendanceCode });
+  const fetcher = (attendanceCode: string) => axios.post(`/seminars/${id}/attendances`, { attendanceCode });
 
   return useMutation(fetcher, {
     onSuccess: (response) => {
