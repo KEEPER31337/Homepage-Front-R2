@@ -1,3 +1,5 @@
+import ActivityStatus from '@pages/senimarAttend/SeminarAttend.interface';
+
 export interface StaticWriteContentsInfo {
   id: number;
   content: string;
@@ -89,4 +91,9 @@ export interface SeminarInfo {
   name: string;
   registerTime: string;
   updateTime: string;
+}
+
+export interface AttendResponseData {
+  id: number;
+  statusText: string;
 }
