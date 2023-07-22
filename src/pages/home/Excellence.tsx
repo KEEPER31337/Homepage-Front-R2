@@ -7,8 +7,6 @@ const demoContents = '도서 및 기자재 지원\n스터디룸 비용 지원\n�
 const Excellence = () => {
   const { data: excellenceList } = useGetBlockListQuery({ type: 'excellence' });
 
-  console.log(excellenceList);
-
   return (
     <div className="flex w-full flex-row bg-mainBlack">
       <img src="/img/main/excellence.png" alt="" className="w-[60%]" />
