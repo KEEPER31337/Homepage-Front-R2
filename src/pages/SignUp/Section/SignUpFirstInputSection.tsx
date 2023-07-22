@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Stack } from '@mui/material';
-import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 
 import BackgroundInput from '@components/Input/BackgroundInput';
@@ -102,7 +102,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         }}
       />
 
-      <div className="absolute right-0 bottom-0">
+      <div className="absolute bottom-0 right-0">
         <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
           다음
         </OutlinedButton>

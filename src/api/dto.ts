@@ -7,16 +7,16 @@ export interface StaticWriteContentsInfo {
 export interface SubTitleImagesInfo {
   id: number;
   subtitle: string;
-  thumbnailPath: string | null;
+  thumbnailPath: string | undefined;
   displayOrder: number;
-  staticWriteContents: StaticWriteContentsInfo;
+  staticWriteContents: Array<StaticWriteContentsInfo>;
 }
 
 export interface PageBlockInfo {
   id: number;
   title: string;
   type: string;
-  subtitleImages: SubTitleImagesInfo;
+  subtitleImages: Array<SubTitleImagesInfo>;
 }
 
 export interface BookListInfo {
@@ -78,4 +78,15 @@ export interface SignUpInfo {
 
 export interface SignUpDuplication {
   duplicate: boolean;
+}
+
+export interface CommentInfo {
+  commentId: number;
+  writerName: string;
+  writerThumbnailPath: string | null;
+  content: string;
+  registerTime: string;
+  parentId: number | null;
+  likeCount: number;
+  dislikeCount: number;
 }

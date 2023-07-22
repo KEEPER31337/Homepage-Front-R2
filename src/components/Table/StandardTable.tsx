@@ -2,7 +2,8 @@ import React, { ReactNode } from 'react';
 import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
-import { Column, Row, ChildComponent } from './StandardTable.interface';
+import { ChildComponent, Column, Row } from './StandardTable.interface';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface StandardTableProps<T extends Record<string, any>> {
   columns: Column<T>[];
@@ -10,6 +11,7 @@ interface StandardTableProps<T extends Record<string, any>> {
   onRowClick?: ({ rowData }: { rowData: Row<T> }) => void;
   childComponent?: ({ key, value, rowData }: ChildComponent<T>) => ReactNode;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const StandardTable = <T extends Record<string, any>>({
   columns,
@@ -54,7 +56,11 @@ const StandardTable = <T extends Record<string, any>>({
                     ) : (
                       <div>
                         {childComponent
-                          ? childComponent({ key: column.key, value: row[column.key], rowData: row })
+                          ? childComponent({
+                              key: column.key,
+                              value: row[column.key],
+                              rowData: row,
+                            })
                           : row[column.key]}
                       </div>
                     )}
