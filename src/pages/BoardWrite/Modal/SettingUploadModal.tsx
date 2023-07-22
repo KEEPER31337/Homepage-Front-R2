@@ -21,10 +21,10 @@ const SettingUploadModal = ({ open, onClose, postSettingInfo, setPostSettingInfo
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    setPostSettingInfo({
-      ...postSettingInfo,
+    setPostSettingInfo((prev) => ({
+      ...prev,
       [name]: checked,
-    });
+    }));
   };
 
   return (
