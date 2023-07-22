@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
+import ActivityStatus from '@pages/senimarAttend/SeminarAttend.interface';
 import { SeminarInfo } from './dto';
 
 const seminarKeys = {
@@ -46,4 +47,15 @@ const attendSeminar = (id: number) => {
   });
 };
 
-export { useGetSeminarInfo, getAvailableSeminarInfo, startSeminar, attendSeminar };
+const editAttendStatus = (id: number) => {
+  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: ActivityStatus | null }) =>
+    axios.patch(`/seminars/${id}/attendances`, { excuse, statusType });
+
+  return useMutation(fetcher, {
+    onSuccess: (response) => {
+      return response.data;
+    },
+  });
+};
+
+export { useGetSeminarInfo, getAvailableSeminarInfo, startSeminar, attendSeminar, editAttendStatus };
