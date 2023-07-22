@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
-import { getAvailableSeminarInfo } from '@api/seminarApi';
+import { attendSeminar, getAvailableSeminarInfo } from '@api/seminarApi';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
@@ -11,6 +11,7 @@ const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
   const [isCorrectCode, setIsCorrectCode] = useState(false);
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
+  const { mutate: attend, isSuccess, data } = attendSeminar(2);
   const startTime = DateTime.fromISO(availableSeminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(availableSeminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(availableSeminarData?.latenessCloseTime || '');
@@ -19,20 +20,18 @@ const MemberCardContent = () => {
   const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
-
+  const isValidActivityStatus = (value: string): value is ActivityStatus => {
+    return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENT';
+  };
   useEffect(() => {
     availableSeminarRefetch();
   }, [availableSeminarData]);
 
   const handleAttendButtonClick = () => {
-    setIsCorrectCode(inputCode.join('') === validCode);
-    const nowTime = DateTime.now();
-    setIsAttendable(nowTime < lateLimit);
-    if (inputCode.join('') === validCode) {
-      // TODO: 출석 api 연동
-      if (nowTime < attendLimit) setAttendStatus('출석');
-      else if (nowTime < lateLimit) setAttendStatus('지각');
-      else setAttendStatus('결석');
+    attend(inputCode.join(''));
+    setIsCorrectCode(isSuccess);
+    if (isSuccess && isValidActivityStatus(data.statusText)) {
+      setAttendStatus(data.statusText);
     }
   };
 
