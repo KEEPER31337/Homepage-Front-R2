@@ -1,8 +1,7 @@
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
-import StandardTab from '@components/Tab/StandardTab';
-import { Button, Container, Divider, autocompleteClasses } from '@mui/material';
+import { Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 const SearchPW = () => {

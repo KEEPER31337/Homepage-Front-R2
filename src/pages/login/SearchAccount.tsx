@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
-import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
-import StepProgress from '@components/Progress/StepProgress';
+import { Box, Stack, Tab, Tabs } from '@mui/material';
 import SearchID from './Search/SearchID';
 import SearchPW from './Search/SearchPW';
 

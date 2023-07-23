@@ -1,16 +1,16 @@
-import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
-import StandardTab from '@components/Tab/StandardTab';
-import { Button, Container, Divider } from '@mui/material';
+import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
+import { Divider } from '@mui/material';
 import validateEmail from '@utils/validateEmail';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const SearchID = () => {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
   const [isSent, setIsSent] = useState(false);
+  const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState<boolean>(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -61,6 +61,12 @@ const SearchID = () => {
             </div>
             <div className="text-right">
               <span className="cursor-pointer hover:underline hover:duration-300">인증메일이 오지 않았나요?</span>
+              <MailAuthenticationModal
+                open={mailAuthenticationModalOpen}
+                onClose={() => setMailAuthenticationModalOpen(false)}
+                onOtherEmailButtonClick={() => setMailAuthenticationModalOpen(false)}
+                onResendMailButtonClick={() => setMailAuthenticationModalOpen(false)}
+              />
             </div>
             <div className="mt-10 text-center">
               <Link to="/login">
