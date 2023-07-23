@@ -23,11 +23,13 @@ const SignUp = () => {
   return (
     <div className="grid h-screen place-content-center place-items-center">
       <Stack className="relative h-full w-full">
-        <Tabs value={currentStep} onChange={handleChange}>
-          {searchList.map((item) => (
-            <Tab key={item.id} className="w-[200px] !text-base" label={item.label} />
-          ))}
-        </Tabs>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={currentStep} onChange={handleChange}>
+            {searchList.map((item) => (
+              <Tab key={item.id} className="w-[50%] !text-base" label={item.label} />
+            ))}
+          </Tabs>
+        </Box>
         {stepInputSection[currentStep]}
       </Stack>
     </div>
