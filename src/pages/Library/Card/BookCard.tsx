@@ -11,12 +11,12 @@ const BookCard = () => {
       </div>
       <div className="relative grow p-2">
         <div>
-          <Typography variant="paragraph" component="div" className="!mb-2 font-semibold">
-            Beginning Linux programming 4th Edition
-          </Typography>
-          <Typography variant="paragraph">저자 : 페트릭 엔게브렛슨</Typography>
-          <span className="text-pointBlue"> | </span>
-          <Typography variant="paragraph">권수 : 2/3</Typography>
+          <Typography className="!mb-2 font-semibold">Beginning Linux programming 4th Edition</Typography>
+          <div className="flex space-x-2">
+            <Typography>저자 : 페트릭 엔게브렛슨</Typography>
+            <span className="text-pointBlue"> | </span>
+            <Typography>권수 : 2/3</Typography>
+          </div>
         </div>
 
         <div className="absolute bottom-0 right-0">
