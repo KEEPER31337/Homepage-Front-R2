@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { Typography } from '@mui/material';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 
 interface RequestBookModalProps {
+  librarian: string;
+  selectedBookId: number;
   open: boolean;
   onClose: () => void;
 }
 
-const RequestBookModal = ({ open, onClose }: RequestBookModalProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [librarian, setLibrarian] = useState<string>('박소현');
+const RequestBookModal = ({ librarian, selectedBookId, open, onClose }: RequestBookModalProps) => {
+  useEffect(() => {
+    // TODO: 신청 api
+  }, [selectedBookId]);
 
   return (
     <ConfirmModal open={open} onClose={onClose} title="신청완료">

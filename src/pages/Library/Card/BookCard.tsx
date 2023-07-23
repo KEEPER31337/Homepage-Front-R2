@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import RequestBookModal from '@pages/Library/Modal/RequestBookModal';
 
-const BookCard = () => {
-  const [requestBookModalOpen, setRequestBookModalOpen] = useState(false);
+interface BookCardProps {
+  bookId: number;
+  onRequestBook: (bookId: number) => void;
+}
 
+const BookCard = ({ bookId, onRequestBook }: BookCardProps) => {
   return (
     <div className="flex h-fit bg-mainBlack p-2">
       <div className="mr-2 flex h-[120px] w-[85px] bg-middleBlack">
@@ -23,10 +25,9 @@ const BookCard = () => {
         </div>
 
         <div className="absolute bottom-0 right-0">
-          <OutlinedButton onClick={() => setRequestBookModalOpen(true)}>대출 신청</OutlinedButton>
+          <OutlinedButton onClick={() => onRequestBook(bookId)}>대출 신청</OutlinedButton>
         </div>
       </div>
-      <RequestBookModal open={requestBookModalOpen} onClose={() => setRequestBookModalOpen(false)} />
     </div>
   );
 };
