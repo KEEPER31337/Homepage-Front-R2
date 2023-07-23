@@ -5,7 +5,7 @@ import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import RequestBookModal from '@pages/Library/Modal/RequestBookModal';
 
 const BookCard = () => {
-  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
+  const [requestBookModalOpen, setRequestBookModalOpen] = useState(false);
 
   return (
     <div className="flex h-fit bg-mainBlack p-2">
@@ -23,10 +23,10 @@ const BookCard = () => {
         </div>
 
         <div className="absolute bottom-0 right-0">
-          <OutlinedButton onClick={() => setAddBookModalOpen(true)}>대출 신청</OutlinedButton>
+          <OutlinedButton onClick={() => setRequestBookModalOpen(true)}>대출 신청</OutlinedButton>
         </div>
       </div>
-      <RequestBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
+      <RequestBookModal open={requestBookModalOpen} onClose={() => setRequestBookModalOpen(false)} />
     </div>
   );
 };
