@@ -1,5 +1,5 @@
 import React, { Dispatch, DispatchWithoutAction, SetStateAction } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Divider, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
 import { VscChevronDown, VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { SiNotion } from 'react-icons/si';
 
@@ -106,7 +106,7 @@ const StudyAccordion = ({ study, memberId, toggleOpen, setModalInfo }: StudyAcco
       >
         <StudyAccordionHeader study={study} memberId={memberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
       </AccordionSummary>
-      <AccordionDetails className="!space-y-[30px] !bg-middleBlack !py-[30px] !px-[41px] !text-white">
+      <AccordionDetails className="!space-y-[30px] !bg-middleBlack !px-[41px] !py-[30px] !text-white">
         <StudyAccordionBody study={study} />
       </AccordionDetails>
     </Accordion>
