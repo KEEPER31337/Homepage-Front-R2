@@ -93,7 +93,7 @@ const Login = () => {
           </Stack>
           <HorizonLine />
           <Stack direction="row" spacing={2}>
-            <Link to="/">
+            <Link to="/SearchAccount">
               <p className="hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
             </Link>
             <p>|</p>
