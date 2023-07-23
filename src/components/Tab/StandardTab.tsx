@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 
 interface StandardTabProps {
   options: { id: number; label: string }[];

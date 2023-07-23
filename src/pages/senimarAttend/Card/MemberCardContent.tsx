@@ -10,7 +10,7 @@ const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
   const [isCorrectCode, setIsCorrectCode] = useState(false);
   const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
-  const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
+  const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [startTime, setStartTime] = useState(DateTime.now());
   const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
   const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
@@ -25,9 +25,12 @@ const MemberCardContent = () => {
     setIsAttendable(nowTime < lateLimit);
     if (inputCode.join('') === validCode) {
       // TODO: 출석 api 연동
+      setIncorrectCodeMsg('ㅤ');
       if (nowTime < attendLimit) setAttendStatus('출석');
       else if (nowTime < lateLimit) setAttendStatus('지각');
       else setAttendStatus('결석');
+    } else {
+      setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
     }
   };
 
@@ -35,13 +38,11 @@ const MemberCardContent = () => {
 
   return (
     <>
-      <SeminarInput
-        helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''}
-        setInputCode={setInputCode}
-        inputCode={inputCode}
-      />
+      <div className="mb-[15px]">
+        <SeminarInput helperText={incorrectCodeMsg} setInputCode={setInputCode} inputCode={inputCode} />
+      </div>
 
-      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
+      <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
           <div>지각</div>
@@ -51,10 +52,10 @@ const MemberCardContent = () => {
           <Countdown startTime={attendLimit} endTime={lateLimit} />
         </div>
       </div>
-      {attendStatus !== undefined ? (
-        <SeminarAttendStatus status={attendStatus} />
-      ) : (
-        <div className="mt-[39px] flex justify-center">
+      <div className="mt-[39px] flex justify-center">
+        {attendStatus !== undefined ? (
+          <SeminarAttendStatus status={attendStatus} />
+        ) : (
           <FilledButton
             onClick={() => {
               handleAttendButtonClick();
@@ -62,8 +63,8 @@ const MemberCardContent = () => {
           >
             출석
           </FilledButton>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };
