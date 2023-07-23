@@ -7,10 +7,30 @@ import React, { useEffect, useState } from 'react';
 
 const SearchID = () => {
   const [email, setEmail] = useState('');
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
+
+  const validateEmail = (input: string): boolean => {
+    if (input) {
+      const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      return emailRegex.test(input);
+    }
+    return false;
+  };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     setEmail(value);
+
+    const isValid = validateEmail(value);
+    setIsValidEmail(isValid);
+  };
+
+  const handleConfirmClick = () => {
+    if (isValidEmail) {
+      console.log('유효한 이메일 주소입니다:', email);
+    } else {
+      console.log('유효하지 않은 이메일 주소입니다:', email);
+    }
   };
 
   return (
@@ -24,12 +44,14 @@ const SearchID = () => {
         <div className="mx-20 flex flex-col justify-center gap-10 pb-12 pt-8">
           <div className="relative my-10 flex justify-between gap-10">
             <p className="mt-4 leading-4">이메일</p>
-            <BackgroundInput className="w-[70%]" required name="id" value={email} onChange={handleEmailChange} />
+            <BackgroundInput className="w-[70%]" required name="email" value={email} onChange={handleEmailChange} />
           </div>
         </div>
         <Divider className="bg-pointBlue" />
         <div className="mt-10 text-center">
-          <OutlinedButton>확인</OutlinedButton>
+          <OutlinedButton onClick={handleConfirmClick} disabled={!isValidEmail}>
+            확인
+          </OutlinedButton>
         </div>
       </div>
     </div>
