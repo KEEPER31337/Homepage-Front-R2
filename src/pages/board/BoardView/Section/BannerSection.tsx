@@ -4,7 +4,7 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 
 const BannerSection = () => {
   return (
-    <div className="relative bg-mainBlack px-6 py-6">
+    <div className="relative bg-mainBlack px-6 py-2">
       <img
         src="https://avatars.githubusercontent.com/u/78250089?v=4"
         alt="post thumbnail"

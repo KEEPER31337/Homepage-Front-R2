@@ -10,7 +10,7 @@ const BoardView = () => {
 
   return (
     <div className="-mt-16 space-y-16">
-      <div>
+      <div className="space-y-2">
         <BannerSection />
         <PostSection />
       </div>

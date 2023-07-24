@@ -115,6 +115,7 @@ export interface PostInfo {
   categoryName: string;
   title: string;
   writerName: string;
+  writerThumbnailPath: string | null;
   visitCount: number;
   thumbnailPath: string;
   content: string;
