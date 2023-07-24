@@ -104,3 +104,42 @@ export interface UploadPost extends UploadPostSettings {
   content: string;
   categoryId: string;
 }
+
+export interface FileInfo {
+  id: number;
+  name: string;
+  path: string;
+  size: number;
+  ipAddress: string;
+  uploadTime: string;
+}
+
+export interface AdjacentPostInfo {
+  previous: {
+    postId: number;
+    title: string;
+  };
+  next: {
+    postId: number;
+    title: string;
+  };
+}
+
+export interface PostInfo {
+  categoryName: string;
+  title: string;
+  writerName: string;
+  visitCount: number;
+  thumbnailPath: string;
+  content: string;
+  files: FileInfo[];
+  adjacentPosts: AdjacentPostInfo;
+  likeCount: number;
+  dislikeCount: number;
+  allowComment: boolean;
+  isNotice: boolean;
+  isSecret: boolean;
+  isTemp: boolean;
+  registerTime: string;
+  updateTime: string;
+}

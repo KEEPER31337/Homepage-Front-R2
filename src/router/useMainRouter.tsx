@@ -13,6 +13,7 @@ import BoardList from '@pages/board/BoardList';
 import SignUp from '@pages/SignUp/SignUp';
 import Login from '@pages/login/Login';
 import Game from '@pages/Game/Game';
+import Library from '@pages/Library/Library';
 import BoardWrite from '@pages/BoardWrite/BoardWrite';
 import BoardView from '@pages/board/BoardView/BoardView';
 
@@ -79,6 +80,10 @@ const useMainRouter = () =>
             {
               path: 'game',
               element: <Game />,
+            },
+            {
+              path: 'library',
+              element: <Library />,
             },
           ],
         },
