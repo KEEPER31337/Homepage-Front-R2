@@ -91,6 +91,20 @@ export interface CommentInfo {
   dislikeCount: number;
 }
 
+export interface UploadPostSettings {
+  isNotice?: boolean;
+  isSecret?: boolean;
+  isTemp?: boolean;
+  allowComment?: boolean;
+  password?: string;
+}
+
+export interface UploadPost extends UploadPostSettings {
+  title: string;
+  content: string;
+  categoryId: string;
+}
+
 export interface FileInfo {
   id: number;
   name: string;
