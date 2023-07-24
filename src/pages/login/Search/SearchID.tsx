@@ -29,6 +29,16 @@ const SearchID = () => {
     }
   };
 
+  const handleOtherEmailButtonClick = () => {
+    setIsSent(false);
+    setEmail('');
+    setMailAuthenticationModalOpen(false);
+  };
+
+  const handleResendMailButtonClick = () => {
+    // TODO 같은 이메일로 api 재호출
+  };
+
   return (
     <div className="h-full w-full items-center justify-center">
       <div className="h-[480px] w-[700px]">
@@ -60,11 +70,17 @@ const SearchID = () => {
               <p>이메일로 발송되었습니다.</p>
             </div>
             <div className="text-right">
-              <span className="cursor-pointer hover:underline hover:duration-300">인증메일이 오지 않았나요?</span>
+              <button
+                type="button"
+                className="cursor-pointer hover:underline hover:duration-300"
+                onClick={() => setMailAuthenticationModalOpen(true)}
+              >
+                인증메일이 오지 않았나요?
+              </button>
               <MailAuthenticationModal
                 open={mailAuthenticationModalOpen}
                 onClose={() => setMailAuthenticationModalOpen(false)}
-                onOtherEmailButtonClick={() => setMailAuthenticationModalOpen(false)}
+                onOtherEmailButtonClick={handleOtherEmailButtonClick}
                 onResendMailButtonClick={() => setMailAuthenticationModalOpen(false)}
               />
             </div>
