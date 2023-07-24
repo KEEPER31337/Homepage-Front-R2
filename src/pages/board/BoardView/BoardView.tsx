@@ -9,7 +9,7 @@ const BoardView = () => {
   const postInfo = post; // TODO API 적용
 
   return (
-    <div className="-mt-16 space-y-16">
+    <div className="-mt-16 space-y-12">
       <div className="space-y-2">
         <BannerSection />
         <PostSection />

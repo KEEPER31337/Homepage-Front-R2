@@ -7,8 +7,8 @@ import { VscArrowDown, VscArrowUp, VscFile } from 'react-icons/vsc';
 
 const PostSection = () => {
   return (
-    <div className="min-h-[500px] bg-middleBlack px-14 py-10">
-      <StandardViewer className="min-h-[310px]" content={post.content} />
+    <div className="min-h-[520px] bg-middleBlack px-14 py-10">
+      <StandardViewer className="min-h-[330px]" content={post.content} />
       <div className="mb-10 mt-2 flex justify-end gap-3 text-pointBlue">
         {post.files.map((file) => (
           <div key={file.id} className="flex">
