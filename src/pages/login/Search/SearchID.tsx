@@ -86,9 +86,7 @@ const SearchID = () => {
             </div>
             <div className="mt-10 text-center">
               <Link to="/login">
-                <OutlinedButton onClick={handleConfirmClick} disabled={!isValidEmail}>
-                  로그인 페이지로
-                </OutlinedButton>
+                <OutlinedButton>로그인 페이지로</OutlinedButton>
               </Link>
             </div>
           </>
