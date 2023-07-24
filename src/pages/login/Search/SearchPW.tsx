@@ -2,6 +2,7 @@ import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import { Divider } from '@mui/material';
+import validateEmail from '@utils/validateEmail';
 import React, { useEffect, useState } from 'react';
 
 const SearchPW = () => {
@@ -14,6 +15,8 @@ const SearchPW = () => {
   const [isSent, setIsSent] = useState(false);
   const [seconds, setSeconds] = useState(300);
   const [timer, setTimer] = useState('05:00');
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
+  const [isValidCode, setIsValidCode] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -21,9 +24,17 @@ const SearchPW = () => {
       ...form,
       [name]: value,
     });
+    if (name === 'email') {
+      const isValid = validateEmail(value);
+      setIsValidEmail(isValid);
+    }
   };
 
   const handleRequestVerificationCode = () => {
+    if (form.id === '') {
+      alert('아이디를 입력해주세요.');
+      return;
+    }
     if (form.email === '') {
       alert('이메일을 입력해주세요.');
       return;
@@ -68,7 +79,7 @@ const SearchPW = () => {
               value={form.email}
               onChange={handleChange}
               endAdornment={
-                <FilledButton disabled={isSent} onClick={handleRequestVerificationCode}>
+                <FilledButton disabled={!isValidEmail} onClick={handleRequestVerificationCode}>
                   인증 요청
                 </FilledButton>
               }
@@ -88,7 +99,7 @@ const SearchPW = () => {
         </div>
         <Divider className="bg-pointBlue" />
         <div className="mt-10 text-center">
-          <OutlinedButton>확인</OutlinedButton>
+          <OutlinedButton disabled={!(form.verificationCode.length > 0)}>확인</OutlinedButton>
         </div>
       </div>
     </div>
