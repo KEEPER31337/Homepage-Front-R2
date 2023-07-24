@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Typography } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
+import { BookInfo } from '@api/dto';
 
 interface BookCardProps {
-  bookId: number;
-  onRequestBook: (bookId: number) => void;
+  bookInfo: BookInfo;
+  onRequestBook: (bookId: BookInfo['bookId']) => void;
 }
+const BookCard = ({ bookInfo, onRequestBook }: BookCardProps) => {
+  useEffect(() => {
+    console.log(bookInfo);
+  }, []);
 
-const BookCard = ({ bookId, onRequestBook }: BookCardProps) => {
   return (
     <div className="flex h-fit bg-mainBlack p-2">
       <div className="mr-2 flex h-[120px] w-[85px] bg-middleBlack">
@@ -25,7 +29,7 @@ const BookCard = ({ bookId, onRequestBook }: BookCardProps) => {
         </div>
 
         <div className="absolute bottom-0 right-0">
-          <OutlinedButton onClick={() => onRequestBook(bookId)}>대출 신청</OutlinedButton>
+          <OutlinedButton onClick={() => onRequestBook(bookInfo.bookId)}>대출 신청</OutlinedButton>
         </div>
       </div>
     </div>
