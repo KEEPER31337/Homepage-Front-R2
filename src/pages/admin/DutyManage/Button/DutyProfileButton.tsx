@@ -52,7 +52,7 @@ const DutyProfileButton = ({ roleName, badgeImage, setTooltipOpen, toggleModalOp
           </div>
         </>
       ) : (
-        <div className="mt-2 h-[140px] w-[5px] bg-gradient-to-b from-pointBlue from-50% to-subBlack to-0% bg-[length:5px_20px] bg-repeat-space" />
+        <div className="mt-2 h-[160px] w-[5px] bg-gradient-to-b from-pointBlue from-50% to-subBlack to-0% bg-[length:5px_20px] bg-repeat-space" />
       )}
     </Button>
   );

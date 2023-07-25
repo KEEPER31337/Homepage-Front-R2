@@ -82,7 +82,7 @@ const DutyManage = () => {
         <CreateViceChairman />
 
         <CreateMiddleBar />
-        <div className="mt-10 flex w-full flex-row items-start justify-around">
+        <div className="mt-2 flex w-full flex-row items-start justify-around">
           {roleNameArray.map((content) => (
             <DutyProfileTooltip key={content.key} roleName={content.roleName} />
           ))}
