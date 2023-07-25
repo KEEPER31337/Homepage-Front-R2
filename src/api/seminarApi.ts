@@ -47,9 +47,9 @@ const attendSeminar = (id: number) => {
   });
 };
 
-const editAttendStatus = (id: number) => {
+const editAttendStatus = (seminarId: number, memberId: number) => {
   const fetcher = ({ excuse, statusType }: { excuse: string; statusType: ActivityStatus | null }) =>
-    axios.patch(`/seminars/${id}/attendances`, { excuse, statusType });
+    axios.patch(`/seminars/${seminarId}/attendances/${memberId}`, { excuse, statusType });
 
   return useMutation(fetcher, {
     onSuccess: (response) => {
