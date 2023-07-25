@@ -28,6 +28,7 @@ const BossCardContent = () => {
     <>
       <SeminarInput
         disabled
+        helperText="ㅤ"
         inputCode={availableSeminarData?.id ? availableSeminarData?.attendanceCode.split('') : ['', '', '', '']}
       />
       <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
