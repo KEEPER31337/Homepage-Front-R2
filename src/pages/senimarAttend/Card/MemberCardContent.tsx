@@ -45,9 +45,14 @@ const MemberCardContent = () => {
   // TODO: 출석 종료시 자동 결석처리, 문구 결석으로 바꾸기
 
   return (
-    <>
+    <div className={`${availableSeminarData?.id === null && 'opacity-50'}`}>
       <div className="mb-[15px]">
-        <SeminarInput helperText={incorrectCodeMsg} setInputCode={setInputCode} inputCode={inputCode} />
+        <SeminarInput
+          disabled={availableSeminarData?.id === null}
+          helperText={incorrectCodeMsg}
+          setInputCode={setInputCode}
+          inputCode={availableSeminarData?.id === null ? ['', '', '', ''] : inputCode}
+        />
       </div>
 
       <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
@@ -82,7 +87,7 @@ const MemberCardContent = () => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
