@@ -1,13 +1,14 @@
 import React from 'react';
 import { VscCheck, VscChromeClose } from 'react-icons/vsc';
-import ActivityStatus from '../SeminarAttend.interface';
+
+type SeminarStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE';
 
 interface SeminarAttendStatusProps {
-  status: ActivityStatus;
+  status: SeminarStatus;
 }
 
 const SeminarAttendStatus = ({ status }: SeminarAttendStatusProps) => {
-  const statusInfo: { [key in ActivityStatus]: { text: string; color: string; icon: JSX.Element } } = {
+  const statusInfo: { [key in SeminarStatus]: { text: string; color: string; icon: JSX.Element } } = {
     ATTENDANCE: {
       text: '출석',
       color: 'pointBlue',
@@ -18,7 +19,7 @@ const SeminarAttendStatus = ({ status }: SeminarAttendStatusProps) => {
       color: 'subOrange',
       icon: <VscCheck />,
     },
-    ABSENT: {
+    ABSENCE: {
       text: '결석',
       color: 'subRed',
       icon: <VscChromeClose />,

@@ -10,20 +10,21 @@ import ActivityStatus from '../SeminarAttend.interface';
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
   const [isCorrectCode, setIsCorrectCode] = useState(false);
-  const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
+  const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo(); // 진행중인 세미나 존재하는가
   const { mutate: attend, isSuccess, data: attendancyData } = attendSeminar(2);
-  const { mutate: editStatus } = editAttendStatus(2);
   const startTime = DateTime.fromISO(availableSeminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(availableSeminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(availableSeminarData?.latenessCloseTime || '');
   const validCode = availableSeminarData?.attendanceCode;
   const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
-  const incorrectCodeMsg = '출석코드가 맞지 않습니다. 다시 입력해주세요.';
+  const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
   const isValidActivityStatus = (value: string): value is ActivityStatus => {
-    return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENT';
+    return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
+  const { mutate: editStatus } = editAttendStatus(2, 2); // 테스트용 임시
+
   useEffect(() => {
     availableSeminarRefetch();
   }, [availableSeminarData]);
@@ -33,24 +34,23 @@ const MemberCardContent = () => {
     setIsCorrectCode(isSuccess);
     if (isSuccess && isValidActivityStatus(attendancyData.statusText)) {
       setAttendStatus(attendancyData.statusText);
-    }
+      setIncorrectCodeMsg('ㅤ');
+    } else setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
   };
 
   const deleteAttendance = () => {
-    editStatus({ excuse: 'test', statusType: null });
+    editStatus({ excuse: 'test', statusType: 'BEFORE_ATTENDANCE' });
   };
 
   // TODO: 출석 종료시 자동 결석처리, 문구 결석으로 바꾸기
 
   return (
     <>
-      <SeminarInput
-        helperText={isIncorrectCodeInPeriod ? incorrectCodeMsg : ''}
-        setInputCode={setInputCode}
-        inputCode={inputCode}
-      />
+      <div className="mb-[15px]">
+        <SeminarInput helperText={incorrectCodeMsg} setInputCode={setInputCode} inputCode={inputCode} />
+      </div>
 
-      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
+      <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
           <div>지각</div>
@@ -60,26 +60,28 @@ const MemberCardContent = () => {
           <Countdown startTime={attendLimit} endTime={lateLimit} />
         </div>
       </div>
-      {attendStatus !== undefined ? (
-        <SeminarAttendStatus status={attendStatus} />
-      ) : (
-        <div className="mt-[39px] flex justify-center">
-          <FilledButton
-            onClick={() => {
-              handleAttendButtonClick();
-            }}
-          >
-            출석
-          </FilledButton>
-          <FilledButton
-            onClick={() => {
-              deleteAttendance();
-            }}
-          >
-            출석기록 삭제
-          </FilledButton>
-        </div>
-      )}
+      <div className="mt-[39px] flex justify-center">
+        {attendStatus !== undefined && attendStatus !== 'PERSONAL' && attendStatus !== 'BEFORE_ATTENDANCE' ? (
+          <SeminarAttendStatus status={attendStatus} />
+        ) : (
+          <>
+            <FilledButton
+              onClick={() => {
+                handleAttendButtonClick();
+              }}
+            >
+              출석
+            </FilledButton>
+            <FilledButton
+              onClick={() => {
+                deleteAttendance();
+              }}
+            >
+              출석기록 삭제
+            </FilledButton>
+          </>
+        )}
+      </div>
     </>
   );
 };
