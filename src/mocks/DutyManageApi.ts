@@ -9,87 +9,149 @@ import librarianBadge from '@assets/dutyManage/badge_8_librarian.gif';
 
 interface RoleDutyList {
   roleName: string;
-  roleDuty: string[];
+  roleDuty: { key: number; content: string }[];
 }
 
 const roleDutyListInfo: RoleDutyList[] = [
   {
     roleName: '회장',
-    roleDuty: ['회장 역할 1', '회장 역할 2', '회장 역할 3', '회장 역할 4', '회장 역할 5', '회장 역할 6'],
+    roleDuty: [
+      { key: 1, content: '회장역할 1' },
+      { key: 2, content: '회장역할 2' },
+      { key: 3, content: '회장역할 3' },
+      { key: 4, content: '회장역할 4' },
+      { key: 5, content: '회장역할 5' },
+      { key: 6, content: '회장역할 6' },
+    ],
   },
   {
     roleName: '부회장',
     roleDuty: [
-      '부회장 역할 1',
-      '부회장 역할 2',
-      '부회장 역할 3',
-      '부회장 역할 4',
-      '부회장 역할 5',
-      '부회장 역할 6',
-      '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      { key: 1, content: '부회장역할 1' },
+      { key: 2, content: '부회장역할 2' },
+      { key: 3, content: '부회장역할 3' },
+      { key: 4, content: '부회장역할 4' },
+      { key: 5, content: '부회장역할 5' },
+      {
+        key: 6,
+        content:
+          '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      },
     ],
   },
   {
     roleName: '학술부장',
     roleDuty: [
-      '학술부장 역할 1',
-      '학술부장 역할 2',
-      '학술부장 역할 3',
-      '학술부장 역할 4',
-      '학술부장 역할 5',
-      '학술부장 역할 6',
+      { key: 1, content: '학술부장역할 1' },
+      { key: 2, content: '학술부장역할 2' },
+      { key: 3, content: '학술부장역할 3' },
+      { key: 4, content: '학술부장역할 4' },
+      { key: 5, content: '학술부장역할 5' },
+      {
+        key: 6,
+        content:
+          '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      },
     ],
   },
   {
     roleName: '대외부장',
     roleDuty: [
-      '대외부장 역할 1',
-      '대외부장 역할 2',
-      '대외부장 역할 3',
-      '대외부장 역할 4',
-      '대외부장 역할 5',
-      '대외부장 역할 6',
-      '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      { key: 1, content: '대외부장역할 1' },
+      { key: 2, content: '대외부장역할 2' },
+      { key: 3, content: '대외부장역할 3' },
+      { key: 4, content: '대외부장역할 4' },
+      { key: 5, content: '대외부장역할 5' },
+      { key: 6, content: '대외부장역할 6' },
     ],
   },
   {
     roleName: '전산관리자',
     roleDuty: [
-      '전산관리자 역할 1',
-      '전산관리자 역할 2',
-      '전산관리자 역할 3',
-      '전산관리자 역할 4',
-      '전산관리자 역할 5',
-      '전산관리자 역할 6',
-      '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      { key: 1, content: '전산관리자역할 1' },
+      { key: 2, content: '전산관리자역할 2' },
+      { key: 3, content: '전산관리자역할 3' },
+      { key: 4, content: '전산관리자역할 4' },
+      { key: 5, content: '전산관리자역할 5' },
+      { key: 6, content: '전산관리자역할 6' },
     ],
   },
   {
     roleName: '서기',
     roleDuty: [
-      '서기 역할 1',
-      '서기 역할 2',
-      '서기 역할 3',
-      '서기 역할 4',
-      '서기 역할 5',
-      '서기 역할 6',
-      '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      { key: 1, content: '서기역할 1' },
+      { key: 2, content: '서기역할 2' },
+      { key: 3, content: '서기역할 3' },
+      { key: 4, content: '서기역할 4' },
+      { key: 5, content: '서기역할 5' },
+      { key: 6, content: '서기역할 6' },
     ],
   },
   {
     roleName: '사서',
-    roleDuty: ['사서 역할 1', '사서 역할 2', '사서 역할 3', '사서 역할 4', '사서 역할 5', '사서 역할 6'],
+    roleDuty: [
+      { key: 1, content: '사서역할 1' },
+      { key: 2, content: '사서역할 2' },
+      { key: 3, content: '사서역할 3' },
+      { key: 4, content: '사서역할 4' },
+      {
+        key: 5,
+        content:
+          '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      },
+      { key: 6, content: '사서역할 6' },
+    ],
   },
   {
     roleName: '총무',
     roleDuty: [
-      '총무 역할 1',
-      '총무 역할 2',
-      '총무 역할 3',
-      '총무 역할 4',
-      '총무 역할 5',
-      '총무 역할 6',
-      '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      { key: 1, content: '총무역할 1' },
+      { key: 2, content: '총무역할 2' },
+      {
+        key: 3,
+        content:
+          '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      },
+      { key: 4, content: '총무역할 4' },
+      { key: 5, content: '총무역할 5' },
+      { key: 6, content: '총무역할 6' },
+    ],
+  },
+  {
+    roleName: 'FRONT',
+    roleDuty: [
+      { key: 1, content: 'FRONT 1' },
+      { key: 2, content: 'FRONT 2' },
+      { key: 3, content: 'FRONT 3' },
+      { key: 4, content: 'FRONT 4' },
+      { key: 5, content: 'FRONT 5' },
+      { key: 6, content: 'FRONT 6' },
+    ],
+  },
+  {
+    roleName: 'BACK',
+    roleDuty: [
+      { key: 1, content: 'BACK 1' },
+      {
+        key: 2,
+        content:
+          '굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 굉장히 긴 문자열',
+      },
+      { key: 3, content: 'BACK 3' },
+      { key: 4, content: 'BACK 4' },
+      { key: 5, content: 'BACK 5' },
+      { key: 6, content: 'BACK 6' },
+    ],
+  },
+  {
+    roleName: 'INFRA',
+    roleDuty: [
+      { key: 1, content: 'INFRA 1' },
+      { key: 2, content: 'INFRA 2' },
+      { key: 3, content: 'INFRA 3' },
+      { key: 4, content: 'INFRA 4' },
+      { key: 5, content: 'INFRA 5' },
+      { key: 6, content: 'INFRA 6' },
     ],
   },
 ];
@@ -106,15 +168,16 @@ const roles = [
 ];
 
 const roleInfos = [
-  { roleName: '회장', rolePersonName: '박재열', generation: '12', front: false },
-  { roleName: '부회장', rolePersonName: '김태연', generation: '11', front: false },
-  { roleName: '대외부장', rolePersonName: '신채원', generation: '13.5', front: false },
-  { roleName: '학술부장', rolePersonName: '이현', generation: '10.5', front: false },
-  { roleName: '전산관리자', rolePersonName: '조승현', generation: '9', front: true },
-  { roleName: '전산관리자', rolePersonName: '손현경', generation: '13', front: false },
-  { roleName: '서기', rolePersonName: '한대희', generation: '13', front: false },
-  { roleName: '총무', rolePersonName: '민예진', generation: '12.5', front: false },
-  { roleName: '사서', rolePersonName: '박소현', generation: '13', front: false },
+  { roleName: '회장', rolePersonName: '박재열', generation: '12' },
+  { roleName: '부회장', rolePersonName: '김태연', generation: '11' },
+  { roleName: '대외부장', rolePersonName: '신채원', generation: '13.5' },
+  { roleName: '학술부장', rolePersonName: '이현', generation: '10.5' },
+  { roleName: 'FRONT', rolePersonName: '조승현', generation: '9' },
+  { roleName: 'BACK', rolePersonName: '손현경', generation: '13' },
+  { roleName: 'INFRA', rolePersonName: '전설', generation: '8' },
+  { roleName: '서기', rolePersonName: '한대희', generation: '13' },
+  { roleName: '총무', rolePersonName: '민예진', generation: '12.5' },
+  { roleName: '사서', rolePersonName: '박소현', generation: '13' },
 ];
 
 export { roleDutyListInfo, roles, roleInfos };

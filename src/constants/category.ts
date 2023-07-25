@@ -177,7 +177,7 @@ const CATEGORIES: Category[] = [
       {
         id: 701,
         name: '직책관리',
-        path: 'admin/DutyManage',
+        path: 'admin/dutyManage',
       },
       {
         id: 702,

@@ -41,11 +41,11 @@ const ChangeRolePersonModal = ({ open, toggleOpen, modalInfo }: ChangeRolePerson
   const content =
     roleName === '전산관리자' ? (
       <div className="!mx-12 flex w-60 flex-col !space-y-4">
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 items-center gap-2">
           FRONT
           <Selector className="col-span-3" value={value} onChange={handleTotalBookNumberChange} options={memberList} />
         </div>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 items-center gap-2">
           BACK
           <Selector className="col-span-3" value={value} onChange={handleTotalBookNumberChange} options={memberList} />
         </div>

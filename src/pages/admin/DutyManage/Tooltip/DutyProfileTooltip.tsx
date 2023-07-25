@@ -17,7 +17,12 @@ const DutyProfileTooltip = ({ roleName }: DutyProfileTooltipProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [modalOpen, toggleModalOpen] = useReducer((prev) => !prev, false);
 
-  const badgeImage = roles.filter((role) => role.name === roleName)[0].img;
+  let badgeImage;
+  if (roleName === 'FRONT' || roleName === 'BACK' || roleName === 'INFRA') {
+    badgeImage = roles.filter((role) => role.name === '전산관리자')[0].img;
+  } else {
+    badgeImage = roles.filter((role) => role.name === roleName)[0].img;
+  }
   const modalInfo = { name: roleName, badge: badgeImage };
 
   /* button hover 했을 시 나오는 문장 */
@@ -51,14 +56,19 @@ const DutyProfileTooltip = ({ roleName }: DutyProfileTooltipProps) => {
 
   return (
     <DescriptionRoleDutyTooltip
-      title={tooltipContent}
+      title={roleName !== '전산관리자' ? tooltipContent : null}
       open={tooltipOpen}
       onMouseEnter={() => setTooltipOpen(true)}
       onMouseLeave={() => setTooltipOpen(false)}
       arrow
     >
       <div>
-        <DutyProfileButton roleName={roleName} setTooltipOpen={setTooltipOpen} toggleModalOpen={toggleModalOpen} />
+        <DutyProfileButton
+          roleName={roleName}
+          badgeImage={badgeImage}
+          setTooltipOpen={setTooltipOpen}
+          toggleModalOpen={toggleModalOpen}
+        />
         <ChangeRolePersonModal open={modalOpen} toggleOpen={toggleModalOpen} modalInfo={modalInfo} />
       </div>
     </DescriptionRoleDutyTooltip>
