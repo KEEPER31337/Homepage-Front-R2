@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactComponent as LogoNeon } from '@assets/logo/logo_neon.svg';
-import { Typography } from '@material-tailwind/react';
+import { Typography } from '@mui/material';
 
 const Intro = () => {
   const introText =

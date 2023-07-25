@@ -19,8 +19,8 @@ const BossCardContent = () => {
 
   return (
     <>
-      <SeminarInput disabled inputCode={[0, 0, 0, 0]} />
-      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
+      <SeminarInput disabled helperText="ㅤ" inputCode={[0, 0, 0, 0]} />
+      <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
           <div>지각</div>
