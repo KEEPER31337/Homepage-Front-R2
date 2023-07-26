@@ -1,3 +1,4 @@
+import { useSearchIdMutation } from '@api/SearchAccountApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
@@ -11,6 +12,7 @@ const SearchID = () => {
   const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
   const [isSent, setIsSent] = useState(false);
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState<boolean>(false);
+  const { mutate: SearchId } = useSearchIdMutation();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -21,12 +23,8 @@ const SearchID = () => {
   };
 
   const handleConfirmClick = () => {
-    if (isValidEmail) {
-      console.log('유효한 이메일 주소입니다:', email);
-      setIsSent(true);
-    } else {
-      console.log('유효하지 않은 이메일 주소입니다:', email);
-    }
+    SearchId({ email });
+    setIsSent(true);
   };
 
   const handleOtherEmailButtonClick = () => {
@@ -37,6 +35,8 @@ const SearchID = () => {
 
   const handleResendMailButtonClick = () => {
     // TODO 같은 이메일로 api 재호출
+    SearchId({ email });
+    setMailAuthenticationModalOpen(false);
   };
 
   return (
@@ -81,7 +81,7 @@ const SearchID = () => {
                 open={mailAuthenticationModalOpen}
                 onClose={() => setMailAuthenticationModalOpen(false)}
                 onOtherEmailButtonClick={handleOtherEmailButtonClick}
-                onResendMailButtonClick={() => setMailAuthenticationModalOpen(false)}
+                onResendMailButtonClick={handleResendMailButtonClick}
               />
             </div>
             <div className="mt-10 text-center">
