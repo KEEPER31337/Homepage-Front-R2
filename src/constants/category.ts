@@ -1,7 +1,10 @@
+import { Role } from '@api/dto';
+
 export interface CategoryMenu {
   id: number;
   name: string;
   path?: string;
+  roles?: Role[];
 }
 
 export interface Category extends CategoryMenu {
@@ -149,16 +152,19 @@ const CATEGORIES: Category[] = [
         id: 605,
         name: '문제관리',
         path: 'admin/challengeManage',
+        roles: ['ROLE_회장', 'ROLE_출제자'],
       },
       {
         id: 606,
         name: '제출로그',
         path: 'admin/submissions',
+        roles: ['ROLE_회장', 'ROLE_출제자'],
       },
       {
         id: 607,
         name: '대회운영',
         path: 'admin/operation',
+        roles: ['ROLE_회장'],
       },
     ],
   },
@@ -171,31 +177,37 @@ const CATEGORIES: Category[] = [
         id: 701,
         name: '직책관리',
         path: 'dutyManage',
+        roles: ['ROLE_회장'],
       },
       {
         id: 702,
         name: '선거관리',
         path: 'electionManage',
+        roles: ['ROLE_회장'],
       },
       {
         id: 703,
         name: '도서관리',
         path: 'libraryManage',
+        roles: ['ROLE_회장', 'ROLE_사서'],
       },
       {
         id: 704,
         name: '세미나관리',
         path: 'seminarManage',
+        roles: ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'],
       },
       {
         id: 705,
         name: '활동인원관리',
         path: 'activeMemberManage',
+        roles: ['ROLE_회장', 'ROLE_서기'],
       },
       {
         id: 706,
         name: '상벌점관리',
         path: 'rewordPenaltyManage',
+        roles: ['ROLE_회장', 'ROLE_서기'],
       },
     ],
   },
