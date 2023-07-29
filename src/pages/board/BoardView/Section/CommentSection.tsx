@@ -14,7 +14,7 @@ const CommentSection = () => {
   };
 
   return (
-    <div>
+    <section>
       <div className="mb-4 flex items-center">
         <Typography variant="h3" marginRight={1} className="!font-semibold">
           댓글
@@ -33,7 +33,7 @@ const CommentSection = () => {
           />
         </CardActions>
       </Card>
-    </div>
+    </section>
   );
 };
 
