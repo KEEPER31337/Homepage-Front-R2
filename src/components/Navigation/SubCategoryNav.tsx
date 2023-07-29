@@ -1,23 +1,23 @@
 import React from 'react';
-import { Link, matchPath, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { CategoryMenu } from '@constants/category';
-import { ListItemButton, ListItemText } from '@mui/material';
+import { ListItemButton } from '@mui/material';
 
 interface SubCategoryNavProps {
+  viaPath?: string;
   subcategory: CategoryMenu;
 }
 
-const SubCategoryNav = ({ subcategory }: SubCategoryNavProps) => {
-  const currentPath = useLocation();
-  const isCurrentPath = Boolean(matchPath(currentPath.pathname, `/${subcategory.path}`));
+const SubCategoryNav = ({ viaPath, subcategory }: SubCategoryNavProps) => {
+  const categoryPath = viaPath ? `/${viaPath}/${subcategory.path}` : `/${subcategory.path}`;
 
   return (
-    <ListItemButton component={Link} to={`/${subcategory.path}`} className="w-full">
-      <ListItemText
-        className={`whitespace-pre ${isCurrentPath ? 'text-pointBlue' : ''}`}
-        primary={`•\t${subcategory.name}`}
-      />
-    </ListItemButton>
+    <NavLink
+      to={categoryPath}
+      className={({ isActive }) => (isActive ? 'whitespace-pre text-pointBlue' : 'whitespace-pre')}
+    >
+      <ListItemButton>{`•\t${subcategory.name}`}</ListItemButton>
+    </NavLink>
   );
 };
 
