@@ -7,7 +7,7 @@ interface BorrowStatusProps {
 }
 
 const BorrowStatus = ({ canBorrow }: BorrowStatusProps) => {
-  return canBorrow === true ? (
+  return canBorrow ? (
     <Typography className="text-pointBlue">신청 가능 권수 : 1/5</Typography>
   ) : (
     <Tooltip
