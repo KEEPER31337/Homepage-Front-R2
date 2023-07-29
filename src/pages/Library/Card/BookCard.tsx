@@ -9,10 +9,6 @@ interface BookCardProps {
   onRequestBook: (bookId: BookInfo['bookId']) => void;
 }
 const BookCard = ({ bookInfo, onRequestBook }: BookCardProps) => {
-  useEffect(() => {
-    console.log(bookInfo);
-  }, []);
-
   return (
     <div className="flex h-fit bg-mainBlack p-2">
       <div className="mr-2 flex h-[120px] w-[85px] bg-middleBlack">
@@ -30,7 +26,7 @@ const BookCard = ({ bookInfo, onRequestBook }: BookCardProps) => {
 
         <div className="absolute bottom-0 right-0">
           <OutlinedButton disabled={!bookInfo.canBorrow} onClick={() => onRequestBook(bookInfo.bookId)}>
-            대출 신청
+            대출 {bookInfo.canBorrow ? '신청' : ' 불가'}
           </OutlinedButton>
         </div>
       </div>
