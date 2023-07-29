@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CategoryMenu } from '@constants/category';
 import { ListItemButton, Typography } from '@mui/material';
+import useCheckAuth from '@hooks/useCheckAuth';
 
 interface SubCategoryNavProps {
   viaPath?: string;
@@ -10,6 +11,12 @@ interface SubCategoryNavProps {
 
 const SubCategoryNav = ({ viaPath, subcategory }: SubCategoryNavProps) => {
   const categoryPath = viaPath ? `/${viaPath}/${subcategory.path}` : `/${subcategory.path}`;
+  const { checkIncludeOneOfAuths } = useCheckAuth();
+  const isAuthenticated = !subcategory.roles || checkIncludeOneOfAuths(subcategory.roles);
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <>

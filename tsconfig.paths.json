@@ -10,7 +10,8 @@
       "@mocks/*": ["src/mocks/*"],
       "@assets/*": ["src/assets/*"],
       "@utils/*": ["src/utils/*"],
-      "@recoil/*": ["src/recoil/*"]
+      "@recoil/*": ["src/recoil/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   }
 }
