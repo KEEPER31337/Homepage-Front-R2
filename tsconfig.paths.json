@@ -9,7 +9,8 @@
       "@constants/*": ["src/constants/*"],
       "@mocks/*": ["src/mocks/*"],
       "@assets/*": ["src/assets/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@recoil/*": ["src/recoil/*"]
     }
   }
 }
