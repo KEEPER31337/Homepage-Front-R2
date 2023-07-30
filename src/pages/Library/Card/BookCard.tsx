@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Typography } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
