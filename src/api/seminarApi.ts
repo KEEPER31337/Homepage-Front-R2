@@ -38,7 +38,7 @@ const startSeminar = (id: number) => {
 };
 
 const attendSeminar = (id: number) => {
-  const fetcher = (attendanceCode: string) => axios.post(`/seminars/${id}/attendances`, { attendanceCode });
+  const fetcher = (attendanceCode: string) => axios.patch(`/seminars/${id}/attendances`, { attendanceCode });
 
   return useMutation(fetcher, {
     onSuccess: (response) => {
@@ -48,9 +48,8 @@ const attendSeminar = (id: number) => {
 };
 
 const editAttendStatus = (seminarId: number, memberId: number) => {
-  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: ActivityStatus | null }) =>
+  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: ActivityStatus }) =>
     axios.patch(`/seminars/${seminarId}/attendances/${memberId}`, { excuse, statusType });
-
   return useMutation(fetcher, {
     onSuccess: (response) => {
       return response.data;
