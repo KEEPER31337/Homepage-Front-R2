@@ -16,7 +16,7 @@ const useRequestAuthCodeMutation = () => {
 
 const useCheckAuthCodeMutation = () => {
   const fetcher = ({ loginId, email, authCode }: { loginId: string; email: string; authCode: string }) =>
-    axios.get('/sign-in/check-auth-code', { params: { loginId, email, authCode } });
+    axios.get('/sign-in/check-auth-code', { params: { loginId, email, authCode } }).then(({ data }) => data);
 
   return useMutation(fetcher);
 };
