@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@material-tailwind/react';
+import { Typography } from '@mui/material';
 
 const dummyList = new Array(10).fill(0);
 

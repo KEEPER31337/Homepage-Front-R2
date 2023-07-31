@@ -4,7 +4,7 @@ import { PointRankInfo, pointColumns, pointRows, pointTop4 } from '@mocks/PointR
 import React, { useState } from 'react';
 import StandardTable from '@components/Table/StandardTable';
 import StandardTab from '@components/Tab/StandardTab';
-import { Typography } from '@material-tailwind/react';
+import { Typography } from '@mui/material';
 import TopCard from './TopCard';
 
 const AttendRankChileComponent = ({ key, value }: ChildComponent<AttendRankInfo>) => {

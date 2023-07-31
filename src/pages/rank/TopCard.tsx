@@ -1,5 +1,5 @@
+import { Typography } from '@mui/material';
 import React from 'react';
-import { Typography } from '@material-tailwind/react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface TopCardProps<T extends Record<string, any>> {
@@ -12,7 +12,7 @@ interface TopCardProps<T extends Record<string, any>> {
 const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCardProps<T>) => {
   return (
     <div key={item.id} className="relative h-40 w-full">
-      <div className="absolute h-full w-full pr-4 pb-4">
+      <div className="absolute h-full w-full pb-4 pr-4">
         <div className="flex h-full w-full bg-mainBlack p-4">
           <div className="flex h-full w-full flex-col justify-between">
             <div className="flex">
@@ -27,7 +27,7 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
           <img alt="profile" src="/img/sampleProfile.svg" className="mr-2 h-full object-contain" />
         </div>
       </div>
-      <div className="h-full w-full pt-4 pl-4">
+      <div className="h-full w-full pl-4 pt-4">
         <div className="h-full w-full border-2 border-pointBlue" />
       </div>
     </div>
