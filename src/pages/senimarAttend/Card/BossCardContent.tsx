@@ -19,11 +19,8 @@ const BossCardContent = () => {
 
   return (
     <>
-      <SeminarInput disabled />
-      <div className="flex justify-center">
-        <FilledButton onClick={startSeminar}>시작</FilledButton>
-      </div>
-      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
+      <SeminarInput disabled helperText="ㅤ" inputCode={[0, 0, 0, 0]} />
+      <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
           <div>지각</div>
@@ -41,6 +38,9 @@ const BossCardContent = () => {
             </>
           )}
         </div>
+      </div>
+      <div className="mt-[39px] flex justify-center">
+        <FilledButton onClick={startSeminar}>시작</FilledButton>
       </div>
     </>
   );
