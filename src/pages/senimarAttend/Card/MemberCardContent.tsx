@@ -33,9 +33,12 @@ const MemberCardContent = () => {
     attend(inputCode.join(''));
     setIsCorrectCode(isSuccess);
     if (isSuccess && isValidActivityStatus(attendancyData.statusText)) {
+      console.log(attendancyData.statusText);
       setAttendStatus(attendancyData.statusText);
       setIncorrectCodeMsg('ㅤ');
-    } else setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
+    }
+    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
+    else setIncorrectCodeMsg('ㅤ');
   };
 
   const deleteAttendance = () => {
