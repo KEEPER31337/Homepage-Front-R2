@@ -8,6 +8,7 @@ import FileUploader from '@components/Uploader/FileUploader';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import useUploadPostMutation from '@api/postApi';
 import { UploadPostSettings } from '@api/dto';
+import { useNavigate } from 'react-router-dom';
 import SettingUploadModal from './Modal/SettingUploadModal';
 
 const BoardWrite = () => {
@@ -24,6 +25,7 @@ const BoardWrite = () => {
   const [settingModalOpen, setSettingModalOpen] = useState(false);
 
   const editorRef = useRef<Editor>();
+  const navigate = useNavigate();
   const { mutate: uploadPostMutation } = useUploadPostMutation();
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +37,14 @@ const BoardWrite = () => {
 
     // TODO 필수값 처리
     // TODO isTemp 여부에 따라 content 옵셔널 처리, 업로드 이후 동작 처리
-    uploadPostMutation({ categoryId, title: postTitle, content, ...postSettingInfo });
+    uploadPostMutation(
+      { categoryId, title: postTitle, content, ...postSettingInfo },
+      {
+        onSuccess: () => {
+          navigate('/board/list');
+        },
+      },
+    );
   };
 
   const handleSaveButtonClick = ({ isTemp }: { isTemp: boolean }) => {
