@@ -12,10 +12,15 @@ import SettingUploadModal from './Modal/SettingUploadModal';
 
 const BoardWrite = () => {
   const boardName = '자유게시판'; // TODO 게시판 이름 불러오기
-  const categoryId = 116; // TODO 게시판 ID 연결하기
+  const categoryId = 104; // TODO 게시판 ID 연결하기
 
   const [postTitle, setPostTitle] = useState('');
-  const [postSettingInfo, setPostSettingInfo] = useState<UploadPostSettings | null>(null);
+  const [postSettingInfo, setPostSettingInfo] = useState<UploadPostSettings>({
+    isNotice: false,
+    isSecret: false,
+    isTemp: false,
+    allowComment: false,
+  });
   const [settingModalOpen, setSettingModalOpen] = useState(false);
 
   const editorRef = useRef<Editor>();

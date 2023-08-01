@@ -92,10 +92,10 @@ export interface CommentInfo {
 }
 
 export interface UploadPostSettings {
-  isNotice?: boolean;
-  isSecret?: boolean;
-  isTemp?: boolean;
-  allowComment?: boolean;
+  isNotice: boolean;
+  isSecret: boolean;
+  isTemp: boolean;
+  allowComment: boolean;
   password?: string;
 }
 
