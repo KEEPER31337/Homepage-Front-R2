@@ -7,24 +7,26 @@ import { Divider } from '@mui/material';
 import validateEmail from '@utils/validateEmail';
 import React, { useEffect, useState } from 'react';
 
+interface searchPWFormProps {
+  id: string;
+  email: string;
+  verificationCode: string;
+}
 interface SearchPWFirstStepProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  form: searchPWFormProps;
+  setForm: React.Dispatch<React.SetStateAction<searchPWFormProps>>;
 }
-const SearchPWFirstStep = ({ setCurrentStep }: SearchPWFirstStepProps) => {
-  const [form, setForm] = useState({
-    id: '',
-    email: '',
-    verificationCode: '',
-  });
-  const { mutate: RequestAuthcode } = useRequestAuthCodeMutation();
+const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
+  const { mutate: RequestAuthcode, isSuccess } = useRequestAuthCodeMutation();
   const { mutate: CheckAuthcode, data } = useCheckAuthCodeMutation();
 
   const [isSent, setIsSent] = useState(false);
   const [seconds, setSeconds] = useState(300);
   const [timer, setTimer] = useState('05:00');
-  const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
-  const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState<boolean>(false);
-  const [isValidAuthCode, setIsValidAuthCode] = useState<boolean>(true);
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
+  const [isValidAuthCode, setIsValidAuthCode] = useState(true);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setForm({
@@ -47,7 +49,9 @@ const SearchPWFirstStep = ({ setCurrentStep }: SearchPWFirstStepProps) => {
       return;
     }
     RequestAuthcode({ loginId: form.id, email: form.email });
-    setIsSent(true);
+    if (isSuccess) {
+      setIsSent(true);
+    }
   };
 
   const handleConfirmFirstStep = () => {
@@ -128,11 +132,13 @@ const SearchPWFirstStep = ({ setCurrentStep }: SearchPWFirstStepProps) => {
             endAdornment={<p>{timer}</p>}
           />
         </div>
-        <div className="flex justify-between">
-          {!isValidAuthCode && <p className="text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>}
+        <div className="responsive flex justify-between">
+          {!isValidAuthCode && (
+            <p className="abolute right-0 text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>
+          )}
           <button
             type="button"
-            className="cursor-pointer hover:underline hover:duration-300"
+            className="abolute left-0 cursor-pointer hover:underline hover:duration-300"
             onClick={() => setMailAuthenticationModalOpen(true)}
           >
             인증메일이 오지 않았나요?

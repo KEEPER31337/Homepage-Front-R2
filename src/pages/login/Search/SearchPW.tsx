@@ -4,11 +4,16 @@ import SearchPWSecondStep from './SearchPWSecondStep';
 import SearchPWThirdStep from './SearchPWThirdStep';
 
 const SearchPW = () => {
-  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [form, setForm] = useState({
+    id: '',
+    email: '',
+    verificationCode: '',
+  });
 
   const stepInputSection: { [key: number]: JSX.Element } = {
-    1: <SearchPWFirstStep setCurrentStep={setCurrentStep} />,
-    2: <SearchPWSecondStep setCurrentStep={setCurrentStep} />,
+    1: <SearchPWFirstStep setCurrentStep={setCurrentStep} form={form} setForm={setForm} />,
+    2: <SearchPWSecondStep setCurrentStep={setCurrentStep} firstForm={form} />,
     3: <SearchPWThirdStep />,
   };
   return (
