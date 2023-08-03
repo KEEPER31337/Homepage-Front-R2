@@ -9,9 +9,9 @@ import { Link } from 'react-router-dom';
 
 const SearchID = () => {
   const [email, setEmail] = useState('');
-  const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
+  const [isValidEmail, setIsValidEmail] = useState(false);
   const [isSent, setIsSent] = useState(false);
-  const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState<boolean>(false);
+  const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
   const { mutate: SearchId } = useSearchIdMutation();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
