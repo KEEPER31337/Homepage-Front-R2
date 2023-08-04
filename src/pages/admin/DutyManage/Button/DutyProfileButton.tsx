@@ -6,7 +6,7 @@ import muiTheme from '@constants/muiTheme';
 interface DutyProfileButtonProps {
   roleName: string;
   badgeImage: string;
-  setTooltipOpen: (arg0: boolean) => void;
+  setTooltipOpen: (open: boolean) => void;
   toggleModalOpen: () => void;
 }
 

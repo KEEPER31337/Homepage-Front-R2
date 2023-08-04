@@ -22,9 +22,9 @@ const CreateMiddleBar = () => {
   return (
     <div className="relative w-full">
       <div className="h-14 w-0" />
-      <div className="absolute bottom-[66.5px] right-1/2 h-4 w-4 translate-x-1/2 rounded-full bg-pointBlue"> </div>
-      <div className="absolute bottom-[14.5px] right-1/2 h-16 w-0 translate-x-1/2 border-2 border-pointBlue"> </div>
-      <div className="absolute bottom-[14.5px] right-[8.8%] h-0 w-[83%] border-2 border-pointBlue"> </div>
+      <div className="absolute bottom-[66.5px] right-1/2 h-4 w-4 translate-x-1/2 rounded-full bg-pointBlue" />
+      <div className="absolute bottom-[14.5px] right-1/2 h-16 w-0 translate-x-1/2 border-2 border-pointBlue" />
+      <div className="absolute bottom-[14.5px] right-[8.8%] h-0 w-[83%] border-2 border-pointBlue" />
       <div className="flex w-full flex-row justify-around">
         {roleNameArray.map((content) => (
           <div

@@ -34,25 +34,9 @@ const ChangeRolePersonModal = ({ open, toggleOpen, modalInfo }: ChangeRolePerson
 
   const [value, setValue] = useState<number>(1);
 
-  const handleTotalBookNumberChange = (event: SelectChangeEvent<unknown>) => {
+  const handleRoleDutyChange = (event: SelectChangeEvent<unknown>) => {
     setValue(Number(event.target.value as string));
   };
-
-  const content =
-    roleName === '전산관리자' ? (
-      <div className="!mx-12 flex w-60 flex-col !space-y-4">
-        <div className="grid grid-cols-4 items-center gap-2">
-          FRONT
-          <Selector className="col-span-3" value={value} onChange={handleTotalBookNumberChange} options={memberList} />
-        </div>
-        <div className="grid grid-cols-4 items-center gap-2">
-          BACK
-          <Selector className="col-span-3" value={value} onChange={handleTotalBookNumberChange} options={memberList} />
-        </div>
-      </div>
-    ) : (
-      <Selector className="!mx-12 w-60" value={value} onChange={handleTotalBookNumberChange} options={memberList} />
-    );
 
   return (
     <ActionModal
@@ -65,7 +49,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, modalInfo }: ChangeRolePerson
     >
       <div className="flex items-center">
         <img className="w-[150px]" alt={roleName} src={badgeImage} />
-        {content}
+        <Selector className="!mx-12 w-60" value={value} onChange={handleRoleDutyChange} options={memberList} />
       </div>
     </ActionModal>
   );
