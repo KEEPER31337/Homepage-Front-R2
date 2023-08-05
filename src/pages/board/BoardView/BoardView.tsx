@@ -15,7 +15,7 @@ const BoardView = () => {
     <div className="-mt-16 space-y-12">
       <div className="space-y-2">
         <BannerSection />
-        <PostSection />
+        <PostSection post={postInfo} />
       </div>
       <AdjacentPostNavSection previousPost={postInfo.previousPost} nextPost={postInfo.nextPost} />
       <CommentSection />
