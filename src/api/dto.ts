@@ -115,14 +115,8 @@ export interface FileInfo {
 }
 
 export interface AdjacentPostInfo {
-  previous: {
-    postId: number;
-    title: string;
-  };
-  next: {
-    postId: number;
-    title: string;
-  };
+  postId: number;
+  title: string;
 }
 
 export interface PostInfo {
@@ -134,7 +128,8 @@ export interface PostInfo {
   thumbnailPath: string;
   content: string;
   files: FileInfo[];
-  adjacentPosts: AdjacentPostInfo;
+  previousPost: AdjacentPostInfo;
+  nextPost: AdjacentPostInfo;
   likeCount: number;
   dislikeCount: number;
   allowComment: boolean;

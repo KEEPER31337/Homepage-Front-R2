@@ -26,15 +26,13 @@ const post: PostInfo = {
       uploadTime: '2023-07-10 10:48:23',
     },
   ],
-  adjacentPosts: {
-    previous: {
-      postId: 110,
-      title: '보통 절판된 책 어디서 보나요 ㅠㅠ',
-    },
-    next: {
-      postId: 112,
-      title: '[유용한 만화] 만화로 배우는 https',
-    },
+  previousPost: {
+    postId: 110,
+    title: '보통 절판된 책 어디서 보나요 ㅠㅠ',
+  },
+  nextPost: {
+    postId: 112,
+    title: '[유용한 만화] 만화로 배우는 https',
   },
   likeCount: 0,
   dislikeCount: 0,

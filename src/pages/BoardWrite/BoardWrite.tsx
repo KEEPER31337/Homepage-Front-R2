@@ -6,7 +6,7 @@ import StandardInput from '@components/Input/StandardInput';
 import StandardEditor from '@components/Editor/StandardEditor';
 import FileUploader from '@components/Uploader/FileUploader';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import useUploadPostMutation from '@api/postApi';
+import { useUploadPostMutation } from '@api/postApi';
 import { UploadPostSettings } from '@api/dto';
 import { useNavigate } from 'react-router-dom';
 import SettingUploadModal from './Modal/SettingUploadModal';
