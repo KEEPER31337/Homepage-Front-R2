@@ -1,7 +1,10 @@
+import { Role } from '@api/dto';
+
 export interface CategoryMenu {
   id: number;
   name: string;
   path?: string;
+  roles?: Role[];
 }
 
 export interface Category extends CategoryMenu {
@@ -12,41 +15,42 @@ const CATEGORIES: Category[] = [
   {
     id: 1,
     name: '게시판',
+    path: 'board',
     subCategories: [
       {
         id: 101,
         name: '공지사항',
-        path: '#',
+        path: '공지사항',
       },
       {
         id: 102,
         name: '건의사항',
-        path: '#',
+        path: '건의사항',
       },
       {
         id: 103,
         name: '정보게시판',
-        path: '#',
+        path: '정보게시판',
       },
       {
         id: 104,
         name: '자유게시판',
-        path: '#',
+        path: '자유게시판',
       },
       {
         id: 105,
         name: '익명게시판',
-        path: '#',
+        path: '익명게시판',
       },
       {
         id: 106,
         name: '졸업생게시판',
-        path: '#',
+        path: '졸업생게시판',
       },
       {
         id: 107,
         name: '시험게시판',
-        path: '#',
+        path: '시험게시판',
       },
     ],
   },
@@ -62,17 +66,17 @@ const CATEGORIES: Category[] = [
       {
         id: 202,
         name: '발표자료',
-        path: '#',
+        path: 'board/발표자료',
       },
       {
         id: 203,
         name: '기술문서',
-        path: '#',
+        path: 'board/기술문서',
       },
       {
         id: 204,
         name: '회계부',
-        path: '#',
+        path: 'board/회계부',
       },
     ],
   },
@@ -83,12 +87,7 @@ const CATEGORIES: Category[] = [
       {
         id: 301,
         name: '도서',
-        path: '#',
-      },
-      {
-        id: 302,
-        name: '기자재',
-        path: '#',
+        path: 'library',
       },
     ],
   },
@@ -103,13 +102,8 @@ const CATEGORIES: Category[] = [
       },
       {
         id: 402,
-        name: '활동인원조사',
-        path: '#',
-      },
-      {
-        id: 403,
         name: '임원진 선거',
-        path: '#',
+        path: 'election',
       },
     ],
   },
@@ -120,94 +114,100 @@ const CATEGORIES: Category[] = [
       {
         id: 501,
         name: '랭킹',
-        path: '#',
+        path: 'rank',
       },
       {
         id: 502,
         name: '게임',
-        path: '#',
+        path: 'game',
       },
     ],
   },
   {
     id: 6,
     name: 'CTF',
+    path: 'ctf',
     subCategories: [
       {
         id: 601,
         name: 'CTF',
-        path: '#',
+        path: 'select',
       },
       {
         id: 602,
         name: 'CHALLENGES',
-        path: '#',
+        path: 'challenge',
       },
       {
         id: 603,
         name: 'SCOREBOARD',
-        path: '#',
+        path: 'scoreboard',
       },
       {
         id: 604,
         name: 'TEAM',
-        path: '#',
+        path: 'team',
       },
       {
         id: 605,
         name: '문제관리',
-        path: '#',
+        path: 'admin/challengeManage',
+        roles: ['ROLE_회장', 'ROLE_출제자'],
       },
       {
         id: 606,
         name: '제출로그',
-        path: '#',
+        path: 'admin/submissions',
+        roles: ['ROLE_회장', 'ROLE_출제자'],
       },
       {
         id: 607,
         name: '대회운영',
-        path: '#',
+        path: 'admin/operation',
+        roles: ['ROLE_회장'],
       },
     ],
   },
   {
     id: 7,
     name: '관리자페이지',
+    path: 'admin',
     subCategories: [
       {
         id: 701,
         name: '직책관리',
-        path: 'admin/dutyManage',
+        path: 'dutyManage',
+        roles: ['ROLE_회장'],
       },
       {
         id: 702,
         name: '선거관리',
-        path: '#',
+        path: 'electionManage',
+        roles: ['ROLE_회장'],
       },
       {
         id: 703,
         name: '도서관리',
-        path: 'admin/libraryManage',
+        path: 'libraryManage',
+        roles: ['ROLE_회장', 'ROLE_사서'],
       },
       {
         id: 704,
-        name: '기자재관리',
-        path: '#',
+        name: '세미나관리',
+        path: 'seminarManage',
+        roles: ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'],
       },
       {
         id: 705,
-        name: '세미나관리',
-        path: 'admin/seminarManage',
+        name: '활동인원관리',
+        path: 'activeMemberManage',
+        roles: ['ROLE_회장', 'ROLE_서기'],
       },
       {
         id: 706,
-        name: '활동인원관리',
-        path: '#',
-      },
-      {
-        id: 707,
         name: '상벌점관리',
-        path: '#',
+        path: 'rewordPenaltyManage',
+        roles: ['ROLE_회장', 'ROLE_서기'],
       },
     ],
   },
