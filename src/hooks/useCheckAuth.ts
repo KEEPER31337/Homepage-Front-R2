@@ -7,7 +7,7 @@ const useCheckAuth = () => {
   const member = useRecoilValue(memberState);
 
   const checkAuth = useMemo(() => {
-    return (requiredRole: Role) => member.includes(requiredRole);
+    return (requiredRole: Role) => member.roles.includes(requiredRole);
   }, [member]);
 
   const checkIncludeOneOfAuths = useMemo(() => {

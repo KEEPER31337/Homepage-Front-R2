@@ -54,7 +54,7 @@ const Login = () => {
         { loginId: form.id, password: form.password },
         {
           onSuccess: ({ data }) => {
-            setMemberState(data);
+            setMemberState({ roles: data.memberJobs });
           },
         },
       );
