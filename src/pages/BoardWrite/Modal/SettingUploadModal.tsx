@@ -8,16 +8,19 @@ import { UploadPostSettings } from '@api/dto';
 interface SettingUploadModalProps {
   open: boolean;
   onClose: () => void;
-  postSettingInfo: UploadPostSettings | null;
-  setPostSettingInfo: React.Dispatch<React.SetStateAction<UploadPostSettings | null>>;
+  onUploadButonClick: () => void;
+  postSettingInfo: UploadPostSettings;
+  setPostSettingInfo: React.Dispatch<React.SetStateAction<UploadPostSettings>>;
 }
 
-const SettingUploadModal = ({ open, onClose, postSettingInfo, setPostSettingInfo }: SettingUploadModalProps) => {
+const SettingUploadModal = ({
+  open,
+  onClose,
+  onUploadButonClick,
+  postSettingInfo,
+  setPostSettingInfo,
+}: SettingUploadModalProps) => {
   const [, setThumbnail] = useState<Blob>();
-
-  const handleActionButonClick = () => {
-    // TODO
-  };
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
@@ -27,13 +30,21 @@ const SettingUploadModal = ({ open, onClose, postSettingInfo, setPostSettingInfo
     }));
   };
 
+  const handleSecretPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPostSettingInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <ActionModal
       open={open}
       onClose={onClose}
-      title="설정 확인 및 업로드"
-      actionButtonName="업로드"
-      onActionButonClick={handleActionButonClick}
+      title={`설정 확인 및 ${postSettingInfo.isTemp ? '임시저장' : '업로드'}`}
+      actionButtonName={postSettingInfo.isTemp ? '임시저장' : '업로드'}
+      onActionButonClick={onUploadButonClick}
     >
       <div className="mb-5 h-36">
         <ImageUploader isEdit={false} setThumbnail={setThumbnail} />
@@ -42,14 +53,14 @@ const SettingUploadModal = ({ open, onClose, postSettingInfo, setPostSettingInfo
         <span>
           <FormControlLabel
             control={
-              <Checkbox checked={Boolean(postSettingInfo?.isNotice)} name="isNotice" onChange={handleCheckBoxChange} />
+              <Checkbox checked={Boolean(postSettingInfo.isNotice)} name="isNotice" onChange={handleCheckBoxChange} />
             }
             label="공지"
           />
           <FormControlLabel
             control={
               <Checkbox
-                checked={Boolean(postSettingInfo?.allowComment)}
+                checked={Boolean(postSettingInfo.allowComment)}
                 name="allowComment"
                 onChange={handleCheckBoxChange}
               />
@@ -60,18 +71,17 @@ const SettingUploadModal = ({ open, onClose, postSettingInfo, setPostSettingInfo
         <span className="flex items-center">
           <FormControlLabel
             control={
-              <Checkbox checked={Boolean(postSettingInfo?.isSecret)} name="isSecret" onChange={handleCheckBoxChange} />
+              <Checkbox checked={Boolean(postSettingInfo.isSecret)} name="isSecret" onChange={handleCheckBoxChange} />
             }
             label="비밀글"
           />
-          {postSettingInfo?.isSecret && (
+          {postSettingInfo.isSecret && (
             <StandardInput
-              value=""
+              name="password"
+              value={postSettingInfo.password || ''}
               type="password"
               placeholder="게시글 비밀번호"
-              onChange={() => {
-                // TODO
-              }}
+              onChange={handleSecretPasswordChange}
             />
           )}
         </span>
