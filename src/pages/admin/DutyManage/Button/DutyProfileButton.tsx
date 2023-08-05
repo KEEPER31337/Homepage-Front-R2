@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Typography } from '@mui/material';
-import { roles, roleInfos } from '@mocks/DutyManageApi';
+import { roleInfos } from '@mocks/DutyManageApi';
 import muiTheme from '@constants/muiTheme';
 
 interface DutyProfileButtonProps {

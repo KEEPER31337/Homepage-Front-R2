@@ -2,8 +2,8 @@ import React, { useState, useReducer } from 'react';
 import { Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import { roleDutyListInfo, roles } from '@mocks/DutyManageApi';
+import muiTheme from '@constants/muiTheme';
 
 import DescriptionRoleDutyTooltip from './DescriptionRoleDutyTooltip';
 import DutyProfileButton from '../Button/DutyProfileButton';
@@ -27,27 +27,28 @@ const DutyProfileTooltip = ({ roleName }: DutyProfileTooltipProps) => {
 
   /* button hover 했을 시 나오는 문장 */
   const tooltipContent = (
-    <List sx={{ px: '8px', py: '16px' }}>
+    <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
       {roleDutyListInfo
         .filter((duty) => duty.roleName === roleName)
         .map((data) =>
           data.roleDuty.map((duty) => (
-            <ListItem key={duty.key} sx={{ px: '0px', py: '2px', alignItems: 'start' }}>
-              <ListItemIcon
+            <ListItem key={duty.key} sx={{ px: '0px', py: '0px' }}>
+              {/* fontWeight: 600 = semi-bold */}
+              <Typography
                 sx={{
-                  height: '24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  minWidth: '0px',
-                  paddingRight: '8px',
-                  alignContent: 'flex-start',
+                  fontWeight: 600,
+                  color: 'white',
+                  alignItems: 'start',
+                  listStyleType: 'circle',
+                  display: 'list-item',
+                  '&::marker': {
+                    color: muiTheme.palette.primary.main,
+                    fontSize: '20px',
+                  },
                 }}
               >
-                {/* 문장의 제일 앞에 나오는 원 icon */}
-                <div className="h-2 w-2 rounded-full border-2 border-pointBlue" />
-              </ListItemIcon>
-              {/* fontWeight: 600 = semi-bold */}
-              <Typography sx={{ fontWeight: 600, color: 'white' }}>{duty.content}</Typography>
+                {duty.content}
+              </Typography>
             </ListItem>
           )),
         )}
