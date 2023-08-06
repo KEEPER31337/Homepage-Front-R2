@@ -29,7 +29,8 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
         />
       ) : (
         <>
-          <Avatar alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />
+          {/* TODO 현재 계정 프로필 썸네일 가져오기 */}
+          <Avatar className="!h-7 !w-7" alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />
           <button
             type="button"
             className="flex h-9 w-full items-center border border-subBlack bg-mainBlack pl-3"
