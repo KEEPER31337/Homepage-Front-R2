@@ -6,7 +6,7 @@ const post: PostInfo = {
   writerName: 'UmbEizQdxY',
   writerThumbnailPath: null,
   visitCount: 1,
-  thumbnailPath: 'keeper_files/thumbnail/2023-07-10/46683d42-5b7d-4eb7-a52e-249684557551.jpeg',
+  thumbnailPath: 'https://avatars.githubusercontent.com/u/78250089?v=4',
   content: '게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용',
   files: [
     {
