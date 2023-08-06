@@ -12,7 +12,7 @@ const SearchID = () => {
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
-  const { mutate: SearchId } = useSearchIdMutation();
+  const { mutate: searchId } = useSearchIdMutation();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -23,7 +23,7 @@ const SearchID = () => {
   };
 
   const handleConfirmClick = () => {
-    SearchId({ email });
+    searchId({ email });
     setIsSent(true);
   };
 
@@ -34,8 +34,7 @@ const SearchID = () => {
   };
 
   const handleResendMailButtonClick = () => {
-    // TODO 같은 이메일로 api 재호출
-    SearchId({ email });
+    searchId({ email });
     setMailAuthenticationModalOpen(false);
   };
 

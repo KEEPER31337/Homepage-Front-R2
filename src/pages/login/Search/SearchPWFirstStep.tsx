@@ -18,8 +18,8 @@ interface SearchPWFirstStepProps {
   setForm: React.Dispatch<React.SetStateAction<searchPWFormProps>>;
 }
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
-  const { mutate: RequestAuthcode, isSuccess } = useRequestAuthCodeMutation();
-  const { mutate: CheckAuthcode, data } = useCheckAuthCodeMutation();
+  const { mutate: requestAuthcode, isSuccess } = useRequestAuthCodeMutation();
+  const { mutate: checkAuthcode, data } = useCheckAuthCodeMutation();
 
   const [isSent, setIsSent] = useState(false);
   const [seconds, setSeconds] = useState(300);
@@ -48,14 +48,14 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
       alert('이메일을 입력해주세요.');
       return;
     }
-    RequestAuthcode({ loginId: form.id, email: form.email });
+    requestAuthcode({ loginId: form.id, email: form.email });
     if (isSuccess) {
       setIsSent(true);
     }
   };
 
   const handleConfirmFirstStep = () => {
-    CheckAuthcode({ loginId: form.id, email: form.email, authCode: form.verificationCode });
+    checkAuthcode({ loginId: form.id, email: form.email, authCode: form.verificationCode });
     if (data?.auth === true) {
       setCurrentStep(2);
     } else {
@@ -70,7 +70,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   };
 
   const handleResendMailButtonClick = () => {
-    RequestAuthcode({ loginId: form.id, email: form.email });
+    requestAuthcode({ loginId: form.id, email: form.email });
     setMailAuthenticationModalOpen(false);
   };
 

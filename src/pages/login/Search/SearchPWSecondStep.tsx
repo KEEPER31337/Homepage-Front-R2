@@ -4,15 +4,29 @@ import BackgroundInput from '@components/Input/BackgroundInput';
 import { Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
+interface searchPWFormProps {
+  id: string;
+  email: string;
+  verificationCode: string;
+}
+
 interface SearchPWSecondStepProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  firstForm: searchPWFormProps;
 }
-const SearchPWSecondStep = ({ setCurrentStep }: SearchPWSecondStepProps) => {
+const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepProps) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [form, setForm] = useState({
     newPassword: '',
     confirmPassword: '',
   });
+
+  const isSamePassword = () => {
+    if (form.newPassword === '' && form.confirmPassword === '') {
+      setIsValid(true);
+    }
+    setIsValid(form.newPassword === form.confirmPassword);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -21,19 +35,12 @@ const SearchPWSecondStep = ({ setCurrentStep }: SearchPWSecondStepProps) => {
       [name]: value,
     });
     if (name === 'confirmPassword') {
-      // TODO
+      isSamePassword();
     }
   };
 
   const handleConfirmSecondStep = () => {
     setCurrentStep(3);
-  };
-
-  const isSamePassword = () => {
-    if (form.newPassword === '' && form.confirmPassword === '') {
-      return false;
-    }
-    return form.newPassword === form.confirmPassword;
   };
 
   return (
@@ -64,10 +71,11 @@ const SearchPWSecondStep = ({ setCurrentStep }: SearchPWSecondStepProps) => {
             onChange={handleChange}
           />
         </div>
+        {isValid && <p className="abolute right-0 text-red-500">비밀번호가 일치하지 않습니다.</p>}
       </div>
       <Divider className="bg-pointBlue" />
       <div className="mt-10 text-center">
-        <OutlinedButton disabled={!isSamePassword()} onClick={handleConfirmSecondStep}>
+        <OutlinedButton disabled={!isSamePassword} onClick={handleConfirmSecondStep}>
           확인
         </OutlinedButton>
       </div>
