@@ -6,7 +6,7 @@ import PostSection from './Section/PostSection';
 import BannerSection from './Section/BannerSection';
 
 const BoardView = () => {
-  const postId = 15; // TODO 게시판 목록에서 받아오기
+  const postId = 16; // TODO 게시판 목록에서 받아오기
   const { data: postInfo } = useGetEachPostQuery(postId);
 
   if (!postInfo) return null;
@@ -18,7 +18,7 @@ const BoardView = () => {
         <PostSection post={postInfo} />
       </div>
       <AdjacentPostNavSection previousPost={postInfo.previousPost} nextPost={postInfo.nextPost} />
-      <CommentSection />
+      <CommentSection postId={postId} allowComment={postInfo.allowComment} />
     </div>
   );
 };
