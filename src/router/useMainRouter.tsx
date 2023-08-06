@@ -76,7 +76,7 @@ const useMainRouter = () =>
               path: 'board',
               children: [
                 {
-                  path: ':boardName',
+                  path: ':categoryName',
                   element: <BoardList />,
                 },
                 {

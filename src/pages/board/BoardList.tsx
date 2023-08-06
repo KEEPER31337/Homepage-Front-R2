@@ -1,7 +1,7 @@
 import React from 'react';
 import TableViewSwitchButton from '@components/Button/TableViewSwitchButton';
 import StandardTable from '@components/Table/StandardTable';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import SearchSection from '@components/Section/SearchSection';
@@ -40,8 +40,7 @@ const dummyRow: BoardRow[] = [
 ];
 
 const BoardList = () => {
-  const [searchParams] = useSearchParams();
-  const category: string | null = searchParams.get('category');
+  const { categoryName } = useParams();
   const navigate = useNavigate();
 
   const handleWriteButtonClick = () => {
@@ -51,7 +50,7 @@ const BoardList = () => {
   return (
     <div>
       <div className="flex justify-between">
-        <PageTitle>{category}</PageTitle>
+        <PageTitle>{categoryName}</PageTitle>
         <OutlinedButton onClick={handleWriteButtonClick}>글쓰기</OutlinedButton>
       </div>
       <div className="flex items-center justify-between pb-5">
