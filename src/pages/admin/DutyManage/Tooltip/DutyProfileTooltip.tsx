@@ -19,9 +19,9 @@ const DutyProfileTooltip = ({ roleName }: DutyProfileTooltipProps) => {
 
   let badgeImage;
   if (roleName === 'FRONT' || roleName === 'BACK' || roleName === 'INFRA') {
-    badgeImage = roles.filter((role) => role.name === '전산관리자')[0].img;
+    badgeImage = roles.find((role) => role.name === '전산관리자')?.img;
   } else {
-    badgeImage = roles.filter((role) => role.name === roleName)[0].img;
+    badgeImage = roles.find((role) => role.name === roleName)?.img;
   }
   const modalInfo = { name: roleName, badge: badgeImage };
 

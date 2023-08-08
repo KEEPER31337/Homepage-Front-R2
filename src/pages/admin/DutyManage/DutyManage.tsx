@@ -18,7 +18,7 @@ const ITRoleNameArray = [
   { key: 3, roleName: 'INFRA' },
 ];
 
-const CreateMiddleBar = () => {
+const MiddleBar = () => {
   return (
     <div className="relative w-full">
       <div className="h-14 w-0" />
@@ -39,7 +39,7 @@ const CreateMiddleBar = () => {
   );
 };
 
-const CreateItBar = () => {
+const ItBar = () => {
   return (
     <div className="relative flex h-fit w-full">
       <div className="h-0 w-[24.6%]" />
@@ -54,7 +54,7 @@ const CreateItBar = () => {
   );
 };
 
-const CreateViceChairman = () => {
+const ViceChairman = () => {
   return (
     <div className="relative w-full">
       <div className="absolute bottom-0 left-[50%] h-48 w-1/2">
@@ -79,16 +79,16 @@ const DutyManage = () => {
       <PageTitle>직책관리</PageTitle>
       <div className="flex flex-col items-center">
         <DutyProfileTooltip roleName="회장" />
-        <CreateViceChairman />
+        <ViceChairman />
 
-        <CreateMiddleBar />
+        <MiddleBar />
         <div className="mt-2 flex w-full flex-row items-start justify-around">
           {roleNameArray.map((content) => (
             <DutyProfileTooltip key={content.key} roleName={content.roleName} />
           ))}
         </div>
 
-        <CreateItBar />
+        <ItBar />
         <div className="flex h-fit w-full">
           <div className="h-0 w-[17%]" />
           <div className="flex w-[49%] flex-row items-start justify-around">

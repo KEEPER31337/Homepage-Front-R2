@@ -8,7 +8,7 @@ interface ChangeRolePersonModalProps {
   toggleOpen: () => void;
   modalInfo: {
     name: string;
-    badge: string;
+    badge: string | undefined;
   };
 }
 
