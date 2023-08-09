@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useMemo } from 'react';
 import { Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -13,6 +13,39 @@ interface DutyProfileTooltipProps {
   roleName: string;
 }
 
+const tooltipContent = (roleName: string) =>
+  useMemo(
+    () => (
+      <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
+        {roleDutyListInfo
+          .filter((duty) => duty.roleName === roleName)
+          .map((data) =>
+            data.roleDuty.map((duty) => (
+              <ListItem key={duty.key} sx={{ px: '0px', py: '0px' }}>
+                {/* fontWeight: 600 = semi-bold */}
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                    color: 'white',
+                    alignItems: 'start',
+                    listStyleType: 'circle',
+                    display: 'list-item',
+                    '&::marker': {
+                      color: muiTheme.palette.primary.main,
+                      fontSize: '20px',
+                    },
+                  }}
+                >
+                  {duty.content}
+                </Typography>
+              </ListItem>
+            )),
+          )}
+      </List>
+    ),
+    [roleName],
+  );
+
 const DutyProfileTooltip = ({ roleName }: DutyProfileTooltipProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [modalOpen, toggleModalOpen] = useReducer((prev) => !prev, false);
@@ -25,39 +58,9 @@ const DutyProfileTooltip = ({ roleName }: DutyProfileTooltipProps) => {
   }
   const modalInfo = { name: roleName, badge: badgeImage };
 
-  /* button hover 했을 시 나오는 문장 */
-  const tooltipContent = (
-    <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
-      {roleDutyListInfo
-        .filter((duty) => duty.roleName === roleName)
-        .map((data) =>
-          data.roleDuty.map((duty) => (
-            <ListItem key={duty.key} sx={{ px: '0px', py: '0px' }}>
-              {/* fontWeight: 600 = semi-bold */}
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  color: 'white',
-                  alignItems: 'start',
-                  listStyleType: 'circle',
-                  display: 'list-item',
-                  '&::marker': {
-                    color: muiTheme.palette.primary.main,
-                    fontSize: '20px',
-                  },
-                }}
-              >
-                {duty.content}
-              </Typography>
-            </ListItem>
-          )),
-        )}
-    </List>
-  );
-
   return (
     <DescriptionRoleDutyTooltip
-      title={roleName !== '전산관리자' ? tooltipContent : null}
+      title={roleName !== '전산관리자' ? tooltipContent(roleName) : null}
       open={tooltipOpen}
       onMouseEnter={() => setTooltipOpen(true)}
       onMouseLeave={() => setTooltipOpen(false)}

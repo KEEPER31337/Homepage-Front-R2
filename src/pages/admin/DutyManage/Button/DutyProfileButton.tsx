@@ -21,7 +21,7 @@ const ProfileName = ({ roleName }: { roleName: string }) => {
 };
 
 const DutyProfileButton = ({ roleName, badgeImage, setTooltipOpen, toggleModalOpen }: DutyProfileButtonProps) => {
-  const handleRoleProfileCreateButtonClick = () => {
+  const handleCreateRoleModalButtonClick = () => {
     setTooltipOpen(false);
     toggleModalOpen();
   };
@@ -39,7 +39,7 @@ const DutyProfileButton = ({ roleName, badgeImage, setTooltipOpen, toggleModalOp
 
   return (
     <Button
-      onClick={handleRoleProfileCreateButtonClick}
+      onClick={handleCreateRoleModalButtonClick}
       sx={{
         width: '120px',
         display: 'flex',
