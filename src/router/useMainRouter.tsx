@@ -84,7 +84,7 @@ const useMainRouter = () =>
                   element: <BoardWrite />,
                 },
                 {
-                  path: 'view',
+                  path: 'view/:postId',
                   element: <BoardView />,
                 },
               ],

@@ -45,7 +45,9 @@ const BoardList = () => {
   };
 
   const handlePostRowClick = ({ rowData }: { rowData: Row<BoardRow> }) => {
-    // TODO
+    if (!rowData.id) return;
+
+    navigate(`/board/view/${rowData.id}`);
   };
 
   return (
