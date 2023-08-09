@@ -20,7 +20,7 @@ const useUploadPostMutation = () => {
 const useGetPostListQuery = ({ categoryId }: { categoryId: number }) => {
   const fetcher = () => axios.get('/posts', { params: { categoryId } }).then(({ data }) => data);
 
-  return useQuery<BoardPosts>(['posts'], fetcher);
+  return useQuery<BoardPosts>(['posts', categoryId], fetcher);
 };
 
 const useGetEachPostQuery = (postId: number) => {
