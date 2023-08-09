@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { ChildComponent, Column, Row } from './StandardTable.interface';
@@ -37,38 +37,48 @@ const StandardTable = <T extends Record<string, any>>({
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              className={`${onRowClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'}`}
-              key={row.id}
-              onClick={onRowClick ? () => onRowClick({ rowData: row }) : undefined}
-            >
-              {columns.map((column) => {
-                return (
-                  <TableCell
-                    padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
-                    className="!border-subBlack bg-mainBlack !text-white"
-                    key={column.key as string}
-                  >
-                    {isCheckboxColumn(column.key) ? (
-                      <Checkbox />
-                    ) : (
-                      <div>
-                        {childComponent
-                          ? childComponent({
-                              key: column.key,
-                              value: row[column.key],
-                              rowData: row,
-                            })
-                          : row[column.key]}
-                      </div>
-                    )}
-                  </TableCell>
-                );
-              })}
+        <TableBody className="bg-mainBlack">
+          {rows.length === 0 ? (
+            <TableRow>
+              <TableCell className="!border-none" colSpan={columns.length}>
+                <Typography align="center" marginY={8}>
+                  데이터가 없습니다.
+                </Typography>
+              </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            rows.map((row) => (
+              <TableRow
+                className={`${onRowClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'}`}
+                key={row.id}
+                onClick={onRowClick ? () => onRowClick({ rowData: row }) : undefined}
+              >
+                {columns.map((column) => {
+                  return (
+                    <TableCell
+                      padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
+                      className="!border-subBlack bg-mainBlack !text-white"
+                      key={column.key as string}
+                    >
+                      {isCheckboxColumn(column.key) ? (
+                        <Checkbox />
+                      ) : (
+                        <div>
+                          {childComponent
+                            ? childComponent({
+                                key: column.key,
+                                value: row[column.key],
+                                rowData: row,
+                              })
+                            : row[column.key]}
+                        </div>
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
       <StandardTablePagination rowsPerPage={10} />
