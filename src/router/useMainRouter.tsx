@@ -5,6 +5,7 @@ import SeminarManage from '@pages/admin/SeminarManage';
 import Study from '@pages/Study/Study';
 import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
+import DutyManage from '@pages/admin/DutyManage/DutyManage';
 
 import MainLayout from '@components/Layout/MainLayout';
 import FullContainer from '@components/Layout/Container/FullContainer';
@@ -48,7 +49,7 @@ const useMainRouter = () =>
               children: [
                 {
                   path: 'dutyManage',
-                  element: <div />,
+                  element: <DutyManage />,
                 },
                 {
                   path: 'electionManage',
