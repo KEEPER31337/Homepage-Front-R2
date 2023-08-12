@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
@@ -10,14 +10,16 @@ import FileUploader from '@components/Uploader/FileUploader';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { useUploadPostMutation } from '@api/postApi';
 import { UploadPostSettings } from '@api/dto';
+import { categoryNameToId } from '@utils/converter';
 import SettingUploadModal from './Modal/SettingUploadModal';
 
 const POST_TITLE_MAX_LENGTH = 50;
 const REQUIRE_ERROR_MSG = '필수 정보입니다.';
 
 const BoardWrite = () => {
-  const boardName = '자유게시판'; // TODO 게시판 이름 불러오기
-  const categoryId = 104; // TODO 게시판 ID 연결하기
+  const { categoryName } = useParams();
+  const categoryId = categoryName ? categoryNameToId(categoryName) : null;
+  if (!categoryId) return null;
 
   const [postSettingInfo, setPostSettingInfo] = useState<UploadPostSettings>({
     isNotice: false,
@@ -52,7 +54,7 @@ const BoardWrite = () => {
       { categoryId, title: getValues('postTitle'), content, ...postSettingInfo },
       {
         onSuccess: () => {
-          navigate('/board/list');
+          navigate(`/board/${categoryName}`);
         },
       },
     );
@@ -72,10 +74,10 @@ const BoardWrite = () => {
 
   return (
     <div>
-      <PageTitle>{boardName}</PageTitle>
+      <PageTitle>{categoryName}</PageTitle>
       <div className="mb-5 flex w-full items-center">
         <Stack flexDirection="row" marginRight={4}>
-          <Typography fontWeight="semibold" className="t-1 !mr-2">
+          <Typography fontWeight="semibold" className="!mr-2 pt-1">
             제목
           </Typography>
           <Controller

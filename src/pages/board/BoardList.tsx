@@ -41,7 +41,7 @@ const BoardList = () => {
   }
 
   const handleWriteButtonClick = () => {
-    navigate('/board/write');
+    navigate(`/board/write/${categoryName}`);
   };
 
   const handlePostRowClick = ({ rowData }: { rowData: Row<BoardRow> }) => {

@@ -81,7 +81,7 @@ const useMainRouter = () =>
                   element: <BoardList />,
                 },
                 {
-                  path: 'write',
+                  path: 'write/:categoryName',
                   element: <BoardWrite />,
                 },
                 {
