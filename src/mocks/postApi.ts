@@ -1,6 +1,7 @@
 import { PostInfo } from '@api/dto';
 
 const post: PostInfo = {
+  categoryId: 1,
   categoryName: '카테고리 이름',
   title: '게시글 제목',
   writerName: 'UmbEizQdxY',
@@ -8,24 +9,6 @@ const post: PostInfo = {
   visitCount: 1,
   thumbnailPath: 'https://avatars.githubusercontent.com/u/78250089?v=4',
   content: '게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용',
-  files: [
-    {
-      id: 88,
-      name: 'testImage_1x1.png',
-      path: 'keeper_files/files/2023-07-10/8d91f421-0519-426a-83ce-fcb25c094fc5.png',
-      size: 95,
-      ipAddress: '127.0.0.1',
-      uploadTime: '2023-07-10 10:48:23',
-    },
-    {
-      id: 89,
-      name: '2.txt',
-      path: 'keeper_files/files/2023-07-10/8d91f421-0519-426a-83ce-fcb25c094fc5.png',
-      size: 95,
-      ipAddress: '127.0.0.1',
-      uploadTime: '2023-07-10 10:48:23',
-    },
-  ],
   previousPost: {
     postId: 110,
     title: '보통 절판된 책 어디서 보나요 ㅠㅠ',
