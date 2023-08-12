@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import { attendSeminar, editAttendStatus, getAvailableSeminarInfo } from '@api/seminarApi';
+import ConfirmModal from '@components/Modal/ConfirmModal';
+import { Typography } from '@mui/material';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
@@ -20,6 +22,7 @@ const MemberCardContent = () => {
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
+  const [excessModalOn, setExcessModalOn] = useState(false);
   const isValidActivityStatus = (value: string): value is ActivityStatus => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
@@ -41,9 +44,13 @@ const MemberCardContent = () => {
       setIncorrectCodeMsg('ㅤ');
     }
     if (inputCode.join('') !== validCode) {
-      setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
       const attemptNum = parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1;
-      if (attemptNum <= 5) localStorage.setItem('출석시도횟수', String(attemptNum));
+      if (attemptNum <= 5) {
+        localStorage.setItem('출석시도횟수', String(attemptNum));
+        setIncorrectCodeMsg(`출석코드가 틀렸습니다.(남은 제출횟수 ${attemptNum}회)`);
+      } else {
+        setExcessModalOn(true);
+      }
     } else setIncorrectCodeMsg('ㅤ');
   };
 
@@ -55,6 +62,15 @@ const MemberCardContent = () => {
 
   return (
     <div className={`${availableSeminarData?.id === null && 'opacity-50'}`}>
+      <ConfirmModal
+        open={excessModalOn}
+        modalWidth="sm"
+        onClose={() => setExcessModalOn(false)}
+        title="출석 제한 횟수 초과"
+      >
+        <Typography>가능한 출석 횟수를 초과했습니다.</Typography>
+        <Typography>출석 처리에 문제가 있는 경우 회장님에게 문의해주세요</Typography>
+      </ConfirmModal>
       <div className="mb-[15px]">
         <SeminarInput
           disabled={availableSeminarData?.id === null}
