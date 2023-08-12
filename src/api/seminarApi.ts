@@ -9,7 +9,7 @@ const seminarKeys = {
   startSeminar: ['startSeminar'] as const,
 };
 
-const useGetSeminarInfo = ({ id }: { id: number }) => {
+const useGetSeminarInfo = (id: number) => {
   const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
 
   return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);

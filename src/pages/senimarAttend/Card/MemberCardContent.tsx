@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
-import { attendSeminar, editAttendStatus, getAvailableSeminarInfo } from '@api/seminarApi';
+import { attendSeminar, editAttendStatus, useGetSeminarInfo } from '@api/seminarApi';
 import { AxiosError } from 'axios';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
@@ -14,12 +14,12 @@ interface ErrorResponse {
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
-  const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo(); // 진행중인 세미나 존재하는가
+  const { data: seminarData } = useGetSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
   const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(5);
-  const startTime = DateTime.fromISO(availableSeminarData?.openTime || '');
-  const attendLimit = DateTime.fromISO(availableSeminarData?.attendanceCloseTime || '');
-  const lateLimit = DateTime.fromISO(availableSeminarData?.latenessCloseTime || '');
-  const validCode = availableSeminarData?.attendanceCode;
+  const startTime = DateTime.fromISO(seminarData?.openTime || '');
+  const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
+  const lateLimit = DateTime.fromISO(seminarData?.latenessCloseTime || '');
+  const validCode = seminarData?.attendanceCode;
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
@@ -29,8 +29,8 @@ const MemberCardContent = () => {
   const { mutate: editStatus } = editAttendStatus(5, 6); // 테스트용 임시
 
   useEffect(() => {
-    availableSeminarRefetch();
-  }, [availableSeminarData]);
+    setAttendStatus(seminarData?.statusType);
+  }, [seminarData]);
 
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
@@ -63,13 +63,13 @@ const MemberCardContent = () => {
   // TODO: 출석 종료시 자동 결석처리, 문구 결석으로 바꾸기
 
   return (
-    <div className={`${availableSeminarData?.id === null && 'opacity-50'}`}>
+    <div className={`${seminarData?.seminarId === null && 'opacity-50'}`}>
       <div className="mb-[15px]">
         <SeminarInput
-          disabled={availableSeminarData?.id === null}
+          disabled={seminarData?.seminarId === null}
           helperText={incorrectCodeMsg}
           setInputCode={setInputCode}
-          inputCode={availableSeminarData?.id === null ? ['', '', '', ''] : inputCode}
+          inputCode={seminarData?.seminarId === null ? ['', '', '', ''] : inputCode}
         />
       </div>
 
