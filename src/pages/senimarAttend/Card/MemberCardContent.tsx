@@ -14,9 +14,9 @@ interface ErrorResponse {
   message: string;
 }
 
-const MemberCardContent = () => {
-  const { data: seminarData } = getSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
-  const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(5);
+const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
+  const { data: seminarData } = getSeminarInfo(seminarId);
+  const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(seminarId);
   const startTime = DateTime.fromISO(seminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(seminarData?.latenessCloseTime || '');

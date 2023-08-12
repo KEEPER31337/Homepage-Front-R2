@@ -7,13 +7,13 @@ import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
-const BossCardContent = () => {
+const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [seminarStart, setSeminarStart] = useState(false);
-  const { data: seminarData } = getSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
-  const [attendValue, setAttendValue] = useState<number>(5);
-  const [lateAttendValue, setLateAttendValue] = useState<number>(5);
+  const { data: seminarData } = getSeminarInfo(seminarId);
+  const [attendValue, setAttendValue] = useState<number>(1);
+  const [lateAttendValue, setLateAttendValue] = useState<number>(1);
   const [startTime, setStartTime] = useState(DateTime.now());
-  const { mutate: setSeminarTime, isSuccess } = startSeminar(5); // Todo: 이후 id 파라미터로 받아옴
+  const { mutate: setSeminarTime, isSuccess } = startSeminar(seminarId);
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
   const onStartSeminar = () => {
     setStartTime(DateTime.now());
