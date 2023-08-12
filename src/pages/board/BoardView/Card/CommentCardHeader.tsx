@@ -12,7 +12,7 @@ interface CommentCardHeaderProps {
 const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
   return (
     <CardHeader
-      avatar={<Avatar alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />}
+      avatar={<Avatar className="!h-7 !w-7" alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />}
       action={
         <div className="space-x-2">
           <OutlinedButton startIcon={<MdThumbUp />}>{commentInfo.likeCount}</OutlinedButton>

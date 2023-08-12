@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useMutation } from 'react-query';
-import { UploadPost } from './dto';
+import { useMutation, useQuery } from 'react-query';
+import { PostInfo, UploadPost } from './dto';
 
 const useUploadPostMutation = () => {
   const fetcher = (postInfo: UploadPost) => {
@@ -17,4 +17,10 @@ const useUploadPostMutation = () => {
   return useMutation(fetcher);
 };
 
-export default useUploadPostMutation;
+const useGetEachPostQuery = (postId: number) => {
+  const fetcher = () => axios.get(`/posts/${postId}`).then(({ data }) => data);
+
+  return useQuery<PostInfo>(['post'], fetcher);
+};
+
+export { useUploadPostMutation, useGetEachPostQuery };
