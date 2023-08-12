@@ -39,6 +39,7 @@ const MemberCardContent = () => {
 
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
+    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1 >= 5) setExcessModalOn(true);
   };
 
   useEffect(() => {
@@ -55,7 +56,7 @@ const MemberCardContent = () => {
       if (attemptNum <= 5) {
         localStorage.setItem('출석시도횟수', String(attemptNum));
         setIncorrectCodeMsg(`출석코드가 틀렸습니다.(남은 제출횟수 ${attemptNum}회)`);
-      } else setExcessModalOn(true);
+      }
     } else {
       const axiosError = error as AxiosError<ErrorResponse>;
       const errorMessage = axiosError?.response?.data?.message;
