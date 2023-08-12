@@ -77,7 +77,7 @@ const useMainRouter = () =>
               path: 'board',
               children: [
                 {
-                  path: ':boardName',
+                  path: ':categoryName',
                   element: <BoardList />,
                 },
                 {
@@ -85,7 +85,7 @@ const useMainRouter = () =>
                   element: <BoardWrite />,
                 },
                 {
-                  path: 'view',
+                  path: 'view/:postId',
                   element: <BoardView />,
                 },
               ],
