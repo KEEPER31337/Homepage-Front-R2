@@ -27,6 +27,8 @@ const MemberCardContent = () => {
 
   useEffect(() => {
     availableSeminarRefetch();
+    console.log(availableSeminarData);
+    if (!availableSeminarData?.id) localStorage.removeItem('출석시도횟수');
   }, [availableSeminarData]);
 
   const handleAttendButtonClick = () => {
