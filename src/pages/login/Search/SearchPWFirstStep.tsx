@@ -141,11 +141,11 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
         </div>
         <div className="responsive flex w-full justify-between">
           {!isValidAuthCode && (
-            <p className="abolute left-0 text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>
+            <p className="absolute left-20 text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>
           )}
           <button
             type="button"
-            className="abolute right-0 cursor-pointer hover:underline hover:duration-300"
+            className="absolute right-20 cursor-pointer hover:underline hover:duration-300"
             onClick={() => setMailAuthenticationModalOpen(true)}
           >
             인증메일이 오지 않았나요?

@@ -32,7 +32,7 @@ const useChangePasswordMutation = () => {
     loginId: string;
     authCode: string;
     password: string;
-  }) => axios.patch('/sign-in/change-password', { email, loginId, authCode, password });
+  }) => axios.patch('/sign-in/change-password-for-missing', { email, loginId, authCode, password });
 
   return useMutation(fetcher);
 };

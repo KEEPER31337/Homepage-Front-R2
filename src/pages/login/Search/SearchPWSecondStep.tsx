@@ -1,4 +1,4 @@
-import FilledButton from '@components/Button/FilledButton';
+import { useChangePasswordMutation } from '@api/SearchAccountApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import { Divider } from '@mui/material';
@@ -15,20 +15,17 @@ interface SearchPWSecondStepProps {
   firstForm: searchPWFormProps;
 }
 const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepProps) => {
-  const { mutate: changePassword, isSuccess } = useChangePasswordMutation();
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const { mutate: changePassword, isSuccess, isError } = useChangePasswordMutation();
+  const [isSame, setIsSame] = useState<boolean>(false);
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
   const [form, setForm] = useState({
     newPassword: '',
     confirmPassword: '',
   });
 
   const isSamePassword = () => {
-    setIsValid(form.newPassword === form.confirmPassword);
+    setIsSame(form.newPassword === form.confirmPassword);
   };
-
-  useEffect(() => {
-    isSamePassword();
-  }, [form.newPassword, form.confirmPassword]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -42,8 +39,22 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
   };
 
   const handleConfirmSecondStep = () => {
-    setCurrentStep(3);
+    if (passwordRegex.test(form.newPassword)) {
+      changePassword({
+        loginId: firstForm.id,
+        email: firstForm.email,
+        authCode: firstForm.verificationCode,
+        password: form.newPassword,
+      });
+      if (isSuccess) {
+        setCurrentStep(3);
+      }
+    }
   };
+
+  useEffect(() => {
+    isSamePassword();
+  }, [form.newPassword, form.confirmPassword]);
 
   return (
     <>
@@ -74,8 +85,8 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
           />
         </div>
         {form.confirmPassword !== '' && (
-          <p className={`${isValid ? 'text-pointBlue' : 'text-red-500'}`}>
-            {isValid ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+          <p className={`${isSame ? 'text-pointBlue' : 'text-red-500'}`}>
+            {isSame ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
           </p>
         )}{' '}
       </div>
