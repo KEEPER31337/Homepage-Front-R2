@@ -3,7 +3,7 @@ import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 import { Typography } from '@mui/material';
-import { attendSeminar, editAttendStatus, getAvailableSeminarInfo, useGetSeminarInfo } from '@api/seminarApi';
+import { attendSeminar, editAttendStatus, getAvailableSeminarInfo, getSeminarInfo } from '@api/seminarApi';
 import { AxiosError } from 'axios';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
@@ -15,7 +15,7 @@ interface ErrorResponse {
 }
 
 const MemberCardContent = () => {
-  const { data: seminarData } = useGetSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
+  const { data: seminarData } = getSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
   const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(5);
   const startTime = DateTime.fromISO(seminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
