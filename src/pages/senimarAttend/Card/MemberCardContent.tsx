@@ -13,7 +13,6 @@ interface ErrorResponse {
 }
 
 const MemberCardContent = () => {
-  const [isAttendable, setIsAttendable] = useState(false);
   const { data: seminarData } = useGetSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
   const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(5);
   const startTime = DateTime.fromISO(seminarData?.openTime || '');
@@ -59,8 +58,6 @@ const MemberCardContent = () => {
   const deleteAttendance = () => {
     editStatus({ excuse: 'test', statusType: 'BEFORE_ATTENDANCE' });
   };
-
-  // TODO: 출석 종료시 자동 결석처리, 문구 결석으로 바꾸기
 
   return (
     <div className={`${seminarData?.seminarId === null && 'opacity-50'}`}>
