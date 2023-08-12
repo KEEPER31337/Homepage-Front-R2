@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
+import { PaginationOption } from '@components/Pagination/StandardTablePagination.interface';
 import { ChildComponent, Column, Row } from './StandardTable.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,6 +11,7 @@ interface StandardTableProps<T extends Record<string, any>> {
   rows: Row<T>[];
   onRowClick?: ({ rowData }: { rowData: Row<T> }) => void;
   childComponent?: ({ key, value, rowData }: ChildComponent<T>) => ReactNode;
+  paginationOption?: PaginationOption;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,6 +20,7 @@ const StandardTable = <T extends Record<string, any>>({
   rows,
   onRowClick,
   childComponent,
+  paginationOption,
 }: StandardTableProps<T>) => {
   const isCheckboxColumn = (columnKey: Column<T>['key']) => columnKey === 'checkbox';
 
@@ -71,7 +74,7 @@ const StandardTable = <T extends Record<string, any>>({
           ))}
         </TableBody>
       </Table>
-      <StandardTablePagination rowsPerPage={10} />
+      <StandardTablePagination {...paginationOption} />
     </div>
   );
 };

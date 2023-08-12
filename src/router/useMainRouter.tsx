@@ -5,6 +5,7 @@ import SeminarManage from '@pages/admin/SeminarManage';
 import Study from '@pages/Study/Study';
 import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
+import DutyManage from '@pages/admin/DutyManage/DutyManage';
 
 import MainLayout from '@components/Layout/MainLayout';
 import FullContainer from '@components/Layout/Container/FullContainer';
@@ -47,12 +48,28 @@ const useMainRouter = () =>
               path: 'admin',
               children: [
                 {
-                  path: 'seminarManage',
-                  element: <SeminarManage />,
+                  path: 'dutyManage',
+                  element: <DutyManage />,
+                },
+                {
+                  path: 'electionManage',
+                  element: <div />,
                 },
                 {
                   path: 'libraryManage',
                   element: <LibraryManage />,
+                },
+                {
+                  path: 'seminarManage',
+                  element: <SeminarManage />,
+                },
+                {
+                  path: 'activeMemberManage',
+                  element: <div />,
+                },
+                {
+                  path: 'rewordPenaltyManage',
+                  element: <div />,
                 },
               ],
             },
@@ -60,7 +77,7 @@ const useMainRouter = () =>
               path: 'board',
               children: [
                 {
-                  path: 'list',
+                  path: ':boardName',
                   element: <BoardList />,
                 },
                 {
@@ -78,21 +95,53 @@ const useMainRouter = () =>
               element: <Study />,
             },
             {
+              path: 'library',
+              element: <Library />,
+            },
+            {
+              path: 'seminar',
+              element: <SeminarAttend />,
+            },
+            {
+              path: 'election',
+              element: <div />,
+            },
+            {
+              path: 'rank',
+              element: <div />,
+            },
+            {
               path: 'game',
               element: <Game />,
             },
             {
-              path: 'library',
-              element: <Library />,
-            },
-          ],
-        },
-        {
-          element: <FitContainer />,
-          children: [
-            {
-              path: 'seminar',
-              element: <SeminarAttend />,
+              path: 'ctf',
+              children: [
+                {
+                  path: 'select',
+                  element: <div />,
+                },
+                {
+                  path: 'challenge',
+                  element: <div />,
+                },
+                {
+                  path: 'scoreboard',
+                  element: <div />,
+                },
+                {
+                  path: 'team',
+                  element: <div />,
+                },
+                {
+                  path: 'admin',
+                  children: [
+                    { path: 'challengeManage', element: <div /> },
+                    { path: 'submissions', element: <div /> },
+                    { path: 'operation', element: <div /> },
+                  ],
+                },
+              ],
             },
           ],
         },
