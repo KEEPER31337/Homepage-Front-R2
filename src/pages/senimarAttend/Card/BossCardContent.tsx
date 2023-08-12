@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
-import { startSeminar, getAvailableSeminarInfo } from '@api/seminarApi';
+import { startSeminar, getAvailableSeminarInfo, useGetSeminarInfo } from '@api/seminarApi';
 import Countdown from '../Countdown/Countdown';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
+import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
 const BossCardContent = () => {
-  const [attendValue, setAttendValue] = useState<number>(2);
-  const [lateAttendValue, setLateAttendValue] = useState<number>(2);
+  const [seminarStart, setSeminarStart] = useState(false);
+  const { data: seminarData } = useGetSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
+  const [attendValue, setAttendValue] = useState<number>(5);
+  const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
-  const { mutate: setSeminarTime } = startSeminar(2); // Todo: 이후 id 파라미터로 받아옴
+  const { mutate: setSeminarTime, isSuccess } = startSeminar(5); // Todo: 이후 id 파라미터로 받아옴
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
   const onStartSeminar = () => {
     setStartTime(DateTime.now());
@@ -22,6 +25,10 @@ const BossCardContent = () => {
 
   useEffect(() => {
     availableSeminarRefetch();
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (seminarData && availableSeminarData?.id === seminarData?.seminarId) setSeminarStart(true);
   }, [availableSeminarData]);
 
   return (
@@ -29,7 +36,7 @@ const BossCardContent = () => {
       <SeminarInput
         disabled
         helperText="ㅤ"
-        inputCode={availableSeminarData?.id ? availableSeminarData?.attendanceCode.split('') : ['', '', '', '']}
+        inputCode={seminarStart && seminarData ? seminarData?.attendanceCode.split('') : ['', '', '', '']}
       />
       <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
@@ -37,15 +44,15 @@ const BossCardContent = () => {
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          {availableSeminarData?.id ? (
+          {seminarStart && seminarData ? (
             <>
               <Countdown
-                startTime={DateTime.fromISO(availableSeminarData.openTime)}
-                endTime={DateTime.fromISO(availableSeminarData.attendanceCloseTime)}
+                startTime={DateTime.fromISO(seminarData.openTime)}
+                endTime={DateTime.fromISO(seminarData.attendanceCloseTime)}
               />
               <Countdown
-                startTime={DateTime.fromISO(availableSeminarData.attendanceCloseTime)}
-                endTime={DateTime.fromISO(availableSeminarData.latenessCloseTime)}
+                startTime={DateTime.fromISO(seminarData.attendanceCloseTime)}
+                endTime={DateTime.fromISO(seminarData.latenessCloseTime)}
               />
             </>
           ) : (
@@ -57,7 +64,11 @@ const BossCardContent = () => {
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        <FilledButton onClick={onStartSeminar}>시작</FilledButton>
+        {seminarStart ? (
+          <SeminarAttendStatus status="ATTENDANCE" />
+        ) : (
+          <FilledButton onClick={onStartSeminar}>시작</FilledButton>
+        )}
       </div>
     </>
   );

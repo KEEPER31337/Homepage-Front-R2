@@ -88,7 +88,8 @@ export interface SeminarInfo {
   openTime: string;
   attendanceCloseTime: string;
   latenessCloseTime: string;
-  statusType: string;
+  statusType: ActivityStatus;
+  attendanceCode: string;
 }
 
 export interface UsableSeminarInfo {
