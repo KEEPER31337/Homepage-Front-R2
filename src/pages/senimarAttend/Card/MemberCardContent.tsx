@@ -34,20 +34,23 @@ const MemberCardContent = () => {
 
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
-    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
-    else setIncorrectCodeMsg('ㅤ');
   };
 
   useEffect(() => {
     if (isSuccess && isValidActivityStatus(attendancyData.data.statusType)) {
       setAttendStatus(attendancyData.data.statusType);
       setIncorrectCodeMsg('ㅤ');
-    } else {
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
+    else {
       const axiosError = error as AxiosError<ErrorResponse>;
       const errorMessage = axiosError?.response?.data?.message;
       setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
     }
-  }, [isSuccess]);
+  }, [error]);
 
   useEffect(() => {
     setIncorrectCodeMsg('ㅤ');
