@@ -3,7 +3,7 @@ import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 import { Typography } from '@mui/material';
-import { attendSeminar, editAttendStatus, getAvailableSeminarInfo, getSeminarInfo } from '@api/seminarApi';
+import { attendSeminar, getAvailableSeminarInfo, getSeminarInfo } from '@api/seminarApi';
 import { AxiosError } from 'axios';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
@@ -29,7 +29,6 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   const isValidActivityStatus = (value: string): value is ActivityStatus => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
-  const { mutate: editStatus } = editAttendStatus(5, 6); // 테스트용 임시
 
   const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.seminarId;
 
@@ -68,10 +67,6 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
     setIncorrectCodeMsg('ㅤ');
   }, []);
 
-  const deleteAttendance = () => {
-    editStatus({ excuse: 'test', statusType: 'BEFORE_ATTENDANCE' });
-  };
-
   return (
     <div className={`${unableSeminar && 'opacity-50'}`}>
       <ConfirmModal
@@ -106,22 +101,13 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         {attendStatus === 'ATTENDANCE' || attendStatus === 'LATENESS' || attendStatus === 'ABSENCE' ? (
           <SeminarAttendStatus status={attendStatus} />
         ) : (
-          <>
-            <FilledButton
-              onClick={() => {
-                handleAttendButtonClick();
-              }}
-            >
-              출석
-            </FilledButton>
-            <FilledButton
-              onClick={() => {
-                deleteAttendance();
-              }}
-            >
-              출석기록 삭제
-            </FilledButton>
-          </>
+          <FilledButton
+            onClick={() => {
+              handleAttendButtonClick();
+            }}
+          >
+            출석
+          </FilledButton>
         )}
       </div>
     </div>
