@@ -2,16 +2,21 @@ import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import { attendSeminar, editAttendStatus, getAvailableSeminarInfo } from '@api/seminarApi';
+import { AxiosError } from 'axios';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 import ActivityStatus from '../SeminarAttend.interface';
 
+interface ErrorResponse {
+  message: string;
+}
+
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
   const [isCorrectCode, setIsCorrectCode] = useState(false);
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo(); // 진행중인 세미나 존재하는가
-  const { mutate: attend, isSuccess, data: attendancyData } = attendSeminar(2);
+  const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(2);
   const startTime = DateTime.fromISO(availableSeminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(availableSeminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(availableSeminarData?.latenessCloseTime || '');
@@ -32,14 +37,19 @@ const MemberCardContent = () => {
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
     setIsCorrectCode(isSuccess);
-    console.log(attendancyData?.statusText);
-    if (isSuccess && isValidActivityStatus(attendancyData.statusText)) {
-      console.log(attendancyData.statusText);
-      setAttendStatus(attendancyData.statusText);
-      setIncorrectCodeMsg('ㅤ');
-    }
+    console.log(attendancyData);
     if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
     else setIncorrectCodeMsg('ㅤ');
+
+    if (isSuccess && isValidActivityStatus(attendancyData.data.statusText)) {
+      console.log(attendancyData.data.statusText);
+      setAttendStatus(attendancyData.data.statusText);
+      setIncorrectCodeMsg('ㅤ');
+    } else {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const errorMessage = axiosError?.response?.data?.message;
+      setIncorrectCodeMsg(errorMessage?.slice(errorMessage?.indexOf(':')) ?? 'ㅤ');
+    }
   };
 
   const deleteAttendance = () => {
