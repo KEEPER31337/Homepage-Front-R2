@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
 import ActivityStatus from '@pages/senimarAttend/SeminarAttend.interface';
-import { SeminarInfo } from './dto';
+import { SeminarInfo, UsableSeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminar: ['getSeminar', 'id'] as const,
@@ -18,7 +18,7 @@ const useGetSeminarInfo = ({ id }: { id: number }) => {
 const getAvailableSeminarInfo = () => {
   const fetcher = () => axios.get('/seminars/available').then(({ data }) => data);
 
-  return useQuery<SeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
+  return useQuery<UsableSeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
 };
 
 const startSeminar = (id: number) => {

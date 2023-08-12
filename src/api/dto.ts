@@ -83,6 +83,15 @@ export interface SignUpDuplication {
 }
 
 export interface SeminarInfo {
+  seminarId: number;
+  seminarName: string;
+  openTime: string;
+  attendanceCloseTime: string;
+  latenessCloseTime: string;
+  statusType: string;
+}
+
+export interface UsableSeminarInfo {
   id: number;
   openTime: string;
   attendanceCloseTime: string;

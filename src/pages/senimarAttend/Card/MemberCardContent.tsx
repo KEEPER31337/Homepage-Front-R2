@@ -32,6 +32,7 @@ const MemberCardContent = () => {
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
     setIsCorrectCode(isSuccess);
+    console.log(attendancyData?.statusText);
     if (isSuccess && isValidActivityStatus(attendancyData.statusText)) {
       console.log(attendancyData.statusText);
       setAttendStatus(attendancyData.statusText);
@@ -69,7 +70,7 @@ const MemberCardContent = () => {
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        {attendStatus !== undefined && attendStatus !== 'PERSONAL' && attendStatus !== 'BEFORE_ATTENDANCE' ? (
+        {attendStatus === 'ATTENDANCE' || attendStatus === 'LATENESS' || attendStatus === 'ABSENCE' ? (
           <SeminarAttendStatus status={attendStatus} />
         ) : (
           <>
