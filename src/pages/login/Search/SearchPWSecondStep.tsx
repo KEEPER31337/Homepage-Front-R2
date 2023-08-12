@@ -15,6 +15,7 @@ interface SearchPWSecondStepProps {
   firstForm: searchPWFormProps;
 }
 const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepProps) => {
+  const { mutate: changePassword, isSuccess } = useChangePasswordMutation();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [form, setForm] = useState({
     newPassword: '',
@@ -22,11 +23,12 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
   });
 
   const isSamePassword = () => {
-    if (form.newPassword === '' && form.confirmPassword === '') {
-      setIsValid(true);
-    }
     setIsValid(form.newPassword === form.confirmPassword);
   };
+
+  useEffect(() => {
+    isSamePassword();
+  }, [form.newPassword, form.confirmPassword]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -50,8 +52,8 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
         <p>입력한 비밀번호로 재설정됩니다.</p>
       </div>
       <Divider className="bg-pointBlue" />
-      <div className="mx-20 my-12 flex flex-col justify-center gap-10">
-        <div className="relative flex justify-between gap-10">
+      <div className="mx-20 my-12 flex flex-col justify-center gap-10 text-right">
+        <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">신규 비밀번호</p>
           <BackgroundInput
             className="w-[70%]"
@@ -61,7 +63,7 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
             onChange={handleChange}
           />
         </div>
-        <div className="relative flex justify-between gap-10">
+        <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">비밀번호 확인</p>
           <BackgroundInput
             className="w-[70%]"
@@ -71,7 +73,11 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
             onChange={handleChange}
           />
         </div>
-        {isValid && <p className="abolute right-0 text-red-500">비밀번호가 일치하지 않습니다.</p>}
+        {form.confirmPassword !== '' && (
+          <p className={`${isValid ? 'text-pointBlue' : 'text-red-500'}`}>
+            {isValid ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+          </p>
+        )}{' '}
       </div>
       <Divider className="bg-pointBlue" />
       <div className="mt-10 text-center">
