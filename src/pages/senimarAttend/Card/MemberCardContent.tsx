@@ -38,8 +38,11 @@ const MemberCardContent = () => {
       setAttendStatus(attendancyData.statusText);
       setIncorrectCodeMsg('ㅤ');
     }
-    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
-    else setIncorrectCodeMsg('ㅤ');
+    if (inputCode.join('') !== validCode) {
+      setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
+      const attemptNum = parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1;
+      if (attemptNum <= 5) localStorage.setItem('출석시도횟수', String(attemptNum));
+    } else setIncorrectCodeMsg('ㅤ');
   };
 
   const deleteAttendance = () => {

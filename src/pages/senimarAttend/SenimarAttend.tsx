@@ -19,6 +19,7 @@ const SeminarAttend = () => {
   useEffect(() => {
     setFutureSeminarDate(seminarDate.plus({ days: 1 }).toFormat('yy.MM.dd'));
     setPastSeminarDate(seminarDate.minus({ days: 1 }).toFormat('yy.MM.dd'));
+    if (!localStorage.getItem('출석시도횟수')) localStorage.setItem('출석시도횟수', '0');
   }, []);
 
   return (
