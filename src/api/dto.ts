@@ -90,3 +90,71 @@ export interface CommentInfo {
   likeCount: number;
   dislikeCount: number;
 }
+
+export interface UploadPostSettings {
+  isNotice: boolean;
+  isSecret: boolean;
+  isTemp: boolean;
+  allowComment: boolean;
+  password?: string;
+}
+
+export interface UploadPost extends UploadPostSettings {
+  title: string;
+  content: string;
+  categoryId: number;
+}
+
+export interface FileInfo {
+  id: number;
+  name: string;
+  path: string;
+  size: number;
+  ipAddress: string;
+  uploadTime: string;
+}
+
+export interface AdjacentPostInfo {
+  previous: {
+    postId: number;
+    title: string;
+  };
+  next: {
+    postId: number;
+    title: string;
+  };
+}
+
+export interface PostInfo {
+  categoryName: string;
+  title: string;
+  writerName: string;
+  writerThumbnailPath: string | null;
+  visitCount: number;
+  thumbnailPath: string;
+  content: string;
+  files: FileInfo[];
+  adjacentPosts: AdjacentPostInfo;
+  likeCount: number;
+  dislikeCount: number;
+  allowComment: boolean;
+  isNotice: boolean;
+  isSecret: boolean;
+  isTemp: boolean;
+  registerTime: string;
+  updateTime: string;
+}
+
+export type Role =
+  | 'ROLE_회장'
+  | 'ROLE_부회장'
+  | 'ROLE_서기'
+  | 'ROLE_총무'
+  | 'ROLE_사서'
+  | 'ROLE_학술부장'
+  | 'ROLE_대외부장'
+  | 'ROLE_FRONT_전산관리자'
+  | 'ROLE_BACK_전산관리자'
+  | 'ROLE_INFRA_전산관리자'
+  | 'ROLE_회원'
+  | 'ROLE_출제자';

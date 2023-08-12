@@ -41,7 +41,7 @@ jobs:
         run: CI= npm run build
 
       - name: Compress
-        run: tar -zcvf ${GITHUB_SHA::8}.tar.gz build
+        run: tar -zcf ${GITHUB_SHA::8}.tar.gz build
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -56,17 +56,16 @@ jobs:
           ${GITHUB_SHA::8}.tar.gz \
           ${{ secrets.S3_DEV_FRONT_LOCATION }}/${GITHUB_SHA::8}.tar.gz
 
-      - name: Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST_DEV }}
-          username: ${{ secrets.SSH_USERNAME_DEV }}
-          port: ${{ secrets.SSH_PORT_DEV }}
-          key: ${{ secrets.SSH_KEY_DEV }}
-          envs: GITHUB_SHA
-          script: |
-            cd ~/keeper/renewal/deploy
-            ./deploy_client.sh ${GITHUB_SHA::8} dev
+      - name: Sync to S3
+        run: |
+          aws s3 sync build ${{ secrets.S3_DEV_FRONT_DEPLOYMENT }} \
+            --delete
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DEV_DISTRIBUTION_ID }} \
+            --paths "/*"
 
       - name: Notify Slack
         if: always()
