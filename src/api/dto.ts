@@ -120,6 +120,7 @@ export interface AdjacentPostInfo {
 }
 
 export interface PostInfo {
+  categoryId: number;
   categoryName: string;
   title: string;
   writerName: string;
@@ -127,7 +128,6 @@ export interface PostInfo {
   visitCount: number;
   thumbnailPath: string;
   content: string;
-  files: FileInfo[];
   previousPost: AdjacentPostInfo;
   nextPost: AdjacentPostInfo;
   likeCount: number;
