@@ -14,21 +14,19 @@ interface ErrorResponse {
 
 const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
-  const [isCorrectCode, setIsCorrectCode] = useState(false);
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo(); // 진행중인 세미나 존재하는가
   const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(5);
   const startTime = DateTime.fromISO(availableSeminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(availableSeminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(availableSeminarData?.latenessCloseTime || '');
   const validCode = availableSeminarData?.attendanceCode;
-  const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
   const isValidActivityStatus = (value: string): value is ActivityStatus => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
-  const { mutate: editStatus } = editAttendStatus(5, 3); // 테스트용 임시
+  const { mutate: editStatus } = editAttendStatus(5, 6); // 테스트용 임시
 
   useEffect(() => {
     availableSeminarRefetch();
@@ -36,8 +34,11 @@ const MemberCardContent = () => {
 
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
-    setIsCorrectCode(isSuccess);
+    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
+    else setIncorrectCodeMsg('ㅤ');
+  };
 
+  useEffect(() => {
     if (isSuccess && isValidActivityStatus(attendancyData.data.statusType)) {
       setAttendStatus(attendancyData.data.statusType);
       setIncorrectCodeMsg('ㅤ');
@@ -46,9 +47,11 @@ const MemberCardContent = () => {
       const errorMessage = axiosError?.response?.data?.message;
       setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
     }
-    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
-    else setIncorrectCodeMsg('ㅤ');
-  };
+  }, [isSuccess]);
+
+  useEffect(() => {
+    setIncorrectCodeMsg('ㅤ');
+  }, []);
 
   const deleteAttendance = () => {
     editStatus({ excuse: 'test', statusType: 'BEFORE_ATTENDANCE' });
