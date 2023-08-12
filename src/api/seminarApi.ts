@@ -9,7 +9,7 @@ const seminarKeys = {
   startSeminar: ['startSeminar'] as const,
 };
 
-const useGetSeminarInfo = (id: number) => {
+const getSeminarInfo = (id: number) => {
   const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
 
   return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
@@ -57,4 +57,4 @@ const editAttendStatus = (seminarId: number, memberId: number) => {
   });
 };
 
-export { useGetSeminarInfo, getAvailableSeminarInfo, startSeminar, attendSeminar, editAttendStatus };
+export { getSeminarInfo, getAvailableSeminarInfo, startSeminar, attendSeminar, editAttendStatus };
