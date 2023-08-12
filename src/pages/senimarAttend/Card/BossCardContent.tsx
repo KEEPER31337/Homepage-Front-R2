@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
-import { startSeminar, getAvailableSeminarInfo, useGetSeminarInfo } from '@api/seminarApi';
+import { startSeminar, getAvailableSeminarInfo, getSeminarInfo } from '@api/seminarApi';
 import Countdown from '../Countdown/Countdown';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
@@ -9,7 +9,7 @@ import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
 const BossCardContent = () => {
   const [seminarStart, setSeminarStart] = useState(false);
-  const { data: seminarData } = useGetSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
+  const { data: seminarData } = getSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
