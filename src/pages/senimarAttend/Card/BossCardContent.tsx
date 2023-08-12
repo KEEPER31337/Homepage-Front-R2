@@ -1,35 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
+import { startSeminar, getAvailableSeminarInfo } from '@api/seminarApi';
 import Countdown from '../Countdown/Countdown';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
 
 const BossCardContent = () => {
-  const [attendValue, setAttendValue] = useState<number>(5);
-  const [lateAttendValue, setLateAttendValue] = useState<number>(5);
-  const [seminarExist, setSeminarExist] = useState(false); // Todo: api 적용
+  const [attendValue, setAttendValue] = useState<number>(2);
+  const [lateAttendValue, setLateAttendValue] = useState<number>(2);
   const [startTime, setStartTime] = useState(DateTime.now());
-  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
-  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
-  const startSeminar = () => {
-    setSeminarExist(true);
+  const { mutate: setSeminarTime } = startSeminar(2); // Todo: 이후 id 파라미터로 받아옴
+  const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
+  const onStartSeminar = () => {
     setStartTime(DateTime.now());
+    setSeminarTime({
+      attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
+      latenessCloseTime: startTime.plus({ minutes: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
+    });
   };
+
+  useEffect(() => {
+    availableSeminarRefetch();
+  }, [availableSeminarData]);
 
   return (
     <>
-      <SeminarInput disabled helperText="ㅤ" inputCode={[0, 0, 0, 0]} />
-      <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
+      <SeminarInput
+        disabled
+        helperText="ㅤ"
+        inputCode={availableSeminarData?.id ? availableSeminarData?.attendanceCode.split('') : ['', '', '', '']}
+      />
+      <div className="mx-auto mt-[35px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          {seminarExist ? (
+          {availableSeminarData?.id ? (
             <>
-              <Countdown startTime={startTime} endTime={attendLimit} />
-              <Countdown startTime={attendLimit} endTime={lateLimit} />
+              <Countdown
+                startTime={DateTime.fromISO(availableSeminarData.openTime)}
+                endTime={DateTime.fromISO(availableSeminarData.attendanceCloseTime)}
+              />
+              <Countdown
+                startTime={DateTime.fromISO(availableSeminarData.attendanceCloseTime)}
+                endTime={DateTime.fromISO(availableSeminarData.latenessCloseTime)}
+              />
             </>
           ) : (
             <>
@@ -40,7 +57,7 @@ const BossCardContent = () => {
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        <FilledButton onClick={startSeminar}>시작</FilledButton>
+        <FilledButton onClick={onStartSeminar}>시작</FilledButton>
       </div>
     </>
   );
