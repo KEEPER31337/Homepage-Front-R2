@@ -6,6 +6,8 @@ import { SeminarInfo, UsableSeminarInfo } from './dto';
 const seminarKeys = {
   getSeminar: ['getSeminar', 'id'] as const,
   getAvailableSeminar: ['getSeminar', 'available'] as const,
+  getRecentlyDoneSeminar: ['getSeminar', 'recentlyDone'] as const,
+  getRecentlyUpcomingSeminar: ['getSeminar', 'recentlyUpcoming'] as const,
   startSeminar: ['startSeminar'] as const,
 };
 
@@ -19,6 +21,18 @@ const getAvailableSeminarInfo = () => {
   const fetcher = () => axios.get('/seminars/available').then(({ data }) => data);
 
   return useQuery<UsableSeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
+};
+
+const getRecentlyDoneSeminarInfo = () => {
+  const fetcher = () => axios.get(`/seminars/recently-done`).then(({ data }) => data.id);
+
+  return useQuery<number>(seminarKeys.getRecentlyDoneSeminar, fetcher);
+};
+
+const getRecentlyUpcomingSeminarInfo = () => {
+  const fetcher = () => axios.get(`/seminars/recently-upcoming `).then(({ data }) => data);
+
+  return useQuery<[{ id: number }, { id: number }]>(seminarKeys.getRecentlyUpcomingSeminar, fetcher);
 };
 
 const startSeminar = (id: number) => {
@@ -57,4 +71,12 @@ const editAttendStatus = (seminarId: number, memberId: number) => {
   });
 };
 
-export { getSeminarInfo, getAvailableSeminarInfo, startSeminar, attendSeminar, editAttendStatus };
+export {
+  getSeminarInfo,
+  getAvailableSeminarInfo,
+  getRecentlyDoneSeminarInfo,
+  getRecentlyUpcomingSeminarInfo,
+  startSeminar,
+  attendSeminar,
+  editAttendStatus,
+};
