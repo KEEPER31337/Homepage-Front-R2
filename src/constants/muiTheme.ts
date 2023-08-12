@@ -13,7 +13,49 @@ const muiTheme = createTheme({
   },
   typography: {
     fontFamily: ['IBM Plex Sans KR', 'system-ui', 'sans-serif'].join(','),
+    h1: {
+      fontSize: '28px',
+    },
+    h3: {
+      fontSize: '20px',
+    },
+    paragraph: {
+      fontSize: '14px',
+    },
+    small: {
+      fontSize: '10px',
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '1rem',
+        },
+      },
+    },
   },
 });
+
+declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    paragraph: React.CSSProperties;
+    small: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    paragraph?: React.CSSProperties;
+    small?: React.CSSProperties;
+  }
+}
+
+// Update the Typography's variant prop options
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    paragraph: true;
+    small: true;
+  }
+}
 
 export default muiTheme;
