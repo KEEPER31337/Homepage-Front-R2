@@ -12,6 +12,11 @@ interface ActionButtonProps {
 }
 
 const ActionButton = ({ mode, children, onClick, disabled, type, small }: ActionButtonProps) => {
+  const setIcon = {
+    add: <VscAdd />,
+    edit: <VscEdit />,
+    delete: <VscTrash />,
+  };
   return (
     <Button
       variant="outlined"
@@ -21,8 +26,7 @@ const ActionButton = ({ mode, children, onClick, disabled, type, small }: Action
       type={type}
       onClick={onClick}
       disabled={disabled}
-      // eslint-disable-next-line no-nested-ternary
-      startIcon={mode === 'add' ? <VscAdd /> : mode === 'edit' ? <VscEdit /> : <VscTrash />}
+      startIcon={setIcon[mode]}
     >
       {children}
     </Button>
