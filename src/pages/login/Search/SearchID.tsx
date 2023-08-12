@@ -2,6 +2,7 @@ import { useSearchIdMutation } from '@api/SearchAccountApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
+import WarningModal from '@components/Modal/WarningModal';
 import { Divider } from '@mui/material';
 import validateEmail from '@utils/validateEmail';
 import React, { useState } from 'react';
@@ -12,7 +13,9 @@ const SearchID = () => {
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
-  const { mutate: searchId } = useSearchIdMutation();
+  const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
+
+  const { mutate: searchId, isSuccess, isError } = useSearchIdMutation();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -24,7 +27,12 @@ const SearchID = () => {
 
   const handleConfirmClick = () => {
     searchId({ email });
-    setIsSent(true);
+    if (isSuccess) {
+      setIsSent(true);
+    }
+    if (isError) {
+      setMatchInfoModalOpen(true);
+    }
   };
 
   const handleOtherEmailButtonClick = () => {
@@ -60,6 +68,14 @@ const SearchID = () => {
                 확인
               </OutlinedButton>
             </div>
+            <WarningModal
+              open={matchInfoModalOpen}
+              onClose={() => setMatchInfoModalOpen(false)}
+              actionButtonName="확인"
+              onActionButonClick={() => setMatchInfoModalOpen(false)}
+            >
+              해당 아이디로 가입된 정보가 없습니다.
+            </WarningModal>
           </>
         ) : (
           <>
