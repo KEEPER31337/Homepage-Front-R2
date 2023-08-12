@@ -1,3 +1,5 @@
+import ActivityStatus from '@pages/senimarAttend/SeminarAttend.interface';
+
 export interface StaticWriteContentsInfo {
   id: number;
   content: string;
@@ -80,6 +82,31 @@ export interface SignUpDuplication {
   duplicate: boolean;
 }
 
+export interface SeminarInfo {
+  seminarId: number;
+  seminarName: string;
+  openTime: string;
+  attendanceCloseTime: string;
+  latenessCloseTime: string;
+  statusType: ActivityStatus;
+  attendanceCode: string;
+}
+
+export interface UsableSeminarInfo {
+  id: number;
+  openTime: string;
+  attendanceCloseTime: string;
+  latenessCloseTime: string;
+  attendanceCode: string;
+  name: string;
+  registerTime: string;
+  updateTime: string;
+}
+
+export interface AttendResponseData {
+  id: number;
+  statusText: string;
+}
 export interface CommentInfo {
   commentId: number;
   writerName: string;

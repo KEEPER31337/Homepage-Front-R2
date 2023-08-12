@@ -1,3 +1,3 @@
-type ActivityStatus = '지각' | '출석' | '결석';
+type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
 
 export default ActivityStatus;

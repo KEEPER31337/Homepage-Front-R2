@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const inputStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -14,7 +14,7 @@ interface SeminarInputProps {
   disabled?: boolean;
   helperText?: string;
   setInputCode?: React.Dispatch<React.SetStateAction<number[]>>;
-  inputCode: number[];
+  inputCode: number[] | string[];
 }
 
 const SeminarInput = ({ disabled, helperText, setInputCode, inputCode }: SeminarInputProps) => {
@@ -32,27 +32,35 @@ const SeminarInput = ({ disabled, helperText, setInputCode, inputCode }: Seminar
         previousSibling.focus();
       }
     }
+
     const copyInputCode = [...inputCode];
     copyInputCode[key] = Number(target.value);
-    setInputCode?.(copyInputCode);
+    setInputCode?.(
+      copyInputCode.map((num) => {
+        return Number(num);
+      }),
+    );
   };
 
   return (
     <div>
       <div className="flex h-[52px] w-[192px] justify-between">
-        {inputListKey.map((key) => {
-          return (
-            <input
-              key={key}
-              style={inputStyle}
-              maxLength={1}
-              disabled={disabled}
-              onKeyUp={(e) => {
-                moveNextInput(e, key);
-              }}
-            />
-          );
-        })}
+        {disabled
+          ? inputListKey.map((key) => {
+              return <input key={key} style={inputStyle} disabled value={inputCode[key]} />;
+            })
+          : inputListKey.map((key) => {
+              return (
+                <input
+                  key={key}
+                  style={inputStyle}
+                  maxLength={1}
+                  onKeyUp={(e) => {
+                    moveNextInput(e, key);
+                  }}
+                />
+              );
+            })}
       </div>
       <div className="my-[4px] flex items-center justify-center text-small text-red-500">{helperText}</div>
     </div>
