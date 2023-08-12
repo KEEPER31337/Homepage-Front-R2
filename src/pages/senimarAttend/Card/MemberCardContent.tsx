@@ -37,19 +37,17 @@ const MemberCardContent = () => {
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
     setIsCorrectCode(isSuccess);
-    console.log(attendancyData);
-    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
-    else setIncorrectCodeMsg('ㅤ');
 
-    if (isSuccess && isValidActivityStatus(attendancyData.data.statusText)) {
-      console.log(attendancyData.data.statusText);
-      setAttendStatus(attendancyData.data.statusText);
+    if (isSuccess && isValidActivityStatus(attendancyData.data.statusType)) {
+      setAttendStatus(attendancyData.data.statusType);
       setIncorrectCodeMsg('ㅤ');
     } else {
       const axiosError = error as AxiosError<ErrorResponse>;
       const errorMessage = axiosError?.response?.data?.message;
       setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
     }
+    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
+    else setIncorrectCodeMsg('ㅤ');
   };
 
   const deleteAttendance = () => {
