@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
-import { attendSeminar, editAttendStatus, useGetSeminarInfo } from '@api/seminarApi';
+import { attendSeminar, editAttendStatus, getAvailableSeminarInfo, useGetSeminarInfo } from '@api/seminarApi';
 import { AxiosError } from 'axios';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
@@ -22,10 +22,13 @@ const MemberCardContent = () => {
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
+  const { data: availableSeminarData } = getAvailableSeminarInfo();
   const isValidActivityStatus = (value: string): value is ActivityStatus => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
   const { mutate: editStatus } = editAttendStatus(5, 6); // 테스트용 임시
+
+  const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.seminarId;
 
   useEffect(() => {
     setAttendStatus(seminarData?.statusType);
@@ -60,13 +63,13 @@ const MemberCardContent = () => {
   };
 
   return (
-    <div className={`${seminarData?.seminarId === null && 'opacity-50'}`}>
+    <div className={`${unableSeminar && 'opacity-50'}`}>
       <div className="mb-[15px]">
         <SeminarInput
-          disabled={seminarData?.seminarId === null}
+          disabled={unableSeminar}
           helperText={incorrectCodeMsg}
           setInputCode={setInputCode}
-          inputCode={seminarData?.seminarId === null ? ['', '', '', ''] : inputCode}
+          inputCode={unableSeminar ? ['', '', '', ''] : inputCode}
         />
       </div>
 
