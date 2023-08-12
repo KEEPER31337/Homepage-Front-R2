@@ -3,6 +3,7 @@ import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
+import WarningModal from '@components/Modal/WarningModal';
 import { Divider } from '@mui/material';
 import validateEmail from '@utils/validateEmail';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +19,7 @@ interface SearchPWFirstStepProps {
   setForm: React.Dispatch<React.SetStateAction<searchPWFormProps>>;
 }
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
-  const { mutate: requestAuthcode, isSuccess } = useRequestAuthCodeMutation();
+  const { mutate: requestAuthcode, isSuccess, isError } = useRequestAuthCodeMutation();
   const { mutate: checkAuthcode, data } = useCheckAuthCodeMutation();
 
   const [isSent, setIsSent] = useState(false);
@@ -26,6 +27,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   const [timer, setTimer] = useState('05:00');
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
+  const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
   const [isValidAuthCode, setIsValidAuthCode] = useState(true);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -40,17 +42,14 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   };
 
   const handleRequestVerificationCode = () => {
-    if (form.id === '') {
-      alert('아이디를 입력해주세요.');
-      return;
-    }
-    if (form.email === '') {
-      alert('이메일을 입력해주세요.');
-      return;
-    }
-    requestAuthcode({ loginId: form.id, email: form.email });
-    if (isSuccess) {
-      setIsSent(true);
+    if (form.id && form.email) {
+      requestAuthcode({ loginId: form.id, email: form.email });
+      if (isSuccess) {
+        setIsSent(true);
+      }
+      if (isError) {
+        setMatchInfoModalOpen(true);
+      }
     }
   };
 
@@ -120,6 +119,14 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             }
           />
         </div>
+        <WarningModal
+          open={matchInfoModalOpen}
+          onClose={() => setMatchInfoModalOpen(false)}
+          actionButtonName="확인"
+          onActionButonClick={() => setMatchInfoModalOpen(false)}
+        >
+          해당 아이디 + 이메일로 가입된 정보가 없습니다.
+        </WarningModal>
         <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">인증코드</p>
           <BackgroundInput
@@ -132,13 +139,13 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             endAdornment={<p>{timer}</p>}
           />
         </div>
-        <div className="responsive flex justify-between">
+        <div className="responsive flex w-full justify-between">
           {!isValidAuthCode && (
-            <p className="abolute right-0 text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>
+            <p className="abolute left-0 text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>
           )}
           <button
             type="button"
-            className="abolute left-0 cursor-pointer hover:underline hover:duration-300"
+            className="abolute right-0 cursor-pointer hover:underline hover:duration-300"
             onClick={() => setMailAuthenticationModalOpen(true)}
           >
             인증메일이 오지 않았나요?
