@@ -16,7 +16,7 @@ const MemberCardContent = () => {
   const [isAttendable, setIsAttendable] = useState(false);
   const [isCorrectCode, setIsCorrectCode] = useState(false);
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo(); // 진행중인 세미나 존재하는가
-  const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(2);
+  const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(5);
   const startTime = DateTime.fromISO(availableSeminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(availableSeminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(availableSeminarData?.latenessCloseTime || '');
@@ -28,7 +28,7 @@ const MemberCardContent = () => {
   const isValidActivityStatus = (value: string): value is ActivityStatus => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
-  const { mutate: editStatus } = editAttendStatus(2, 2); // 테스트용 임시
+  const { mutate: editStatus } = editAttendStatus(5, 3); // 테스트용 임시
 
   useEffect(() => {
     availableSeminarRefetch();
@@ -48,7 +48,7 @@ const MemberCardContent = () => {
     } else {
       const axiosError = error as AxiosError<ErrorResponse>;
       const errorMessage = axiosError?.response?.data?.message;
-      setIncorrectCodeMsg(errorMessage?.slice(errorMessage?.indexOf(':')) ?? 'ㅤ');
+      setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
     }
   };
 
