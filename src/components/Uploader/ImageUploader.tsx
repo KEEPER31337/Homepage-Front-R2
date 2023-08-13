@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 
+import LogoNeon from '@assets/logo/logo_neon.svg';
 import utilApi from '@mocks/UtilApi';
 import WarningModal from '@components/Modal/WarningModal';
 import { Typography } from '@mui/material';
@@ -114,7 +115,8 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
             alt="thumbnail"
           />
         ) : (
-          <div className="flex items-center text-pointBlue/30">
+          <div className="flex items-center text-pointBlue/70">
+            <img className="absolute inset-0 -z-10 m-auto h-2/3 w-2/3 opacity-10" src={LogoNeon} alt="thumbnail" />
             {isDragActive ? (
               <Typography className="mx-2 text-center text-small">이미지를 놓으세요</Typography>
             ) : (
