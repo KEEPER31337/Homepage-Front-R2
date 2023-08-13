@@ -11,6 +11,8 @@ interface SettingUploadModalProps {
   onUploadButonClick: () => void;
   postSettingInfo: UploadPostSettings;
   setPostSettingInfo: React.Dispatch<React.SetStateAction<UploadPostSettings>>;
+  thumbnail: Blob;
+  setThumbnail: React.Dispatch<React.SetStateAction<Blob>>;
 }
 
 const SettingUploadModal = ({
@@ -19,9 +21,9 @@ const SettingUploadModal = ({
   onUploadButonClick,
   postSettingInfo,
   setPostSettingInfo,
+  thumbnail,
+  setThumbnail,
 }: SettingUploadModalProps) => {
-  const [, setThumbnail] = useState<Blob>();
-
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setPostSettingInfo((prev) => ({

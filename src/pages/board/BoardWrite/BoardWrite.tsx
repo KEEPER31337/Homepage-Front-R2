@@ -27,6 +27,7 @@ const BoardWrite = () => {
     isTemp: false,
     allowComment: true,
   });
+  const [thumbnail, setThumbnail] = useState<Blob>(new Blob());
   const [files, setFiles] = useState<File[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
   const [hasContent, setHasContent] = useState(false);
@@ -58,7 +59,7 @@ const BoardWrite = () => {
     // TODO 필수값 처리
     // TODO isTemp 여부에 따라 content 옵셔널 처리, 업로드 이후 동작 처리
     uploadPostMutation(
-      { request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo }, files },
+      { request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo }, thumbnail, files },
       {
         onSuccess: () => {
           navigate(`/board/${categoryName}`);
@@ -142,6 +143,8 @@ const BoardWrite = () => {
         onUploadButonClick={handleUploadButonClick}
         postSettingInfo={postSettingInfo}
         setPostSettingInfo={setPostSettingInfo}
+        thumbnail={thumbnail}
+        setThumbnail={setThumbnail}
       />
     </div>
   );
