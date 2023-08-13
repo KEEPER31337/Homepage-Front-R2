@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -11,8 +11,7 @@ interface SettingUploadModalProps {
   onUploadButonClick: () => void;
   postSettingInfo: UploadPostSettings;
   setPostSettingInfo: React.Dispatch<React.SetStateAction<UploadPostSettings>>;
-  thumbnail: Blob;
-  setThumbnail: React.Dispatch<React.SetStateAction<Blob>>;
+  setThumbnail: React.Dispatch<React.SetStateAction<Blob | null>>;
 }
 
 const SettingUploadModal = ({
@@ -21,7 +20,6 @@ const SettingUploadModal = ({
   onUploadButonClick,
   postSettingInfo,
   setPostSettingInfo,
-  thumbnail,
   setThumbnail,
 }: SettingUploadModalProps) => {
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {

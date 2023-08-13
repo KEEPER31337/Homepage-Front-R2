@@ -107,7 +107,7 @@ export interface UploadPostCore extends UploadPostSettings {
 
 export interface UploadPost {
   request: UploadPostCore;
-  thumbnail?: Blob;
+  thumbnail?: Blob | null;
   files?: File[];
 }
 

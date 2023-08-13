@@ -10,7 +10,7 @@ interface ImageUploaderProps {
   title?: string;
   isEdit: boolean;
   thumbnailPath?: string;
-  setThumbnail: React.Dispatch<Blob>;
+  setThumbnail: React.Dispatch<Blob | null>;
 }
 
 type ImageWarningType = 'Multiple' | 'WrongExtension';

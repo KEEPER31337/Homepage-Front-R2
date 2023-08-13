@@ -27,7 +27,7 @@ const BoardWrite = () => {
     isTemp: false,
     allowComment: true,
   });
-  const [thumbnail, setThumbnail] = useState<Blob>(new Blob());
+  const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [files, setFiles] = useState<File[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
   const [hasContent, setHasContent] = useState(false);
@@ -143,7 +143,6 @@ const BoardWrite = () => {
         onUploadButonClick={handleUploadButonClick}
         postSettingInfo={postSettingInfo}
         setPostSettingInfo={setPostSettingInfo}
-        thumbnail={thumbnail}
         setThumbnail={setThumbnail}
       />
     </div>
