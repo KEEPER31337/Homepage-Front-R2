@@ -27,6 +27,7 @@ const BoardWrite = () => {
     isTemp: false,
     allowComment: false,
   });
+  const [files, setFiles] = useState<File[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
   const [hasContent, setHasContent] = useState(true);
 
@@ -51,7 +52,7 @@ const BoardWrite = () => {
     // TODO 필수값 처리
     // TODO isTemp 여부에 따라 content 옵셔널 처리, 업로드 이후 동작 처리
     uploadPostMutation(
-      { categoryId, title: getValues('postTitle'), content, ...postSettingInfo },
+      { request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo }, files },
       {
         onSuccess: () => {
           navigate(`/board/${categoryName}`);
@@ -113,7 +114,7 @@ const BoardWrite = () => {
         파일첨부
       </Typography>
       <div className="mb-5">
-        <FileUploader />
+        <FileUploader files={files} setFiles={setFiles} />
       </div>
       <div className="flex justify-end space-x-2">
         <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })}>임시저장</OutlinedButton>

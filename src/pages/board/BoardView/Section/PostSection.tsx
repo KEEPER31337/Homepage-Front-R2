@@ -7,11 +7,11 @@ import { PostInfo } from '@api/dto';
 import { useGetPostFilesQuery } from '@api/postApi';
 
 interface PostSectionProps {
+  postId: number;
   post: PostInfo;
 }
 
-const PostSection = ({ post }: PostSectionProps) => {
-  const postId = 16; // TODO 게시판 목록에서 받아오기
+const PostSection = ({ postId, post }: PostSectionProps) => {
   const { data: files } = useGetPostFilesQuery(postId);
 
   return (

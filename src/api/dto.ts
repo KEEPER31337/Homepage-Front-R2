@@ -99,10 +99,16 @@ export interface UploadPostSettings {
   password?: string;
 }
 
-export interface UploadPost extends UploadPostSettings {
+export interface UploadPostCore extends UploadPostSettings {
   title: string;
   content: string;
   categoryId: number;
+}
+
+export interface UploadPost {
+  request: UploadPostCore;
+  thumbnail?: Blob;
+  files?: File[];
 }
 
 export interface FileInfo {
