@@ -7,7 +7,7 @@ const libraryKeys = {
 };
 
 interface getBookListProps {
-  searchType?: 'title' | 'author' | 'all' | null;
+  searchType?: 'title' | 'author' | 'all';
   search?: string;
   page?: number;
   size?: number;
