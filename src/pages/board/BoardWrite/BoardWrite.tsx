@@ -29,18 +29,24 @@ const BoardWrite = () => {
   });
   const [files, setFiles] = useState<File[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
-  const [hasContent, setHasContent] = useState(true);
+  const [hasContent, setHasContent] = useState(false);
+  const [contentErrMsg, setContentErrMsg] = useState('');
 
   const editorRef = useRef<Editor>();
   const navigate = useNavigate();
   const { mutate: uploadPostMutation } = useUploadPostMutation();
-  const { control, getValues } = useForm({ mode: 'onBlur' });
+  const {
+    control,
+    getValues,
+    formState: { isValid },
+  } = useForm({ mode: 'onBlur' });
 
   const handleEditorBlur = () => {
     const content = editorRef.current?.getInstance().getMarkdown();
 
     if (!content || content.length < 0) {
       setHasContent(false);
+      setContentErrMsg(REQUIRE_ERROR_MSG);
       return;
     }
     setHasContent(true);
@@ -113,7 +119,7 @@ const BoardWrite = () => {
           onBlur={handleEditorBlur}
         />
         <Typography variant="small" className="text-subRed">
-          {!hasContent && REQUIRE_ERROR_MSG}
+          {!hasContent && contentErrMsg}
         </Typography>
       </div>
       <Typography fontWeight="semibold" className="!mb-2 !mt-5">
@@ -123,8 +129,12 @@ const BoardWrite = () => {
         <FileUploader files={files} setFiles={setFiles} />
       </div>
       <div className="flex justify-end space-x-2">
-        <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })}>임시저장</OutlinedButton>
-        <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: false })}>작성완료</OutlinedButton>
+        <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })} disabled={!isValid}>
+          임시저장
+        </OutlinedButton>
+        <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: false })} disabled={!isValid || !hasContent}>
+          작성완료
+        </OutlinedButton>
       </div>
       <SettingUploadModal
         open={settingModalOpen}
