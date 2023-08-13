@@ -25,7 +25,7 @@ const BoardWrite = () => {
     isNotice: false,
     isSecret: false,
     isTemp: false,
-    allowComment: false,
+    allowComment: true,
   });
   const [files, setFiles] = useState<File[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
