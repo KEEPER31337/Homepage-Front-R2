@@ -3,7 +3,6 @@ import PageTitle from '@components/Typography/PageTitle';
 import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { useGetBookListQuery, useRequestBorrowBookMutation } from '@api/libraryApi';
-import { BookInfo } from '@api/dto';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
@@ -12,7 +11,7 @@ const Library = () => {
   const [requestBookModalOpen, setRequestBookModalOpen] = useState(false);
   const { mutate: RequestBorrowBook } = useRequestBorrowBookMutation();
 
-  const handleRequestBook = (bookId: BookInfo['bookId']) => {
+  const handleRequestBook = (bookId: number) => {
     RequestBorrowBook(bookId);
     //  TODO 무조건 완료 모달뜨지 않게 예외처리
     setRequestBookModalOpen(true);

@@ -102,17 +102,17 @@ export interface CommentInfo {
 }
 
 export interface UploadPostSettings {
-  isNotice?: boolean;
-  isSecret?: boolean;
-  isTemp?: boolean;
-  allowComment?: boolean;
+  isNotice: boolean;
+  isSecret: boolean;
+  isTemp: boolean;
+  allowComment: boolean;
   password?: string;
 }
 
 export interface UploadPost extends UploadPostSettings {
   title: string;
   content: string;
-  categoryId: string;
+  categoryId: number;
 }
 
 export interface FileInfo {
@@ -125,14 +125,8 @@ export interface FileInfo {
 }
 
 export interface AdjacentPostInfo {
-  previous: {
-    postId: number;
-    title: string;
-  };
-  next: {
-    postId: number;
-    title: string;
-  };
+  postId: number;
+  title: string;
 }
 
 export interface PostInfo {
@@ -144,7 +138,8 @@ export interface PostInfo {
   thumbnailPath: string;
   content: string;
   files: FileInfo[];
-  adjacentPosts: AdjacentPostInfo;
+  previousPost: AdjacentPostInfo;
+  nextPost: AdjacentPostInfo;
   likeCount: number;
   dislikeCount: number;
   allowComment: boolean;
@@ -154,3 +149,17 @@ export interface PostInfo {
   registerTime: string;
   updateTime: string;
 }
+
+export type Role =
+  | 'ROLE_회장'
+  | 'ROLE_부회장'
+  | 'ROLE_서기'
+  | 'ROLE_총무'
+  | 'ROLE_사서'
+  | 'ROLE_학술부장'
+  | 'ROLE_대외부장'
+  | 'ROLE_FRONT_전산관리자'
+  | 'ROLE_BACK_전산관리자'
+  | 'ROLE_INFRA_전산관리자'
+  | 'ROLE_회원'
+  | 'ROLE_출제자';

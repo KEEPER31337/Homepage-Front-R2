@@ -1,5 +1,7 @@
 import React from 'react';
 import Intro from './Intro';
+import History from './History';
+import Excellence from './Excellence';
 import Activity from './Activity';
 
 const Home = () => {
@@ -7,6 +9,8 @@ const Home = () => {
     <div className="flex w-full flex-col bg-galaxy bg-contain bg-repeat">
       <Intro />
       <Activity />
+      <Excellence />
+      <History />
     </div>
   );
 };

@@ -23,7 +23,7 @@ const CategoryNav = ({ category }: CategoryNavProps) => {
       </ListItemButton>
       <Collapse className="w-full" in={open} timeout="auto">
         {category.subCategories.map((subcategory) => (
-          <SubCategoryNav key={subcategory.id} subcategory={subcategory} />
+          <SubCategoryNav key={subcategory.id} viaPath={category.path} subcategory={subcategory} />
         ))}
       </Collapse>
     </ListItem>
