@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Pagination, TablePagination } from '@mui/material';
 
 import './pagination.css';
+import { PaginationOption } from './StandardTablePagination.interface';
 
-interface StandardTablePaginationProps {
-  rowsPerPage?: number;
-}
-
-const StandardTablePagination = ({ rowsPerPage = 10 }: StandardTablePaginationProps) => {
-  const totalItems = 100; // TODO - 임시 값
+const StandardTablePagination = ({ rowsPerPage = 10, totalItems = -1 }: PaginationOption) => {
   const totalPages = Math.ceil(totalItems / rowsPerPage);
 
   const [page, setPage] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const setoffPageDiff = (prevPage: number, reverse?: boolean) => {
     // TablePagination page의 인덱스와 Pagination page의 인덱스 간 차이(1) 상쇄를 위한 동작입니다.
@@ -20,7 +18,17 @@ const StandardTablePagination = ({ rowsPerPage = 10 }: StandardTablePaginationPr
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(setoffPageDiff(newPage, true));
+    setSearchParams({ page: String(newPage) });
   };
+
+  useEffect(() => {
+    if (!searchParams.get('page')) {
+      setSearchParams({ page: String(setoffPageDiff(page)) });
+      return;
+    }
+
+    setPage(setoffPageDiff(Number(searchParams.get('page')), true));
+  }, []);
 
   return (
     <div className="flex !w-full items-center justify-between bg-middleBlack">
@@ -34,7 +42,7 @@ const StandardTablePagination = ({ rowsPerPage = 10 }: StandardTablePaginationPr
         }}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[]}
-        labelDisplayedRows={({ from, to, count }) => `Showing ${from}-${to} of ${count} items`}
+        labelDisplayedRows={({ from, to, count }) => `Showing ${from}-${to} of ${Math.max(count, 0)} items`}
       />
       <Pagination
         color="secondary"
