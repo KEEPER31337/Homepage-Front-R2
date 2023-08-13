@@ -3,7 +3,6 @@ import PageTitle from '@components/Typography/PageTitle';
 import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import useGetBookListQuery from '@api/libraryApi';
-import { BookInfo } from '@api/dto';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
@@ -12,7 +11,7 @@ const Library = () => {
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [requestBookModalOpen, setRequestBookModalOpen] = useState(false);
 
-  const handleRequestBook = (bookId: BookInfo['bookId']) => {
+  const handleRequestBook = (bookId: number) => {
     setSelectedBookId(bookId);
     setRequestBookModalOpen(true);
   };

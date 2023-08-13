@@ -6,7 +6,7 @@ import { BookInfo } from '@api/dto';
 
 interface BookCardProps {
   bookInfo: BookInfo;
-  onRequestBook: (bookId: BookInfo['bookId']) => void;
+  onRequestBook: (bookId: number) => void;
 }
 const BookCard = ({ bookInfo, onRequestBook }: BookCardProps) => {
   return (
