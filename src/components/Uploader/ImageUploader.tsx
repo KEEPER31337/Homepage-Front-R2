@@ -104,12 +104,12 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
         className={`
           ${isDragActive ? 'bg-pointBlue/30' : ''} 
           ${thumbnailBase64 ? '' : 'border-2'} 
-          flex h-full items-center justify-center border-dashed !border-pointBlue/30
+          relative flex h-full items-center justify-center border-dashed !border-pointBlue/30
         `}
       >
         {thumbnailBase64 ? (
           <img
-            className={`${isDragActive ? 'opacity-50' : ''} h-full w-full object-cover`}
+            className={`${isDragActive ? 'opacity-50' : ''} absolute inset-0 h-full w-full object-cover`}
             src={thumbnailBase64}
             alt="thumbnail"
           />
