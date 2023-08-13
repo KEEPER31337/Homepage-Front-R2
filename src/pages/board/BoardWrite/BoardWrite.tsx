@@ -94,7 +94,13 @@ const BoardWrite = () => {
             }}
             render={({ field, fieldState: { error } }) => {
               return (
-                <StandardInput className="w-[498px]" {...field} error={Boolean(error)} helperText={error?.message} />
+                <StandardInput
+                  className="w-[498px]"
+                  {...field}
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                  autoFocus
+                />
               );
             }}
           />
