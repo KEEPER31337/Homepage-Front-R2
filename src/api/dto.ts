@@ -190,6 +190,19 @@ export interface BoardPosts {
   empty: boolean;
 }
 
+export interface TrendingPostInfo {
+  id: number;
+  title: string;
+  writerName: string;
+  writerThumbnailPath: string;
+  categoryId: number;
+  categoryName: string;
+  visitCount: number;
+  isSecret: boolean;
+  thumbnailPath: string;
+  registerTime: string;
+}
+
 export type Role =
   | 'ROLE_회장'
   | 'ROLE_부회장'

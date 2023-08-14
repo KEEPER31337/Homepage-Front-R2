@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { BoardPosts, FileInfo, PostInfo, UploadPost } from './dto';
+import { BoardPosts, FileInfo, PostInfo, UploadPost, TrendingPostInfo } from './dto';
 
 const useUploadPostMutation = () => {
   const fetcher = (postInfo: UploadPost) => {
@@ -35,4 +35,23 @@ const useGetPostFilesQuery = (postId: number) => {
   return useQuery<FileInfo[]>(['post', 'files', postId], fetcher);
 };
 
-export { useUploadPostMutation, useGetPostListQuery, useGetEachPostQuery, useGetPostFilesQuery };
+const useGetRecentPostsQuery = () => {
+  const fetcher = () => axios.get('/posts/recent').then(({ data }) => data);
+
+  return useQuery<TrendingPostInfo[]>('recentPosts', fetcher);
+};
+
+const useGetTrendPostsQuery = () => {
+  const fetcher = () => axios.get('/posts/trend').then(({ data }) => data);
+
+  return useQuery<TrendingPostInfo[]>('trendPosts', fetcher);
+};
+
+export {
+  useUploadPostMutation,
+  useGetPostListQuery,
+  useGetEachPostQuery,
+  useGetPostFilesQuery,
+  useGetRecentPostsQuery,
+  useGetTrendPostsQuery,
+};
