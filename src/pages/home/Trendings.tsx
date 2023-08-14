@@ -6,15 +6,6 @@ import { DateTime } from 'luxon';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface Board {
-  id: number;
-  title: string;
-  writer: { profile: string; name: string };
-  createdAt: string;
-  watched: number;
-  img: string;
-}
-
 const Card = ({ post }: { post: TrendingPostInfo }) => {
   return (
     <Link
