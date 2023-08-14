@@ -7,16 +7,20 @@ import CommentCardFooter from './CommentCardFooter';
 
 interface CommentCardProps {
   commentInfo: CommentInfo;
+  replyComments: CommentInfo[];
 }
 
-const CommentCard = ({ commentInfo }: CommentCardProps) => {
+const CommentCard = ({ commentInfo, replyComments }: CommentCardProps) => {
   return (
     <Card className="!bg-mainBlack !bg-none">
       <CommentCardHeader commentInfo={commentInfo} />
       <CardContent className="mb-5 !px-16">
         <Typography marginBottom={5}>{commentInfo.content}</Typography>
-        {/* TODO 필터링된 대댓글 map으로 관리 */}
-        <ReplyCard commentInfo={commentInfo} />
+        <div className="space-y-3">
+          {replyComments.map((replyComment) => (
+            <ReplyCard key={replyComment.commentId} commentInfo={replyComment} />
+          ))}
+        </div>
       </CardContent>
       <CommentCardFooter commentInfo={commentInfo} />
     </Card>

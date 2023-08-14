@@ -3,15 +3,16 @@ import { Typography } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 
 interface BorrowStatusProps {
+  librarian: string;
   canBorrow: boolean;
 }
 
-const BorrowStatus = ({ canBorrow }: BorrowStatusProps) => {
+const BorrowStatus = ({ librarian, canBorrow }: BorrowStatusProps) => {
   return canBorrow ? (
     <Typography className="text-pointBlue">신청 가능 권수 : 1/5</Typography>
   ) : (
     <Tooltip
-      title="사서(박소현)에게 반납해주세요."
+      title={`사서(${librarian})에게 반납해주세요.`}
       componentsProps={{
         tooltip: {
           sx: {
