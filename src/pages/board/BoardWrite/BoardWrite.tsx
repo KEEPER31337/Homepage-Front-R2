@@ -56,12 +56,14 @@ const BoardWrite = () => {
   const handleUploadButonClick = () => {
     const content = editorRef.current?.getInstance().getMarkdown() || '';
 
-    // TODO 필수값 처리
-    // TODO isTemp 여부에 따라 content 옵셔널 처리, 업로드 이후 동작 처리
     uploadPostMutation(
       { request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo }, thumbnail, files },
       {
         onSuccess: () => {
+          if (postSettingInfo.isTemp) {
+            navigate(`/profile#board`);
+            return;
+          }
           navigate(`/board/${categoryName}`);
         },
       },
