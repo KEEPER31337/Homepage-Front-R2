@@ -140,6 +140,46 @@ export interface PostInfo {
   updateTime: string;
 }
 
+export interface PostSummaryInfo {
+  id: number;
+  title: string;
+  writerName: string;
+  visitCount: number;
+  commentCount: number;
+  isSecret: boolean;
+  thumbnailPath: string;
+  registerTime: string;
+}
+
+export interface PageSortInfo {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export interface PageableInfo {
+  sort: PageSortInfo;
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface BoardPosts {
+  content: PostSummaryInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
 export type Role =
   | 'ROLE_회장'
   | 'ROLE_부회장'
