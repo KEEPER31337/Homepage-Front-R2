@@ -28,6 +28,16 @@ export interface BookListInfo {
   information: string;
   enable: boolean;
 }
+export interface BookInfo {
+  bookId: number;
+  thumbnailPath: string;
+  title: string;
+  author: string;
+  bookQuantity: string;
+  currentQuantity: number;
+  totalQuantity: number;
+  canBorrow: boolean;
+}
 
 export interface StudyLinkInfo {
   title: string;
@@ -120,6 +130,7 @@ export interface AdjacentPostInfo {
 }
 
 export interface PostInfo {
+  categoryId: number;
   categoryName: string;
   title: string;
   writerName: string;
@@ -127,7 +138,6 @@ export interface PostInfo {
   visitCount: number;
   thumbnailPath: string;
   content: string;
-  files: FileInfo[];
   previousPost: AdjacentPostInfo;
   nextPost: AdjacentPostInfo;
   likeCount: number;
@@ -138,6 +148,46 @@ export interface PostInfo {
   isTemp: boolean;
   registerTime: string;
   updateTime: string;
+}
+
+export interface PostSummaryInfo {
+  id: number;
+  title: string;
+  writerName: string;
+  visitCount: number;
+  commentCount: number;
+  isSecret: boolean;
+  thumbnailPath: string;
+  registerTime: string;
+}
+
+export interface PageSortInfo {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export interface PageableInfo {
+  sort: PageSortInfo;
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface BoardPosts {
+  content: PostSummaryInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
 }
 
 export type Role =

@@ -1,12 +1,15 @@
 import React from 'react';
 import { useGetEachPostQuery } from '@api/postApi';
+import { useParams } from 'react-router-dom';
 import CommentSection from './Section/CommentSection';
 import AdjacentPostNavSection from './Section/AdjacentPostNavSection';
 import PostSection from './Section/PostSection';
 import BannerSection from './Section/BannerSection';
 
 const BoardView = () => {
-  const postId = 16; // TODO 게시판 목록에서 받아오기
+  const { postId: postIdStr } = useParams();
+  const postId = Number(postIdStr);
+
   const { data: postInfo } = useGetEachPostQuery(postId);
 
   if (!postInfo) return null;
