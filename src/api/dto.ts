@@ -28,6 +28,16 @@ export interface BookListInfo {
   information: string;
   enable: boolean;
 }
+export interface BookInfo {
+  bookId: number;
+  thumbnailPath: string;
+  title: string;
+  author: string;
+  bookQuantity: string;
+  currentQuantity: number;
+  totalQuantity: number;
+  canBorrow: boolean;
+}
 
 export interface StudyLinkInfo {
   title: string;

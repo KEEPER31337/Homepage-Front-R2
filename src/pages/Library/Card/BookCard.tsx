@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import RequestBookModal from '@pages/Library/Modal/RequestBookModal';
+import { BookInfo } from '@api/dto';
 
-const BookCard = () => {
-  const [requestBookModalOpen, setRequestBookModalOpen] = useState(false);
-
+interface BookCardProps {
+  bookInfo: BookInfo;
+  onRequestBook: (bookId: number) => void;
+}
+const BookCard = ({ bookInfo, onRequestBook }: BookCardProps) => {
   return (
     <div className="flex h-fit bg-mainBlack p-2">
       <div className="mr-2 flex h-[120px] w-[85px] bg-middleBlack">
@@ -14,19 +16,20 @@ const BookCard = () => {
       </div>
       <div className="relative grow p-2">
         <div>
-          <Typography className="!mb-2 font-semibold">Beginning Linux programming 4th Edition</Typography>
+          <Typography className="!mb-2 font-semibold">{bookInfo.title}</Typography>
           <div className="flex space-x-2">
-            <Typography>저자 : 페트릭 엔게브렛슨</Typography>
+            <Typography>저자 : {bookInfo.author}</Typography>
             <span className="text-pointBlue"> | </span>
-            <Typography>권수 : 2/3</Typography>
+            <Typography>권수 : {bookInfo.bookQuantity}</Typography>
           </div>
         </div>
 
         <div className="absolute bottom-0 right-0">
-          <OutlinedButton onClick={() => setRequestBookModalOpen(true)}>대출 신청</OutlinedButton>
+          <OutlinedButton disabled={!bookInfo.canBorrow} onClick={() => onRequestBook(bookInfo.bookId)}>
+            대출 {bookInfo.canBorrow ? '신청' : ' 불가'}
+          </OutlinedButton>
         </div>
       </div>
-      <RequestBookModal open={requestBookModalOpen} onClose={() => setRequestBookModalOpen(false)} />
     </div>
   );
 };
