@@ -4,6 +4,7 @@ import ServerImg from '@components/Image/ServerImg';
 import { Avatar, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Board {
   id: number;
@@ -16,7 +17,10 @@ interface Board {
 
 const Card = ({ post }: { post: TrendingPostInfo }) => {
   return (
-    <div className="h-[350px] w-[300px] border-t-[1px] border-t-pointBlue shadow-md shadow-subGray hover:shadow-pointBlue">
+    <Link
+      to="/"
+      className="h-[350px] w-[300px] border-t-[1px] border-t-pointBlue shadow-md shadow-subGray hover:shadow-pointBlue"
+    >
       <ServerImg alt="thumbnail" className="h-1/2 w-full" errorClassName="h-1/2 w-full p-10" src={post.thumbnailPath} />
       <div className="px-5">
         <Typography className="py-2 text-yellow-700">{post.categoryName}</Typography>
@@ -33,7 +37,7 @@ const Card = ({ post }: { post: TrendingPostInfo }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
