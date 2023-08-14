@@ -11,10 +11,10 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import { useUploadPostMutation } from '@api/postApi';
 import { UploadPostSettings } from '@api/dto';
 import { categoryNameToId } from '@utils/converter';
+import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import SettingUploadModal from './Modal/SettingUploadModal';
 
 const POST_TITLE_MAX_LENGTH = 50;
-const REQUIRE_ERROR_MSG = '필수 정보입니다.';
 
 const BoardWrite = () => {
   const { categoryName } = useParams();
