@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { FileInfo, PostInfo, UploadPost } from './dto';
+import { BoardPosts, FileInfo, PostInfo, UploadPost } from './dto';
 
 const useUploadPostMutation = () => {
   const fetcher = (postInfo: UploadPost) => {
@@ -17,6 +17,12 @@ const useUploadPostMutation = () => {
   return useMutation(fetcher);
 };
 
+const useGetPostListQuery = ({ categoryId }: { categoryId: number }) => {
+  const fetcher = () => axios.get('/posts', { params: { categoryId } }).then(({ data }) => data);
+
+  return useQuery<BoardPosts>(['posts', categoryId], fetcher);
+};
+
 const useGetEachPostQuery = (postId: number) => {
   const fetcher = () => axios.get(`/posts/${postId}`).then(({ data }) => data);
 
@@ -29,4 +35,4 @@ const useGetPostFilesQuery = (postId: number) => {
   return useQuery<FileInfo[]>(['post', 'files', postId], fetcher);
 };
 
-export { useUploadPostMutation, useGetEachPostQuery, useGetPostFilesQuery };
+export { useUploadPostMutation, useGetPostListQuery, useGetEachPostQuery, useGetPostFilesQuery };
