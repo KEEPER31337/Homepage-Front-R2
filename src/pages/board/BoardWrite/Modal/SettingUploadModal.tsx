@@ -29,12 +29,23 @@ const SettingUploadModal = ({
   const {
     control,
     watch,
+    reset: resetPassword,
     formState: { isValid },
   } = useForm({ mode: 'onBlur' });
   const password = watch('password');
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
+
+    if (name === 'isSecret' && !checked) {
+      resetPassword();
+
+      const copyPostSettingInfo = { ...postSettingInfo };
+      delete copyPostSettingInfo.password;
+
+      setPostSettingInfo(copyPostSettingInfo);
+    }
+
     setPostSettingInfo((prev) => ({
       ...prev,
       [name]: checked,
@@ -42,7 +53,7 @@ const SettingUploadModal = ({
   };
 
   useEffect(() => {
-    if (!isValid) return;
+    if (!postSettingInfo.isSecret) return;
 
     setPostSettingInfo((prev) => ({ ...prev, password }));
   }, [password]);
