@@ -26,8 +26,7 @@ const useGetBookListQuery = (param: getBookListProps) => {
 };
 
 const useRequestBorrowBookMutation = () => {
-  const fetcher = (selectedBookId: BookInfo['bookId']) =>
-    axios.post(`/books/${selectedBookId}/request-borrow`, { selectedBookId });
+  const fetcher = (selectedBookId: number) => axios.post(`/books/${selectedBookId}/request-borrow`, { selectedBookId });
 
   return useMutation(fetcher);
 };
