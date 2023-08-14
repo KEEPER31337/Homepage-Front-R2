@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,7 +24,7 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
             </div>
             <Typography className="font-semibold text-pointBlue">{message}</Typography>
           </div>
-          <img alt="profile" src="/img/sampleProfile.svg" className="mr-2 h-full object-contain" />
+          <Avatar alt="profile" className="mr-2 !h-20 !w-20 object-contain" />
         </div>
       </div>
       <div className="h-full w-full pl-4 pt-4">

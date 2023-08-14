@@ -4,7 +4,7 @@ import { PointRankInfo, pointColumns, pointRows, pointTop4 } from '@mocks/PointR
 import React, { useState } from 'react';
 import StandardTable from '@components/Table/StandardTable';
 import StandardTab from '@components/Tab/StandardTab';
-import { Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import TopCard from './TopCard';
 
 const AttendRankChileComponent = ({ key, value }: ChildComponent<AttendRankInfo>) => {
@@ -14,7 +14,7 @@ const AttendRankChileComponent = ({ key, value }: ChildComponent<AttendRankInfo>
     case 'name':
       return (
         <div className="flex place-items-center">
-          <img alt="profile" src="/img/sampleProfile.svg" className="mr-2 w-8 object-contain" />
+          <Avatar alt="profile" className="mr-2 !h-8 !w-8 object-contain" />
           {value}
         </div>
       );
@@ -34,7 +34,7 @@ const PointRankChileComponent = ({ key, value }: ChildComponent<PointRankInfo>) 
     case 'name':
       return (
         <div className="flex place-items-center">
-          <img alt="profile" src="/img/sampleProfile.svg" className="mr-2 w-8 object-contain" />
+          <Avatar alt="profile" className="mr-2 !h-8 !w-8 object-contain" />
           {value}
         </div>
       );
