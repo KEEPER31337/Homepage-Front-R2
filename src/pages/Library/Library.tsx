@@ -3,6 +3,8 @@ import PageTitle from '@components/Typography/PageTitle';
 import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { useGetBookListQuery, useRequestBorrowBookMutation } from '@api/libraryApi';
+import { BookInfo } from '@api/dto';
+import useGetPage from '@hooks/useGetPage';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
@@ -18,7 +20,11 @@ const Library = () => {
   };
 
   const librarian = '박소현';
-  const { data: bookList } = useGetBookListQuery({ page: 0, size: 6 });
+
+  const size = 6;
+  const { page } = useGetPage();
+
+  const { data: bookListData } = useGetBookListQuery({ page, size });
 
   return (
     <div>
@@ -28,7 +34,7 @@ const Library = () => {
         <BorrowStatus librarian={librarian} canBorrow={false} />
       </div>
       <div className="grid grid-cols-2">
-        {bookList?.map((bookInfo) => (
+        {bookListData?.content?.map((bookInfo: BookInfo) => (
           <BookCard key={bookInfo.bookId} bookInfo={bookInfo} onRequestBook={handleRequestBook} />
         ))}
         <RequestBookModal
@@ -37,7 +43,7 @@ const Library = () => {
           onClose={() => setRequestBookModalOpen(false)}
         />
       </div>
-      <StandardTablePagination />
+      <StandardTablePagination rowsPerPage={size} totalItems={bookListData?.totalElement} />
     </div>
   );
 };

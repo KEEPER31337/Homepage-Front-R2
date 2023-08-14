@@ -3,7 +3,7 @@ import { useQuery, useMutation } from 'react-query';
 import { BookInfo } from './dto';
 
 const libraryKeys = {
-  bookListContent: ['bookList'] as const,
+  bookListContent: 'bookList',
 };
 
 interface getBookListProps {
@@ -15,14 +15,15 @@ interface getBookListProps {
 
 const useGetBookListQuery = (param: getBookListProps) => {
   const fetcher = () =>
-    axios.get('/books', { params: { ...param } }).then(({ data }) =>
-      data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
+    axios.get('/books', { params: { ...param } }).then(({ data }) => {
+      data.content.filter(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
         ...rest,
         bookQuantity: `${currentQuantity}/${totalQuantity}`,
-      })),
-    );
+      }));
+      return { content: data.content, totalElement: data.totalElements };
+    });
 
-  return useQuery<BookInfo[]>(libraryKeys.bookListContent, fetcher);
+  return useQuery<{ content: BookInfo[]; totalElement: number }>([libraryKeys.bookListContent, param], () => fetcher());
 };
 
 const useRequestBorrowBookMutation = () => {
