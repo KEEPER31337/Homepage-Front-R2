@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const Card = ({ post }: { post: TrendingPostInfo }) => {
   return (
     <Link
-      to="/"
+      to={`/board/view/${post.id}`}
       className="h-[350px] w-[300px] border-t-[1px] border-t-pointBlue shadow-md shadow-subGray hover:shadow-pointBlue"
     >
       <ServerImg alt="thumbnail" className="h-1/2 w-full" errorClassName="h-1/2 w-full p-10" src={post.thumbnailPath} />
