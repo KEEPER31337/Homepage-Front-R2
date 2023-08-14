@@ -1,4 +1,4 @@
-import { Typography } from '@material-tailwind/react';
+import { Typography } from '@mui/material';
 import React from 'react';
 
 interface Board {
@@ -15,9 +15,7 @@ const Card = ({ board }: { board: Board }) => {
     <div className="h-[350px] w-[300px] border-t-[1px] border-t-pointBlue shadow-md shadow-subGray hover:shadow-pointBlue">
       <img alt="thumbnail" className="h-1/2 w-full" src={board.img} />
       <div className="px-5">
-        <Typography variant="h7" className="py-2 text-yellow-700">
-          board?.categoty
-        </Typography>
+        <Typography className="py-2 text-yellow-700">board?.categoty</Typography>
         <Typography variant="h5" className="mb-2">
           board.title
         </Typography>
@@ -25,7 +23,7 @@ const Card = ({ board }: { board: Board }) => {
           <img alt="profile" src={board.writer.profile} className="mx-3 w-10 object-cover" />
           <div className="flex flex-col">
             <Typography variant="h6">{board.writer.name}</Typography>
-            <Typography variant="h7">
+            <Typography>
               {board.createdAt} . {board.watched} watch
             </Typography>
           </div>
