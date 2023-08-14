@@ -7,7 +7,7 @@ import StandardTab from '@components/Tab/StandardTab';
 import { Avatar, Typography } from '@mui/material';
 import TopCard from './TopCard';
 
-const AttendRankChileComponent = ({ key, value }: ChildComponent<AttendRankInfo>) => {
+const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankInfo>) => {
   switch (key) {
     case 'rank':
       return `${value}등`;
@@ -27,7 +27,7 @@ const AttendRankChileComponent = ({ key, value }: ChildComponent<AttendRankInfo>
   }
 };
 
-const PointRankChileComponent = ({ key, value }: ChildComponent<PointRankInfo>) => {
+const PointRankChildComponent = ({ key, value }: ChildComponent<PointRankInfo>) => {
   switch (key) {
     case 'rank':
       return `${value}등`;
@@ -65,13 +65,13 @@ const Rank = () => {
             <StandardTable<PointRankInfo>
               columns={pointColumns}
               rows={pointRows}
-              childComponent={PointRankChileComponent}
+              childComponent={PointRankChildComponent}
             />
           ) : (
             <StandardTable<AttendRankInfo>
               columns={attendColumns}
               rows={attendRows}
-              childComponent={AttendRankChileComponent}
+              childComponent={AttendRankChildComponent}
             />
           )}
         </div>
