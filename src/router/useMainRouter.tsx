@@ -109,7 +109,7 @@ const useMainRouter = () =>
             },
             {
               path: 'rank',
-              element: <div />,
+              element: <Rank />,
             },
             {
               path: 'game',
@@ -143,15 +143,6 @@ const useMainRouter = () =>
                   ],
                 },
               ],
-            },
-          ],
-        },
-        {
-          element: <FitContainer />,
-          children: [
-            {
-              path: 'rank',
-              element: <Rank />,
             },
           ],
         },
