@@ -23,8 +23,8 @@ const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
     <ActionModal
       open={open}
       onClose={handleOpen}
-      title={isEdit ? '스터디 수정' : '스터디 생성'}
-      actionButtonName={isEdit ? '적용하기' : '생성하기'}
+      title={isEdit ? '스터디 수정' : '스터디 추가'}
+      actionButtonName={isEdit ? '수정' : '추가'}
       onActionButonClick={handleOpen}
     >
       <div className="space-y-6">
