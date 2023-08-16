@@ -77,7 +77,15 @@ const BoardList = () => {
           paginationOption={{ rowsPerPage: posts.size, totalItems: posts.totalElements }}
         />
       )}
-      {tableView === 'Grid' && <GridTable rows={[]} />}
+      {tableView === 'Grid' && (
+        <GridTable<BoardRow>
+          rows={posts.content.map((post, postIndex) => ({
+            no: getRowNumber({ size: posts.size, index: postIndex }),
+            ...post,
+          }))}
+          paginationOption={{ rowsPerPage: posts.size, totalItems: posts.totalElements }}
+        />
+      )}
     </div>
   );
 };

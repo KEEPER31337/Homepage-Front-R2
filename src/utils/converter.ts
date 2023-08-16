@@ -25,4 +25,8 @@ const categoryNameToId = (categoryName: string) => {
   return null;
 };
 
-export { formatFileSize, categoryNameToId };
+const getServerImgUrl = (url: string) => {
+  return `${process.env.REACT_APP_API_URL}/${url}`;
+};
+
+export { formatFileSize, categoryNameToId, getServerImgUrl };
