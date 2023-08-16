@@ -5,17 +5,17 @@ import { DateTime } from 'luxon';
 
 interface AddSeminarModalProps {
   open: boolean;
-  toggleOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AddSeminarModal = ({ open, toggleOpen }: AddSeminarModalProps) => {
+const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
   const [date, setDate] = useState<DateTime | null>(null);
   const handleClose = () => {
-    toggleOpen(false);
+    setOpen(false);
     setDate(null);
   };
   const handleSeminarAddButtonClick = () => {
-    toggleOpen(true);
+    setOpen(true);
     // TODO
     setDate(null);
   };
