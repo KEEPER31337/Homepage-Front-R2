@@ -14,26 +14,24 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
     setOpen(false);
     setDate(null);
   };
+
   const handleSeminarAddButtonClick = () => {
-    setOpen(true);
     // TODO
     setDate(null);
   };
 
   return (
-    <div>
-      <ActionModal
-        open={open}
-        onClose={handleClose}
-        title="세미나 일정 추가"
-        actionButtonName="추가"
-        onActionButonClick={handleSeminarAddButtonClick}
-      >
-        <div className="flex justify-center">
-          <StandardDatePicker date={date} setDate={setDate} label="날짜" />
-        </div>
-      </ActionModal>
-    </div>
+    <ActionModal
+      open={open}
+      onClose={handleClose}
+      title="세미나 일정 추가"
+      actionButtonName="추가"
+      onActionButonClick={handleSeminarAddButtonClick}
+    >
+      <div className="flex justify-center">
+        <StandardDatePicker date={date} setDate={setDate} label="날짜" />
+      </div>
+    </ActionModal>
   );
 };
 
