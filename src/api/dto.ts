@@ -176,6 +176,14 @@ export interface PageableInfo {
   unpaged: boolean;
 }
 
+export interface BoardSearch {
+  categoryId: number;
+  searchType?: 'title' | 'content' | 'writer' | 'title+content';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface BoardPosts {
   content: PostSummaryInfo[];
   pageable: PageableInfo;

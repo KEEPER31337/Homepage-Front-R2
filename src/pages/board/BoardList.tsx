@@ -8,6 +8,7 @@ import SearchSection from '@components/Section/SearchSection';
 import { useGetPostListQuery } from '@api/postApi';
 import { categoryNameToId } from '@utils/converter';
 import { Column, Row } from '@components/Table/StandardTable.interface';
+import usePagination from '@hooks/usePagination';
 import tableViewState from '@recoil/view.recoil';
 import { useRecoilValue } from 'recoil';
 import GridTable from '@components/Table/GridTable';
@@ -30,6 +31,7 @@ const boardColumn: Column<BoardRow>[] = [
 
 const BoardList = () => {
   const { categoryName } = useParams();
+  const { page, getRowNumber } = usePagination();
   const categoryId = categoryName ? categoryNameToId(categoryName) : null;
 
   if (!categoryId) {
@@ -37,7 +39,7 @@ const BoardList = () => {
   }
 
   const navigate = useNavigate();
-  const { data: posts } = useGetPostListQuery({ categoryId });
+  const { data: posts } = useGetPostListQuery({ categoryId, page });
   const tableView = useRecoilValue(tableViewState);
 
   if (!posts) {
@@ -67,8 +69,12 @@ const BoardList = () => {
       {tableView === 'List' && (
         <StandardTable
           columns={boardColumn}
-          rows={posts.content.map((post, postIndex) => ({ no: postIndex + 1, ...post }))}
+          rows={posts.content.map((post, postIndex) => ({
+            no: getRowNumber({ size: posts.size, index: postIndex }),
+            ...post,
+          }))}
           onRowClick={handlePostRowClick}
+          paginationOption={{ rowsPerPage: posts.size, totalItems: posts.totalElements }}
         />
       )}
       {tableView === 'Grid' && <GridTable rows={[]} />}
