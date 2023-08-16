@@ -8,6 +8,9 @@ import SearchSection from '@components/Section/SearchSection';
 import { useGetPostListQuery } from '@api/postApi';
 import { categoryNameToId } from '@utils/converter';
 import { Column, Row } from '@components/Table/StandardTable.interface';
+import tableViewState from '@recoil/view.recoil';
+import { useRecoilValue } from 'recoil';
+import GridTable from '@components/Table/GridTable';
 
 interface BoardRow {
   no: number;
@@ -35,6 +38,7 @@ const BoardList = () => {
 
   const navigate = useNavigate();
   const { data: posts } = useGetPostListQuery({ categoryId });
+  const tableView = useRecoilValue(tableViewState);
 
   if (!posts) {
     return null;
@@ -58,16 +62,16 @@ const BoardList = () => {
       </div>
       <div className="flex items-center justify-between pb-5">
         <SearchSection />
-        <div className="flex gap-2">
-          <TableViewSwitchButton type="List" isActive />
-          <TableViewSwitchButton type="Grid" />
-        </div>
+        <TableViewSwitchButton />
       </div>
-      <StandardTable
-        columns={boardColumn}
-        rows={posts.content.map((post, postIndex) => ({ no: postIndex + 1, ...post }))}
-        onRowClick={handlePostRowClick}
-      />
+      {tableView === 'List' && (
+        <StandardTable
+          columns={boardColumn}
+          rows={posts.content.map((post, postIndex) => ({ no: postIndex + 1, ...post }))}
+          onRowClick={handlePostRowClick}
+        />
+      )}
+      {tableView === 'Grid' && <GridTable rows={[]} />}
     </div>
   );
 };
