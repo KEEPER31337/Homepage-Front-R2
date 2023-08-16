@@ -1,21 +1,26 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
-import { Column, Row, ChildComponent } from './StandardTable.interface';
+import { PaginationOption } from '@components/Pagination/StandardTablePagination.interface';
+import { ChildComponent, Column, Row } from './StandardTable.interface';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface StandardTableProps<T extends Record<string, any>> {
   columns: Column<T>[];
   rows: Row<T>[];
   onRowClick?: ({ rowData }: { rowData: Row<T> }) => void;
   childComponent?: ({ key, value, rowData }: ChildComponent<T>) => ReactNode;
+  paginationOption?: PaginationOption;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const StandardTable = <T extends Record<string, any>>({
   columns,
   rows,
   onRowClick,
   childComponent,
+  paginationOption,
 }: StandardTableProps<T>) => {
   const isCheckboxColumn = (columnKey: Column<T>['key']) => columnKey === 'checkbox';
 
@@ -35,37 +40,51 @@ const StandardTable = <T extends Record<string, any>>({
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              className={`${onRowClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'}`}
-              key={row.id}
-              onClick={onRowClick ? () => onRowClick({ rowData: row }) : undefined}
-            >
-              {columns.map((column) => {
-                return (
-                  <TableCell
-                    padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
-                    className="!border-subBlack bg-mainBlack !text-white"
-                    key={column.key as string}
-                  >
-                    {isCheckboxColumn(column.key) ? (
-                      <Checkbox />
-                    ) : (
-                      <div>
-                        {childComponent
-                          ? childComponent({ key: column.key, value: row[column.key], rowData: row })
-                          : row[column.key]}
-                      </div>
-                    )}
-                  </TableCell>
-                );
-              })}
+        <TableBody className="bg-mainBlack">
+          {rows.length === 0 ? (
+            <TableRow>
+              <TableCell className="!border-none" colSpan={columns.length}>
+                <Typography align="center" marginY={8}>
+                  데이터가 없습니다.
+                </Typography>
+              </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            rows.map((row) => (
+              <TableRow
+                className={`${onRowClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'}`}
+                key={row.id}
+                onClick={onRowClick ? () => onRowClick({ rowData: row }) : undefined}
+              >
+                {columns.map((column) => {
+                  return (
+                    <TableCell
+                      padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
+                      className="!border-subBlack bg-mainBlack !text-white"
+                      key={column.key as string}
+                    >
+                      {isCheckboxColumn(column.key) ? (
+                        <Checkbox />
+                      ) : (
+                        <div>
+                          {childComponent
+                            ? childComponent({
+                                key: column.key,
+                                value: row[column.key],
+                                rowData: row,
+                              })
+                            : row[column.key]}
+                        </div>
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
-      <StandardTablePagination rowsPerPage={10} />
+      <StandardTablePagination {...paginationOption} />
     </div>
   );
 };
