@@ -39,14 +39,8 @@ const Login = () => {
     setIsKeepLogin(e.target.checked);
   };
 
-  const validation = () => {
-    const isError = false;
-
-    return !isError;
-  };
-
   const handleLoginClick = () => {
-    if (validation()) {
+    if (form.id && form.password) {
       login({ loginId: form.id, password: form.password });
     }
   };
