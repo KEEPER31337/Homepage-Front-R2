@@ -40,15 +40,19 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
 
   const handleConfirmSecondStep = () => {
     if (passwordRegex.test(form.newPassword)) {
-      changePassword({
-        loginId: firstForm.id,
-        email: firstForm.email,
-        authCode: firstForm.verificationCode,
-        password: form.newPassword,
-      });
-      if (isSuccess) {
-        setCurrentStep(3);
-      }
+      changePassword(
+        {
+          loginId: firstForm.id,
+          email: firstForm.email,
+          authCode: firstForm.verificationCode,
+          password: form.newPassword,
+        },
+        {
+          onSuccess: (data) => {
+            setCurrentStep(3);
+          },
+        },
+      );
     }
   };
 

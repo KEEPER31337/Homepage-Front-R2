@@ -20,7 +20,7 @@ interface SearchPWFirstStepProps {
 }
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
   const { mutate: requestAuthcode, isSuccess, isError } = useRequestAuthCodeMutation();
-  const { mutate: checkAuthcode, data } = useCheckAuthCodeMutation();
+  const { mutate: checkAuthcode } = useCheckAuthCodeMutation();
 
   const [isSent, setIsSent] = useState(false);
   const [seconds, setSeconds] = useState(300);
@@ -41,23 +41,31 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     }
   };
 
-  const handleRequestVerificationCode = () => {
+  const handleRequestVerificationCode = async () => {
     if (form.id && form.email) {
-      requestAuthcode({ loginId: form.id, email: form.email });
-      if (isSuccess) {
+      try {
+        await requestAuthcode({ loginId: form.id, email: form.email });
         setIsSent(true);
-      }
-      if (isError) {
+        setMatchInfoModalOpen(false);
+      } catch (error) {
         setMatchInfoModalOpen(true);
       }
     }
   };
 
-  const handleConfirmFirstStep = () => {
-    checkAuthcode({ loginId: form.id, email: form.email, authCode: form.verificationCode });
-    if (data?.auth === true) {
-      setCurrentStep(2);
-    } else {
+  const handleConfirmFirstStep = async () => {
+    try {
+      await checkAuthcode(
+        { loginId: form.id, email: form.email, authCode: form.verificationCode },
+        {
+          onSuccess: (data) => {
+            if (data?.auth === true) {
+              setCurrentStep(2);
+            }
+          },
+        },
+      );
+    } catch (error) {
       setIsValidAuthCode(false);
     }
   };
