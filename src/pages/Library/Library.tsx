@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import PageTitle from '@components/Typography/PageTitle';
 import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
-import useGetBookListQuery from '@api/libraryApi';
+import { useGetBookListQuery, useRequestBorrowBookMutation } from '@api/libraryApi';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
 
 const Library = () => {
-  const [selectedBookId, setSelectedBookId] = useState(0);
   const [requestBookModalOpen, setRequestBookModalOpen] = useState(false);
+  const { mutate: RequestBorrowBook } = useRequestBorrowBookMutation();
 
   const handleRequestBook = (bookId: number) => {
-    setSelectedBookId(bookId);
+    RequestBorrowBook(bookId);
+    //  TODO 무조건 완료 모달뜨지 않게 예외처리
     setRequestBookModalOpen(true);
   };
 
@@ -32,7 +33,6 @@ const Library = () => {
         ))}
         <RequestBookModal
           librarian={librarian}
-          selectedBookId={selectedBookId}
           open={requestBookModalOpen}
           onClose={() => setRequestBookModalOpen(false)}
         />
