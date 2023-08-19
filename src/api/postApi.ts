@@ -3,9 +3,11 @@ import { useMutation, useQuery } from 'react-query';
 import { BoardPosts, BoardSearch, FileInfo, PostInfo, UploadPost } from './dto';
 
 const useUploadPostMutation = () => {
-  const fetcher = (postInfo: UploadPost) => {
+  const fetcher = ({ request, thumbnail, files }: UploadPost) => {
     const formData = new FormData();
-    formData.append('request', new Blob([JSON.stringify(postInfo)], { type: 'application/json' }));
+    formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }));
+    if (thumbnail) formData.append('thumbnail', thumbnail);
+    files?.forEach((file) => formData.append('files', file));
 
     return axios.post('/posts', formData, {
       headers: {
