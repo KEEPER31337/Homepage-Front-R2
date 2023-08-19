@@ -1,3 +1,5 @@
+import CATEGORIES from '@constants/category';
+
 const formatFileSize = (bytes: number, decimals = 2) => {
   if (bytes === 0) return '0 Bytes';
 
@@ -10,5 +12,17 @@ const formatFileSize = (bytes: number, decimals = 2) => {
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { formatFileSize };
+const categoryNameToId = (categoryName: string) => {
+  for (let i = 0; i < CATEGORIES.length; i += 1) {
+    const { subCategories } = CATEGORIES[i];
+    for (let j = 0; j < subCategories.length; j += 1) {
+      const subCategory = subCategories[j];
+      if (subCategory.name === categoryName) {
+        return subCategory.id;
+      }
+    }
+  }
+  return null;
+};
+
+export { formatFileSize, categoryNameToId };

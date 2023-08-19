@@ -4,6 +4,8 @@ import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import { Link } from 'react-router-dom';
 import useLoginMutation from '@api/logInApi';
+import { useSetRecoilState } from 'recoil';
+import memberState from '@recoil/member.recoil';
 
 const HorizonLine = () => {
   return (
@@ -26,6 +28,7 @@ const Login = () => {
   });
   const { id, password } = form;
   const { mutate: login } = useLoginMutation();
+  const setMemberState = useSetRecoilState(memberState);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -41,7 +44,14 @@ const Login = () => {
 
   const handleLoginClick = () => {
     if (form.id && form.password) {
-      login({ loginId: form.id, password: form.password });
+      login(
+        { loginId: form.id, password: form.password },
+        {
+          onSuccess: ({ data }) => {
+            setMemberState({ roles: data.memberJobs });
+          },
+        },
+      );
     }
   };
 

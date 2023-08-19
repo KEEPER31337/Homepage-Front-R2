@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import { VscNewFile } from 'react-icons/vsc';
 import FileUploadListTable from './FileUploadList';
 
-const FileUploader = () => {
-  const [files, setFiles] = useState<File[]>([]);
+interface FileUploaderProps {
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+}
 
+const FileUploader = ({ files, setFiles }: FileUploaderProps) => {
   const onDrop = (acceptedFiles: File[]) => {
     setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
   };
