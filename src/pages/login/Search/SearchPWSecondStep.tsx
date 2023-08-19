@@ -70,29 +70,24 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
       <div className="mx-20 my-12 flex flex-col justify-center gap-10 text-right">
         <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">신규 비밀번호</p>
-          <BackgroundInput
-            className="w-[70%]"
-            required
-            name="newPassword"
-            value={form.newPassword}
-            onChange={handleChange}
-          />
+          <div className="flex w-[70%] flex-col">
+            <BackgroundInput required name="newPassword" value={form.newPassword} onChange={handleChange} />
+            {form.newPassword && !passwordRegex.test(form.newPassword) && (
+              <p className="mt-2 text-left text-red-500">8~20자 영문과 숫자를 사용하세요.</p>
+            )}
+          </div>
         </div>
         <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">비밀번호 확인</p>
-          <BackgroundInput
-            className="w-[70%]"
-            required
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-          />
+          <div className="flex w-[70%] flex-col">
+            <BackgroundInput required name="confirmPassword" value={form.confirmPassword} onChange={handleChange} />
+            {form.confirmPassword !== '' && (
+              <p className={`${isSame ? 'text-pointBlue' : 'text-red-500'} text-left`}>
+                {isSame ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+              </p>
+            )}{' '}
+          </div>
         </div>
-        {form.confirmPassword !== '' && (
-          <p className={`${isSame ? 'text-pointBlue' : 'text-red-500'}`}>
-            {isSame ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
-          </p>
-        )}{' '}
       </div>
       <Divider className="bg-pointBlue" />
       <div className="mt-10 text-center">
