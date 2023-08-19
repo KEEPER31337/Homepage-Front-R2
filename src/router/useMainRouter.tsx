@@ -12,6 +12,7 @@ import FullContainer from '@components/Layout/Container/FullContainer';
 import FitContainer from '@components/Layout/Container/FitContainer';
 import BoardList from '@pages/board/BoardList';
 import SignUp from '@pages/SignUp/SignUp';
+import Rank from '@pages/rank/Rank';
 import Login from '@pages/login/Login';
 import Game from '@pages/Game/Game';
 import Library from '@pages/Library/Library';
@@ -81,7 +82,7 @@ const useMainRouter = () =>
                   element: <BoardList />,
                 },
                 {
-                  path: 'write',
+                  path: 'write/:categoryName',
                   element: <BoardWrite />,
                 },
                 {
@@ -108,7 +109,7 @@ const useMainRouter = () =>
             },
             {
               path: 'rank',
-              element: <div />,
+              element: <Rank />,
             },
             {
               path: 'game',

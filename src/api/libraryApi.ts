@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { BookInfo } from './dto';
 
 const libraryKeys = {
@@ -25,4 +25,10 @@ const useGetBookListQuery = (param: getBookListProps) => {
   return useQuery<BookInfo[]>(libraryKeys.bookListContent, fetcher);
 };
 
-export default useGetBookListQuery;
+const useRequestBorrowBookMutation = () => {
+  const fetcher = (selectedBookId: number) => axios.post(`/books/${selectedBookId}/request-borrow`);
+
+  return useMutation(fetcher);
+};
+
+export { useGetBookListQuery, useRequestBorrowBookMutation };

@@ -5,12 +5,14 @@ import PageTitle from '@components/Typography/PageTitle';
 
 import ActionButton from '@components/Button/ActionButton';
 import AddSeminarModal from './Modal/AddSeminarModal';
+import DeleteSeminarModal from './Modal/DeleteSeminarModal';
 
 const SeminarManage = () => {
   const listColumns = columns;
   const listRows = rows;
   const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
   const [openAddSeminarModal, setOpenAddSeminarModal] = useState(false);
+  const [openDeleteSeminarModal, setOpenDeleteSeminarModal] = useState(false);
 
   return (
     <div>
@@ -19,10 +21,13 @@ const SeminarManage = () => {
         <ActionButton mode="add" onClick={() => setOpenAddSeminarModal(true)}>
           추가
         </ActionButton>
-        <ActionButton mode="delete">삭제</ActionButton>
+        <ActionButton mode="delete" onClick={() => setOpenDeleteSeminarModal(true)}>
+          삭제
+        </ActionButton>
       </div>
       <StandardTable columns={listColumns} rows={listRows} />
       <AddSeminarModal open={openAddSeminarModal} setOpen={setOpenAddSeminarModal} />
+      <DeleteSeminarModal open={openDeleteSeminarModal} setOpen={setOpenDeleteSeminarModal} />
     </div>
   );
 };
