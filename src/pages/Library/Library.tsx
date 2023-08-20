@@ -3,7 +3,6 @@ import PageTitle from '@components/Typography/PageTitle';
 import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { useGetBookListQuery, useRequestBorrowBookMutation } from '@api/libraryApi';
-import { BookInfo } from '@api/dto';
 import usePagination from '@hooks/usePagination';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
@@ -33,7 +32,7 @@ const Library = () => {
         <BorrowStatus librarian={librarian} canBorrow={false} />
       </div>
       <div className="grid grid-cols-2">
-        {bookListData?.content?.map((bookInfo: BookInfo) => (
+        {bookListData?.content?.map((bookInfo) => (
           <BookCard key={bookInfo.bookId} bookInfo={bookInfo} onRequestBook={handleRequestBook} />
         ))}
         <RequestBookModal
