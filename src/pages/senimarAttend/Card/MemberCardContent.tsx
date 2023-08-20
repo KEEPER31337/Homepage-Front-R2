@@ -3,10 +3,10 @@ import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import { attendSeminar, editAttendStatus, getAvailableSeminarInfo, getSeminarInfo } from '@api/seminarApi';
 import { AxiosError } from 'axios';
+import ActivityStatus from '@api/dto';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
-import ActivityStatus from '../SeminarAttend.interface';
 
 interface ErrorResponse {
   message: string;

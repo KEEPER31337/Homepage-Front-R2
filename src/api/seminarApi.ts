@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
-import ActivityStatus from '@pages/senimarAttend/SeminarAttend.interface';
-import { SeminarInfo, UsableSeminarInfo } from './dto';
+import ActivityStatus, { SeminarInfo, UsableSeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminar: ['getSeminar', 'id'] as const,

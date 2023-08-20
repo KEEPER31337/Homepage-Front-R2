@@ -1,4 +1,6 @@
-import ActivityStatus from '@pages/senimarAttend/SeminarAttend.interface';
+type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
+
+export default ActivityStatus;
 
 export interface StaticWriteContentsInfo {
   id: number;
