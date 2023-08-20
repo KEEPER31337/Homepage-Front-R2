@@ -28,7 +28,7 @@ const MemberCardContent = () => {
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
-  const isValidActivityStatus = (value: string): value is ActivityStatus => {
+  const isValidActivityStatus = (value: ActivityStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
   const { mutate: editStatus } = editAttendStatus(5, 6); // 테스트용 임시
