@@ -2,16 +2,16 @@ import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
 import { BookInfo } from './dto';
 
-const libraryKeys = {
-  bookListContent: 'bookList',
-};
-
 interface getBookListProps {
   searchType?: 'title' | 'author' | 'all';
   search?: string;
   page?: number;
   size?: number;
 }
+
+const libraryKeys = {
+  bookListContent: (param: getBookListProps) => ['library', 'bookList', param] as const,
+};
 
 const useGetBookListQuery = (param: getBookListProps) => {
   const fetcher = () =>
@@ -23,7 +23,7 @@ const useGetBookListQuery = (param: getBookListProps) => {
       return { content, totalElement: data.totalElements };
     });
 
-  return useQuery<{ content: BookInfo[]; totalElement: number }>([libraryKeys.bookListContent, param], fetcher);
+  return useQuery<{ content: BookInfo[]; totalElement: number }>(libraryKeys.bookListContent(param), fetcher);
 };
 
 const useRequestBorrowBookMutation = () => {
