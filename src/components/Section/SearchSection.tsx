@@ -1,21 +1,39 @@
 import React from 'react';
-import { MdOutlineArrowDropDown, MdOutlineSearch } from 'react-icons/md';
+import Selector from '@components/Selector/Selector';
+import SearchInput from '@components/Input/SearchInput';
+import { SelectChangeEvent } from '@mui/material';
 
-const SearchSection = () => {
+interface SearchSectionProps {
+  options: { id: string | number; content: string | number }[];
+  selectorValue: string | number;
+  onChangeSelector: (event: SelectChangeEvent<unknown>) => void;
+
+  placeholder?: string;
+  inputValue: string;
+  onchangeInput: React.ChangeEventHandler<HTMLInputElement>;
+  onSearchButtonClick: () => void;
+}
+
+const SearchSection = ({
+  options,
+  selectorValue,
+  onChangeSelector,
+
+  placeholder,
+  inputValue,
+  onchangeInput,
+  onSearchButtonClick,
+}: SearchSectionProps) => {
   return (
-    <div className="flex basis-3/5 gap-4">
-      <div className="flex basis-1/6 items-center justify-between border-b border-pointBlue px-1 py-2">
-        <span>제목 + 내용</span>
-        <MdOutlineArrowDropDown />
-      </div>
-      <div className="flex basis-5/6 items-center justify-between border-b border-pointBlue px-[9px] py-2">
-        <input
-          type="text"
-          placeholder="검색어를 입력하세요"
-          className="grow bg-subBlack placeholder:text-white focus:outline-none"
-        />
-        <MdOutlineSearch size="20" color="#4CEEF9" />
-      </div>
+    <div className="flex items-end space-x-2">
+      <Selector className="w-32" options={options} value={selectorValue} onChange={onChangeSelector} />
+      <SearchInput
+        placeholder={placeholder}
+        className="w-80"
+        value={inputValue}
+        onChange={onchangeInput}
+        onSearchButtonClick={onSearchButtonClick}
+      />
     </div>
   );
 };
