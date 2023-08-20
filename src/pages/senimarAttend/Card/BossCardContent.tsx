@@ -28,7 +28,7 @@ const BossCardContent = () => {
   }, [isSuccess]);
 
   useEffect(() => {
-    if (seminarData && availableSeminarData?.id === seminarData?.seminarId) setSeminarStart(true);
+    if (seminarData && availableSeminarData?.id === seminarData.seminarId) setSeminarStart(true);
   }, [availableSeminarData]);
 
   return (
