@@ -1,13 +1,18 @@
 import axios from 'axios';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { CommentInfo } from './dto';
 
 const useCreateCommentMutation = () => {
-  // TODO 업데이트시 조회 목록도 업데이트 되도록 처리
+  const queryClient = useQueryClient();
+
   const fetcher = ({ postId, content }: { postId: number; content: string }) =>
     axios.post(`/comments`, { postId, content }).then(({ data }) => data.comments);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
 };
 
 const useGetCommentQuery = (postId: number) => {
