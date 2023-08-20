@@ -4,7 +4,7 @@ import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { useGetBookListQuery, useRequestBorrowBookMutation } from '@api/libraryApi';
 import { BookInfo } from '@api/dto';
-import useGetPage from '@hooks/useGetPage';
+import usePagination from '@hooks/usePagination';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
@@ -22,10 +22,9 @@ const Library = () => {
   const librarian = '박소현';
 
   const size = 6;
-  const { page } = useGetPage();
+  const { page } = usePagination();
 
   const { data: bookListData } = useGetBookListQuery({ page, size });
-
   return (
     <div>
       <PageTitle>도서검색</PageTitle>

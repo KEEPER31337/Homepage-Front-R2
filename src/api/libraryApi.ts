@@ -16,14 +16,14 @@ interface getBookListProps {
 const useGetBookListQuery = (param: getBookListProps) => {
   const fetcher = () =>
     axios.get('/books', { params: { ...param } }).then(({ data }) => {
-      data.content.filter(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
+      const content = data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
         ...rest,
         bookQuantity: `${currentQuantity}/${totalQuantity}`,
       }));
-      return { content: data.content, totalElement: data.totalElements };
+      return { content, totalElement: data.totalElements };
     });
 
-  return useQuery<{ content: BookInfo[]; totalElement: number }>([libraryKeys.bookListContent, param], () => fetcher());
+  return useQuery<{ content: BookInfo[]; totalElement: number }>([libraryKeys.bookListContent, param], fetcher);
 };
 
 const useRequestBorrowBookMutation = () => {
