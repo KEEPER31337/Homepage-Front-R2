@@ -35,11 +35,7 @@ const SeminarInput = ({ disabled, helperText, setInputCode, inputCode }: Seminar
 
     const copyInputCode = [...inputCode];
     copyInputCode[key] = Number(target.value);
-    setInputCode?.(
-      copyInputCode.map((num) => {
-        return Number(num);
-      }),
-    );
+    setInputCode?.(copyInputCode.map(Number));
   };
 
   return (
