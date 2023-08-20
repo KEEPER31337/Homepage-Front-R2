@@ -21,7 +21,7 @@ const useGetCommentQuery = (postId: number) => {
   return useQuery<CommentInfo[]>(['comments'], fetcher);
 };
 
-const useControlCommentLikes = () => {
+const useControlCommentLikesMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = (commentId: number) => axios.patch(`/comments/${commentId}/likes`);
@@ -33,7 +33,7 @@ const useControlCommentLikes = () => {
   });
 };
 
-const useControlCommentDislikes = () => {
+const useControlCommentDislikesMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = (commentId: number) => axios.patch(`/comments/${commentId}/dislikes`);
@@ -45,4 +45,35 @@ const useControlCommentDislikes = () => {
   });
 };
 
-export { useCreateCommentMutation, useGetCommentQuery, useControlCommentLikes, useControlCommentDislikes };
+const useEditCommentMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (commentId: number) => axios.put(`/comments/${commentId}`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+};
+
+const useDeleteCommentMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (commentId: number) => axios.delete(`/comments/${commentId}`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+};
+
+export {
+  useCreateCommentMutation,
+  useGetCommentQuery,
+  useControlCommentLikesMutation,
+  useControlCommentDislikesMutation,
+  useEditCommentMutation,
+  useDeleteCommentMutation,
+};

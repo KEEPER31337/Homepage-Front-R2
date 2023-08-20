@@ -94,7 +94,7 @@ export interface CommentInfo {
   commentId: number;
   writerName: string;
   writerThumbnailPath: string | null;
-  content: string;
+  content: string | null;
   registerTime: string;
   parentId: number | null;
   likeCount: number;
