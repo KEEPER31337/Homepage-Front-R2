@@ -22,6 +22,7 @@ const SearchInput = ({ value, onChange, onSearchButtonClick, ...standardTextFiel
       onChange={onChange}
       onKeyPress={handleOnKeyEnterPress}
       InputProps={{
+        className: 'before:!border-pointBlue',
         endAdornment: (
           <InputAdornment position="end">
             <IconButton onClick={onSearchButtonClick}>
