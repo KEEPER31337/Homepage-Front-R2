@@ -12,13 +12,12 @@ interface CommentSectionProps {
 }
 
 const CommentSection = ({ allowComment, postId }: CommentSectionProps) => {
-  const [commentContent, setCommnetContent] = useState('');
+  const [commentContent, setCommentContent] = useState('');
 
   const { data: commentList } = useGetCommentQuery(postId); // TODO postId 정상적으로 받아오지 않을 경우 처리
   const { mutate: createComment } = useCreateCommentMutation();
 
   const handleWriteCommentClick = () => {
-    // TODO 댓글 작성 API 적용
     createComment({ postId, content: commentContent });
   };
 
@@ -56,7 +55,7 @@ const CommentSection = ({ allowComment, postId }: CommentSectionProps) => {
           <CommentWriteCardAction
             textFieldProps={{
               value: commentContent,
-              onChange: (e) => setCommnetContent(e.target.value),
+              onChange: (e) => setCommentContent(e.target.value),
               placeholder: '댓글...',
             }}
             writeButtonName="댓글 작성"
