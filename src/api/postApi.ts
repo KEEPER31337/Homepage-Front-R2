@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { BoardPosts, PostInfo, UploadPost } from './dto';
+import { BoardPosts, BoardSearch, FileInfo, PostInfo, UploadPost } from './dto';
 
 const useUploadPostMutation = () => {
-  const fetcher = (postInfo: UploadPost) => {
+  const fetcher = ({ request, thumbnail, files }: UploadPost) => {
     const formData = new FormData();
-    formData.append('request', new Blob([JSON.stringify(postInfo)], { type: 'application/json' }));
+    formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }));
+    if (thumbnail) formData.append('thumbnail', thumbnail);
+    files?.forEach((file) => formData.append('files', file));
 
     return axios.post('/posts', formData, {
       headers: {
@@ -17,16 +19,25 @@ const useUploadPostMutation = () => {
   return useMutation(fetcher);
 };
 
-const useGetPostListQuery = ({ categoryId }: { categoryId: number }) => {
-  const fetcher = () => axios.get('/posts', { params: { categoryId } }).then(({ data }) => data);
+const useGetPostListQuery = ({ categoryId, searchType, search, page, size }: BoardSearch) => {
+  const fetcher = () =>
+    axios.get('/posts', { params: { categoryId, searchType, search, page, size } }).then(({ data }) => data);
 
-  return useQuery<BoardPosts>(['posts', categoryId], fetcher);
+  return useQuery<BoardPosts>(['posts', categoryId, searchType, search, page, size], fetcher, {
+    keepPreviousData: true,
+  });
 };
 
 const useGetEachPostQuery = (postId: number) => {
   const fetcher = () => axios.get(`/posts/${postId}`).then(({ data }) => data);
 
-  return useQuery<PostInfo>(['post'], fetcher);
+  return useQuery<PostInfo>(['post', postId], fetcher);
 };
 
-export { useUploadPostMutation, useGetPostListQuery, useGetEachPostQuery };
+const useGetPostFilesQuery = (postId: number) => {
+  const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
+
+  return useQuery<FileInfo[]>(['post', 'files', postId], fetcher);
+};
+
+export { useUploadPostMutation, useGetPostListQuery, useGetEachPostQuery, useGetPostFilesQuery };

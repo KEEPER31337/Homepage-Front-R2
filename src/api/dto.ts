@@ -109,10 +109,16 @@ export interface UploadPostSettings {
   password?: string;
 }
 
-export interface UploadPost extends UploadPostSettings {
+export interface UploadPostCore extends UploadPostSettings {
   title: string;
   content: string;
   categoryId: number;
+}
+
+export interface UploadPost {
+  request: UploadPostCore;
+  thumbnail?: Blob | null;
+  files?: File[];
 }
 
 export interface FileInfo {
@@ -130,6 +136,7 @@ export interface AdjacentPostInfo {
 }
 
 export interface PostInfo {
+  categoryId: number;
   categoryName: string;
   title: string;
   writerName: string;
@@ -137,7 +144,6 @@ export interface PostInfo {
   visitCount: number;
   thumbnailPath: string;
   content: string;
-  files: FileInfo[];
   previousPost: AdjacentPostInfo;
   nextPost: AdjacentPostInfo;
   likeCount: number;
@@ -174,6 +180,14 @@ export interface PageableInfo {
   pageSize: number;
   paged: boolean;
   unpaged: boolean;
+}
+
+export interface BoardSearch {
+  categoryId: number;
+  searchType?: 'title' | 'content' | 'writer' | 'title+content';
+  search?: string;
+  page?: number;
+  size?: number;
 }
 
 export interface BoardPosts {
