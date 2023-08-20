@@ -19,7 +19,7 @@ interface ErrorResponse {
 
 const MemberCardContent = () => {
   const { data: seminarData } = useGetSeminarInfoQuery(5); // TODO: 파라미터로 아이디 받아오기
-  const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(5);
+  const { mutate: attend, isSuccess, error, data: attendData } = attendSeminar(5);
   const startTime = DateTime.fromISO(seminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(seminarData?.latenessCloseTime || '');
@@ -44,8 +44,8 @@ const MemberCardContent = () => {
   };
 
   useEffect(() => {
-    if (isSuccess && isValidActivityStatus(attendancyData.data.statusType)) {
-      setAttendStatus(attendancyData.data.statusType);
+    if (isSuccess && isValidActivityStatus(attendData.data.statusType)) {
+      setAttendStatus(attendData.data.statusType);
       setIncorrectCodeMsg('ㅤ');
     }
   }, [isSuccess]);
