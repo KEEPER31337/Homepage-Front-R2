@@ -1,10 +1,10 @@
 import React from 'react';
-import { GoKebabHorizontal } from 'react-icons/go';
 import { MdThumbDown, MdThumbUp } from 'react-icons/md';
-import { Avatar, CardHeader, IconButton } from '@mui/material';
+import { Avatar, CardHeader } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { CommentInfo } from '@api/dto';
 import { useControlCommentLikes, useControlCommentDislikes } from '@api/commentApi';
+import CommentMenu from '../Menu/CommentMenu';
 
 interface CommentCardHeaderProps {
   commentInfo: CommentInfo;
@@ -33,9 +33,7 @@ const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
           <OutlinedButton startIcon={<MdThumbDown />} onClick={handleDisikeButtonClick}>
             {commentInfo.dislikeCount}
           </OutlinedButton>
-          <IconButton>
-            <GoKebabHorizontal className="fill-subGray" />
-          </IconButton>
+          <CommentMenu />
         </div>
       }
       title={commentInfo.writerName}
