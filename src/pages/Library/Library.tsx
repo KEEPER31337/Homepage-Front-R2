@@ -28,7 +28,7 @@ const Library = () => {
     <div>
       <PageTitle>도서검색</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
-        <SearchSection />
+        {/* <SearchSection /> */}
         <BorrowStatus librarian={librarian} canBorrow={false} />
       </div>
       <div className="grid grid-cols-2">

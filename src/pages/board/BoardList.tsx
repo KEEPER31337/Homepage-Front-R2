@@ -59,7 +59,7 @@ const BoardList = () => {
         <OutlinedButton onClick={handleWriteButtonClick}>글쓰기</OutlinedButton>
       </div>
       <div className="flex items-center justify-between pb-5">
-        <SearchSection />
+        {/* <SearchSection /> */}
         <div className="flex gap-2">
           <TableViewSwitchButton type="List" isActive />
           <TableViewSwitchButton type="Grid" />
