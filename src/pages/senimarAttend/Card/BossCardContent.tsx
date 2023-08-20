@@ -15,7 +15,7 @@ const BossCardContent = () => {
   const [startTime, setStartTime] = useState(DateTime.now());
   const { mutate: setSeminarTime, isSuccess } = useStartSeminarMutation(5); // Todo: 이후 id 파라미터로 받아옴
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = useGetAvailableSeminarInfoQuery();
-  const onStartSeminar = () => {
+  const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
@@ -67,7 +67,7 @@ const BossCardContent = () => {
         {seminarStart ? (
           <SeminarAttendStatus status="ATTENDANCE" />
         ) : (
-          <FilledButton onClick={onStartSeminar}>시작</FilledButton>
+          <FilledButton onClick={handleOnStartSeminar}>시작</FilledButton>
         )}
       </div>
     </>
