@@ -5,8 +5,8 @@ import { CommentInfo } from './dto';
 const useCreateCommentMutation = () => {
   const queryClient = useQueryClient();
 
-  const fetcher = ({ postId, content }: { postId: number; content: string }) =>
-    axios.post(`/comments`, { postId, content }).then(({ data }) => data.comments);
+  const fetcher = ({ postId, parentId, content }: { postId: number; parentId?: number; content: string }) =>
+    axios.post(`/comments`, { postId, parentId, content }).then(({ data }) => data.comments);
 
   return useMutation(fetcher, {
     onSuccess: () => {
