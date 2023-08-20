@@ -6,7 +6,7 @@ const useCreateCommentMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = ({ postId, parentId, content }: { postId: number; parentId?: number; content: string }) =>
-    axios.post(`/comments`, { postId, parentId, content }).then(({ data }) => data.comments);
+    axios.post(`/comments`, { postId, parentId, content });
 
   return useMutation(fetcher, {
     onSuccess: () => {
@@ -21,4 +21,28 @@ const useGetCommentQuery = (postId: number) => {
   return useQuery<CommentInfo[]>(['comments'], fetcher);
 };
 
-export { useCreateCommentMutation, useGetCommentQuery };
+const useControlCommentLikes = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (commentId: number) => axios.patch(`/comments/${commentId}/likes`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+};
+
+const useControlCommentDislikes = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (commentId: number) => axios.patch(`/comments/${commentId}/dislikes`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+};
+
+export { useCreateCommentMutation, useGetCommentQuery, useControlCommentLikes, useControlCommentDislikes };
