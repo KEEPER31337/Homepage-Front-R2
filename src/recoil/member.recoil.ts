@@ -1,14 +1,12 @@
-import { Role } from '@api/dto';
+import { MemberInfo } from '@api/dto';
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
 const { persistAtom } = recoilPersist();
 
-const memberState = atom<{ roles: Role[] }>({
+const memberState = atom<MemberInfo | null>({
   key: 'memberState',
-  default: {
-    roles: [],
-  },
+  default: null,
   effects_UNSTABLE: [persistAtom],
 });
 

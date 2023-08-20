@@ -1,3 +1,36 @@
+export type Role =
+  | 'ROLE_회장'
+  | 'ROLE_부회장'
+  | 'ROLE_서기'
+  | 'ROLE_총무'
+  | 'ROLE_사서'
+  | 'ROLE_학술부장'
+  | 'ROLE_대외부장'
+  | 'ROLE_FRONT_전산관리자'
+  | 'ROLE_BACK_전산관리자'
+  | 'ROLE_INFRA_전산관리자'
+  | 'ROLE_회원'
+  | 'ROLE_출제자';
+
+export interface MemberInfo {
+  id: number;
+  emailAddress: string;
+  realName: string;
+  thumbnailPath: string | null;
+  memberJobs: Role[];
+}
+
+export interface MemberDetailInfo extends MemberInfo {
+  birthday: string;
+  studentId: string;
+  generation: number;
+  point: number;
+  level: number;
+  totalAttendance: number;
+  memberType: string;
+  memberRank: string;
+}
+
 export interface StaticWriteContentsInfo {
   id: number;
   content: string;
@@ -203,17 +236,3 @@ export interface BoardPosts {
   numberOfElements: number;
   empty: boolean;
 }
-
-export type Role =
-  | 'ROLE_회장'
-  | 'ROLE_부회장'
-  | 'ROLE_서기'
-  | 'ROLE_총무'
-  | 'ROLE_사서'
-  | 'ROLE_학술부장'
-  | 'ROLE_대외부장'
-  | 'ROLE_FRONT_전산관리자'
-  | 'ROLE_BACK_전산관리자'
-  | 'ROLE_INFRA_전산관리자'
-  | 'ROLE_회원'
-  | 'ROLE_출제자';
