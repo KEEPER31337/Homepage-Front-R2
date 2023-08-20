@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
-import ActivityStatus, { SeminarInfo, UsableSeminarInfo } from './dto';
+import ActivityStatus, { AvailableSeminarInfo, SeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminar: ['getSeminar', 'id'] as const,
@@ -8,19 +8,19 @@ const seminarKeys = {
   startSeminar: ['startSeminar'] as const,
 };
 
-const getSeminarInfo = (id: number) => {
+const useGetSeminarInfoQuery = (id: number) => {
   const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
 
   return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
 };
 
-const getAvailableSeminarInfo = () => {
+const useGetAvailableSeminarInfoQuery = () => {
   const fetcher = () => axios.get('/seminars/available').then(({ data }) => data);
 
-  return useQuery<UsableSeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
+  return useQuery<AvailableSeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
 };
 
-const startSeminar = (id: number) => {
+const useStartSeminarMutation = (id: number) => {
   const fetcher = ({
     attendanceCloseTime,
     latenessCloseTime,
@@ -56,4 +56,10 @@ const editAttendStatus = (seminarId: number, memberId: number) => {
   });
 };
 
-export { getSeminarInfo, getAvailableSeminarInfo, startSeminar, attendSeminar, editAttendStatus };
+export {
+  useGetSeminarInfoQuery,
+  useGetAvailableSeminarInfoQuery,
+  useStartSeminarMutation,
+  attendSeminar,
+  editAttendStatus,
+};

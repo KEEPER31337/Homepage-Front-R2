@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
-import { attendSeminar, editAttendStatus, getAvailableSeminarInfo, getSeminarInfo } from '@api/seminarApi';
+import {
+  attendSeminar,
+  editAttendStatus,
+  useGetAvailableSeminarInfoQuery,
+  useGetSeminarInfoQuery,
+} from '@api/seminarApi';
 import { AxiosError } from 'axios';
 import ActivityStatus from '@api/dto';
 import Countdown from '../Countdown/Countdown';
@@ -13,7 +18,7 @@ interface ErrorResponse {
 }
 
 const MemberCardContent = () => {
-  const { data: seminarData } = getSeminarInfo(5); // TODO: 파라미터로 아이디 받아오기
+  const { data: seminarData } = useGetSeminarInfoQuery(5); // TODO: 파라미터로 아이디 받아오기
   const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(5);
   const startTime = DateTime.fromISO(seminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
@@ -22,7 +27,7 @@ const MemberCardContent = () => {
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
-  const { data: availableSeminarData } = getAvailableSeminarInfo();
+  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const isValidActivityStatus = (value: string): value is ActivityStatus => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };

@@ -94,7 +94,7 @@ export interface SeminarInfo {
   attendanceCode: string;
 }
 
-export interface UsableSeminarInfo {
+export interface AvailableSeminarInfo {
   id: number;
   openTime: string;
   attendanceCloseTime: string;
