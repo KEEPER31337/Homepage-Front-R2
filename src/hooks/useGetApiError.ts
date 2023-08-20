@@ -64,7 +64,7 @@ const defaultHandlers: DefaultHttpStatusHandlers = {
 
 const useApiError = (handlers?: HttpStatusHandlers) => {
   const handleError = useCallback(
-    (error, serviceCode) => {
+    (error, serviceCode?) => {
       const httpStatus: number = error.response.status;
 
       if (handlers && handlers[httpStatus][serviceCode]) {
