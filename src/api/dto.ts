@@ -99,6 +99,8 @@ export interface CommentInfo {
   parentId: number | null;
   likeCount: number;
   dislikeCount: number;
+  isLike: boolean;
+  isDislike: boolean;
 }
 
 export interface UploadPostSettings {

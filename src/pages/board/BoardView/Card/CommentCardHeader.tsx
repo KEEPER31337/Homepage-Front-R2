@@ -30,10 +30,16 @@ const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
       avatar={<Avatar className="!h-7 !w-7" alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />}
       action={
         <div className="space-x-2">
-          <OutlinedButton startIcon={<MdThumbUp />} onClick={handleLikeButtonClick}>
+          <OutlinedButton
+            startIcon={<MdThumbUp className={commentInfo.isLike ? 'fill-pointBlue' : 'fill-pointBlue/30'} />}
+            onClick={handleLikeButtonClick}
+          >
             {commentInfo.likeCount}
           </OutlinedButton>
-          <OutlinedButton startIcon={<MdThumbDown />} onClick={handleDisikeButtonClick}>
+          <OutlinedButton
+            startIcon={<MdThumbDown className={commentInfo.isDislike ? 'fill-pointBlue' : 'fill-pointBlue/30'} />}
+            onClick={handleDisikeButtonClick}
+          >
             {commentInfo.dislikeCount}
           </OutlinedButton>
           <CommentMenu commentId={commentInfo.commentId} />
