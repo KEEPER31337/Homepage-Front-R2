@@ -4,12 +4,15 @@ import Tooltip from '@mui/material/Tooltip';
 
 interface BorrowStatusProps {
   librarian: string;
-  canBorrow: boolean;
+  borrowedBookCount: number;
+  MAX_BORROWABLE_BOOKS: number;
 }
 
-const BorrowStatus = ({ librarian, canBorrow }: BorrowStatusProps) => {
-  return canBorrow ? (
-    <Typography className="text-pointBlue">신청 가능 권수 : 1/5</Typography>
+const BorrowStatus = ({ librarian, borrowedBookCount, MAX_BORROWABLE_BOOKS }: BorrowStatusProps) => {
+  return borrowedBookCount !== MAX_BORROWABLE_BOOKS ? (
+    <Typography className="text-pointBlue">
+      신청 가능 권수 : {MAX_BORROWABLE_BOOKS - borrowedBookCount}/{MAX_BORROWABLE_BOOKS}
+    </Typography>
   ) : (
     <Tooltip
       title={`사서(${librarian})에게 반납해주세요.`}
@@ -23,7 +26,7 @@ const BorrowStatus = ({ librarian, canBorrow }: BorrowStatusProps) => {
       }}
       placement="top"
     >
-      <Typography className="text-subRed">신청 가능 권 수(5권)을 초과했습니다.</Typography>
+      <Typography className="text-subRed">신청 가능 권 수({MAX_BORROWABLE_BOOKS}권)을 초과했습니다.</Typography>
     </Tooltip>
   );
 };

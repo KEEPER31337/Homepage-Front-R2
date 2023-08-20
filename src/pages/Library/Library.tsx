@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import PageTitle from '@components/Typography/PageTitle';
 import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
-import { useGetBookListQuery, useRequestBorrowBookMutation } from '@api/libraryApi';
+import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQuery } from '@api/libraryApi';
 import usePagination from '@hooks/usePagination';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
+
+const MAX_BORROWABLE_BOOKS = 5;
 
 const Library = () => {
   const [requestBookModalOpen, setRequestBookModalOpen] = useState(false);
@@ -24,12 +26,18 @@ const Library = () => {
   const { page } = usePagination();
 
   const { data: bookListData } = useGetBookListQuery({ page, size });
+  const { data: borrowedBookListData } = useGetBookBorrowsQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
+
   return (
     <div>
       <PageTitle>도서검색</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
         <SearchSection />
-        <BorrowStatus librarian={librarian} canBorrow={false} />
+        <BorrowStatus
+          librarian={librarian}
+          borrowedBookCount={borrowedBookListData?.totalElement || 0}
+          MAX_BORROWABLE_BOOKS={MAX_BORROWABLE_BOOKS}
+        />
       </div>
       <div className="grid grid-cols-2">
         {bookListData?.content?.map((bookInfo) => (
