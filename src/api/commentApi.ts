@@ -4,9 +4,8 @@ import { CommentInfo } from './dto';
 
 const useCreateCommentMutation = () => {
   // TODO 업데이트시 조회 목록도 업데이트 되도록 처리
-  // TODO 파라미터 받아오도록 처리
-  const fetcher = () =>
-    axios.post(`/comments`, { postId: 16, content: '댓글2작성 테스트' }).then(({ data }) => data.comments);
+  const fetcher = ({ postId, content }: { postId: number; content: string }) =>
+    axios.post(`/comments`, { postId, content }).then(({ data }) => data.comments);
 
   return useMutation(fetcher);
 };
