@@ -19,7 +19,7 @@ interface ErrorResponse {
 
 const MemberCardContent = () => {
   const { data: seminarData } = useGetSeminarInfoQuery(5); // TODO: 파라미터로 아이디 받아오기
-  const { mutate: attend, isSuccess, error, data: attendData } = attendSeminar(5);
+  const { mutate: attend, isSuccess: isAttendSuccess, error: attendError, data: attendData } = attendSeminar(5);
   const startTime = DateTime.fromISO(seminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(seminarData?.latenessCloseTime || '');
@@ -44,20 +44,20 @@ const MemberCardContent = () => {
   };
 
   useEffect(() => {
-    if (isSuccess && isValidActivityStatus(attendData.data.statusType)) {
+    if (isAttendSuccess && isValidActivityStatus(attendData.data.statusType)) {
       setAttendStatus(attendData.data.statusType);
       setIncorrectCodeMsg('ㅤ');
     }
-  }, [isSuccess]);
+  }, [isAttendSuccess]);
 
   useEffect(() => {
     if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
     else {
-      const axiosError = error as AxiosError<ErrorResponse>;
+      const axiosError = attendError as AxiosError<ErrorResponse>;
       const errorMessage = axiosError?.response?.data?.message;
       setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
     }
-  }, [error]);
+  }, [attendError]);
 
   useEffect(() => {
     setIncorrectCodeMsg('ㅤ');
