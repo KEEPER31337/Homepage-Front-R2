@@ -39,6 +39,15 @@ export interface BookInfo {
   canBorrow: boolean;
 }
 
+export interface BorrowedBookInfo {
+  borrowInfoId: number;
+  title: string;
+  author: string;
+  overdue: boolean;
+  borrowDate: string;
+  expireDate: string;
+}
+
 export interface StudyLinkInfo {
   title: string;
   contents: string;
