@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { BoardPosts, BoardSearch, FileInfo, PostInfo, UploadPost } from './dto';
 
 const useUploadPostMutation = () => {
@@ -28,6 +28,30 @@ const useGetPostListQuery = ({ categoryId, searchType, search, page, size }: Boa
   });
 };
 
+const useControlPostLikes = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (postId: number) => axios.patch(`/posts/${postId}/likes`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['post'] });
+    },
+  });
+};
+
+const useControlPostDislikes = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (postId: number) => axios.patch(`/posts/${postId}/dislikes`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['post'] });
+    },
+  });
+};
+
 const useGetEachPostQuery = (postId: number) => {
   const fetcher = () => axios.get(`/posts/${postId}`).then(({ data }) => data);
 
@@ -37,7 +61,14 @@ const useGetEachPostQuery = (postId: number) => {
 const useGetPostFilesQuery = (postId: number) => {
   const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
 
-  return useQuery<FileInfo[]>(['post', 'files', postId], fetcher);
+  return useQuery<FileInfo[]>(['files', postId], fetcher);
 };
 
-export { useUploadPostMutation, useGetPostListQuery, useGetEachPostQuery, useGetPostFilesQuery };
+export {
+  useUploadPostMutation,
+  useGetPostListQuery,
+  useControlPostLikes,
+  useControlPostDislikes,
+  useGetEachPostQuery,
+  useGetPostFilesQuery,
+};

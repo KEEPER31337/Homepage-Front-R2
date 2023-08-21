@@ -4,7 +4,7 @@ import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { VscArrowDown, VscArrowUp, VscFile } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
-import { useGetPostFilesQuery } from '@api/postApi';
+import { useGetPostFilesQuery, useControlPostLikes, useControlPostDislikes } from '@api/postApi';
 
 interface PostSectionProps {
   postId: number;
@@ -13,6 +13,16 @@ interface PostSectionProps {
 
 const PostSection = ({ postId, post }: PostSectionProps) => {
   const { data: files } = useGetPostFilesQuery(postId);
+  const { mutate: controlLikes } = useControlPostLikes();
+  const { mutate: controlDislikes } = useControlPostDislikes();
+
+  const handleLikeButtonClick = () => {
+    controlLikes(postId);
+  };
+
+  const handleDisikeButtonClick = () => {
+    controlDislikes(postId);
+  };
 
   return (
     <div className="min-h-[520px] bg-middleBlack px-14 py-10">
@@ -27,14 +37,28 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
           ))}
       </div>
       <div className="flex items-center justify-center space-x-2">
-        <FilledButton small>
-          <VscArrowUp className="mr-1" size={10} />
-          <span>추천 ({post.likeCount})</span>
-        </FilledButton>
-        <OutlinedButton small>
-          <VscArrowDown className="mr-1" size={10} />
-          <span>비추천 ({post.dislikeCount})</span>
-        </OutlinedButton>
+        {post.isLike ? (
+          <FilledButton small onClick={handleLikeButtonClick}>
+            <VscArrowUp className="mr-1" size={10} />
+            <span>추천 ({post.likeCount})</span>
+          </FilledButton>
+        ) : (
+          <OutlinedButton small onClick={handleLikeButtonClick}>
+            <VscArrowUp className="mr-1" size={10} />
+            <span>추천 ({post.likeCount})</span>
+          </OutlinedButton>
+        )}
+        {post.isDislike ? (
+          <FilledButton small onClick={handleDisikeButtonClick}>
+            <VscArrowDown className="mr-1" size={10} />
+            <span>비추천 ({post.dislikeCount})</span>
+          </FilledButton>
+        ) : (
+          <OutlinedButton small onClick={handleDisikeButtonClick}>
+            <VscArrowDown className="mr-1" size={10} />
+            <span>비추천 ({post.dislikeCount})</span>
+          </OutlinedButton>
+        )}
       </div>
     </div>
   );
