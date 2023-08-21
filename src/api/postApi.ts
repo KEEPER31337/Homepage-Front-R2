@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { BoardPosts, BoardSearch, FileInfo, PostInfo, UploadPost } from './dto';
+import { BoardPosts, BoardSearch, FileInfo, PostInfo, UploadPost, UploadPostCore } from './dto';
 
 const useUploadPostMutation = () => {
   const fetcher = ({ request, thumbnail, files }: UploadPost) => {
@@ -27,6 +27,13 @@ const useGetPostListQuery = ({ categoryId, searchType, search, page, size }: Boa
   return useQuery<BoardPosts>(['posts', categoryId, searchType, search, page, size], fetcher, {
     keepPreviousData: true,
   });
+};
+
+const useEditPostMutation = () => {
+  const fetcher = ({ postId, editPostInfo }: { postId: number; editPostInfo: Omit<UploadPostCore, 'categoryId'> }) =>
+    axios.put(`/posts/${postId}`, editPostInfo);
+
+  return useMutation(fetcher);
 };
 
 const useDeletePostMutation = () => {
@@ -105,6 +112,7 @@ const useDownloadFileMutation = () => {
 export {
   useUploadPostMutation,
   useGetPostListQuery,
+  useEditPostMutation,
   useDeletePostMutation,
   useControlPostLikesMutation,
   useControlPostDislikesMutation,

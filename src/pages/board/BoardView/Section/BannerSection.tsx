@@ -6,6 +6,7 @@ import { VscCalendar, VscEye } from 'react-icons/vsc';
 import ServerImg from '@components/Image/ServerImg';
 import { useDeletePostMutation } from '@api/postApi';
 import ActionModal from '@components/Modal/ActionModal';
+import { useNavigate } from 'react-router-dom';
 
 interface BannerSectionProps {
   postId: number;
@@ -16,6 +17,11 @@ const BannerSection = ({ postId, post }: BannerSectionProps) => {
   const [warningDeleteModalopen, setWarningDeleteModalopen] = useState(false);
 
   const { mutate: deletePost } = useDeletePostMutation();
+  const navigate = useNavigate();
+
+  const handleEditPostClick = () => {
+    navigate(`/board/write/${post.categoryName}`, { state: { postId, post } });
+  };
 
   const handleDeletePostClick = () => {
     setWarningDeleteModalopen(true);
@@ -53,7 +59,7 @@ const BannerSection = ({ postId, post }: BannerSectionProps) => {
           </div>
         </div>
         <div className="flex justify-end space-x-2">
-          <OutlinedButton>글 수정</OutlinedButton>
+          <OutlinedButton onClick={handleEditPostClick}>글 수정</OutlinedButton>
           <OutlinedButton onClick={handleDeletePostClick}>글 삭제</OutlinedButton>
         </div>
       </div>
