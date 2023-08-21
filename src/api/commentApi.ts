@@ -45,18 +45,6 @@ const useControlCommentDislikesMutation = () => {
   });
 };
 
-const useEditCommentMutation = () => {
-  const queryClient = useQueryClient();
-
-  const fetcher = (commentId: number) => axios.put(`/comments/${commentId}`);
-
-  return useMutation(fetcher, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comments'] });
-    },
-  });
-};
-
 const useDeleteCommentMutation = () => {
   const queryClient = useQueryClient();
 
@@ -74,6 +62,5 @@ export {
   useGetCommentQuery,
   useControlCommentLikesMutation,
   useControlCommentDislikesMutation,
-  useEditCommentMutation,
   useDeleteCommentMutation,
 };
