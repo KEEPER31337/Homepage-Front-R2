@@ -4,7 +4,7 @@ import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { VscArrowDown, VscArrowUp, VscFile } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
-import { useGetPostFilesQuery, useControlPostLikes, useControlPostDislikes } from '@api/postApi';
+import { useGetPostFilesQuery, useControlPostLikesMutation, useControlPostDislikesMutation } from '@api/postApi';
 
 interface PostSectionProps {
   postId: number;
@@ -13,8 +13,8 @@ interface PostSectionProps {
 
 const PostSection = ({ postId, post }: PostSectionProps) => {
   const { data: files } = useGetPostFilesQuery(postId);
-  const { mutate: controlLikes } = useControlPostLikes();
-  const { mutate: controlDislikes } = useControlPostDislikes();
+  const { mutate: controlLikes } = useControlPostLikesMutation();
+  const { mutate: controlDislikes } = useControlPostDislikesMutation();
 
   const handleLikeButtonClick = () => {
     controlLikes(postId);

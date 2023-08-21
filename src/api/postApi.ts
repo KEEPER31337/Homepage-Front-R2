@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { BoardPosts, BoardSearch, FileInfo, PostInfo, UploadPost } from './dto';
 
 const useUploadPostMutation = () => {
@@ -28,7 +29,22 @@ const useGetPostListQuery = ({ categoryId, searchType, search, page, size }: Boa
   });
 };
 
-const useControlPostLikes = () => {
+const useDeletePostMutation = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const fetcher = (postId: number) => axios.delete(`/posts/${postId}`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      // TODO API 응답으로 categoryName 반환 반영되면 적용 예정
+      navigate('/board/자유게시판');
+    },
+  });
+};
+
+const useControlPostLikesMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = (postId: number) => axios.patch(`/posts/${postId}/likes`);
@@ -40,7 +56,7 @@ const useControlPostLikes = () => {
   });
 };
 
-const useControlPostDislikes = () => {
+const useControlPostDislikesMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = (postId: number) => axios.patch(`/posts/${postId}/dislikes`);
@@ -67,8 +83,9 @@ const useGetPostFilesQuery = (postId: number) => {
 export {
   useUploadPostMutation,
   useGetPostListQuery,
-  useControlPostLikes,
-  useControlPostDislikes,
+  useDeletePostMutation,
+  useControlPostLikesMutation,
+  useControlPostDislikesMutation,
   useGetEachPostQuery,
   useGetPostFilesQuery,
 };
