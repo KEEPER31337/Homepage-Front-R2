@@ -80,6 +80,28 @@ const useGetPostFilesQuery = (postId: number) => {
   return useQuery<FileInfo[]>(['files', postId], fetcher);
 };
 
+const useDownloadFileMutation = () => {
+  const fetcher = ({ postId, fileId, fileName }: { postId: number; fileId: number; fileName: string }) =>
+    axios
+      .get(`/posts/${postId}/files/${fileId}`, { responseType: 'blob' })
+      .then(({ data }) => ({ blob: data, fileName }));
+
+  return useMutation(fetcher, {
+    onSuccess: ({ blob, fileName }) => {
+      const url = window.URL.createObjectURL(new Blob([blob]));
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+
+      document.body.appendChild(link);
+
+      link.click();
+      link.remove();
+    },
+  });
+};
+
 export {
   useUploadPostMutation,
   useGetPostListQuery,
@@ -88,4 +110,5 @@ export {
   useControlPostDislikesMutation,
   useGetEachPostQuery,
   useGetPostFilesQuery,
+  useDownloadFileMutation,
 };
