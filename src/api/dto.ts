@@ -217,3 +217,15 @@ export type Role =
   | 'ROLE_INFRA_전산관리자'
   | 'ROLE_회원'
   | 'ROLE_출제자';
+
+export interface Job {
+  jobId: number;
+  jobName: Role;
+  jobThumbnailPath: string;
+}
+
+export interface Member extends Job {
+  memberId: number;
+  generation: number;
+  realName: string;
+}
