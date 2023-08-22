@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
 import { UploadPostSettings } from '@api/dto';
+import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+
+const POST_PASSWORD_MAX_LENGTH = 16;
 
 interface SettingUploadModalProps {
   open: boolean;
@@ -11,6 +15,7 @@ interface SettingUploadModalProps {
   onUploadButonClick: () => void;
   postSettingInfo: UploadPostSettings;
   setPostSettingInfo: React.Dispatch<React.SetStateAction<UploadPostSettings>>;
+  setThumbnail: React.Dispatch<React.SetStateAction<Blob | null>>;
 }
 
 const SettingUploadModal = ({
@@ -19,30 +24,46 @@ const SettingUploadModal = ({
   onUploadButonClick,
   postSettingInfo,
   setPostSettingInfo,
+  setThumbnail,
 }: SettingUploadModalProps) => {
-  const [, setThumbnail] = useState<Blob>();
+  const {
+    control,
+    watch,
+    reset: resetPassword,
+    formState: { isValid },
+  } = useForm({ mode: 'onBlur' });
+  const password = watch('password');
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
+
+    if (name === 'isSecret' && !checked) {
+      resetPassword();
+
+      const copyPostSettingInfo = { ...postSettingInfo };
+      delete copyPostSettingInfo.password;
+
+      setPostSettingInfo(copyPostSettingInfo);
+    }
+
     setPostSettingInfo((prev) => ({
       ...prev,
       [name]: checked,
     }));
   };
 
-  const handleSecretPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setPostSettingInfo((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  useEffect(() => {
+    if (!postSettingInfo.isSecret) return;
+
+    setPostSettingInfo((prev) => ({ ...prev, password }));
+  }, [password]);
 
   return (
     <ActionModal
       open={open}
       onClose={onClose}
       title={`설정 확인 및 ${postSettingInfo.isTemp ? '임시저장' : '업로드'}`}
+      actionButtonDisabled={postSettingInfo.isSecret && !isValid}
       actionButtonName={postSettingInfo.isTemp ? '임시저장' : '업로드'}
       onActionButonClick={onUploadButonClick}
     >
@@ -68,7 +89,7 @@ const SettingUploadModal = ({
             label="댓글 허용"
           />
         </span>
-        <span className="flex items-center">
+        <span className="flex">
           <FormControlLabel
             control={
               <Checkbox checked={Boolean(postSettingInfo.isSecret)} name="isSecret" onChange={handleCheckBoxChange} />
@@ -76,12 +97,28 @@ const SettingUploadModal = ({
             label="비밀글"
           />
           {postSettingInfo.isSecret && (
-            <StandardInput
+            <Controller
               name="password"
-              value={postSettingInfo.password || ''}
-              type="password"
-              placeholder="게시글 비밀번호"
-              onChange={handleSecretPasswordChange}
+              defaultValue=""
+              control={control}
+              rules={{
+                required: REQUIRE_ERROR_MSG,
+                maxLength: {
+                  value: POST_PASSWORD_MAX_LENGTH,
+                  message: `비밀번호는 최대 ${POST_PASSWORD_MAX_LENGTH}글자 입력이 가능합니다.`,
+                },
+              }}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <StandardInput
+                    {...field}
+                    type="password"
+                    placeholder="게시글 비밀번호"
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                  />
+                );
+              }}
             />
           )}
         </span>
