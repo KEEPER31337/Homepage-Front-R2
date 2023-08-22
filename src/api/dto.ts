@@ -162,6 +162,7 @@ export interface PostSummaryInfo {
   id: number;
   title: string;
   writerName: string;
+  writerThumbnailPath: string;
   visitCount: number;
   commentCount: number;
   isSecret: boolean;
