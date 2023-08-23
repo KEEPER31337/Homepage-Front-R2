@@ -36,7 +36,7 @@ const useStartSeminarMutation = (id: number) => {
   });
 };
 
-const attendSeminar = (id: number) => {
+const useAttendSeminarMutation = (id: number) => {
   const fetcher = (attendanceCode: string) => axios.patch(`/seminars/${id}/attendances`, { attendanceCode });
 
   return useMutation(fetcher, {
@@ -46,7 +46,7 @@ const attendSeminar = (id: number) => {
   });
 };
 
-const editAttendStatus = (seminarId: number, memberId: number) => {
+const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
   const fetcher = ({ excuse, statusType }: { excuse: string; statusType: ActivityStatus }) =>
     axios.patch(`/seminars/${seminarId}/attendances/${memberId}`, { excuse, statusType });
   return useMutation(fetcher, {
@@ -60,6 +60,6 @@ export {
   useGetSeminarInfoQuery,
   useGetAvailableSeminarInfoQuery,
   useStartSeminarMutation,
-  attendSeminar,
-  editAttendStatus,
+  useAttendSeminarMutation,
+  useEditAttendStatusMutation,
 };
