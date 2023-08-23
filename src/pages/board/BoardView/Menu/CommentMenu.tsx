@@ -29,6 +29,7 @@ const CommentMenu = ({ commentId }: CommentMenuProps) => {
   return (
     <>
       <IconButton
+        className="!-mr-1"
         id="basic-button"
         aria-controls={commentMenuOpen ? 'basic-menu' : undefined}
         aria-haspopup="true"

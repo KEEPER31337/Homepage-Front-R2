@@ -126,6 +126,7 @@ export interface SignUpDuplication {
 
 export interface CommentInfo {
   commentId: number;
+  writerId: number;
   writerName: string;
   writerThumbnailPath: string | null;
   content: string | null;
