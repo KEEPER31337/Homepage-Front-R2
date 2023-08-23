@@ -1,10 +1,6 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { BookInfo } from './dto';
-
-const libraryKeys = {
-  bookListContent: ['bookList'] as const,
-};
 
 interface getBookListProps {
   searchType?: 'title' | 'author' | 'all';
@@ -13,16 +9,27 @@ interface getBookListProps {
   size?: number;
 }
 
-const useGetBookListQuery = (param: getBookListProps) => {
-  const fetcher = () =>
-    axios.get('/books', { params: { ...param } }).then(({ data }) =>
-      data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
-        ...rest,
-        bookQuantity: `${currentQuantity}/${totalQuantity}`,
-      })),
-    );
-
-  return useQuery<BookInfo[]>(libraryKeys.bookListContent, fetcher);
+const libraryKeys = {
+  bookListContent: (param: getBookListProps) => ['library', 'bookList', param] as const,
 };
 
-export default useGetBookListQuery;
+const useGetBookListQuery = (param: getBookListProps) => {
+  const fetcher = () =>
+    axios.get('/books', { params: { ...param } }).then(({ data }) => {
+      const content = data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
+        ...rest,
+        bookQuantity: `${currentQuantity}/${totalQuantity}`,
+      }));
+      return { content, totalElement: data.totalElements };
+    });
+
+  return useQuery<{ content: BookInfo[]; totalElement: number }>(libraryKeys.bookListContent(param), fetcher);
+};
+
+const useRequestBorrowBookMutation = () => {
+  const fetcher = (selectedBookId: number) => axios.post(`/books/${selectedBookId}/request-borrow`);
+
+  return useMutation(fetcher);
+};
+
+export { useGetBookListQuery, useRequestBorrowBookMutation };

@@ -15,7 +15,7 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
     setDate(null);
   };
 
-  const handleSeminarAddButtonClick = () => {
+  const handleAddSeminarButtonClick = () => {
     // TODO
     setDate(null);
   };
@@ -26,7 +26,7 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
       onClose={handleClose}
       title="세미나 일정 추가"
       actionButtonName="추가"
-      onActionButonClick={handleSeminarAddButtonClick}
+      onActionButonClick={handleAddSeminarButtonClick}
     >
       <div className="flex justify-center">
         <StandardDatePicker date={date} setDate={setDate} label="날짜" />
