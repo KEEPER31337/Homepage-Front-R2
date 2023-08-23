@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { DateTime } from 'luxon';
 import { ActivityStatus, AvailableSeminarInfo, SeminarInfo } from './dto';
 
 const seminarKeys = {
@@ -9,7 +10,16 @@ const seminarKeys = {
 };
 
 const useGetSeminarInfoQuery = (id: number) => {
-  const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
+  const fetcher = () =>
+    axios.get(`/seminars/${id}`).then(({ data }) => {
+      const transformedData = {
+        ...data,
+        openTime: DateTime.fromISO(data.openTime),
+        attendanceCloseTime: DateTime.fromISO(data.attendanceCloseTime),
+        latenessCloseTime: DateTime.fromISO(data.latenessCloseTime),
+      };
+      return transformedData;
+    });
 
   return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
 };

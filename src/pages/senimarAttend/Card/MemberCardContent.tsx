@@ -25,9 +25,6 @@ const MemberCardContent = () => {
     error: attendError,
     data: attendData,
   } = useAttendSeminarMutation(5);
-  const startTime = DateTime.fromISO(seminarData?.openTime || '');
-  const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
-  const lateLimit = DateTime.fromISO(seminarData?.latenessCloseTime || '');
   const validCode = seminarData?.attendanceCode;
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
@@ -89,8 +86,12 @@ const MemberCardContent = () => {
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          <Countdown startTime={startTime} endTime={attendLimit} />
-          <Countdown startTime={attendLimit} endTime={lateLimit} />
+          {seminarData && (
+            <>
+              <Countdown startTime={seminarData.openTime} endTime={seminarData.attendanceCloseTime} />
+              <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
+            </>
+          )}
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">

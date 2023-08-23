@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 export type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
 
 export interface StaticWriteContentsInfo {
@@ -95,9 +97,9 @@ export interface SignUpDuplication {
 export interface SeminarInfo {
   seminarId: number;
   seminarName: string;
-  openTime: string;
-  attendanceCloseTime: string;
-  latenessCloseTime: string;
+  openTime: DateTime;
+  attendanceCloseTime: DateTime;
+  latenessCloseTime: DateTime;
   statusType: ActivityStatus;
   attendanceCode: string;
 }

@@ -46,14 +46,8 @@ const BossCardContent = () => {
         <div className="grid content-between text-right">
           {seminarStart && seminarData ? (
             <>
-              <Countdown
-                startTime={DateTime.fromISO(seminarData.openTime)}
-                endTime={DateTime.fromISO(seminarData.attendanceCloseTime)}
-              />
-              <Countdown
-                startTime={DateTime.fromISO(seminarData.attendanceCloseTime)}
-                endTime={DateTime.fromISO(seminarData.latenessCloseTime)}
-              />
+              <Countdown startTime={seminarData.openTime} endTime={seminarData.attendanceCloseTime} />
+              <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
             </>
           ) : (
             <>
