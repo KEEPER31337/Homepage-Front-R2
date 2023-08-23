@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { ActivityStatus, AvailableSeminarInfo, SeminarInfo } from './dto';
 
 const seminarKeys = {
@@ -21,6 +21,7 @@ const useGetAvailableSeminarInfoQuery = () => {
 };
 
 const useStartSeminarMutation = (id: number) => {
+  const queryClient = useQueryClient();
   const fetcher = ({
     attendanceCloseTime,
     latenessCloseTime,
@@ -31,6 +32,7 @@ const useStartSeminarMutation = (id: number) => {
 
   return useMutation(fetcher, {
     onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: seminarKeys.getAvailableSeminar });
       return response.data.attendanceCode;
     },
   });
