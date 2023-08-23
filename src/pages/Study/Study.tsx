@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react';
 
 import { studyList, yearList } from '@mocks/StudyApi';
@@ -76,7 +78,7 @@ const Study = () => {
         <OldStudy list={currentStudyList} memberId={myMemberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
       ) : (
         <div>
-          {currentStudyList?.map((study) => (
+          {currentStudyList?.map((study: any) => (
             <StudyAccordion
               key={study.id}
               study={study}

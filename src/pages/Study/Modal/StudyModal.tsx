@@ -17,7 +17,7 @@ interface StudyModalProps {
 
 const memberList = ['김은지', '장서윤', '송세연'];
 const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
-  const [, setThumbnail] = useState<Blob>();
+  const [, setThumbnail] = useState<Blob | null>();
   const [test, setTest] = useState('');
   const { mode, selectedStudy } = modalInfo;
   const isEdit = mode === 'Edit';
