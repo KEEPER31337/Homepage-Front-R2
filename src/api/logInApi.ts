@@ -16,9 +16,9 @@ const useLoginMutation = () => {
     onError: () => {
       alert('아이디 또는 비밀번호를 확인해주세요.');
     },
-    onSuccess: ({ id, emailAddress, realName, thumbnailPath, memberJobs }: MemberDetailInfo) => {
+    onSuccess: ({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs }: MemberDetailInfo) => {
       navigate('/');
-      setMemberState({ id, emailAddress, realName, thumbnailPath, memberJobs });
+      setMemberState({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs });
     },
   });
 };

@@ -13,7 +13,8 @@ export type Role =
   | 'ROLE_출제자';
 
 export interface MemberInfo {
-  id: number;
+  memberId: number;
+  loginId: number;
   emailAddress: string;
   realName: string;
   thumbnailPath: string | null;

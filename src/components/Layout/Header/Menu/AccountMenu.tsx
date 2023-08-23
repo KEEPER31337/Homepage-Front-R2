@@ -19,7 +19,7 @@ const AccountMenu = ({ userInfo, anchorEl, open, onClose }: AccountMenuProps) =>
 
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-      <MenuList className="text-center">{userInfo.emailAddress}</MenuList>
+      <MenuList className="text-center">{userInfo.loginId}</MenuList>
       <Divider className="!my-1" />
       <MenuItem className="min-w-[150px]">프로필</MenuItem>
       <MenuItem className="min-w-[150px]" onClick={handleLogOutClick}>
