@@ -1,6 +1,4 @@
-type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
-
-export default ActivityStatus;
+export type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
 
 export interface StaticWriteContentsInfo {
   id: number;
