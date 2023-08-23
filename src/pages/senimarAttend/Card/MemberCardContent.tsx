@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import {
-  attendSeminar,
-  editAttendStatus,
+  useAttendSeminarMutation,
+  useEditAttendStatusMutation,
   useGetAvailableSeminarInfoQuery,
   useGetSeminarInfoQuery,
 } from '@api/seminarApi';
 import { AxiosError } from 'axios';
-import ActivityStatus from '@api/dto';
+import { ActivityStatus } from '@api/dto';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
@@ -19,7 +19,12 @@ interface ErrorResponse {
 
 const MemberCardContent = () => {
   const { data: seminarData } = useGetSeminarInfoQuery(5); // TODO: 파라미터로 아이디 받아오기
-  const { mutate: attend, isSuccess: isAttendSuccess, error: attendError, data: attendData } = attendSeminar(5);
+  const {
+    mutate: attend,
+    isSuccess: isAttendSuccess,
+    error: attendError,
+    data: attendData,
+  } = useAttendSeminarMutation(5);
   const startTime = DateTime.fromISO(seminarData?.openTime || '');
   const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
   const lateLimit = DateTime.fromISO(seminarData?.latenessCloseTime || '');
@@ -31,7 +36,7 @@ const MemberCardContent = () => {
   const isValidActivityStatus = (value: ActivityStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
-  const { mutate: editStatus } = editAttendStatus(5, 6); // 테스트용 임시
+  const { mutate: editStatus } = useEditAttendStatusMutation(5, 6); // 테스트용 임시
 
   const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.seminarId;
 
