@@ -19,6 +19,7 @@ const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
       initialEditType="markdown"
       language="ko"
       theme="dark"
+      autofocus={false}
       {...props}
     />
   );
