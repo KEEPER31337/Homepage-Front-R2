@@ -2,11 +2,6 @@ import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
 import { BookInfo, BorrowedBookInfo, BookListSearch } from './dto';
 
-interface getBorrowedBookListProps {
-  page?: number;
-  size?: number;
-}
-
 const libraryKeys = {
   bookList: (param: BookListSearch) => ['library', 'bookList', param] as const,
   borrowedBookList: ['library', 'borrowedBookList'] as const,
@@ -31,9 +26,9 @@ const useRequestBorrowBookMutation = () => {
   return useMutation(fetcher);
 };
 
-const useGetBookBorrowsQuery = (param: getBorrowedBookListProps) => {
+const useGetBookBorrowsQuery = ({ page, size }: { page: number; size: number }) => {
   const fetcher = () =>
-    axios.get(`/books/book-borrows`, { params: { ...param } }).then(({ data }) => {
+    axios.get(`/books/book-borrows`, { params: { page, size } }).then(({ data }) => {
       return { content: data.content, totalElement: data.totalElements };
     });
   return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList, fetcher);
