@@ -53,6 +53,13 @@ export interface PageBlockInfo {
   subtitleImages: Array<SubTitleImagesInfo>;
 }
 
+export interface BookListSearch {
+  searchType?: 'title' | 'author' | 'all';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface BookListInfo {
   id: number;
   no: number;
