@@ -36,7 +36,7 @@ const Library = () => {
         <BorrowStatus
           librarian={librarian}
           borrowedBookCount={borrowedBookListData?.totalElement || 0}
-          MAX_BORROWABLE_BOOKS={MAX_BORROWABLE_BOOKS}
+          maxBorrowableBooks={MAX_BORROWABLE_BOOKS}
         />
       </div>
       <div className="grid grid-cols-2">
