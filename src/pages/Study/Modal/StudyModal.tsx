@@ -6,8 +6,13 @@ import { InputLabel, Stack, Typography } from '@mui/material';
 import ActionModal from '@components/Modal/ActionModal';
 import StandardInput from '@components/Input/StandardInput';
 import ImageUploader from '@components/Uploader/ImageUploader';
+import { Controller, useForm } from 'react-hook-form';
+import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { ModalInfo } from '../Study.interface';
 import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
+
+const STUDY_TITLE_MAX_LENGTH = 45;
+const STUDY_CONTENT_MAX_LENGTH = 100;
 
 interface StudyModalProps {
   open: boolean;
@@ -18,38 +23,72 @@ interface StudyModalProps {
 const memberList = ['김은지', '장서윤', '송세연'];
 const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
   const [, setThumbnail] = useState<Blob | null>();
-  const [test, setTest] = useState('');
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { mode, selectedStudy } = modalInfo;
-  const isEdit = mode === 'Edit';
+  const { control } = useForm({ mode: 'onBlur' });
+
   return (
     <ActionModal
       open={open}
       onClose={handleOpen}
-      title={isEdit ? '스터디 수정' : '스터디 추가'}
-      actionButtonName={isEdit ? '수정' : '추가'}
+      title={mode === 'Edit' ? '스터디 수정' : '스터디 추가'}
+      actionButtonName={mode === 'Edit' ? '수정' : '추가'}
       onActionButonClick={handleOpen}
     >
       <div className="mb-10 flex justify-between">
         <Stack flexGrow={1} marginRight={3} spacing={3}>
           <div>
             <InputLabel className="!font-semibold">스터디명</InputLabel>
-            <StandardInput
-              className="w-full"
-              value=""
-              onChange={() => {
-                // TODO
+            <Controller
+              name="studyTitle"
+              defaultValue=""
+              control={control}
+              rules={{
+                required: REQUIRE_ERROR_MSG,
+                maxLength: {
+                  value: STUDY_TITLE_MAX_LENGTH,
+                  message: `최대 ${STUDY_TITLE_MAX_LENGTH}글자 입력이 가능합니다.`,
+                },
+              }}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <StandardInput
+                    className="w-full"
+                    {...field}
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    autoFocus
+                  />
+                );
               }}
             />
           </div>
           <div>
             <InputLabel className="!font-semibold">스터디 소개</InputLabel>
-            <StandardInput
-              className="w-full"
-              multiline
-              rows={2}
-              value={test}
-              onChange={(e) => {
-                setTest(e.target.value);
+            <Controller
+              name="studyContent"
+              defaultValue=""
+              control={control}
+              rules={{
+                required: REQUIRE_ERROR_MSG,
+                maxLength: {
+                  value: STUDY_CONTENT_MAX_LENGTH,
+                  message: `최대 ${STUDY_CONTENT_MAX_LENGTH}글자 입력이 가능합니다.`,
+                },
+              }}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <StandardInput
+                    className="w-full"
+                    multiline
+                    rows={2}
+                    {...field}
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    autoFocus
+                  />
+                );
               }}
             />
           </div>
@@ -84,48 +123,105 @@ const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
         </div>
       </div>
       <div className="space-y-4">
-        <InputLabel className="!font-semibold">링크</InputLabel>
+        <InputLabel className="!font-semibold">
+          <span className="mr-1">링크</span>
+          <span className="text-small text-subGray">(1개 이상 링크 필수)</span>
+        </InputLabel>
         <Stack spacing={2}>
           <div className="flex items-center space-x-2">
             <VscGithubInverted size={25} className="fill-pointBlue" />
             <Typography className="w-24 text-center">Github</Typography>
-            <StandardInput
-              className="w-full"
-              placeholder="https://"
-              value=""
-              onChange={() => {
-                // TODO
+            <Controller
+              name="githubLink"
+              defaultValue=""
+              control={control}
+              rules={{
+                pattern: {
+                  value: /^(https:\/\/github.com)/,
+                  message: `깃헙 링크만 입력이 가능합니다.`,
+                },
+              }}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <StandardInput
+                    className="w-full"
+                    placeholder="https://"
+                    {...field}
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    autoFocus
+                  />
+                );
               }}
             />
           </div>
           <div className="flex items-center space-x-2">
             <SiNotion size={25} className="fill-pointBlue" />
             <Typography className="w-24 text-center">Notion</Typography>
-            <StandardInput
-              className="w-full"
-              placeholder="https://"
-              value=""
-              onChange={() => {
-                // TODO
+            <Controller
+              name="notionLink"
+              defaultValue=""
+              control={control}
+              rules={{
+                pattern: {
+                  value: /^(https:\/\/)/,
+                  message: `https:// 로 시작해야 합니다.`,
+                },
+              }}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <StandardInput
+                    className="w-full"
+                    placeholder="https://"
+                    {...field}
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    autoFocus
+                  />
+                );
               }}
             />
           </div>
           <div className="flex items-center space-x-2">
             <VscLink size={25} className="fill-pointBlue" />
-            <StandardInput
-              className="w-24"
-              placeholder="ex. Plato"
-              value=""
-              onChange={() => {
-                // TODO
+            <Controller
+              name="etcTitle"
+              defaultValue=""
+              control={control}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <StandardInput
+                    className="w-24"
+                    placeholder="ex. Plato"
+                    {...field}
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    autoFocus
+                  />
+                );
               }}
             />
-            <StandardInput
-              className="w-full"
-              placeholder="https://"
-              value=""
-              onChange={() => {
-                // TODO
+            <Controller
+              name="etcLink"
+              defaultValue=""
+              control={control}
+              rules={{
+                pattern: {
+                  value: /^(https:\/\/)/,
+                  message: `https:// 로 시작해야 합니다.`,
+                },
+              }}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <StandardInput
+                    className="w-full"
+                    placeholder="https://"
+                    {...field}
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    autoFocus
+                  />
+                );
               }}
             />
           </div>
