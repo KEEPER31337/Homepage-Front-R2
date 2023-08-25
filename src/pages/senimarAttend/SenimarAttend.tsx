@@ -16,9 +16,6 @@ const SeminarAttend = () => {
   const recentSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[0]?.id;
   const futureSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[1]?.id;
   const cardIdOrder = [recentlyDoneSeminarId, recentSeminarId, futureSeminarId];
-  const cardDateOrder = cardIdOrder.map(
-    (seminarId) => seminarId && useGetSeminarInfoQuery(seminarId).data?.seminarName.replaceAll('-', '.'),
-  );
   const [isBoss, setIsBoss] = useState(true); // TODO: api? 적용?
 
   useEffect(() => {
@@ -28,15 +25,13 @@ const SeminarAttend = () => {
   return (
     <>
       <div className="mt-[180px] flex justify-between text-center [&>*:nth-child(2)]:mt-[-50px]">
-        {cardIdOrder.map((seminarId, index) => {
+        {cardIdOrder.map((seminarId) => {
           return (
             <SeminarCard key={seminarId}>
               {seminarId !== undefined ? (
-                <>
-                  <Typography className="!mt-[16px] !text-h3 !font-bold ">{cardDateOrder[index]} 세미나</Typography>
-                  <p className="mb-[14px] mt-[26px]">출석 코드</p>
+                <div>
                   {isBoss ? <BossCardContent seminarId={seminarId} /> : <MemberCardContent seminarId={seminarId} />}
-                </>
+                </div>
               ) : (
                 <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">
                   예정된 세미나가 없습니다.
