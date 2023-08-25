@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
-import { startSeminar, getAvailableSeminarInfo, getSeminarInfo } from '@api/seminarApi';
+import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import Countdown from '../Countdown/Countdown';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
@@ -9,13 +9,13 @@ import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
 const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [seminarStart, setSeminarStart] = useState(false);
-  const { data: seminarData } = getSeminarInfo(seminarId);
-  const [attendValue, setAttendValue] = useState<number>(1);
-  const [lateAttendValue, setLateAttendValue] = useState<number>(1);
+  const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
+  const [attendValue, setAttendValue] = useState<number>(5);
+  const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
-  const { mutate: setSeminarTime, isSuccess } = startSeminar(seminarId);
-  const { data: availableSeminarData, refetch: availableSeminarRefetch } = getAvailableSeminarInfo();
-  const onStartSeminar = () => {
+  const { mutate: setSeminarTime, isSuccess } = useStartSeminarMutation(seminarId);
+  const { data: availableSeminarData, refetch: availableSeminarRefetch } = useGetAvailableSeminarInfoQuery();
+  const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
@@ -28,7 +28,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   }, [isSuccess]);
 
   useEffect(() => {
-    if (seminarData && availableSeminarData?.id === seminarData?.seminarId) setSeminarStart(true);
+    if (seminarData && availableSeminarData?.id === seminarData.seminarId) setSeminarStart(true);
   }, [availableSeminarData]);
 
   return (
@@ -46,14 +46,8 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
         <div className="grid content-between text-right">
           {seminarStart && seminarData ? (
             <>
-              <Countdown
-                startTime={DateTime.fromISO(seminarData.openTime)}
-                endTime={DateTime.fromISO(seminarData.attendanceCloseTime)}
-              />
-              <Countdown
-                startTime={DateTime.fromISO(seminarData.attendanceCloseTime)}
-                endTime={DateTime.fromISO(seminarData.latenessCloseTime)}
-              />
+              <Countdown startTime={seminarData.openTime} endTime={seminarData.attendanceCloseTime} />
+              <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
             </>
           ) : (
             <>
@@ -67,7 +61,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
         {seminarStart ? (
           <SeminarAttendStatus status="ATTENDANCE" />
         ) : (
-          <FilledButton onClick={onStartSeminar}>시작</FilledButton>
+          <FilledButton onClick={handleOnStartSeminar}>시작</FilledButton>
         )}
       </div>
     </>

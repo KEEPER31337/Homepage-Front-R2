@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { Typography } from '@mui/material';
-import { getRecentlyDoneSeminarInfo, getRecentlyUpcomingSeminarInfo, getSeminarInfo } from '@api/seminarApi';
+import {
+  useGetRecentlyDoneSeminarInfoQuery,
+  useGetRecentlyUpcomingSeminarInfoQuery,
+  useGetSeminarInfoQuery,
+} from '@api/seminarApi';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
 
 const SeminarAttend = () => {
-  const { data: recentlyDoneSeminarId } = getRecentlyDoneSeminarInfo();
-  const { data: twoUpcomingSeminarIds } = getRecentlyUpcomingSeminarInfo();
+  const { data: recentlyDoneSeminarId } = useGetRecentlyDoneSeminarInfoQuery();
+  const { data: twoUpcomingSeminarIds } = useGetRecentlyUpcomingSeminarInfoQuery();
   const recentSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[0]?.id;
   const futureSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[1]?.id;
   const cardIdOrder = [recentlyDoneSeminarId, recentSeminarId, futureSeminarId];
@@ -27,7 +31,7 @@ const SeminarAttend = () => {
               {seminarId !== undefined ? (
                 <>
                   <Typography className="!mt-[16px] !text-h3 !font-bold ">
-                    {getSeminarInfo(seminarId).data?.seminarName.replaceAll('-', '.')} 세미나
+                    {useGetSeminarInfoQuery(seminarId).data?.seminarName.replaceAll('-', '.')} 세미나
                   </Typography>
                   <p className="mb-[14px] mt-[26px]">출석 코드</p>
                   {isBoss ? <BossCardContent seminarId={seminarId} /> : <MemberCardContent seminarId={seminarId} />}

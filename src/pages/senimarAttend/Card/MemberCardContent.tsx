@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
-import { DateTime } from 'luxon';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 import { Typography } from '@mui/material';
-import { attendSeminar, getAvailableSeminarInfo, getSeminarInfo } from '@api/seminarApi';
+import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { AxiosError } from 'axios';
+import { ActivityStatus } from '@api/dto';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
-import ActivityStatus from '../SeminarAttend.interface';
 
 interface ErrorResponse {
   message: string;
 }
 
 const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
-  const { data: seminarData } = getSeminarInfo(seminarId);
-  const { mutate: attend, isSuccess, error, data: attendancyData } = attendSeminar(seminarId);
-  const startTime = DateTime.fromISO(seminarData?.openTime || '');
-  const attendLimit = DateTime.fromISO(seminarData?.attendanceCloseTime || '');
-  const lateLimit = DateTime.fromISO(seminarData?.latenessCloseTime || '');
+  const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
+  const {
+    mutate: attend,
+    isSuccess: isAttendSuccess,
+    error: attendError,
+    data: attendData,
+  } = useAttendSeminarMutation(seminarId);
   const validCode = seminarData?.attendanceCode;
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
   const [excessModalOn, setExcessModalOn] = useState(false);
-  const { data: availableSeminarData } = getAvailableSeminarInfo();
-  const isValidActivityStatus = (value: string): value is ActivityStatus => {
+  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
+  const isValidActivityStatus = (value: ActivityStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
-
   const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.seminarId;
 
   useEffect(() => {
@@ -42,12 +42,12 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   };
 
   useEffect(() => {
-    if (isSuccess && isValidActivityStatus(attendancyData.data.statusType)) {
-      setAttendStatus(attendancyData.data.statusType);
+    if (isAttendSuccess && isValidActivityStatus(attendData.data.statusType)) {
+      setAttendStatus(attendData.data.statusType);
       setIncorrectCodeMsg('ㅤ');
       localStorage.removeItem('출석시도횟수');
     }
-  }, [isSuccess]);
+  }, [isAttendSuccess]);
 
   useEffect(() => {
     if (inputCode.join('') !== validCode) {
@@ -57,11 +57,11 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         setIncorrectCodeMsg(`출석코드가 틀렸습니다.(남은 제출횟수 ${attemptNum}회)`);
       }
     } else {
-      const axiosError = error as AxiosError<ErrorResponse>;
+      const axiosError = attendError as AxiosError<ErrorResponse>;
       const errorMessage = axiosError?.response?.data?.message;
       setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
     }
-  }, [error]);
+  }, [attendError]);
 
   useEffect(() => {
     setIncorrectCodeMsg('ㅤ');
@@ -93,8 +93,12 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          <Countdown startTime={startTime} endTime={attendLimit} />
-          <Countdown startTime={attendLimit} endTime={lateLimit} />
+          {seminarData && (
+            <>
+              <Countdown startTime={seminarData.openTime} endTime={seminarData.attendanceCloseTime} />
+              <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
+            </>
+          )}
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">

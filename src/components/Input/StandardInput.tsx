@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { StandardTextFieldProps, TextField } from '@mui/material';
 
 interface StandardInputProps extends StandardTextFieldProps {
@@ -7,17 +7,23 @@ interface StandardInputProps extends StandardTextFieldProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const StandardInput = ({ value, onChange, error, ...standardTextFieldProps }: StandardInputProps) => {
-  return (
-    <TextField
-      InputProps={error ? undefined : { className: 'before:!border-pointBlue' }}
-      value={value}
-      onChange={onChange}
-      error={error}
-      {...standardTextFieldProps}
-      variant="standard"
-    />
-  );
-};
+const StandardInput = forwardRef(
+  (
+    { value, onChange, error, ...standardTextFieldProps }: StandardInputProps,
+    ref?: React.ForwardedRef<HTMLDivElement>,
+  ) => {
+    return (
+      <TextField
+        ref={ref}
+        InputProps={error ? undefined : { className: 'before:!border-pointBlue' }}
+        value={value}
+        onChange={onChange}
+        error={error}
+        {...standardTextFieldProps}
+        variant="standard"
+      />
+    );
+  },
+);
 
 export default StandardInput;

@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { useQuery, useMutation } from 'react-query';
-import ActivityStatus from '@pages/senimarAttend/SeminarAttend.interface';
-import { SeminarInfo, UsableSeminarInfo } from './dto';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { DateTime } from 'luxon';
+import { ActivityStatus, AvailableSeminarInfo, SeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminar: ['getSeminar', 'id'] as const,
@@ -11,31 +11,41 @@ const seminarKeys = {
   startSeminar: ['startSeminar'] as const,
 };
 
-const getSeminarInfo = (id: number) => {
-  const fetcher = () => axios.get(`/seminars/${id}`).then(({ data }) => data);
+const useGetSeminarInfoQuery = (id: number) => {
+  const fetcher = () =>
+    axios.get(`/seminars/${id}`).then(({ data }) => {
+      const transformedData = {
+        ...data,
+        openTime: DateTime.fromISO(data.openTime),
+        attendanceCloseTime: DateTime.fromISO(data.attendanceCloseTime),
+        latenessCloseTime: DateTime.fromISO(data.latenessCloseTime),
+      };
+      return transformedData;
+    });
 
   return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
 };
 
-const getAvailableSeminarInfo = () => {
+const useGetAvailableSeminarInfoQuery = () => {
   const fetcher = () => axios.get('/seminars/available').then(({ data }) => data);
 
-  return useQuery<UsableSeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
+  return useQuery<AvailableSeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
 };
 
-const getRecentlyDoneSeminarInfo = () => {
+const useGetRecentlyDoneSeminarInfoQuery = () => {
   const fetcher = () => axios.get(`/seminars/recently-done`).then(({ data }) => data.id);
 
   return useQuery<number>(seminarKeys.getRecentlyDoneSeminar, fetcher);
 };
 
-const getRecentlyUpcomingSeminarInfo = () => {
+const useGetRecentlyUpcomingSeminarInfoQuery = () => {
   const fetcher = () => axios.get(`/seminars/recently-upcoming `).then(({ data }) => data);
 
   return useQuery<[{ id: number }, { id: number }]>(seminarKeys.getRecentlyUpcomingSeminar, fetcher);
 };
 
-const startSeminar = (id: number) => {
+const useStartSeminarMutation = (id: number) => {
+  const queryClient = useQueryClient();
   const fetcher = ({
     attendanceCloseTime,
     latenessCloseTime,
@@ -46,12 +56,13 @@ const startSeminar = (id: number) => {
 
   return useMutation(fetcher, {
     onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: seminarKeys.getAvailableSeminar });
       return response.data.attendanceCode;
     },
   });
 };
 
-const attendSeminar = (id: number) => {
+const useAttendSeminarMutation = (id: number) => {
   const fetcher = (attendanceCode: string) => axios.patch(`/seminars/${id}/attendances`, { attendanceCode });
 
   return useMutation(fetcher, {
@@ -61,7 +72,7 @@ const attendSeminar = (id: number) => {
   });
 };
 
-const editAttendStatus = (seminarId: number, memberId: number) => {
+const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
   const fetcher = ({ excuse, statusType }: { excuse: string; statusType: ActivityStatus }) =>
     axios.patch(`/seminars/${seminarId}/attendances/${memberId}`, { excuse, statusType });
   return useMutation(fetcher, {
@@ -72,11 +83,11 @@ const editAttendStatus = (seminarId: number, memberId: number) => {
 };
 
 export {
-  getSeminarInfo,
-  getAvailableSeminarInfo,
-  getRecentlyDoneSeminarInfo,
-  getRecentlyUpcomingSeminarInfo,
-  startSeminar,
-  attendSeminar,
-  editAttendStatus,
+  useGetRecentlyDoneSeminarInfoQuery,
+  useGetRecentlyUpcomingSeminarInfoQuery,
+  useGetSeminarInfoQuery,
+  useGetAvailableSeminarInfoQuery,
+  useStartSeminarMutation,
+  useAttendSeminarMutation,
+  useEditAttendStatusMutation,
 };
