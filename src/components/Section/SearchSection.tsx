@@ -31,6 +31,7 @@ const SearchSection = ({
       <Selector className="w-32" options={options} value={selectorValue} onChange={handleSelectorChange} />
       <SearchInput
         className="w-80"
+        placeholder="검색어를 입력하세요."
         value={inputValue}
         onChange={handleInputChange}
         onSearchButtonClick={onSearchButtonClick}
