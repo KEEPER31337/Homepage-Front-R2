@@ -3,6 +3,7 @@ import { Divider, Stack, Typography } from '@mui/material';
 import StandardTab from '@components/Tab/StandardTab';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ConfirmModal from '@components/Modal/ConfirmModal';
+import Baseball from './Baseball/Baseball';
 
 const Game = () => {
   const [tab, setTab] = useState(0);
@@ -65,7 +66,7 @@ const Game = () => {
           게임 규칙
         </OutlinedButton>
       </Stack>
-      <Stack direction="row" justifyContent="flex-end">
+      <Stack direction="row" justifyContent="flex-end" className="mb-5">
         <>
           <Typography marginRight={0.5}>보유포인트 :</Typography>
           <Typography className="!font-semibold">{point}</Typography>
@@ -78,7 +79,7 @@ const Game = () => {
           </Typography>
         </>
       </Stack>
-      {/* TODO 게임 불러오기 */}
+      <Stack className="h-[650px]">{tab === 0 && <Baseball />}</Stack>
       <ConfirmModal
         open={isGameModalOpen}
         modalWidth="sm"

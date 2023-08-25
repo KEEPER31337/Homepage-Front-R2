@@ -25,7 +25,7 @@ const LibraryManage = () => {
     <div>
       <PageTitle>도서관리</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
-        <SearchSection />
+        {/* <SearchSection /> */}
         <div className="flex space-x-2">
           <OutlinedButton onClick={() => setAddBookModalOpen(true)}>도서 추가</OutlinedButton>
           <OutlinedButton onClick={() => setDeleteBookModalOpen(true)}>도서 삭제</OutlinedButton>
