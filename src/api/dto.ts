@@ -53,6 +53,13 @@ export interface PageBlockInfo {
   subtitleImages: Array<SubTitleImagesInfo>;
 }
 
+export interface BookListSearch {
+  searchType?: 'title' | 'author' | 'all';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface BookListInfo {
   id: number;
   no: number;
@@ -71,6 +78,15 @@ export interface BookInfo {
   currentQuantity: number;
   totalQuantity: number;
   canBorrow: boolean;
+}
+
+export interface BorrowedBookInfo {
+  borrowInfoId: number;
+  title: string;
+  author: string;
+  overdue: boolean;
+  borrowDate: string;
+  expireDate: string;
 }
 
 export interface StudyLinkInfo {
