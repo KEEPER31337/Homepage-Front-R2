@@ -10,3 +10,12 @@
     color: #fff;
   }
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+
+@layer {
+  html {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+  }
+}
