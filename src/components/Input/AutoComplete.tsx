@@ -8,6 +8,8 @@ export interface Item {
   group?: string;
 }
 
+export type AutoCompleteValueType = Array<Item> | Item | null;
+
 interface AutoCompleteProps {
   items?: Array<Item>;
   value: Array<Item> | Item | null;
