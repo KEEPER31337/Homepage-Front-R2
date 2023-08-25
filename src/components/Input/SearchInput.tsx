@@ -11,7 +11,7 @@ interface SearchInputProps extends StandardTextFieldProps {
 }
 
 const SearchInput = ({ value, onChange, onSearchButtonClick, ...standardTextFieldProps }: SearchInputProps) => {
-  const handleOnKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleOnKeyEnterDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onSearchButtonClick();
     }
@@ -21,7 +21,7 @@ const SearchInput = ({ value, onChange, onSearchButtonClick, ...standardTextFiel
     <StandardInput
       value={value}
       onChange={onChange}
-      onKeyDown={handleOnKeyEnterPress}
+      onKeyDown={handleOnKeyEnterDown}
       endAdornment={
         <IconButton onClick={onSearchButtonClick}>
           <MdOutlineSearch size={20} className="fill-pointBlue" />
