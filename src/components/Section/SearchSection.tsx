@@ -6,32 +6,33 @@ import { SelectChangeEvent } from '@mui/material';
 interface SearchSectionProps {
   options: { id: string | number; content: string | number }[];
   selectorValue: string | number;
-  onChangeSelector: (event: SelectChangeEvent<unknown>) => void;
-
-  placeholder?: string;
+  setSelectorValue: React.Dispatch<React.SetStateAction<string>>;
   inputValue: string;
-  onchangeInput: React.ChangeEventHandler<HTMLInputElement>;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
   onSearchButtonClick: () => void;
 }
 
 const SearchSection = ({
   options,
   selectorValue,
-  onChangeSelector,
-
-  placeholder,
+  setSelectorValue,
   inputValue,
-  onchangeInput,
+  setInputValue,
   onSearchButtonClick,
 }: SearchSectionProps) => {
+  const handleSelectorChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectorValue(event.target.value as string);
+  };
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
   return (
     <div className="flex items-end space-x-2">
-      <Selector className="w-32" options={options} value={selectorValue} onChange={onChangeSelector} />
+      <Selector className="w-32" options={options} value={selectorValue} onChange={handleSelectorChange} />
       <SearchInput
-        placeholder={placeholder}
         className="w-80"
         value={inputValue}
-        onChange={onchangeInput}
+        onChange={handleInputChange}
         onSearchButtonClick={onSearchButtonClick}
       />
     </div>
