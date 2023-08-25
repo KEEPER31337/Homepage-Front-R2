@@ -15,6 +15,7 @@ module.exports = {
       },
       fontFamily: {
         base: 'IBM Plex Sans KR, system-ui, sans-serif',
+        orbitron: '"Orbitron", sans-serif',
       },
       fontSize: {
         h1: '28px',
