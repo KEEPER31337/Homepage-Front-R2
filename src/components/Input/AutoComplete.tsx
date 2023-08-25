@@ -15,6 +15,7 @@ interface AutoCompleteProps {
   value: Array<Item> | Item | null;
   onChange?: (value: Array<Item> | Item | null) => void;
   multiple?: boolean;
+  grouped?: boolean;
   placeholder?: string;
   className?: string;
 }
@@ -24,6 +25,7 @@ const AutoComplete = ({
   value,
   onChange = (v) => console.log(v),
   multiple = false,
+  grouped = false,
   placeholder = '',
   className = '',
 }: AutoCompleteProps) => {
@@ -43,11 +45,11 @@ const AutoComplete = ({
       value={value}
       onChange={(e, v) => superOnChange(v)}
       multiple={multiple}
-      groupBy={(option) => option.group || 'etc'}
+      groupBy={(option) => (grouped ? option.group || 'etc' : '')}
       renderInput={(params) => <TextField {...params} variant="standard" placeholder={placeholder} />}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
-          <Chip label={option.label} {...getTagProps({ index })} disabled={option?.fixed} />
+          <Chip label={option.label} {...getTagProps({ index })} disabled={option?.fixed} className="!-z-10" />
         ))
       }
     />
