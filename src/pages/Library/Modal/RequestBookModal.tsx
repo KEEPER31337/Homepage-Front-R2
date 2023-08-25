@@ -1,20 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Typography } from '@mui/material';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 
 interface RequestBookModalProps {
   librarian: string;
-  selectedBookId: number;
   open: boolean;
   onClose: () => void;
 }
 
-const RequestBookModal = ({ librarian, selectedBookId, open, onClose }: RequestBookModalProps) => {
-  useEffect(() => {
-    // TODO: 신청 api
-  }, [selectedBookId]);
-
+const RequestBookModal = ({ librarian, open, onClose }: RequestBookModalProps) => {
   return (
     <ConfirmModal open={open} onClose={onClose} title="신청완료">
       <Typography>신청이 완료되었습니다.</Typography>
