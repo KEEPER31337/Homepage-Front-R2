@@ -3,12 +3,20 @@ import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { Typography } from '@mui/material';
+import { MemberInfo } from '@api/dto';
+import { useRecoilValue } from 'recoil';
+import memberState from '@recoil/member.recoil';
 import Countdown from '../Countdown/Countdown';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
-const BossCardContent = ({ seminarId }: { seminarId: number }) => {
+interface BossCardContentProps {
+  seminarId: number;
+  setStartMember: React.Dispatch<React.SetStateAction<MemberInfo | null | undefined>>;
+}
+
+const BossCardContent = ({ seminarId, setStartMember }: BossCardContentProps) => {
   const [seminarStart, setSeminarStart] = useState(false);
   const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
   const [attendValue, setAttendValue] = useState<number>(5);
@@ -16,8 +24,11 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [startTime, setStartTime] = useState(DateTime.now());
   const { mutate: setSeminarTime, isSuccess } = useStartSeminarMutation(seminarId);
   const { data: availableSeminarData, refetch: availableSeminarRefetch } = useGetAvailableSeminarInfoQuery();
+  const member: MemberInfo | null = useRecoilValue(memberState);
+
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
+    setStartMember(member);
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
       latenessCloseTime: startTime.plus({ minutes: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),

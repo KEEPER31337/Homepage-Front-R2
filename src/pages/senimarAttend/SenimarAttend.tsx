@@ -1,7 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { useGetRecentlyDoneSeminarInfoQuery, useGetRecentlyUpcomingSeminarInfoQuery } from '@api/seminarApi';
+import {
+  useGetAvailableSeminarInfoQuery,
+  useGetRecentlyDoneSeminarInfoQuery,
+  useGetRecentlyUpcomingSeminarInfoQuery,
+} from '@api/seminarApi';
 import useCheckAuth from '@hooks/useCheckAuth';
+import { useRecoilValue } from 'recoil';
+import memberState from '@recoil/member.recoil';
+import { MemberInfo } from '@api/dto';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
@@ -13,7 +20,22 @@ const SeminarAttend = () => {
   const futureSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[1]?.id;
   const cardIdOrder = [recentlyDoneSeminarId, recentSeminarId, futureSeminarId];
   const { checkIncludeOneOfAuths } = useCheckAuth();
-  const isBoss = checkIncludeOneOfAuths(['ROLE_회장', 'ROLE_부회장', 'ROLE_서기']);
+  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
+  const authorizedMember = checkIncludeOneOfAuths(['ROLE_회장', 'ROLE_부회장', 'ROLE_서기']);
+  const [startMember, setStartMember] = useState<MemberInfo | null>();
+  const member: MemberInfo | null = useRecoilValue(memberState);
+
+  const isStarterMember = () => {
+    if (!availableSeminarData?.id) {
+      return authorizedMember;
+    }
+    if (member === startMember) {
+      return true;
+    }
+    return false;
+  };
+
+  console.log(authorizedMember);
 
   useEffect(() => {
     if (!localStorage.getItem('출석시도횟수')) localStorage.setItem('출석시도횟수', '0');
@@ -26,7 +48,11 @@ const SeminarAttend = () => {
           <SeminarCard key={seminarId}>
             {seminarId !== undefined ? (
               <div>
-                {isBoss ? <BossCardContent seminarId={seminarId} /> : <MemberCardContent seminarId={seminarId} />}
+                {isStarterMember() ? (
+                  <BossCardContent seminarId={seminarId} setStartMember={setStartMember} />
+                ) : (
+                  <MemberCardContent seminarId={seminarId} />
+                )}
               </div>
             ) : (
               <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">

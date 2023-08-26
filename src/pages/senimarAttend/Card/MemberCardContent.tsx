@@ -14,7 +14,6 @@ interface ErrorResponse {
 }
 
 const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
-  const seminarDate = useGetSeminarInfoQuery(seminarId).data?.seminarName.replaceAll('-', '.');
   const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
   const {
     mutate: attend,
