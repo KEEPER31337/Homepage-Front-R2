@@ -142,13 +142,16 @@ export interface SignUpDuplication {
 
 export interface CommentInfo {
   commentId: number;
+  writerId: number;
   writerName: string;
   writerThumbnailPath: string | null;
-  content: string;
+  content: string | null;
   registerTime: string;
   parentId: number | null;
   likeCount: number;
   dislikeCount: number;
+  isLike: boolean;
+  isDislike: boolean;
 }
 
 export interface UploadPostSettings {
