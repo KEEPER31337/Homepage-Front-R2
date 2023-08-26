@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
-import { DateTime } from 'luxon';
 import {
   useAttendSeminarMutation,
   useEditAttendStatusMutation,
