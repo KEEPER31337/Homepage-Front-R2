@@ -14,6 +14,7 @@ interface ErrorResponse {
 }
 
 const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
+  const seminarDate = useGetSeminarInfoQuery(seminarId).data?.seminarName.replaceAll('-', '.');
   const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
   const {
     mutate: attend,
@@ -78,6 +79,10 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         <Typography>가능한 출석 횟수를 초과했습니다.</Typography>
         <Typography>출석 처리에 문제가 있는 경우 회장님에게 문의해주세요</Typography>
       </ConfirmModal>
+      <Typography className="!mt-[16px] !text-h3 !font-bold ">
+        {seminarData?.seminarName.replaceAll('-', '.')} 세미나
+      </Typography>
+      <p className="mb-[14px] mt-[26px]">출석 코드</p>
       <div className="mb-[15px]">
         <SeminarInput
           disabled={unableSeminar}
