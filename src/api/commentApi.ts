@@ -1,14 +1,18 @@
 import axios from 'axios';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { CommentInfo } from './dto';
 
 const useCreateCommentMutation = () => {
-  // TODO 업데이트시 조회 목록도 업데이트 되도록 처리
-  // TODO 파라미터 받아오도록 처리
-  const fetcher = () =>
-    axios.post(`/comments`, { postId: 16, content: '댓글2작성 테스트' }).then(({ data }) => data.comments);
+  const queryClient = useQueryClient();
 
-  return useMutation(fetcher);
+  const fetcher = ({ postId, parentId, content }: { postId: number; parentId?: number; content: string }) =>
+    axios.post(`/comments`, { postId, parentId, content });
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
 };
 
 const useGetCommentQuery = (postId: number) => {
@@ -17,4 +21,46 @@ const useGetCommentQuery = (postId: number) => {
   return useQuery<CommentInfo[]>(['comments'], fetcher);
 };
 
-export { useCreateCommentMutation, useGetCommentQuery };
+const useControlCommentLikesMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (commentId: number) => axios.patch(`/comments/${commentId}/likes`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+};
+
+const useControlCommentDislikesMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (commentId: number) => axios.patch(`/comments/${commentId}/dislikes`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+};
+
+const useDeleteCommentMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (commentId: number) => axios.delete(`/comments/${commentId}`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+};
+
+export {
+  useCreateCommentMutation,
+  useGetCommentQuery,
+  useControlCommentLikesMutation,
+  useControlCommentDislikesMutation,
+  useDeleteCommentMutation,
+};
