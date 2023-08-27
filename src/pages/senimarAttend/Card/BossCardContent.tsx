@@ -14,8 +14,8 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
-  const { mutate: setSeminarTime, isSuccess } = useStartSeminarMutation(seminarId);
-  const { data: availableSeminarData, refetch: availableSeminarRefetch } = useGetAvailableSeminarInfoQuery();
+  const { mutate: setSeminarTime } = useStartSeminarMutation(5); // Todo: 이후 id 파라미터로 받아옴
+  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
     setSeminarTime({
@@ -23,10 +23,6 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
       latenessCloseTime: startTime.plus({ minutes: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
     });
   };
-
-  useEffect(() => {
-    availableSeminarRefetch();
-  }, [isSuccess]);
 
   useEffect(() => {
     if (seminarData && availableSeminarData?.id === seminarData.seminarId) setSeminarStart(true);

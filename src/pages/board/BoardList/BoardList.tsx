@@ -1,10 +1,9 @@
 import React from 'react';
 import TableViewSwitchButton from '@components/Button/TableViewSwitchButton';
 import StandardTable from '@components/Table/StandardTable';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import SearchSection from '@components/Section/SearchSection';
 import { useGetPostListQuery } from '@api/postApi';
 import { categoryNameToId } from '@utils/converter';
 import { Column, Row } from '@components/Table/StandardTable.interface';
@@ -12,6 +11,8 @@ import usePagination from '@hooks/usePagination';
 import tableViewState from '@recoil/view.recoil';
 import { useRecoilValue } from 'recoil';
 import GridTable from '@components/Table/GridTable';
+import { BoardSearch } from '@api/dto';
+import BoardSearchSection from './SearchSection/BoardSearchSection';
 
 interface BoardRow {
   no: number;
@@ -31,6 +32,10 @@ const boardColumn: Column<BoardRow>[] = [
 
 const BoardList = () => {
   const { categoryName } = useParams();
+  const [searchParams] = useSearchParams();
+  const searchType = searchParams.get('searchType') as BoardSearch['searchType'];
+  const search = searchParams.get('search');
+
   const { page, getRowNumber } = usePagination();
   const categoryId = categoryName ? categoryNameToId(categoryName) : null;
 
@@ -39,7 +44,7 @@ const BoardList = () => {
   }
 
   const navigate = useNavigate();
-  const { data: posts } = useGetPostListQuery({ categoryId, page });
+  const { data: posts } = useGetPostListQuery({ categoryId, page, searchType, search });
   const tableView = useRecoilValue(tableViewState);
 
   if (!posts) {
@@ -63,7 +68,7 @@ const BoardList = () => {
         <OutlinedButton onClick={handleWriteButtonClick}>글쓰기</OutlinedButton>
       </div>
       <div className="flex items-center justify-between pb-5">
-        <SearchSection />
+        <BoardSearchSection />
         <TableViewSwitchButton />
       </div>
       {tableView === 'List' && (
