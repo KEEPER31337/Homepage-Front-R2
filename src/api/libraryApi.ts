@@ -7,7 +7,7 @@ const libraryKeys = {
   borrowedBookList: ['library', 'borrowedBookList'] as const,
 };
 
-const useGetBookListQuery = ({ page, size = 3, searchType, search }: BookListSearch) => {
+const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSearch) => {
   const fetcher = () =>
     axios.get('/books', { params: { page, size, searchType, search } }).then(({ data }) => {
       const content = data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
