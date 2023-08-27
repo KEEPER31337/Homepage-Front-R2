@@ -1,3 +1,7 @@
+import { DateTime } from 'luxon';
+
+export type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
+
 export type Role =
   | 'ROLE_회장'
   | 'ROLE_부회장'
@@ -140,6 +144,31 @@ export interface SignUpDuplication {
   duplicate: boolean;
 }
 
+export interface SeminarInfo {
+  seminarId: number;
+  seminarName: string;
+  openTime: DateTime;
+  attendanceCloseTime: DateTime;
+  latenessCloseTime: DateTime;
+  statusType: ActivityStatus;
+  attendanceCode: string;
+}
+
+export interface AvailableSeminarInfo {
+  id: number;
+  openTime: string;
+  attendanceCloseTime: string;
+  latenessCloseTime: string;
+  attendanceCode: string;
+  name: string;
+  registerTime: string;
+  updateTime: string;
+}
+
+export interface AttendResponseData {
+  id: number;
+  statusText: string;
+}
 export interface CommentInfo {
   commentId: number;
   writerId: number;
@@ -238,8 +267,8 @@ export interface PageableInfo {
 
 export interface BoardSearch {
   categoryId: number;
-  searchType?: 'title' | 'content' | 'writer' | 'title+content';
-  search?: string;
+  searchType?: 'title' | 'content' | 'writer' | 'title+content' | null;
+  search?: string | null;
   page?: number;
   size?: number;
 }
