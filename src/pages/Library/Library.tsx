@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import PageTitle from '@components/Typography/PageTitle';
-import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQuery } from '@api/libraryApi';
 import usePagination from '@hooks/usePagination';
+import { useSearchParams } from 'react-router-dom';
+import { BookListSearch } from '@api/dto';
+import LibrarySearchSection from './SearchSection/LibrarySearchSection';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
@@ -21,19 +23,23 @@ const Library = () => {
     setRequestBookModalOpen(true);
   };
 
+  const [searchParams] = useSearchParams();
+  const searchType = searchParams.get('searchType') as BookListSearch['searchType'];
+  const search = searchParams.get('search') as BookListSearch['search'];
+
   const librarian = '박소현';
 
   const size = 6;
   const { page } = usePagination();
 
-  const { data: bookListData } = useGetBookListQuery({ page, size });
+  const { data: bookListData } = useGetBookListQuery({ page, size, searchType, search });
   const { data: borrowedBookListData } = useGetBookBorrowsQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
 
   return (
     <div>
       <PageTitle>도서검색</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
-        {/* <SearchSection /> */}
+        <LibrarySearchSection />
         <BorrowStatus
           librarian={librarian}
           borrowedBookCount={borrowedBookListData?.totalElement || 0}
