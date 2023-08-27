@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
-import { BookManageInfo, BorrowInfo, BookListSearch } from './dto';
+import { BookManageInfo, BookListSearch } from './dto';
 
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
@@ -15,7 +15,7 @@ const useGetBookManageListQuery = (param: BookListSearch) => {
         author: bookInfo.author,
         bookQuantity: `${bookInfo.currentQuantity}/${bookInfo.totalQuantity}`,
         borrowers: bookInfo.borrowInfos.map((borrowInfo) => borrowInfo.borrowerRealName).join(', '),
-        canBorrow: bookInfo.totalQuantity > bookInfo.currentQuantity,
+        canBorrow: !!bookInfo.currentQuantity,
       }));
       return { content, totalElement: data.totalElements };
     });
