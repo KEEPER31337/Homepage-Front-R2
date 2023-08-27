@@ -98,14 +98,14 @@ export interface BookInfo {
   canBorrow: boolean;
 }
 
-export interface BookManageInfo extends BookInfo {
+export interface ManageBookInfo extends BookInfo {
   id: number;
   bookDepartment: string;
   borrowInfos: BorrowInfo[];
   borrowers: string;
 }
 
-export type EditBookCore = Pick<BookManageInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
+export type ManageBookCore = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
@@ -290,8 +290,8 @@ export interface PageableInfo {
 
 export interface BoardSearch {
   categoryId: number;
-  searchType?: 'title' | 'content' | 'writer' | 'title+content';
-  search?: string;
+  searchType?: 'title' | 'content' | 'writer' | 'title+content' | null;
+  search?: string | null;
   page?: number;
   size?: number;
 }
