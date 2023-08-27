@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useQueryClient } from 'react-query';
+import { gameKeys } from '@api/gameApi';
+import { baseballKeys } from '../api/baseballApi';
+import { GameStatus } from '../api/baseballDto';
 
 export type EndType = 'win' | 'lose';
 
@@ -7,6 +11,17 @@ interface NoticeEndProps {
 }
 
 const NoticeEnd = ({ endType }: NoticeEndProps) => {
+  const queryClient = useQueryClient();
+  const data: { status: GameStatus; baseballPerDay: number } | undefined = queryClient.getQueryData(
+    baseballKeys.status,
+  );
+
+  useEffect(() => {
+    if (!data || data.status === 'END') return;
+
+    queryClient.invalidateQueries(gameKeys.myInfo);
+  }, []);
+
   const msg = {
     win: {
       main: 'congraturation',
