@@ -101,6 +101,8 @@ export interface BookManageInfo extends BookInfo {
   borrowers: string;
 }
 
+export type EditBookCore = Pick<BookManageInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
+
 export interface BorrowedBookInfo {
   borrowInfoId: number;
   title: string;
