@@ -73,6 +73,20 @@ export interface BookListInfo {
   information: string;
   enable: boolean;
 }
+
+export interface BorrowInfo {
+  borrowInfoId: number;
+  bookId: number;
+  bookTitle: string;
+  author: string;
+  borrowerId: number;
+  borrowerRealName: string;
+  requestDatetime: string | null;
+  borrowDateTime: string;
+  expiredDateTime: string;
+  status: string;
+}
+
 export interface BookInfo {
   bookId: number;
   thumbnailPath: string;
@@ -83,6 +97,15 @@ export interface BookInfo {
   totalQuantity: number;
   canBorrow: boolean;
 }
+
+export interface ManageBookInfo extends BookInfo {
+  id: number;
+  bookDepartment: string;
+  borrowInfos: BorrowInfo[];
+  borrowers: string;
+}
+
+export type ManageBookCore = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
