@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import PageTitle from '@components/Typography/PageTitle';
-import SearchSection from '@components/Section/SearchSection';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQuery } from '@api/libraryApi';
 import usePagination from '@hooks/usePagination';

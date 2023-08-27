@@ -6,7 +6,6 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
 import SearchSection from '@components/Section/SearchSection';
 import AddBookModal from '../Modal/AddBookModal';
-import DeleteBookModal from '../Modal/DeleteBookModal';
 
 interface libraryManageRow {
   no: number;
@@ -43,7 +42,6 @@ const BookManageTab = () => {
   const [selectorValue, setSelectorValue] = useState('all');
 
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
-  const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
 
   const childComponent = ({ key, value }: ChildComponent<libraryManageRow>) => {
     switch (key) {
@@ -56,6 +54,7 @@ const BookManageTab = () => {
   const handleSearchButtonClick = () => {
     // TODO 검색 API 호출
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleBookRowClick = ({ rowData }: { rowData: Row<libraryManageRow> }) => {
     // TODO 도서 수정 API 호출
   };
@@ -76,8 +75,7 @@ const BookManageTab = () => {
         <OutlinedButton onClick={() => setAddBookModalOpen(true)}>도서 추가</OutlinedButton>
         <AddBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
       </div>
-      {/* <OutlinedButton onClick={() => setDeleteBookModalOpen(true)}>도서 삭제</OutlinedButton>
-      <DeleteBookModal open={deleteBookModalOpen} onClose={() => setDeleteBookModalOpen(false)} /> */}
+
       <StandardTable
         columns={libraryManageColumn}
         rows={bookManageListData?.content.map((book, bookIndex) => ({
