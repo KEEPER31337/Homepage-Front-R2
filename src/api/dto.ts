@@ -267,8 +267,8 @@ export interface PageableInfo {
 
 export interface BoardSearch {
   categoryId: number;
-  searchType?: 'title' | 'content' | 'writer' | 'title+content';
-  search?: string;
+  searchType?: 'title' | 'content' | 'writer' | 'title+content' | null;
+  search?: string | null;
   page?: number;
   size?: number;
 }
