@@ -23,7 +23,9 @@ interface AutoCompleteProps {
 const AutoComplete = ({
   items = [],
   value,
-  onChange = () => {},
+  onChange = () => {
+    return;
+  },
   multiple = false,
   grouped = false,
   placeholder = '',
