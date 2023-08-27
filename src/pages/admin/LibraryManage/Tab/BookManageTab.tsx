@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { BookListInfo } from '@api/dto';
 import usePagination from '@hooks/usePagination';
 import { useGetBookManageListQuery } from '@api/libraryManageApi';
 import StandardTable from '@components/Table/StandardTable';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
-
 import SearchSection from '@components/Section/SearchSection';
 import AddBookModal from '../Modal/AddBookModal';
 import DeleteBookModal from '../Modal/DeleteBookModal';
@@ -34,10 +32,8 @@ const libraryManageColumn: Column<libraryManageRow>[] = [
 const BookManageTab = () => {
   const size = 10;
   const { page, getRowNumber } = usePagination();
+  const { data: bookManageListData } = useGetBookManageListQuery({ page, size });
 
-  const { data: bookListData } = useGetBookManageListQuery({ page, size });
-
-  console.log(bookListData);
   const selectorList = [
     { id: 'all', content: '도서명 + 저자' },
     { id: 'title', content: '도서명' },
@@ -46,9 +42,8 @@ const BookManageTab = () => {
   const [inputValue, setInputValue] = useState('');
   const [selectorValue, setSelectorValue] = useState('all');
 
-  const handleSearchButtonClick = () => {
-    console.log(selectorValue, inputValue, '검색 api 호출');
-  };
+  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
+  const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
 
   const childComponent = ({ key, value }: ChildComponent<libraryManageRow>) => {
     switch (key) {
@@ -58,18 +53,18 @@ const BookManageTab = () => {
         return value;
     }
   };
-  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
-  const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
-
-  const handlePostRowClick = ({ rowData }: { rowData: Row<libraryManageRow> }) => {
-    console.log(rowData.id, rowData);
+  const handleSearchButtonClick = () => {
+    // TODO 검색 API 호출
+  };
+  const handleBookRowClick = ({ rowData }: { rowData: Row<libraryManageRow> }) => {
+    // TODO 도서 수정 API 호출
   };
 
-  if (!bookListData) return null;
+  if (!bookManageListData) return null;
 
   return (
     <>
-      <div className="flex justify-between space-x-2">
+      <div className="mb-5 flex justify-between space-x-2">
         <SearchSection
           options={selectorList}
           selectorValue={selectorValue}
@@ -85,13 +80,13 @@ const BookManageTab = () => {
       <DeleteBookModal open={deleteBookModalOpen} onClose={() => setDeleteBookModalOpen(false)} /> */}
       <StandardTable
         columns={libraryManageColumn}
-        rows={bookListData?.content.map((post, postIndex) => ({
-          no: getRowNumber({ size, index: postIndex }),
-          ...post,
+        rows={bookManageListData?.content.map((book, bookIndex) => ({
+          no: getRowNumber({ size, index: bookIndex }),
+          ...book,
         }))}
         childComponent={childComponent}
-        paginationOption={{ rowsPerPage: size, totalItems: bookListData?.totalElement }}
-        onRowClick={handlePostRowClick}
+        paginationOption={{ rowsPerPage: size, totalItems: bookManageListData?.totalElement }}
+        onRowClick={handleBookRowClick}
       />
     </>
   );
