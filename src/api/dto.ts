@@ -286,3 +286,58 @@ export interface BoardPosts {
   numberOfElements: number;
   empty: boolean;
 }
+
+export interface PageAndSize {
+  page?: number;
+  size?: number;
+}
+
+export interface AttendRankInfo {
+  rank: number;
+  thumbnailPath?: string | null;
+  realName: string;
+  generation: string;
+  continuousDay: number;
+  time: string;
+}
+
+export interface TodayAttendRank {
+  content: AttendRankInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface PointRankInfo {
+  realName: string;
+  generation: string;
+  point: number;
+}
+
+export interface PointRank {
+  content: PointRankInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface GameRankInfo {
+  rank: number;
+  realName: string;
+  generation: string;
+  todayEarnedPoint: number;
+  profileImageUrl?: string | null;
+  memberId: number;
+}
