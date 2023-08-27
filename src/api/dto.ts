@@ -94,7 +94,7 @@ export interface BookInfo {
   canBorrow: boolean;
 }
 
-export interface BookManageInfo extends BookInfo {
+export interface ManageBookInfo extends BookInfo {
   id: number;
   bookDepartment: string;
   borrowInfos: BorrowInfo[];
