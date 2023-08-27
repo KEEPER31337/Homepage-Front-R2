@@ -18,17 +18,17 @@ const StandardTablePagination = ({ rowsPerPage = 10, totalItems = -1 }: Paginati
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(setoffPageDiff(newPage, true));
-    setSearchParams({ page: String(newPage) });
+    setSearchParams({ ...Object.fromEntries(searchParams), page: String(newPage) });
   };
 
   useEffect(() => {
     if (!searchParams.get('page')) {
-      setSearchParams({ page: String(setoffPageDiff(page)) });
+      setSearchParams({ ...Object.fromEntries(searchParams), page: String(setoffPageDiff(page)) });
       return;
     }
 
     setPage(setoffPageDiff(Number(searchParams.get('page')), true));
-  }, []);
+  }, [searchParams.get('page')]);
 
   return (
     <div className="flex !w-full items-center justify-between bg-middleBlack">
