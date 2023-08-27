@@ -6,9 +6,9 @@ const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
 };
 
-const useGetBookManageListQuery = (param: BookListSearch) => {
+const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: BookListSearch) => {
   const fetcher = () =>
-    axios.get('/manage/books', { params: { ...param } }).then(({ data }) => {
+    axios.get('/manage/books', { params: { page, size, searchType, search } }).then(({ data }) => {
       const content = data.content.map((bookInfo: ManageBookInfo) => ({
         id: bookInfo.bookId,
         title: bookInfo.title,
@@ -21,7 +21,7 @@ const useGetBookManageListQuery = (param: BookListSearch) => {
     });
 
   return useQuery<{ content: ManageBookInfo[]; totalElement: number }>(
-    libraryManageKeys.bookManageList(param),
+    libraryManageKeys.bookManageList({ page, size, searchType, search }),
     fetcher,
   );
 };

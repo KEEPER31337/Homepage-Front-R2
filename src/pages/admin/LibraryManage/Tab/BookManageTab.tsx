@@ -31,7 +31,7 @@ const libraryManageColumn: Column<libraryManageRow>[] = [
 const BookManageTab = () => {
   const size = 10;
   const { page, getRowNumber } = usePagination();
-  const { data: bookManageListData } = useGetBookManageListQuery({ page, size });
+  const { data: bookManageListData } = useGetBookManageListQuery({ page });
 
   const selectorList = [
     { id: 'all', content: '도서명 + 저자' },
