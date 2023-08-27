@@ -2,7 +2,7 @@ import React from 'react';
 import { Autocomplete, Chip, TextField } from '@mui/material';
 
 export interface Item {
-  value: any;
+  value: unknown;
   label: string;
   fixed?: boolean;
   group?: string;
@@ -23,7 +23,7 @@ interface AutoCompleteProps {
 const AutoComplete = ({
   items = [],
   value,
-  onChange = (v) => console.log(v),
+  onChange = () => {},
   multiple = false,
   grouped = false,
   placeholder = '',
@@ -32,7 +32,8 @@ const AutoComplete = ({
   const superOnChange = (v: Array<Item> | Item | null) => {
     if (multiple) {
       const fixed = items.filter((item) => item.fixed);
-      onChange([...fixed, ...(v as Array<Item>).filter((item) => !item?.fixed)]);
+      const nonFixed = (v as Array<Item>).filter((item) => !item?.fixed);
+      onChange([...fixed, ...nonFixed]);
     } else {
       onChange(v);
     }
