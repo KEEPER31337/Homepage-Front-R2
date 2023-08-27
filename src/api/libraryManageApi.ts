@@ -4,6 +4,7 @@ import { ManageBookInfo, BookListSearch, ManageBookCore } from './dto';
 
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
+  bookDetail: (param: number) => ['library', 'bookDetail', param] as const,
 };
 
 const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: BookListSearch) => {
@@ -48,4 +49,10 @@ const useDeleteBookMutation = () => {
   return useMutation(fetcher);
 };
 
-export { useGetBookManageListQuery, useAddBookMutation, useDeleteBookMutation };
+const useGetBookDetailQuery = (bookId: number) => {
+  const fetcher = () => axios.get(`/manage/books/${bookId}`).then(({ data }) => data);
+
+  return useQuery<ManageBookInfo>(libraryManageKeys.bookDetail(bookId), fetcher);
+};
+
+export { useGetBookManageListQuery, useAddBookMutation, useDeleteBookMutation, useGetBookDetailQuery };
