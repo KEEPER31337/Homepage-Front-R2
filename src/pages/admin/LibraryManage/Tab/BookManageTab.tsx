@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { BookListInfo } from '@api/dto';
-
 import StandardTable from '@components/Table/StandardTable';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { ChildComponent } from '@components/Table/StandardTable.interface';
 import { columns, rows } from '@mocks/LibraryManageApi';
 import SearchSection from '@components/Section/SearchSection';
 import AddBookModal from '../Modal/AddBookModal';
-import DeleteBookModal from '../Modal/DeleteBookModal';
 
 const BookManageTab = () => {
-  const bookNumberList = [
+  const selectorList = [
     { id: 'all', content: '도서명 + 저자' },
     { id: 'title', content: '도서명' },
     { id: 'author', content: '저자' },
@@ -19,7 +17,7 @@ const BookManageTab = () => {
   const [selectorValue, setSelectorValue] = useState('all');
 
   const handleSearchButtonClick = () => {
-    console.log(selectorValue, inputValue, '검색 api 호출');
+    // console.log(selectorValue, inputValue, '검색 api 호출');
   };
 
   const childComponent = ({ key, value }: ChildComponent<BookListInfo>) => {
@@ -31,13 +29,12 @@ const BookManageTab = () => {
     }
   };
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
-  const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
 
   return (
     <>
       <div className="flex justify-between space-x-2">
         <SearchSection
-          options={bookNumberList}
+          options={selectorList}
           selectorValue={selectorValue}
           setSelectorValue={setSelectorValue}
           inputValue={inputValue}
@@ -47,8 +44,7 @@ const BookManageTab = () => {
         <OutlinedButton onClick={() => setAddBookModalOpen(true)}>도서 추가</OutlinedButton>
         <AddBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
       </div>
-      {/* <OutlinedButton onClick={() => setDeleteBookModalOpen(true)}>도서 삭제</OutlinedButton>
-      <DeleteBookModal open={deleteBookModalOpen} onClose={() => setDeleteBookModalOpen(false)} /> */}
+
       <StandardTable<BookListInfo> columns={columns} rows={rows} childComponent={childComponent} />
     </>
   );
