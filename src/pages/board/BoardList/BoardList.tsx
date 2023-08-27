@@ -4,7 +4,7 @@ import StandardTable from '@components/Table/StandardTable';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import SearchSection from '@components/Section/SearchSection';
+// import SearchSection from '@components/Section/SearchSection';
 import { useGetPostListQuery } from '@api/postApi';
 import { categoryNameToId } from '@utils/converter';
 import { Column, Row } from '@components/Table/StandardTable.interface';
