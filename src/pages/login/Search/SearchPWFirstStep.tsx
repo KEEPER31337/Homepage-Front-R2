@@ -1,4 +1,4 @@
-import { useCheckAuthCodeMutation, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
+import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
@@ -20,7 +20,11 @@ interface SearchPWFirstStepProps {
 }
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
   const { mutate: requestAuthcode } = useRequestAuthCodeMutation();
-  const { mutate: checkAuthcode, isLoading } = useCheckAuthCodeMutation();
+  const { data: checkAuthcodeData } = useCheckAuthCodeQuery({
+    loginId: form.id,
+    email: form.email,
+    authCode: form.verificationCode,
+  });
 
   const [isSent, setIsSent] = useState(false);
   const [seconds, setSeconds] = useState(300);
@@ -59,19 +63,11 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   };
 
   const handleConfirmFirstStep = () => {
-    checkAuthcode(
-      { loginId: form.id, email: form.email, authCode: form.verificationCode },
-      {
-        onSuccess: (data) => {
-          if (data?.auth === true) {
-            setCurrentStep(2);
-          }
-        },
-        onError: () => {
-          setIsValidAuthCode(false);
-        },
-      },
-    );
+    if (checkAuthcodeData?.auth === true) {
+      setCurrentStep(2);
+    } else {
+      setIsValidAuthCode(false);
+    }
   };
 
   const handleOtherEmailButtonClick = () => {
