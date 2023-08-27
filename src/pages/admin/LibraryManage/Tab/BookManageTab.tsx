@@ -4,8 +4,10 @@ import { useGetBookManageListQuery } from '@api/libraryManageApi';
 import StandardTable from '@components/Table/StandardTable';
 import ActionButton from '@components/Button/ActionButton';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
+import { ManageBookInfo } from '@api/dto';
 import SearchSection from '@components/Section/SearchSection';
 import AddBookModal from '../Modal/AddBookModal';
+import EditBookModal from '../Modal/EditBookModal';
 
 interface libraryManageRow {
   no: number;
@@ -42,7 +44,8 @@ const BookManageTab = () => {
   const [selectorValue, setSelectorValue] = useState('all');
 
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
-
+  const [editBookModalOpen, setEditBookModalOpen] = useState(false);
+  const [editBookId, setEditBookId] = useState(0);
   const childComponent = ({ key, value }: ChildComponent<libraryManageRow>) => {
     switch (key) {
       case 'canBorrow':
@@ -54,9 +57,10 @@ const BookManageTab = () => {
   const handleSearchButtonClick = () => {
     // TODO 검색 API 호출
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const handleBookRowClick = ({ rowData }: { rowData: Row<libraryManageRow> }) => {
-    // TODO 도서 수정 API 호출
+    setEditBookId(rowData.id);
+    setEditBookModalOpen(true);
   };
 
   if (!bookManageListData) return null;
@@ -87,6 +91,9 @@ const BookManageTab = () => {
         paginationOption={{ rowsPerPage: size, totalItems: bookManageListData?.totalElement }}
         onRowClick={handleBookRowClick}
       />
+      {!!editBookId && (
+        <EditBookModal open={editBookModalOpen} onClose={() => setEditBookModalOpen(false)} editBookId={editBookId} />
+      )}
     </>
   );
 };
