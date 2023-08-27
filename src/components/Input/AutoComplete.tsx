@@ -24,7 +24,7 @@ const AutoComplete = ({
   items = [],
   value,
   onChange = () => {
-    return;
+    return null;
   },
   multiple = false,
   grouped = false,
