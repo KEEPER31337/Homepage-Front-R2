@@ -8,22 +8,24 @@ import { Link } from 'react-router-dom';
 
 const Card = ({ post }: { post: TrendingPostInfo }) => {
   return (
-    <Link
-      to={`/board/view/${post.id}`}
-      className="h-[350px] w-[300px] border-t-[1px] border-t-pointBlue shadow-md shadow-subGray hover:shadow-pointBlue"
-    >
-      <ServerImg alt="thumbnail" className="h-1/2 w-full" errorClassName="h-1/2 w-full p-10" src={post.thumbnailPath} />
+    <Link to={`/board/view/${post.id}`} className="h-[350px] w-[300px] bg-black">
+      <ServerImg
+        alt="thumbnail"
+        className="h-[200px] w-full bg-[#212121]"
+        errorClassName="h-[200px] w-full p-10 bg-[#212121]"
+        src={post.thumbnailPath}
+      />
       <div className="px-5">
-        <Typography className="py-2 text-yellow-700">{post.categoryName}</Typography>
-        <Typography variant="h5" className="mb-2">
+        <Typography className="pt-5 !text-paragraph text-pointBlue">{post.categoryName}</Typography>
+        <Typography variant="h3" className="mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
           {post.title}
         </Typography>
         <div className="mt-5 flex flex-row">
-          <Avatar alt="profile" src={post.writerThumbnailPath} className="mx-3 !h-10 !w-10 object-cover" />
+          <Avatar alt="profile" src={post.writerThumbnailPath} className="mr-3 !h-10 !w-10 object-cover" />
           <div className="flex flex-col">
-            <Typography variant="h6">{post.writerName}</Typography>
-            <Typography>
-              {DateTime.fromSQL(post.registerTime).toRelative()} . {post.visitCount} watch
+            <Typography variant="paragraph">{post.writerName}</Typography>
+            <Typography className="!text-[12px] text-subGray">
+              {DateTime.fromSQL(post.registerTime).toRelative()} • {post.visitCount} watch
             </Typography>
           </div>
         </div>
