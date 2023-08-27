@@ -15,7 +15,7 @@ const SearchID = () => {
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
   const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
 
-  const { mutate: searchId, isSuccess, isError } = useSearchIdMutation();
+  const { mutate: searchId } = useSearchIdMutation();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -25,12 +25,11 @@ const SearchID = () => {
     setIsValidEmail(isValid);
   };
 
-  const handleConfirmClick = () => {
-    searchId({ email });
-    if (isSuccess) {
+  const handleConfirmClick = async () => {
+    try {
+      await searchId({ email });
       setIsSent(true);
-    }
-    if (isError) {
+    } catch (error) {
       setMatchInfoModalOpen(true);
     }
   };
@@ -80,8 +79,8 @@ const SearchID = () => {
         ) : (
           <>
             <div className="flex flex-col gap-6 pb-10 pt-20 text-center">
-              <p className="text-14">회원님의 KEPPER 아이디가</p>
-              <p className="text-20 font-bold text-pointBlue">{email}</p>
+              <p>회원님의 KEPPER 아이디가</p>
+              <p className="text-h3 font-bold text-pointBlue">{email}</p>
               <p>이메일로 발송되었습니다.</p>
             </div>
             <div className="text-right">
@@ -99,11 +98,9 @@ const SearchID = () => {
                 onResendMailButtonClick={handleResendMailButtonClick}
               />
             </div>
-            <div className="mt-10 text-center">
-              <Link to="/login">
-                <OutlinedButton>로그인 페이지로</OutlinedButton>
-              </Link>
-            </div>
+            <Link to="/login" className="mt-10 text-center">
+              <OutlinedButton>로그인 페이지로</OutlinedButton>
+            </Link>
           </>
         )}
       </div>

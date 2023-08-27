@@ -15,7 +15,7 @@ interface SearchPWSecondStepProps {
   firstForm: searchPWFormProps;
 }
 const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepProps) => {
-  const { mutate: changePassword, isSuccess, isError } = useChangePasswordMutation();
+  const { mutate: changePassword } = useChangePasswordMutation();
   const [isSame, setIsSame] = useState<boolean>(false);
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
   const [form, setForm] = useState({
@@ -48,7 +48,7 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
           password: form.newPassword,
         },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             setCurrentStep(3);
           },
         },

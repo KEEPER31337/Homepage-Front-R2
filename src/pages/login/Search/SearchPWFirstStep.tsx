@@ -19,7 +19,7 @@ interface SearchPWFirstStepProps {
   setForm: React.Dispatch<React.SetStateAction<searchPWFormProps>>;
 }
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
-  const { mutate: requestAuthcode, isSuccess, isError } = useRequestAuthCodeMutation();
+  const { mutate: requestAuthcode } = useRequestAuthCodeMutation();
   const { mutate: checkAuthcode } = useCheckAuthCodeMutation();
 
   const [isSent, setIsSent] = useState(false);
@@ -121,7 +121,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             value={form.email}
             onChange={handleChange}
             endAdornment={
-              <FilledButton disabled={!isValidEmail || isSent} onClick={handleRequestVerificationCode}>
+              <FilledButton small disabled={!isValidEmail || isSent} onClick={handleRequestVerificationCode}>
                 인증 요청
               </FilledButton>
             }
