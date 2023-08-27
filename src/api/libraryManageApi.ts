@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
-import { BookManageInfo, BorrowInfo, BookListSearch } from './dto';
+import { BookManageInfo, BookListSearch, EditBookCore } from './dto';
 
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
@@ -26,10 +26,26 @@ const useGetBookManageListQuery = (param: BookListSearch) => {
   );
 };
 
+const useAddBookMutation = () => {
+  const fetcher = ({ bookMetaData, thumbnail }: { bookMetaData: EditBookCore; thumbnail?: Blob | null }) => {
+    const formData = new FormData();
+    formData.append('bookMetaData', new Blob([JSON.stringify(bookMetaData)], { type: 'application/json' }));
+    if (thumbnail) formData.append('thumbnail', thumbnail);
+
+    return axios.post('/manage/books', formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(fetcher);
+};
+
 const useDeleteBookMutation = () => {
   const fetcher = (bookId: number) => axios.delete(`/manage/books/${bookId}`);
 
   return useMutation(fetcher);
 };
 
-export { useGetBookManageListQuery, useDeleteBookMutation };
+export { useGetBookManageListQuery, useAddBookMutation, useDeleteBookMutation };
