@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Typography } from '@mui/material';
 import {
   useGetAvailableSeminarInfoQuery,
@@ -9,6 +9,7 @@ import useCheckAuth from '@hooks/useCheckAuth';
 import { useRecoilValue } from 'recoil';
 import memberState from '@recoil/member.recoil';
 import { MemberInfo } from '@api/dto';
+import starterState from '@recoil/seminarStarter.recoil';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
@@ -22,20 +23,18 @@ const SeminarAttend = () => {
   const { checkIncludeOneOfAuths } = useCheckAuth();
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const authorizedMember = checkIncludeOneOfAuths(['ROLE_회장', 'ROLE_부회장', 'ROLE_서기']);
-  const [startMember, setStartMember] = useState<MemberInfo | null>();
+  const startMember: number | undefined = useRecoilValue(starterState);
   const member: MemberInfo | null = useRecoilValue(memberState);
 
   const isStarterMember = () => {
     if (!availableSeminarData?.id) {
       return authorizedMember;
     }
-    if (member === startMember) {
+    if (authorizedMember && member?.memberId === startMember) {
       return true;
     }
     return false;
   };
-
-  console.log(authorizedMember);
 
   useEffect(() => {
     if (!localStorage.getItem('출석시도횟수')) localStorage.setItem('출석시도횟수', '0');
@@ -49,7 +48,7 @@ const SeminarAttend = () => {
             {seminarId !== undefined ? (
               <div>
                 {isStarterMember() ? (
-                  <BossCardContent seminarId={seminarId} setStartMember={setStartMember} />
+                  <BossCardContent seminarId={seminarId} />
                 ) : (
                   <MemberCardContent seminarId={seminarId} />
                 )}

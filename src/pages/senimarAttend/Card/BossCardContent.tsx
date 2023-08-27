@@ -4,20 +4,17 @@ import { DateTime } from 'luxon';
 import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { Typography } from '@mui/material';
 import { MemberInfo } from '@api/dto';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import memberState from '@recoil/member.recoil';
+import starterState from '@recoil/seminarStarter.recoil';
 import Countdown from '../Countdown/Countdown';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
-interface BossCardContentProps {
-  seminarId: number;
-  setStartMember: React.Dispatch<React.SetStateAction<MemberInfo | null | undefined>>;
-}
-
-const BossCardContent = ({ seminarId, setStartMember }: BossCardContentProps) => {
+const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [seminarStart, setSeminarStart] = useState(false);
+  const setStartMember = useSetRecoilState<number | undefined>(starterState);
   const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
@@ -28,7 +25,7 @@ const BossCardContent = ({ seminarId, setStartMember }: BossCardContentProps) =>
 
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
-    setStartMember(member);
+    setStartMember(member?.memberId);
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
       latenessCloseTime: startTime.plus({ minutes: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
