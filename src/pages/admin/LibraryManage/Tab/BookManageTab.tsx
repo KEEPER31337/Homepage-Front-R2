@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import usePagination from '@hooks/usePagination';
 import { useGetBookManageListQuery } from '@api/libraryManageApi';
 import StandardTable from '@components/Table/StandardTable';
-import OutlinedButton from '@components/Button/OutlinedButton';
+import ActionButton from '@components/Button/ActionButton';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
 import SearchSection from '@components/Section/SearchSection';
 import AddBookModal from '../Modal/AddBookModal';
@@ -73,10 +73,12 @@ const BookManageTab = () => {
           setInputValue={setInputValue}
           onSearchButtonClick={handleSearchButtonClick}
         />
-        <OutlinedButton onClick={() => setAddBookModalOpen(true)}>도서 추가</OutlinedButton>
+        <ActionButton mode="add" onClick={() => setAddBookModalOpen(true)}>
+          추가
+        </ActionButton>
         <AddBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
       </div>
-      {/* <OutlinedButton onClick={() => setDeleteBookModalOpen(true)}>도서 삭제</OutlinedButton>
+      {/* <ActionButton onClick={() => setDeleteBookModalOpen(true)}>도서 삭제</ActionButton>
       <DeleteBookModal open={deleteBookModalOpen} onClose={() => setDeleteBookModalOpen(false)} /> */}
       <StandardTable
         columns={libraryManageColumn}
