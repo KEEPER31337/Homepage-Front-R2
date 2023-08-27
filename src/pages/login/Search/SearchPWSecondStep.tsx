@@ -85,7 +85,7 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
               <p className={`${isSame ? 'text-pointBlue' : 'text-red-500'} text-left`}>
                 {isSame ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
               </p>
-            )}{' '}
+            )}
           </div>
         </div>
       </div>

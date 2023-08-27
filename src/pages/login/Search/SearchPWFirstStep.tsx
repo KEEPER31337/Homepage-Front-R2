@@ -41,9 +41,9 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     }
   };
 
-  const handleRequestVerificationCode = async () => {
+  const handleRequestVerificationCode = () => {
     if (form.id && form.email) {
-      await requestAuthcode(
+      requestAuthcode(
         { loginId: form.id, email: form.email },
         {
           onSuccess: () => {
@@ -58,8 +58,8 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     }
   };
 
-  const handleConfirmFirstStep = async () => {
-    await checkAuthcode(
+  const handleConfirmFirstStep = () => {
+    checkAuthcode(
       { loginId: form.id, email: form.email, authCode: form.verificationCode },
       {
         onSuccess: (data) => {
@@ -125,7 +125,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             value={form.email}
             onChange={handleChange}
             endAdornment={
-              <FilledButton disabled={!isValidEmail || isSent} onClick={handleRequestVerificationCode}>
+              <FilledButton small disabled={!isValidEmail || isSent} onClick={handleRequestVerificationCode}>
                 인증 요청
               </FilledButton>
             }
