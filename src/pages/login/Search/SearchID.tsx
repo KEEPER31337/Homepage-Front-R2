@@ -26,12 +26,17 @@ const SearchID = () => {
   };
 
   const handleConfirmClick = async () => {
-    try {
-      await searchId({ email });
-      setIsSent(true);
-    } catch (error) {
-      setMatchInfoModalOpen(true);
-    }
+    await searchId(
+      { email },
+      {
+        onSuccess: () => {
+          setIsSent(true);
+        },
+        onError: () => {
+          setMatchInfoModalOpen(true);
+        },
+      },
+    );
   };
 
   const handleOtherEmailButtonClick = () => {
@@ -98,7 +103,7 @@ const SearchID = () => {
                 onResendMailButtonClick={handleResendMailButtonClick}
               />
             </div>
-            <Link to="/login" className="mt-10 text-center">
+            <Link to="/login" className="mt-10 block text-center">
               <OutlinedButton>로그인 페이지로</OutlinedButton>
             </Link>
           </>

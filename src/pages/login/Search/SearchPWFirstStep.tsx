@@ -20,7 +20,7 @@ interface SearchPWFirstStepProps {
 }
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
   const { mutate: requestAuthcode } = useRequestAuthCodeMutation();
-  const { mutate: checkAuthcode } = useCheckAuthCodeMutation();
+  const { mutate: checkAuthcode, isLoading } = useCheckAuthCodeMutation();
 
   const [isSent, setIsSent] = useState(false);
   const [seconds, setSeconds] = useState(300);
@@ -43,31 +43,35 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
 
   const handleRequestVerificationCode = async () => {
     if (form.id && form.email) {
-      try {
-        await requestAuthcode({ loginId: form.id, email: form.email });
-        setIsSent(true);
-        setMatchInfoModalOpen(false);
-      } catch (error) {
-        setMatchInfoModalOpen(true);
-      }
+      await requestAuthcode(
+        { loginId: form.id, email: form.email },
+        {
+          onSuccess: () => {
+            setIsSent(true);
+            setMatchInfoModalOpen(false);
+          },
+          onError: () => {
+            setMatchInfoModalOpen(true);
+          },
+        },
+      );
     }
   };
 
   const handleConfirmFirstStep = async () => {
-    try {
-      await checkAuthcode(
-        { loginId: form.id, email: form.email, authCode: form.verificationCode },
-        {
-          onSuccess: (data) => {
-            if (data?.auth === true) {
-              setCurrentStep(2);
-            }
-          },
+    await checkAuthcode(
+      { loginId: form.id, email: form.email, authCode: form.verificationCode },
+      {
+        onSuccess: (data) => {
+          if (data?.auth === true) {
+            setCurrentStep(2);
+          }
         },
-      );
-    } catch (error) {
-      setIsValidAuthCode(false);
-    }
+        onError: () => {
+          setIsValidAuthCode(false);
+        },
+      },
+    );
   };
 
   const handleOtherEmailButtonClick = () => {
@@ -121,7 +125,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             value={form.email}
             onChange={handleChange}
             endAdornment={
-              <FilledButton small disabled={!isValidEmail || isSent} onClick={handleRequestVerificationCode}>
+              <FilledButton disabled={!isValidEmail || isSent} onClick={handleRequestVerificationCode}>
                 인증 요청
               </FilledButton>
             }
