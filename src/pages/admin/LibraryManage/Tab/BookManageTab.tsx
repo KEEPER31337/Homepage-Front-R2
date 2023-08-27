@@ -10,7 +10,7 @@ import AddBookModal from '../Modal/AddBookModal';
 import DeleteBookModal from '../Modal/DeleteBookModal';
 
 const BookManageTab = () => {
-  const bookNumberList = [
+  const selectorList = [
     { id: 'all', content: '도서명 + 저자' },
     { id: 'title', content: '도서명' },
     { id: 'author', content: '저자' },
@@ -37,7 +37,7 @@ const BookManageTab = () => {
     <>
       <div className="flex justify-between space-x-2">
         <SearchSection
-          options={bookNumberList}
+          options={selectorList}
           selectorValue={selectorValue}
           setSelectorValue={setSelectorValue}
           inputValue={inputValue}
