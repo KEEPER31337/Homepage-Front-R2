@@ -2,6 +2,7 @@ import React from 'react';
 import TableViewSwitchButton from '@components/Button/TableViewSwitchButton';
 import StandardTable from '@components/Table/StandardTable';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { AiFillLock } from 'react-icons/ai';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { useGetNoticePostListQuery, useGetPostListQuery } from '@api/postApi';
@@ -21,6 +22,7 @@ interface BoardRow {
   writerName: string;
   registerTime: string;
   visitCount: number;
+  isSecret: boolean;
 }
 
 const boardColumn: Column<BoardRow>[] = [
@@ -63,13 +65,22 @@ const BoardList = () => {
     navigate(`/board/view/${rowData.id}`);
   };
 
-  const childComponent = ({ key, value }: ChildComponent<BoardRow>) => {
+  const childComponent = ({ key, value, rowData }: ChildComponent<BoardRow>) => {
     switch (key) {
       case 'no':
         return value === '공지' ? (
           <Typography color="primary" fontWeight="semiBold">
             {value}
           </Typography>
+        ) : (
+          value
+        );
+      case 'title':
+        return rowData.isSecret ? (
+          <div className="flex items-center">
+            <AiFillLock className="mr-1 fill-pointBlue" />
+            {value}
+          </div>
         ) : (
           value
         );
