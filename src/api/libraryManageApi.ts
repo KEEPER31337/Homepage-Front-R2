@@ -27,9 +27,9 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
 };
 
 const useAddBookMutation = () => {
-  const fetcher = ({ bookMetaData, thumbnail }: { bookMetaData: BookCoreData; thumbnail?: Blob | null }) => {
+  const fetcher = ({ bookCoreData, thumbnail }: { bookCoreData: BookCoreData; thumbnail?: Blob | null }) => {
     const formData = new FormData();
-    formData.append('bookMetaData', new Blob([JSON.stringify(bookMetaData)], { type: 'application/json' }));
+    formData.append('bookMetaData', new Blob([JSON.stringify(bookCoreData)], { type: 'application/json' }));
     if (thumbnail) formData.append('thumbnail', thumbnail);
 
     return axios.post('/manage/books', formData, {
