@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { gameKeys } from '@api/gameApi';
 import { GameInfo, GameResultInfo, GameStatus } from './baseballDto';
 
-const baseballKeys = {
+export const baseballKeys = {
   game_info: ['game_info'] as const,
   status: ['status'] as const,
   result: ['result'] as const,
@@ -24,7 +25,20 @@ const useGameStartMutation = () => {
   const fetcher = ({ bettingPoint }: { bettingPoint: number }) =>
     axios.post('/game/baseball/start', { bettingPoint }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  const queryClient = useQueryClient();
+  return useMutation(fetcher, {
+    onSuccess: (data) => {
+      const myGameInfo: { todayTotalEarnedPoint: number; currentMemberPoint: number } | undefined =
+        queryClient.getQueryData(gameKeys.myInfo);
+
+      if (myGameInfo) {
+        queryClient.setQueryData(gameKeys.myInfo, {
+          ...myGameInfo,
+          currentMemberPoint: myGameInfo.currentMemberPoint - data.bettingPoint,
+        });
+      }
+    },
+  });
 };
 
 const useGuessMutation = () => {

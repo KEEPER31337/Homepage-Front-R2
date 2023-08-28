@@ -4,10 +4,10 @@ import { useSearchParams } from 'react-router-dom';
 import { BorrowInfoListSearch } from '@api/dto';
 import {
   useGetBorrowInfoListQuery,
-  useApproveRequestQuery,
-  useApproveReturnQuery,
-  useDenyRequestQuery,
-  useDenyReturnQuery,
+  useApproveRequestMutation,
+  useApproveReturnMutation,
+  useDenyRequestMutation,
+  useDenyReturnMutation,
 } from '@api/libraryManageApi';
 import StandardTable from '@components/Table/StandardTable';
 import { Column } from '@components/Table/StandardTable.interface';
@@ -16,6 +16,7 @@ import { VscCircleLarge, VscChromeClose } from 'react-icons/vsc';
 import RequestManageSearchSection from '../SearchSection/RequestManageSearchSection';
 
 interface requestManageRow {
+  id: number;
   no: number;
   status: string;
   requestDatetime: string | null;
@@ -48,10 +49,10 @@ const RequestManageTab = () => {
 
   const { data: borrowInfoListData, refetch } = useGetBorrowInfoListQuery({ page, status, search });
 
-  const { mutate: ApproveRequest } = useApproveRequestQuery();
-  const { mutate: ApproveReturn } = useApproveReturnQuery();
-  const { mutate: DenyRequest } = useDenyRequestQuery();
-  const { mutate: DenyReturn } = useDenyReturnQuery();
+  const { mutate: ApproveRequest } = useApproveRequestMutation();
+  const { mutate: ApproveReturn } = useApproveReturnMutation();
+  const { mutate: DenyRequest } = useDenyRequestMutation();
+  const { mutate: DenyReturn } = useDenyReturnMutation();
 
   if (!borrowInfoListData) return null;
 
