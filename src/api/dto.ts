@@ -64,6 +64,13 @@ export interface BookListSearch {
   size?: number;
 }
 
+export interface BorrowInfoListSearch {
+  status?: 'requests' | 'willreturn' | 'requests_or_willreturn' | 'overdue';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface BookListInfo {
   id: number;
   no: number;
@@ -84,6 +91,9 @@ export interface BorrowInfo {
   requestDatetime: string | null;
   borrowDateTime: string;
   expiredDateTime: string;
+  bookQuantity: string;
+  currentQuantity: number;
+  totalQuantity: number;
   status: string;
 }
 
