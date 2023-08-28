@@ -18,7 +18,7 @@ const useCheckAuthCodeQuery = ({ loginId, email, authCode }: { loginId: string; 
   const fetcher = () =>
     axios.get('/sign-in/check-auth-code', { params: { loginId, email, authCode } }).then(({ data }) => data);
 
-  return useQuery('checkAuthCode', fetcher);
+  return useQuery(['checkAuthCode'], fetcher);
 };
 const useChangePasswordMutation = () => {
   const fetcher = ({

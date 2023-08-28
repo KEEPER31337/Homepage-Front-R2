@@ -25,8 +25,8 @@ const SearchID = () => {
     setIsValidEmail(isValid);
   };
 
-  const handleConfirmClick = async () => {
-    await searchId(
+  const handleConfirmClick = () => {
+    searchId(
       { email },
       {
         onSuccess: () => {
