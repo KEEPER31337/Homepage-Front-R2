@@ -54,7 +54,7 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
     axios.get('/manage/borrow-infos', { params: { page, size, status, search } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => ({
         borrowInfoId: borrowInfo.borrowInfoId,
-        status: borrowInfo.status,
+        status: borrowInfo.status === '대출대기중' ? '대출 신청' : '반납 신청',
         requestDatetime: borrowInfo?.requestDatetime?.split('T')[0].replaceAll('-', '.'),
         bookTitle: borrowInfo.bookTitle,
         author: borrowInfo.author,
