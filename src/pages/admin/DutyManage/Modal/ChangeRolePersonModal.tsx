@@ -13,8 +13,8 @@ import { ExecutiveInfo } from '@api/dto';
 interface ChangeRolePersonModalProps {
   open: boolean;
   toggleOpen: () => void;
-  jobName: string | undefined;
-  badgeImage: string | undefined;
+  jobName?: string;
+  badgeImage?: string;
 }
 
 const convertJobName = [
@@ -51,8 +51,8 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     const executiveInfo = executiveInfos?.find((data) => data.jobName === jobName);
 
     const currentInfo = {
-      value: executiveInfo?.memberId !== undefined ? executiveInfo.memberId : -1,
-      label: executiveInfo?.realName !== undefined ? executiveInfo.realName : '',
+      value: executiveInfo?.memberId ? executiveInfo.memberId : -1,
+      label: executiveInfo?.realName ? executiveInfo.realName : '',
     };
 
     setPrevInfo(currentInfo);
@@ -64,14 +64,14 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     if (value !== null && !Array.isArray(value) && prevInfo.value !== value.value) {
       const deleteThing = {
         memberId: prevInfo.value,
-        jobId: jobInfo !== undefined ? jobInfo.jobId : -1,
+        jobId: jobInfo ? jobInfo.jobId : -1,
       };
       deleteJob(deleteThing);
 
-      const createMemberId = memberList?.find((data) => data.memberName === value.label)?.memberId;
+      const createMember = memberList?.find((data) => data.memberId === value.value);
       const createThing = {
-        memberId: createMemberId !== undefined ? createMemberId : -1,
-        jobId: jobInfo !== undefined ? jobInfo.jobId : -1,
+        memberId: createMember?.memberId ? createMember?.memberId : -1,
+        jobId: jobInfo ? jobInfo.jobId : -1,
       };
       createJob(createThing);
     }

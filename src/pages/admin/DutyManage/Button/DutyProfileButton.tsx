@@ -5,8 +5,8 @@ import muiTheme from '@constants/muiTheme';
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
 
 interface DutyProfileButtonProps {
-  jobName: string | undefined;
-  badgeImage: string | undefined;
+  jobName?: string;
+  badgeImage?: string;
   setTooltipOpen: (open: boolean) => void;
   toggleModalOpen: () => void;
 }
@@ -25,24 +25,15 @@ const convertJobName = [
   { key: 99, JobName: 'ROLE_전산관리자', roleName: '전산관리자' },
 ];
 
-const ProfileName = ({ jobName }: { jobName: string | undefined }) => {
+const DutyProfileButton = ({ jobName, badgeImage, setTooltipOpen, toggleModalOpen }: DutyProfileButtonProps) => {
   const { data: executiveInfos } = useGetExecutiveInfoQuery();
+  const roleName = convertJobName.find((data) => data.JobName === jobName)?.roleName;
   const executiveInfo = executiveInfos?.find((role) => role.jobName === jobName);
 
-  return (
-    <Typography sx={{ fontWeight: 600, color: 'white', display: 'flex', gap: '4px' }}>
-      {executiveInfo?.generation}기 {executiveInfo?.realName}
-    </Typography>
-  );
-};
-
-const DutyProfileButton = ({ jobName, badgeImage, setTooltipOpen, toggleModalOpen }: DutyProfileButtonProps) => {
   const handleCreateRoleModalButtonClick = () => {
     setTooltipOpen(false);
     toggleModalOpen();
   };
-
-  const roleName = convertJobName.find((data) => data.JobName === jobName)?.roleName;
 
   if (jobName === 'ROLE_전산관리자') {
     return (
@@ -74,7 +65,9 @@ const DutyProfileButton = ({ jobName, badgeImage, setTooltipOpen, toggleModalOpe
       </Typography>
       <img className="h-[100px] w-[100px]" alt={jobName} src={badgeImage} />
       <div className="flex h-12 flex-col justify-center">
-        <ProfileName jobName={jobName} />
+        <Typography sx={{ fontWeight: 600, color: 'white', display: 'flex', gap: '4px' }}>
+          {executiveInfo?.generation}기 {executiveInfo?.realName}
+        </Typography>
       </div>
     </Button>
   );

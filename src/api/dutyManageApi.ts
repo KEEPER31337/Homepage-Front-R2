@@ -2,16 +2,22 @@ import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { ExecutiveInfo, JobList, memberInfo } from './dto';
 
+const dutyManageKeys = {
+  executiveInfo: ['executiveInfo'] as const,
+  jobList: ['jobList'] as const,
+  memberInfo: ['memberInfo'] as const,
+};
+
 const useGetExecutiveInfoQuery = () => {
   const fetcher = () => axios.get(`/members/executives`).then(({ data }) => data);
 
-  return useQuery<ExecutiveInfo[]>(['executiveInfo'], fetcher);
+  return useQuery<ExecutiveInfo[]>(dutyManageKeys.executiveInfo, fetcher);
 };
 
 const useGetJobListQuery = () => {
   const fetcher = () => axios.get(`/members/executive-jobs`).then(({ data }) => data);
 
-  return useQuery<JobList[]>(['jobList'], fetcher);
+  return useQuery<JobList[]>(dutyManageKeys.jobList, fetcher);
 };
 
 const useCreateExecutiveJobMutation = () => {
@@ -22,7 +28,7 @@ const useCreateExecutiveJobMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['executiveInfo'] });
+      queryClient.invalidateQueries({ queryKey: dutyManageKeys.executiveInfo });
     },
   });
 };
@@ -35,7 +41,7 @@ const useDeleteExecutiveJobMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['executiveInfo'] });
+      queryClient.invalidateQueries({ queryKey: dutyManageKeys.executiveInfo });
     },
   });
 };
@@ -43,7 +49,7 @@ const useDeleteExecutiveJobMutation = () => {
 const useGetMemberInfoQuery = () => {
   const fetcher = () => axios.get(`members/real-name`).then(({ data }) => data);
 
-  return useQuery<memberInfo[]>(['jobList'], fetcher);
+  return useQuery<memberInfo[]>(dutyManageKeys.memberInfo, fetcher);
 };
 
 export {

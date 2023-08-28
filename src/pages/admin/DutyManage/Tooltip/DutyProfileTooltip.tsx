@@ -13,7 +13,7 @@ interface DutyProfileTooltipProps {
   jobName: string;
 }
 
-const tooltipContent = (jobName: string | undefined) =>
+const tooltipContent = (jobName?: string) =>
   useMemo(
     () => (
       <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
