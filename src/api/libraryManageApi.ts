@@ -17,10 +17,10 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
         borrowers: bookInfo.borrowInfos.map((borrowInfo) => borrowInfo.borrowerRealName).join(', '),
         canBorrow: !!bookInfo.currentQuantity,
       }));
-      return { content, totalElement: data.totalElements };
+      return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: ManageBookInfo[]; totalElement: number }>(
+  return useQuery<{ content: ManageBookInfo[]; totalElement: number; size: number }>(
     libraryManageKeys.bookManageList({ page, size, searchType, search }),
     fetcher,
   );
