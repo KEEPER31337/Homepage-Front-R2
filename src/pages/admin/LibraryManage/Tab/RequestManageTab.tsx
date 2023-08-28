@@ -2,7 +2,13 @@ import React from 'react';
 import usePagination from '@hooks/usePagination';
 import { useSearchParams } from 'react-router-dom';
 import { BorrowInfoListSearch } from '@api/dto';
-import { useGetBorrowInfoListQuery } from '@api/libraryManageApi';
+import {
+  useGetBorrowInfoListQuery,
+  useApproveRequestQuery,
+  useApproveReturnQuery,
+  useDenyRequestQuery,
+  useDenyReturnQuery,
+} from '@api/libraryManageApi';
 import StandardTable from '@components/Table/StandardTable';
 import { Column } from '@components/Table/StandardTable.interface';
 import { IconButton } from '@mui/material';
@@ -40,20 +46,45 @@ const RequestManageTab = () => {
   const status = searchParams.get('status') as BorrowInfoListSearch['status'];
   const search = searchParams.get('search') as BorrowInfoListSearch['search'];
 
-  const { data: borrowInfoListData } = useGetBorrowInfoListQuery({ page, status, search });
+  const { data: borrowInfoListData, refetch } = useGetBorrowInfoListQuery({ page, status, search });
+
+  const { mutate: ApproveRequest } = useApproveRequestQuery();
+  const { mutate: ApproveReturn } = useApproveReturnQuery();
+  const { mutate: DenyRequest } = useDenyRequestQuery();
+  const { mutate: DenyReturn } = useDenyReturnQuery();
 
   if (!borrowInfoListData) return null;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleApproveButtonClick = (borrowInfoStatus: string, borrowInfoId: number) => {
-    // TODO 승인 API 호출
-    // console.log(borrowInfoStatus, borrowInfoId);
+    if (borrowInfoStatus === '대출 신청') {
+      ApproveRequest(borrowInfoId, {
+        onSuccess: () => {
+          refetch();
+        },
+      });
+    } else if (borrowInfoStatus === '반납 신청') {
+      ApproveReturn(borrowInfoId, {
+        onSuccess: () => {
+          refetch();
+        },
+      });
+    }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleDenyButtonClick = (borrowInfoStatus: string, borrowInfoId: number) => {
-    // TODO 거부 API 호출
-    // console.log(borrowInfoStatus, borrowInfoId);
+    if (borrowInfoStatus === '대출 신청') {
+      DenyRequest(borrowInfoId, {
+        onSuccess: () => {
+          refetch();
+        },
+      });
+    } else if (borrowInfoStatus === '반납 신청') {
+      DenyReturn(borrowInfoId, {
+        onSuccess: () => {
+          refetch();
+        },
+      });
+    }
   };
 
   return (

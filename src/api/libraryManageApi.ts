@@ -71,4 +71,33 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
   );
 };
 
-export { useGetBookManageListQuery, useAddBookMutation, useDeleteBookMutation, useGetBorrowInfoListQuery };
+const useApproveRequestQuery = () => {
+  const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-approve`);
+  return useMutation(fetcher);
+};
+
+const useDenyRequestQuery = () => {
+  const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-deny`);
+  return useMutation(fetcher);
+};
+
+const useApproveReturnQuery = () => {
+  const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-approve`);
+  return useMutation(fetcher);
+};
+
+const useDenyReturnQuery = () => {
+  const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-deny`);
+  return useMutation(fetcher);
+};
+
+export {
+  useGetBookManageListQuery,
+  useAddBookMutation,
+  useDeleteBookMutation,
+  useGetBorrowInfoListQuery,
+  useApproveRequestQuery,
+  useDenyRequestQuery,
+  useApproveReturnQuery,
+  useDenyReturnQuery,
+};
