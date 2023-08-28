@@ -45,6 +45,18 @@ const RequestManageTab = () => {
 
   if (!borrowInfoListData) return null;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleApproveButtonClick = (borrowInfoStatus: string, borrowInfoId: number) => {
+    // TODO 승인 API 호출
+    // console.log(borrowInfoStatus, borrowInfoId);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleDenyButtonClick = (borrowInfoStatus: string, borrowInfoId: number) => {
+    // TODO 거부 API 호출
+    // console.log(borrowInfoStatus, borrowInfoId);
+  };
+
   return (
     <>
       <div className="mb-5 flex justify-between space-x-2">
@@ -59,7 +71,7 @@ const RequestManageTab = () => {
             <>
               <IconButton
                 onClick={() => {
-                  // TODO 대출, 반납 승인
+                  handleApproveButtonClick(borrowInfo.status, borrowInfo.borrowInfoId);
                 }}
                 className="!mr-2 !p-0"
               >
@@ -67,7 +79,7 @@ const RequestManageTab = () => {
               </IconButton>
               <IconButton
                 onClick={() => {
-                  // TODO 대출, 반납 거부
+                  handleDenyButtonClick(borrowInfo.status, borrowInfo.borrowInfoId);
                 }}
                 className="!p-0"
               >
