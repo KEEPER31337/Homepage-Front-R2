@@ -4,18 +4,19 @@ import StandardTable from '@components/Table/StandardTable';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import { useGetPostListQuery } from '@api/postApi';
+import { useGetNoticePostListQuery, useGetPostListQuery } from '@api/postApi';
 import { categoryNameToId } from '@utils/converter';
-import { Column, Row } from '@components/Table/StandardTable.interface';
+import { ChildComponent, Column, Row } from '@components/Table/StandardTable.interface';
 import usePagination from '@hooks/usePagination';
 import tableViewState from '@recoil/view.recoil';
 import { useRecoilValue } from 'recoil';
 import GridTable from '@components/Table/GridTable';
 import { BoardSearch } from '@api/dto';
+import { Typography } from '@mui/material';
 import BoardSearchSection from './SearchSection/BoardSearchSection';
 
 interface BoardRow {
-  no: number;
+  no: number | string;
   title: string;
   writerName: string;
   registerTime: string;
@@ -44,10 +45,11 @@ const BoardList = () => {
   }
 
   const navigate = useNavigate();
+  const { data: noticePosts } = useGetNoticePostListQuery({ categoryId });
   const { data: posts } = useGetPostListQuery({ categoryId, page, searchType, search });
   const tableView = useRecoilValue(tableViewState);
 
-  if (!posts) {
+  if (!posts || !noticePosts) {
     return null;
   }
 
@@ -59,6 +61,21 @@ const BoardList = () => {
     if (!rowData.id) return;
 
     navigate(`/board/view/${rowData.id}`);
+  };
+
+  const childComponent = ({ key, value }: ChildComponent<BoardRow>) => {
+    switch (key) {
+      case 'no':
+        return value === '공지' ? (
+          <Typography color="primary" fontWeight="semiBold">
+            {value}
+          </Typography>
+        ) : (
+          value
+        );
+      default:
+        return value;
+    }
   };
 
   return (
@@ -74,6 +91,11 @@ const BoardList = () => {
       {tableView === 'List' && (
         <StandardTable
           columns={boardColumn}
+          childComponent={childComponent}
+          fixedRows={noticePosts.map((noticePost) => ({
+            no: '공지',
+            ...noticePost,
+          }))}
           rows={posts.content.map((post, postIndex) => ({
             no: getRowNumber({ size: posts.size, index: postIndex }),
             ...post,
