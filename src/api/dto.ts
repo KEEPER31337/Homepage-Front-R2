@@ -286,3 +286,22 @@ export interface BoardPosts {
   numberOfElements: number;
   empty: boolean;
 }
+
+export interface ExecutiveInfo {
+  jobId: number;
+  jobName: string;
+  memberId: number;
+  generation: string;
+  realName: string;
+}
+
+export interface JobList {
+  jobId: number;
+  jobName: string;
+}
+
+export interface memberInfo {
+  memberId: number;
+  memberName: string;
+  generation: string;
+}

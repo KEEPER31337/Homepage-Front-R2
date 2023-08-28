@@ -1,32 +1,50 @@
 import React from 'react';
 import { Button, Typography } from '@mui/material';
-import { roleInfos } from '@mocks/DutyManageApi';
 import muiTheme from '@constants/muiTheme';
 
+import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
+
 interface DutyProfileButtonProps {
-  roleName: string;
+  jobName: string | undefined;
   badgeImage: string | undefined;
   setTooltipOpen: (open: boolean) => void;
   toggleModalOpen: () => void;
 }
 
-const ProfileName = ({ roleName }: { roleName: string }) => {
-  const roleInfo = roleInfos.find((role) => role.roleName === roleName);
+const convertJobName = [
+  { key: 1, JobName: 'ROLE_회장', roleName: '회장' },
+  { key: 2, JobName: 'ROLE_부회장', roleName: '부회장' },
+  { key: 3, JobName: 'ROLE_대외부장', roleName: '대외부장' },
+  { key: 4, JobName: 'ROLE_학술부장', roleName: '학술부장' },
+  { key: 5, JobName: 'ROLE_FRONT_전산관리자', roleName: 'FRONT' },
+  { key: 6, JobName: 'ROLE_BACK_전산관리자', roleName: 'BACK' },
+  { key: 7, JobName: 'ROLE_서기', roleName: '서기' },
+  { key: 8, JobName: 'ROLE_총무', roleName: '총무' },
+  { key: 9, JobName: 'ROLE_사서', roleName: '사서' },
+  { key: 12, JobName: 'ROLE_INFRA_전산관리자', roleName: 'INFRA' },
+  { key: 99, JobName: 'ROLE_전산관리자', roleName: '전산관리자' },
+];
+
+const ProfileName = ({ jobName }: { jobName: string | undefined }) => {
+  const { data: executiveInfos } = useGetExecutiveInfoQuery();
+  const executiveInfo = executiveInfos?.find((role) => role.jobName === jobName);
 
   return (
     <Typography sx={{ fontWeight: 600, color: 'white', display: 'flex', gap: '4px' }}>
-      {roleInfo?.generation}기 {roleInfo?.rolePersonName}
+      {executiveInfo?.generation}기 {executiveInfo?.realName}
     </Typography>
   );
 };
 
-const DutyProfileButton = ({ roleName, badgeImage, setTooltipOpen, toggleModalOpen }: DutyProfileButtonProps) => {
+const DutyProfileButton = ({ jobName, badgeImage, setTooltipOpen, toggleModalOpen }: DutyProfileButtonProps) => {
   const handleCreateRoleModalButtonClick = () => {
     setTooltipOpen(false);
     toggleModalOpen();
   };
 
-  if (roleName === '전산관리자') {
+  const roleName = convertJobName.find((data) => data.JobName === jobName)?.roleName;
+
+  if (jobName === 'ROLE_전산관리자') {
     return (
       <div className="flex w-[120px] flex-col items-center">
         <Typography variant="h3" sx={{ fontWeight: 600, color: 'white' }}>
@@ -54,9 +72,9 @@ const DutyProfileButton = ({ roleName, badgeImage, setTooltipOpen, toggleModalOp
       <Typography variant="h3" sx={{ fontWeight: 600, color: 'white' }}>
         {roleName}
       </Typography>
-      <img className="h-[100px] w-[100px]" alt={roleName} src={badgeImage} />
+      <img className="h-[100px] w-[100px]" alt={jobName} src={badgeImage} />
       <div className="flex h-12 flex-col justify-center">
-        <ProfileName roleName={roleName} />
+        <ProfileName jobName={jobName} />
       </div>
     </Button>
   );
