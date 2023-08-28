@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { DateTime } from 'luxon';
 import { ManageBookInfo, BookListSearch, BookCoreData, BorrowInfoListSearch, BorrowInfo } from './dto';
 
@@ -71,24 +71,45 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
   );
 };
 
-const useApproveRequestQuery = () => {
+const useApproveRequestMutation = () => {
+  const queryClient = useQueryClient();
+
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-approve`);
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookManageList'] });
+    },
+  });
 };
 
-const useDenyRequestQuery = () => {
+const useDenyRequestMutation = () => {
+  const queryClient = useQueryClient();
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-deny`);
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookManageList'] });
+    },
+  });
 };
 
-const useApproveReturnQuery = () => {
+const useApproveReturnMutation = () => {
+  const queryClient = useQueryClient();
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-approve`);
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookManageList'] });
+    },
+  });
 };
 
-const useDenyReturnQuery = () => {
+const useDenyReturnMutation = () => {
+  const queryClient = useQueryClient();
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-deny`);
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookManageList'] });
+    },
+  });
 };
 
 export {
@@ -96,8 +117,8 @@ export {
   useAddBookMutation,
   useDeleteBookMutation,
   useGetBorrowInfoListQuery,
-  useApproveRequestQuery,
-  useDenyRequestQuery,
-  useApproveReturnQuery,
-  useDenyReturnQuery,
+  useApproveRequestMutation,
+  useDenyRequestMutation,
+  useApproveReturnMutation,
+  useDenyReturnMutation,
 };
