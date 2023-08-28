@@ -6,6 +6,7 @@ import { ManageBookInfo, BookListSearch, BookCoreData, BorrowInfoListSearch, Bor
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
   borrowInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'borrowInfoList', param] as const,
+  overdueInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'overdueInfoList', param] as const,
 };
 
 const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: BookListSearch) => {
@@ -53,20 +54,59 @@ const useDeleteBookMutation = () => {
 const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowInfoListSearch) => {
   const fetcher = () =>
     axios.get('/manage/borrow-infos', { params: { page, size, status, search } }).then(({ data }) => {
-      const content = data.content.map((borrowInfo: BorrowInfo) => ({
-        borrowInfoId: borrowInfo.borrowInfoId,
-        status: borrowInfo.status === '대출대기중' ? '대출 신청' : '반납 신청',
-        requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
-        bookTitle: borrowInfo.bookTitle,
-        author: borrowInfo.author,
-        bookQuantity: '3/3', // `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
-        borrowerRealName: borrowInfo.borrowerRealName,
-      }));
+      const content = data.content.map((borrowInfo: BorrowInfo) => {
+        let statusFront = '';
+
+        if (borrowInfo.status === '대출대기중') {
+          statusFront = '대출 신청';
+        } else if (borrowInfo.status === '반납대기중') {
+          statusFront = '반납 신청';
+        }
+        return {
+          borrowInfoId: borrowInfo.borrowInfoId,
+          status: statusFront,
+          requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
+          bookTitle: borrowInfo.bookTitle,
+          author: borrowInfo.author,
+          bookQuantity: '3/3', // `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
+          borrowerRealName: borrowInfo.borrowerRealName,
+        };
+      });
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
   return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>(
     libraryManageKeys.borrowInfoList({ page, size, status, search }),
+    fetcher,
+  );
+};
+
+const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: BorrowInfoListSearch) => {
+  const fetcher = () =>
+    axios.get('/manage/borrow-infos', { params: { page, size, status } }).then(({ data }) => {
+      const content = data.content.map((borrowInfo: BorrowInfo) => {
+        let statusFront = '';
+
+        if (borrowInfo.status === '대출승인') {
+          statusFront = '대출중';
+        } else if (borrowInfo.status === '반납대기중') {
+          statusFront = '반납대기';
+        }
+
+        return {
+          bookTitle: borrowInfo.bookTitle,
+          author: borrowInfo.author,
+          borrowerRealName: borrowInfo.borrowerRealName,
+          requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
+          expiredDateTime: DateTime.fromISO(borrowInfo?.expiredDateTime || '').toFormat('yyyy.MM.dd'),
+          status: statusFront,
+        };
+      });
+      return { content, totalElement: data.totalElements, size: data.size };
+    });
+
+  return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>(
+    libraryManageKeys.overdueInfoList({ page, size, status }),
     fetcher,
   );
 };
@@ -100,4 +140,5 @@ export {
   useDenyRequestQuery,
   useApproveReturnQuery,
   useDenyReturnQuery,
+  useGetOverdueInfoListQuery,
 };
