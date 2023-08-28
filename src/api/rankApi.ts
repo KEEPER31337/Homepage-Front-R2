@@ -2,6 +2,13 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { AttendRankInfo, GameRankInfo, PageAndSize, PointRank, TodayAttendRank } from './dto';
 
+const rankKeys = {
+  todayAttendanceRank: (param: PageAndSize) => ['today-attendance-rank', param] as const,
+  continuousAttendanceRank: ['continuous-attendance-rank'] as const,
+  pointRank: (param: PageAndSize) => ['point-rank', param] as const,
+  gameRank: ['game-rank'] as const,
+};
+
 const useGetTodayAttendanceRank = ({ page, size }: PageAndSize) => {
   const fetcher = () =>
     axios
@@ -10,7 +17,7 @@ const useGetTodayAttendanceRank = ({ page, size }: PageAndSize) => {
       })
       .then(({ data }) => data);
 
-  return useQuery<TodayAttendRank>(['today-attendance-rank', page, size], fetcher, {
+  return useQuery<TodayAttendRank>(rankKeys.todayAttendanceRank({ page, size }), fetcher, {
     keepPreviousData: true,
   });
 };
@@ -18,13 +25,13 @@ const useGetTodayAttendanceRank = ({ page, size }: PageAndSize) => {
 const useGetContinuousAttendanceRank = () => {
   const fetcher = () => axios.get('/attendances/continuous-rank').then(({ data }) => data);
 
-  return useQuery<AttendRankInfo[]>(['continuous-attendance-rank'], fetcher);
+  return useQuery<AttendRankInfo[]>(rankKeys.continuousAttendanceRank, fetcher);
 };
 
 const useGetPointRank = ({ page, size }: PageAndSize) => {
   const fetcher = () => axios.get('/members/point-rank', { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<PointRank>(['point-rank', page, size], fetcher, {
+  return useQuery<PointRank>(rankKeys.pointRank({ page, size }), fetcher, {
     keepPreviousData: true,
   });
 };
@@ -32,7 +39,7 @@ const useGetPointRank = ({ page, size }: PageAndSize) => {
 const useGetGameRank = () => {
   const fetcher = () => axios.get('/game/rank').then(({ data }) => data);
 
-  return useQuery<GameRankInfo[]>(['game-rank'], fetcher);
+  return useQuery<GameRankInfo[]>(rankKeys.gameRank, fetcher);
 };
 
 export { useGetTodayAttendanceRank, useGetContinuousAttendanceRank, useGetPointRank, useGetGameRank };
