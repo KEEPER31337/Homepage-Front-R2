@@ -2,7 +2,13 @@ import React from 'react';
 import usePagination from '@hooks/usePagination';
 import { useSearchParams } from 'react-router-dom';
 import { BorrowInfoListSearch } from '@api/dto';
-import { useGetBorrowInfoListQuery } from '@api/libraryManageApi';
+import {
+  useGetBorrowInfoListQuery,
+  useApproveRequestMutation,
+  useApproveReturnMutation,
+  useDenyRequestMutation,
+  useDenyReturnMutation,
+} from '@api/libraryManageApi';
 import StandardTable from '@components/Table/StandardTable';
 import { Column } from '@components/Table/StandardTable.interface';
 import { IconButton } from '@mui/material';
@@ -10,6 +16,7 @@ import { VscCircleLarge, VscChromeClose } from 'react-icons/vsc';
 import RequestManageSearchSection from '../SearchSection/RequestManageSearchSection';
 
 interface requestManageRow {
+  id: number;
   no: number;
   status: string;
   requestDatetime: string | null;
@@ -40,20 +47,31 @@ const RequestManageTab = () => {
   const status = searchParams.get('status') as BorrowInfoListSearch['status'];
   const search = searchParams.get('search') as BorrowInfoListSearch['search'];
 
-  const { data: borrowInfoListData } = useGetBorrowInfoListQuery({ page, status, search });
+  const { data: borrowInfoListData, refetch } = useGetBorrowInfoListQuery({ page, status, search });
+
+  const { mutate: ApproveRequest } = useApproveRequestMutation();
+  const { mutate: ApproveReturn } = useApproveReturnMutation();
+  const { mutate: DenyRequest } = useDenyRequestMutation();
+  const { mutate: DenyReturn } = useDenyReturnMutation();
 
   if (!borrowInfoListData) return null;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleApproveButtonClick = (borrowInfoStatus: string, borrowInfoId: number) => {
-    // TODO 승인 API 호출
-    // console.log(borrowInfoStatus, borrowInfoId);
-  };
+  const handleActionButtonClick = (action: 'approve' | 'deny', borrowInfoStatus: string, borrowInfoId: number) => {
+    let mutateFunction;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleDenyButtonClick = (borrowInfoStatus: string, borrowInfoId: number) => {
-    // TODO 거부 API 호출
-    // console.log(borrowInfoStatus, borrowInfoId);
+    if (action === 'approve') {
+      mutateFunction = borrowInfoStatus === '대출 신청' ? ApproveRequest : ApproveReturn;
+    } else if (action === 'deny') {
+      mutateFunction = borrowInfoStatus === '대출 신청' ? DenyRequest : DenyReturn;
+    }
+
+    if (mutateFunction) {
+      mutateFunction(borrowInfoId, {
+        onSuccess: () => {
+          refetch();
+        },
+      });
+    }
   };
 
   return (
@@ -70,7 +88,7 @@ const RequestManageTab = () => {
             <>
               <IconButton
                 onClick={() => {
-                  handleApproveButtonClick(borrowInfo.status, borrowInfo.borrowInfoId);
+                  handleActionButtonClick('approve', borrowInfo.status, borrowInfo.borrowInfoId);
                 }}
                 className="!mr-2 !p-0"
               >
@@ -78,7 +96,7 @@ const RequestManageTab = () => {
               </IconButton>
               <IconButton
                 onClick={() => {
-                  handleDenyButtonClick(borrowInfo.status, borrowInfo.borrowInfoId);
+                  handleActionButtonClick('deny', borrowInfo.status, borrowInfo.borrowInfoId);
                 }}
                 className="!p-0"
               >

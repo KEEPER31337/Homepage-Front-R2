@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { DateTime } from 'luxon';
 import { ManageBookInfo, BookListSearch, BookCoreData, BorrowInfoListSearch, BorrowInfo } from './dto';
 
@@ -71,4 +71,54 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
   );
 };
 
-export { useGetBookManageListQuery, useAddBookMutation, useDeleteBookMutation, useGetBorrowInfoListQuery };
+const useApproveRequestMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-approve`);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+    },
+  });
+};
+
+const useDenyRequestMutation = () => {
+  const queryClient = useQueryClient();
+  const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-deny`);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+    },
+  });
+};
+
+const useApproveReturnMutation = () => {
+  const queryClient = useQueryClient();
+  const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-approve`);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+    },
+  });
+};
+
+const useDenyReturnMutation = () => {
+  const queryClient = useQueryClient();
+  const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-deny`);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+    },
+  });
+};
+
+export {
+  useGetBookManageListQuery,
+  useAddBookMutation,
+  useDeleteBookMutation,
+  useGetBorrowInfoListQuery,
+  useApproveRequestMutation,
+  useDenyRequestMutation,
+  useApproveReturnMutation,
+  useDenyReturnMutation,
+};
