@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
-import { ManageBookInfo, BookListSearch, ManageBookCore } from './dto';
+import { ManageBookInfo, BookListSearch, BookCoreData } from './dto';
 
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
@@ -18,19 +18,19 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
         borrowers: bookInfo.borrowInfos.map((borrowInfo) => borrowInfo.borrowerRealName).join(', '),
         canBorrow: !!bookInfo.currentQuantity,
       }));
-      return { content, totalElement: data.totalElements };
+      return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: ManageBookInfo[]; totalElement: number }>(
+  return useQuery<{ content: ManageBookInfo[]; totalElement: number; size: number }>(
     libraryManageKeys.bookManageList({ page, size, searchType, search }),
     fetcher,
   );
 };
 
 const useAddBookMutation = () => {
-  const fetcher = ({ bookMetaData, thumbnail }: { bookMetaData: ManageBookCore; thumbnail?: Blob | null }) => {
+  const fetcher = ({ bookCoreData, thumbnail }: { bookCoreData: BookCoreData; thumbnail?: Blob | null }) => {
     const formData = new FormData();
-    formData.append('bookMetaData', new Blob([JSON.stringify(bookMetaData)], { type: 'application/json' }));
+    formData.append('bookMetaData', new Blob([JSON.stringify(bookCoreData)], { type: 'application/json' }));
     if (thumbnail) formData.append('thumbnail', thumbnail);
 
     return axios.post('/manage/books', formData, {

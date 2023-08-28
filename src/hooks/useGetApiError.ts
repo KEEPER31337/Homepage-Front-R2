@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { AxiosError } from 'axios';
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type ErrorHandler = (error?: AxiosError) => void;
 
@@ -31,38 +32,40 @@ interface DefaultHttpStatusHandlers extends DefaultHandler {
   500 - SERVER_ERROR
 */
 
-const defaultHandlers: DefaultHttpStatusHandlers = {
-  default: () => {
-    console.log('알 수 없는 에러가 발생하였습니다.');
-  },
-  400: {
-    default: () => {
-      console.log('400 에러 발생');
-    },
-  },
-  401: {
-    default: () => {
-      console.log('401 에러 발생');
-    },
-  },
-  403: {
-    default: () => {
-      console.log('403 에러 발생');
-    },
-  },
-  409: {
-    default: () => {
-      console.log('409 에러 발생');
-    },
-  },
-  500: {
-    default: () => {
-      console.log('500 에러 발생');
-    },
-  },
-};
-
 const useApiError = (handlers?: HttpStatusHandlers) => {
+  const navigate = useNavigate();
+
+  const defaultHandlers: DefaultHttpStatusHandlers = {
+    default: () => {
+      console.log('알 수 없는 에러가 발생하였습니다.');
+    },
+    400: {
+      default: () => {
+        console.log('400 에러 발생');
+      },
+    },
+    401: {
+      default: () => {
+        navigate('/login');
+      },
+    },
+    403: {
+      default: () => {
+        console.log('403 에러 발생');
+      },
+    },
+    409: {
+      default: () => {
+        console.log('409 에러 발생');
+      },
+    },
+    500: {
+      default: () => {
+        console.log('500 에러 발생');
+      },
+    },
+  };
+
   const handleError = useCallback(
     (error, serviceCode?) => {
       const httpStatus: number = error.response.status;

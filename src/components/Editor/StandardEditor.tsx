@@ -12,7 +12,7 @@ const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
   return (
     <Editor
       ref={forwardedRef}
-      initialValue=""
+      initialValue={props.initialValue ?? ''}
       placeholder="내용을 입력해주세요."
       previewStyle="vertical"
       minHeight="300px"
