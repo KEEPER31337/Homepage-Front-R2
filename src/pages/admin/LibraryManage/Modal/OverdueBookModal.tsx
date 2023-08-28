@@ -11,6 +11,7 @@ interface OverdueBookModalProps {
 }
 
 interface requestManageRow {
+  id: number;
   no: number;
   bookTitle: string;
   author: string;
@@ -41,8 +42,8 @@ const OverdueBookModal = ({ open, onClose }: OverdueBookModalProps) => {
       <StandardTable
         columns={requestManageColumn}
         rows={overdueInfoListData?.content.map((overdueInfo, bookIndex) => ({
-          no: getRowNumber({ size: overdueInfoListData.size, index: bookIndex }),
           id: overdueInfo?.borrowInfoId,
+          no: getRowNumber({ size: overdueInfoListData.size, index: bookIndex }),
           ...overdueInfo,
         }))}
         paginationOption={{ rowsPerPage: overdueInfoListData.size, totalItems: overdueInfoListData?.totalElement }}
