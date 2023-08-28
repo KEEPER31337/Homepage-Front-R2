@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
-import { ManageBookInfo, BookListSearch, ManageBookCore } from './dto';
+import { ManageBookInfo, BookListSearch, ManageBookCore, BorrowInfoListSearch, BorrowInfo } from './dto';
 
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
+  borrowInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'borrowInfoList', param] as const,
 };
 
 const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: BookListSearch) => {
@@ -48,4 +49,25 @@ const useDeleteBookMutation = () => {
   return useMutation(fetcher);
 };
 
-export { useGetBookManageListQuery, useAddBookMutation, useDeleteBookMutation };
+const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowInfoListSearch) => {
+  const fetcher = () =>
+    axios.get('/manage/borrow-infos', { params: { page, size, status, search } }).then(({ data }) => {
+      const content = data.content.map((borrowInfo: BorrowInfo) => ({
+        borrowInfoId: borrowInfo.borrowInfoId,
+        status: borrowInfo.status,
+        requestDatetime: borrowInfo?.requestDatetime?.split('T')[0].replaceAll('-', '.'),
+        bookTitle: borrowInfo.bookTitle,
+        author: borrowInfo.author,
+        bookQuantity: '3/3', // `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
+        borrowerRealName: borrowInfo.borrowerRealName,
+      }));
+      return { content, totalElement: data.totalElements, size: data.size };
+    });
+
+  return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>(
+    libraryManageKeys.borrowInfoList({ page, size, status, search }),
+    fetcher,
+  );
+};
+
+export { useGetBookManageListQuery, useAddBookMutation, useDeleteBookMutation, useGetBorrowInfoListQuery };
