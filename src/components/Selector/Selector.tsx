@@ -4,9 +4,9 @@ import React from 'react';
 
 interface SelectorProps extends SelectProps {
   label?: string;
-  value?: number;
+  value?: string | number;
   onChange: (event: SelectChangeEvent<unknown>) => void;
-  options: { id: number; content: string | number }[];
+  options: { id: string | number; content: string | number }[];
 }
 
 const Selector = ({ label, value, onChange, options, className, ...selectProps }: SelectorProps) => {

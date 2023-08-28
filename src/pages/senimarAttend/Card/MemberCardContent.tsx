@@ -1,45 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
-import { DateTime } from 'luxon';
+import {
+  useAttendSeminarMutation,
+  useEditAttendStatusMutation,
+  useGetAvailableSeminarInfoQuery,
+  useGetSeminarInfoQuery,
+} from '@api/seminarApi';
+import { AxiosError } from 'axios';
+import { ActivityStatus } from '@api/dto';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
-import ActivityStatus from '../SeminarAttend.interface';
+
+interface ErrorResponse {
+  message: string;
+}
 
 const MemberCardContent = () => {
-  const [isAttendable, setIsAttendable] = useState(false);
-  const [isCorrectCode, setIsCorrectCode] = useState(false);
-  const isIncorrectCodeInPeriod = isAttendable && !isCorrectCode;
+  const { data: seminarData } = useGetSeminarInfoQuery(5); // TODO: 파라미터로 아이디 받아오기
+  const {
+    mutate: attend,
+    isSuccess: isAttendSuccess,
+    error: attendError,
+    data: attendData,
+  } = useAttendSeminarMutation(5);
+  const validCode = seminarData?.attendanceCode;
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
-  const [startTime, setStartTime] = useState(DateTime.now());
-  const attendLimit = startTime.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시:이후 api에서 가져옴
-  const lateLimit = attendLimit.plus({ days: 0, hours: 0, minutes: 0, seconds: 5 }); // 임시: 이후 api에서 가져옴
-
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
-  const validCode = '1234'; // 임시
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
+  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
+  const isValidActivityStatus = (value: ActivityStatus) => {
+    return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
+  };
+  const { mutate: editStatus } = useEditAttendStatusMutation(5, 6); // 테스트용 임시
+
+  const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.seminarId;
+
+  useEffect(() => {
+    setAttendStatus(seminarData?.statusType);
+  }, [seminarData]);
 
   const handleAttendButtonClick = () => {
-    setIsCorrectCode(inputCode.join('') === validCode);
-    const nowTime = DateTime.now();
-    setIsAttendable(nowTime < lateLimit);
-    if (inputCode.join('') === validCode) {
-      // TODO: 출석 api 연동
-      setIncorrectCodeMsg('ㅤ');
-      if (nowTime < attendLimit) setAttendStatus('출석');
-      else if (nowTime < lateLimit) setAttendStatus('지각');
-      else setAttendStatus('결석');
-    } else {
-      setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
-    }
+    attend(inputCode.join(''));
   };
 
-  // TODO: 출석 종료시 자동 결석처리, 문구 결석으로 바꾸기
+  useEffect(() => {
+    if (isAttendSuccess && isValidActivityStatus(attendData.data.statusType)) {
+      setAttendStatus(attendData.data.statusType);
+      setIncorrectCodeMsg('ㅤ');
+    }
+  }, [isAttendSuccess]);
+
+  useEffect(() => {
+    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
+    else {
+      const axiosError = attendError as AxiosError<ErrorResponse>;
+      const errorMessage = axiosError?.response?.data?.message;
+      setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
+    }
+  }, [attendError]);
+
+  useEffect(() => {
+    setIncorrectCodeMsg('ㅤ');
+  }, []);
+
+  const deleteAttendance = () => {
+    editStatus({ excuse: 'test', statusType: 'BEFORE_ATTENDANCE' });
+  };
 
   return (
-    <>
+    <div className={`${unableSeminar && 'opacity-50'}`}>
       <div className="mb-[15px]">
-        <SeminarInput helperText={incorrectCodeMsg} setInputCode={setInputCode} inputCode={inputCode} />
+        <SeminarInput
+          disabled={unableSeminar}
+          helperText={incorrectCodeMsg}
+          setInputCode={setInputCode}
+          inputCode={unableSeminar ? ['', '', '', ''] : inputCode}
+        />
       </div>
 
       <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
@@ -48,24 +85,37 @@ const MemberCardContent = () => {
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          <Countdown startTime={startTime} endTime={attendLimit} />
-          <Countdown startTime={attendLimit} endTime={lateLimit} />
+          {seminarData && (
+            <>
+              <Countdown startTime={seminarData.openTime} endTime={seminarData.attendanceCloseTime} />
+              <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
+            </>
+          )}
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        {attendStatus !== undefined ? (
+        {attendStatus === 'ATTENDANCE' || attendStatus === 'LATENESS' || attendStatus === 'ABSENCE' ? (
           <SeminarAttendStatus status={attendStatus} />
         ) : (
-          <FilledButton
-            onClick={() => {
-              handleAttendButtonClick();
-            }}
-          >
-            출석
-          </FilledButton>
+          <>
+            <FilledButton
+              onClick={() => {
+                handleAttendButtonClick();
+              }}
+            >
+              출석
+            </FilledButton>
+            <FilledButton
+              onClick={() => {
+                deleteAttendance();
+              }}
+            >
+              출석기록 삭제
+            </FilledButton>
+          </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

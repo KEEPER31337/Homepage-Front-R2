@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Avatar, CardActions, Typography } from '@mui/material';
 import { CommentInfo } from '@api/dto';
+import { useCreateCommentMutation } from '@api/commentApi';
 import CommentWriteCardAction from './CommentWriteCardAction';
 
 interface CommentCardFooterProps {
@@ -8,14 +10,19 @@ interface CommentCardFooterProps {
 }
 
 const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
+  const { postId: postIdStr } = useParams();
+  const postId = Number(postIdStr);
+
   const [replyOpen, setReplyOpen] = useState(false);
+  const [replyContent, setReplyContent] = useState('');
+  const { mutate: createReply } = useCreateCommentMutation();
 
   const handleReplyClick = () => {
     setReplyOpen(true);
   };
 
   const handleWriteReplyClick = () => {
-    // TODO 대댓글 생성 API 적용
+    createReply({ postId, parentId: commentInfo.commentId, content: replyContent });
     setReplyOpen(false);
   };
 
@@ -23,7 +30,11 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
     <CardActions className="border-t border-subBlack bg-middleBlack">
       {replyOpen ? (
         <CommentWriteCardAction
-          textFieldProps={{ placeholder: '대댓글...' }}
+          textFieldProps={{
+            value: replyContent,
+            onChange: (e) => setReplyContent(e.target.value),
+            placeholder: '대댓글...',
+          }}
           writeButtonName="대댓글 작성"
           onWriteButtonClick={handleWriteReplyClick}
         />
