@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
+import { DateTime } from 'luxon';
 import { ManageBookInfo, BookListSearch, BookCoreData, BorrowInfoListSearch, BorrowInfo } from './dto';
 
 const libraryManageKeys = {
@@ -55,7 +56,7 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
       const content = data.content.map((borrowInfo: BorrowInfo) => ({
         borrowInfoId: borrowInfo.borrowInfoId,
         status: borrowInfo.status === '대출대기중' ? '대출 신청' : '반납 신청',
-        requestDatetime: borrowInfo?.requestDatetime?.split('T')[0].replaceAll('-', '.'),
+        requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
         bookTitle: borrowInfo.bookTitle,
         author: borrowInfo.author,
         bookQuantity: '3/3', // `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
