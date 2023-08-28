@@ -9,7 +9,7 @@ const rankKeys = {
   gameRank: ['game-rank'] as const,
 };
 
-const useGetTodayAttendanceRank = ({ page, size }: PageAndSize) => {
+const useGetTodayAttendanceRank = ({ page, size = 10 }: PageAndSize) => {
   const fetcher = () =>
     axios
       .get('/attendances/today-rank', {
@@ -28,7 +28,7 @@ const useGetContinuousAttendanceRank = () => {
   return useQuery<AttendRankInfo[]>(rankKeys.continuousAttendanceRank, fetcher);
 };
 
-const useGetPointRank = ({ page, size }: PageAndSize) => {
+const useGetPointRank = ({ page, size = 10 }: PageAndSize) => {
   const fetcher = () => axios.get('/members/point-rank', { params: { page, size } }).then(({ data }) => data);
 
   return useQuery<PointRank>(rankKeys.pointRank({ page, size }), fetcher, {

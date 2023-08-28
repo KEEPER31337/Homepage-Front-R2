@@ -88,14 +88,12 @@ const tapOptions = [
   { id: 1, label: '포인트 랭킹' },
 ];
 
-const rowSize = 10;
-
 const Rank = () => {
   const [tab, setTab] = useState(0);
   const { page, getRowNumber } = usePagination();
 
-  const { data: attendRank } = useGetTodayAttendanceRank({ page, size: rowSize });
-  const { data: pointRank } = useGetPointRank({ page, size: rowSize });
+  const { data: attendRank } = useGetTodayAttendanceRank({ page });
+  const { data: pointRank } = useGetPointRank({ page });
   const { data: continuousAttendRank } = useGetContinuousAttendanceRank();
   const { data: gameRank } = useGetGameRank();
 
