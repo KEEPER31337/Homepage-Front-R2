@@ -29,7 +29,6 @@ const libraryManageColumn: Column<libraryManageRow>[] = [
 ];
 
 const BookManageTab = () => {
-  const size = 10;
   const { page, getRowNumber } = usePagination();
   const { data: bookManageListData } = useGetBookManageListQuery({ page });
 
@@ -79,11 +78,11 @@ const BookManageTab = () => {
       <StandardTable
         columns={libraryManageColumn}
         rows={bookManageListData?.content.map((book, bookIndex) => ({
-          no: getRowNumber({ size, index: bookIndex }),
+          no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
           ...book,
         }))}
         childComponent={childComponent}
-        paginationOption={{ rowsPerPage: size, totalItems: bookManageListData?.totalElement }}
+        paginationOption={{ rowsPerPage: bookManageListData.size, totalItems: bookManageListData?.totalElement }}
         onRowClick={handleBookRowClick}
       />
     </>
