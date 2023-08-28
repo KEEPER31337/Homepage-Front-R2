@@ -115,7 +115,7 @@ export interface ManageBookInfo extends BookInfo {
   borrowers: string;
 }
 
-export type ManageBookCore = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
+export type BookCoreData = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
@@ -263,6 +263,8 @@ export interface PostInfo {
   nextPost: AdjacentPostInfo;
   likeCount: number;
   dislikeCount: number;
+  isLike: boolean;
+  isDislike: boolean;
   allowComment: boolean;
   isNotice: boolean;
   isSecret: boolean;

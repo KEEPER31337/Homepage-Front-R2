@@ -51,7 +51,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
     const isValid = validate();
     if (isValid) {
       addBookMutation(
-        { bookMetaData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
+        { bookCoreData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
         {
           onSuccess: () => {
             onClose();

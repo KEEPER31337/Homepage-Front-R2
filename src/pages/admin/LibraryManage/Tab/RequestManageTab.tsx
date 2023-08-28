@@ -7,7 +7,6 @@ import StandardTable from '@components/Table/StandardTable';
 import { Column } from '@components/Table/StandardTable.interface';
 import { IconButton } from '@mui/material';
 import { VscCircleLarge, VscChromeClose } from 'react-icons/vsc';
-
 import RequestManageSearchSection from '../SearchSection/RequestManageSearchSection';
 
 interface requestManageRow {
