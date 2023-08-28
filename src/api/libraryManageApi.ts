@@ -55,16 +55,13 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
   const fetcher = () =>
     axios.get('/manage/borrow-infos', { params: { page, size, status, search } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
-        let statusFront = '';
-
-        if (borrowInfo.status === '대출대기중') {
-          statusFront = '대출 신청';
-        } else if (borrowInfo.status === '반납대기중') {
-          statusFront = '반납 신청';
-        }
+        const borrowStatus: { [key: string]: string } = {
+          대출대기중: '대출 신청',
+          반납대기중: '반납 신청',
+        };
         return {
           borrowInfoId: borrowInfo.borrowInfoId,
-          status: statusFront,
+          status: borrowStatus[borrowInfo.status],
           requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
           bookTitle: borrowInfo.bookTitle,
           author: borrowInfo.author,
@@ -85,13 +82,10 @@ const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: Bor
   const fetcher = () =>
     axios.get('/manage/borrow-infos', { params: { page, size, status } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
-        let statusFront = '';
-
-        if (borrowInfo.status === '대출승인') {
-          statusFront = '대출중';
-        } else if (borrowInfo.status === '반납대기중') {
-          statusFront = '반납대기';
-        }
+        const borrowStatus: { [key: string]: string } = {
+          대출승인: '대출중',
+          반납대기중: '반납대기',
+        };
 
         return {
           bookTitle: borrowInfo.bookTitle,
@@ -99,7 +93,7 @@ const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: Bor
           borrowerRealName: borrowInfo.borrowerRealName,
           requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
           expiredDateTime: DateTime.fromISO(borrowInfo?.expiredDateTime || '').toFormat('yyyy.MM.dd'),
-          status: statusFront,
+          status: borrowStatus[borrowInfo.status],
         };
       });
       return { content, totalElement: data.totalElements, size: data.size };
