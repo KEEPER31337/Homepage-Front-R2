@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
-import { ManageBookInfo, BookListSearch, ManageBookCore } from './dto';
+import { ManageBookInfo, BookListSearch, BookCoreData } from './dto';
 
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
@@ -27,7 +27,7 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
 };
 
 const useAddBookMutation = () => {
-  const fetcher = ({ bookMetaData, thumbnail }: { bookMetaData: ManageBookCore; thumbnail?: Blob | null }) => {
+  const fetcher = ({ bookMetaData, thumbnail }: { bookMetaData: BookCoreData; thumbnail?: Blob | null }) => {
     const formData = new FormData();
     formData.append('bookMetaData', new Blob([JSON.stringify(bookMetaData)], { type: 'application/json' }));
     if (thumbnail) formData.append('thumbnail', thumbnail);
