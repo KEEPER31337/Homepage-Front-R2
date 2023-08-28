@@ -77,7 +77,7 @@ const useApproveRequestMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-approve`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookManageList'] });
+      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
     },
   });
 };
@@ -87,7 +87,7 @@ const useDenyRequestMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-deny`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookManageList'] });
+      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
     },
   });
 };
@@ -97,7 +97,7 @@ const useApproveReturnMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-approve`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookManageList'] });
+      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
     },
   });
 };
@@ -107,7 +107,7 @@ const useDenyReturnMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-deny`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookManageList'] });
+      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
     },
   });
 };
