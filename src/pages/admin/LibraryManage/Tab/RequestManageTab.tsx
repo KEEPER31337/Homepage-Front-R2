@@ -55,31 +55,17 @@ const RequestManageTab = () => {
 
   if (!borrowInfoListData) return null;
 
-  const handleApproveButtonClick = (borrowInfoStatus: string, borrowInfoId: number) => {
-    if (borrowInfoStatus === '대출 신청') {
-      ApproveRequest(borrowInfoId, {
-        onSuccess: () => {
-          refetch();
-        },
-      });
-    } else if (borrowInfoStatus === '반납 신청') {
-      ApproveReturn(borrowInfoId, {
-        onSuccess: () => {
-          refetch();
-        },
-      });
-    }
-  };
+  const handleActionButtonClick = (action: 'approve' | 'deny', borrowInfoStatus: string, borrowInfoId: number) => {
+    let mutateFunction;
 
-  const handleDenyButtonClick = (borrowInfoStatus: string, borrowInfoId: number) => {
-    if (borrowInfoStatus === '대출 신청') {
-      DenyRequest(borrowInfoId, {
-        onSuccess: () => {
-          refetch();
-        },
-      });
-    } else if (borrowInfoStatus === '반납 신청') {
-      DenyReturn(borrowInfoId, {
+    if (action === 'approve') {
+      mutateFunction = borrowInfoStatus === '대출 신청' ? ApproveRequest : ApproveReturn;
+    } else if (action === 'deny') {
+      mutateFunction = borrowInfoStatus === '대출 신청' ? DenyRequest : DenyReturn;
+    }
+
+    if (mutateFunction) {
+      mutateFunction(borrowInfoId, {
         onSuccess: () => {
           refetch();
         },
@@ -101,7 +87,7 @@ const RequestManageTab = () => {
             <>
               <IconButton
                 onClick={() => {
-                  handleApproveButtonClick(borrowInfo.status, borrowInfo.borrowInfoId);
+                  handleActionButtonClick('approve', borrowInfo.status, borrowInfo.borrowInfoId);
                 }}
                 className="!mr-2 !p-0"
               >
@@ -109,7 +95,7 @@ const RequestManageTab = () => {
               </IconButton>
               <IconButton
                 onClick={() => {
-                  handleDenyButtonClick(borrowInfo.status, borrowInfo.borrowInfoId);
+                  handleActionButtonClick('deny', borrowInfo.status, borrowInfo.borrowInfoId);
                 }}
                 className="!p-0"
               >
