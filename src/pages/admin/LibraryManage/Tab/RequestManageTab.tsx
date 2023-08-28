@@ -58,7 +58,7 @@ const RequestManageTab = () => {
 
   return (
     <>
-      <div className="mb-5 flex justify-between space-x-2">
+      <div className="mb-5">
         <RequestManageSearchSection />
       </div>
       <StandardTable
