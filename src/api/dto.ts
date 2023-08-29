@@ -109,7 +109,6 @@ export interface BookInfo {
 }
 
 export interface ManageBookInfo extends BookInfo {
-  id: number;
   bookDepartment: string;
   borrowInfos: BorrowInfo[];
   borrowers: string;
