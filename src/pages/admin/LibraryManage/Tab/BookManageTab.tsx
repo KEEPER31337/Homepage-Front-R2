@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import usePagination from '@hooks/usePagination';
-import { useGetBookManageListQuery } from '@api/libraryManageApi';
+import { useGetBookManageListQuery, useDeleteBookMutation } from '@api/libraryManageApi';
 import StandardTable from '@components/Table/StandardTable';
 import ActionButton from '@components/Button/ActionButton';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
 import SearchSection from '@components/Section/SearchSection';
+import { IconButton } from '@mui/material';
+import { VscTrash } from 'react-icons/vsc';
 import AddBookModal from '../Modal/AddBookModal';
 
 interface libraryManageRow {
+  id: number;
   no: number;
   title: string;
   author: string;
   bookQuantity: string;
   borrowers: string;
   canBorrow: boolean;
+  delete: ReactElement;
 }
 
 const libraryManageColumn: Column<libraryManageRow>[] = [
@@ -26,11 +30,13 @@ const libraryManageColumn: Column<libraryManageRow>[] = [
     key: 'canBorrow',
     headerName: '대출상태',
   },
+  { key: 'delete', headerName: '삭제' },
 ];
 
 const BookManageTab = () => {
   const { page, getRowNumber } = usePagination();
   const { data: bookManageListData } = useGetBookManageListQuery({ page });
+  const { mutate: deleteBookMutation } = useDeleteBookMutation();
 
   const selectorList = [
     { id: 'all', content: '도서명 + 저자' },
@@ -58,8 +64,12 @@ const BookManageTab = () => {
     // TODO 도서 수정 API 호출
   };
 
+  const handleDeleteButtonClick = (bookId: number) => {
+    deleteBookMutation(bookId);
+  };
   if (!bookManageListData) return null;
 
+  console.log(bookManageListData);
   return (
     <>
       <div className="mb-5 flex justify-between space-x-2">
@@ -79,7 +89,13 @@ const BookManageTab = () => {
       <StandardTable
         columns={libraryManageColumn}
         rows={bookManageListData?.content.map((book, bookIndex) => ({
+          id: book.bookId,
           no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
+          delete: (
+            <IconButton onClick={() => handleDeleteButtonClick(book.bookId)}>
+              <VscTrash size={20} className="fill-subRed" />
+            </IconButton>
+          ),
           ...book,
         }))}
         childComponent={childComponent}
