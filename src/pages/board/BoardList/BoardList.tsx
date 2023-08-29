@@ -79,7 +79,7 @@ const BoardList = () => {
         return rowData.isSecret ? (
           <div className="flex items-center">
             <AiFillLock className="mr-1 fill-pointBlue" />
-            {value}
+            비밀글입니다.
           </div>
         ) : (
           value
