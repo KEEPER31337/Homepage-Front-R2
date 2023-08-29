@@ -13,16 +13,16 @@ interface ActionButtonProps {
 
 const ActionButton = ({ mode, children, onClick, disabled, type, small }: ActionButtonProps) => {
   const setIcon = {
-    add: <VscAdd />,
-    edit: <VscEdit />,
-    delete: <VscTrash />,
+    add: <VscAdd size={small ? 15 : 24} />,
+    edit: <VscEdit size={small ? 15 : 24} />,
+    delete: <VscTrash size={small ? 15 : 24} />,
   };
   return (
     <Button
       variant="outlined"
       className={`${
-        small && '!text-small'
-      } h-fit !rounded-sm !border-pointBlue !px-6 !py-2 !font-semibold disabled:!border-subGray`}
+        small ? '!text-small' : '!px-6'
+      } h-fit !rounded-sm !border-pointBlue !font-semibold disabled:!border-subGray`}
       type={type}
       onClick={onClick}
       disabled={disabled}
