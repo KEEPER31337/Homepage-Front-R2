@@ -23,6 +23,7 @@ interface BoardRow {
   registerTime: string;
   visitCount: number;
   likeCount: number;
+  commentCount: number;
   isSecret: boolean;
 }
 
@@ -81,10 +82,14 @@ const BoardList = () => {
         return rowData.isSecret ? (
           <div className="flex items-center">
             <AiFillLock className="mr-1 fill-pointBlue" />
-            비밀글입니다.
+            <span>비밀글입니다.</span>
+            {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
           </div>
         ) : (
-          value
+          <div className="flex items-center">
+            <span>{value}</span>
+            {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
+          </div>
         );
       default:
         return value;
