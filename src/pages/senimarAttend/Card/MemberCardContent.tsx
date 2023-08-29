@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import FilledButton from '@components/Button/FilledButton';
-import {
-  useAttendSeminarMutation,
-  useEditAttendStatusMutation,
-  useGetAvailableSeminarInfoQuery,
-  useGetSeminarInfoQuery,
-} from '@api/seminarApi';
+import ConfirmModal from '@components/Modal/ConfirmModal';
+import { Typography } from '@mui/material';
+import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { AxiosError } from 'axios';
 import { ActivityStatus } from '@api/dto';
 import Countdown from '../Countdown/Countdown';
@@ -16,24 +13,23 @@ interface ErrorResponse {
   message: string;
 }
 
-const MemberCardContent = () => {
-  const { data: seminarData } = useGetSeminarInfoQuery(5); // TODO: 파라미터로 아이디 받아오기
+const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
+  const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
   const {
     mutate: attend,
     isSuccess: isAttendSuccess,
     error: attendError,
     data: attendData,
-  } = useAttendSeminarMutation(5);
+  } = useAttendSeminarMutation(seminarId);
   const validCode = seminarData?.attendanceCode;
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
+  const [excessModalOpen, setExcessModalOpen] = useState(false);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const isValidActivityStatus = (value: ActivityStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
-  const { mutate: editStatus } = useEditAttendStatusMutation(5, 6); // 테스트용 임시
-
   const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.seminarId;
 
   useEffect(() => {
@@ -42,18 +38,25 @@ const MemberCardContent = () => {
 
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
+    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) > 5) setExcessModalOpen(true);
   };
 
   useEffect(() => {
     if (isAttendSuccess && isValidActivityStatus(attendData.data.statusType)) {
       setAttendStatus(attendData.data.statusType);
       setIncorrectCodeMsg('ㅤ');
+      localStorage.removeItem('출석시도횟수');
     }
   }, [isAttendSuccess]);
 
   useEffect(() => {
-    if (inputCode.join('') !== validCode) setIncorrectCodeMsg('출석코드가 맞지 않습니다. 다시 입력해주세요.');
-    else {
+    if (inputCode.join('') !== validCode) {
+      const attemptNum = parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1;
+      if (attemptNum <= 5) {
+        localStorage.setItem('출석시도횟수', String(attemptNum));
+        setIncorrectCodeMsg(`출석코드가 틀렸습니다.(남은 제출횟수 ${attemptNum}회)`);
+      }
+    } else {
       const axiosError = attendError as AxiosError<ErrorResponse>;
       const errorMessage = axiosError?.response?.data?.message;
       setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
@@ -64,12 +67,19 @@ const MemberCardContent = () => {
     setIncorrectCodeMsg('ㅤ');
   }, []);
 
-  const deleteAttendance = () => {
-    editStatus({ excuse: 'test', statusType: 'BEFORE_ATTENDANCE' });
-  };
-
   return (
     <div className={`${unableSeminar && 'opacity-50'}`}>
+      <ConfirmModal
+        open={excessModalOpen}
+        modalWidth="sm"
+        onClose={() => setExcessModalOpen(false)}
+        title="출석 제한 횟수 초과"
+      >
+        <Typography>가능한 출석 횟수를 초과했습니다.</Typography>
+        <Typography>출석 처리에 문제가 있는 경우 회장님에게 문의해주세요</Typography>
+      </ConfirmModal>
+      <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarData?.seminarName} 세미나</Typography>
+      <p className="mb-[14px] mt-[26px]">출석 코드</p>
       <div className="mb-[15px]">
         <SeminarInput
           disabled={unableSeminar}
@@ -97,22 +107,7 @@ const MemberCardContent = () => {
         {attendStatus === 'ATTENDANCE' || attendStatus === 'LATENESS' || attendStatus === 'ABSENCE' ? (
           <SeminarAttendStatus status={attendStatus} />
         ) : (
-          <>
-            <FilledButton
-              onClick={() => {
-                handleAttendButtonClick();
-              }}
-            >
-              출석
-            </FilledButton>
-            <FilledButton
-              onClick={() => {
-                deleteAttendance();
-              }}
-            >
-              출석기록 삭제
-            </FilledButton>
-          </>
+          <FilledButton onClick={handleAttendButtonClick}>출석</FilledButton>
         )}
       </div>
     </div>

@@ -64,6 +64,13 @@ export interface BookListSearch {
   size?: number;
 }
 
+export interface BorrowInfoListSearch {
+  status?: 'requests' | 'willreturn' | 'requests_or_willreturn' | 'overdue';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface BookListInfo {
   id: number;
   no: number;
@@ -73,6 +80,23 @@ export interface BookListInfo {
   information: string;
   enable: boolean;
 }
+
+export interface BorrowInfo {
+  borrowInfoId: number;
+  bookId: number;
+  bookTitle: string;
+  author: string;
+  borrowerId: number;
+  borrowerRealName: string;
+  requestDatetime: string | null;
+  borrowDateTime: string;
+  expiredDateTime: string;
+  bookQuantity: string;
+  currentQuantity: number;
+  totalQuantity: number;
+  status: '대출대기중' | '반납대기중' | '대출거부' | '대출승인' | '반납';
+}
+
 export interface BookInfo {
   bookId: number;
   thumbnailPath: string;
@@ -83,6 +107,15 @@ export interface BookInfo {
   totalQuantity: number;
   canBorrow: boolean;
 }
+
+export interface ManageBookInfo extends BookInfo {
+  id: number;
+  bookDepartment: string;
+  borrowInfos: BorrowInfo[];
+  borrowers: string;
+}
+
+export type BookCoreData = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
@@ -230,6 +263,8 @@ export interface PostInfo {
   nextPost: AdjacentPostInfo;
   likeCount: number;
   dislikeCount: number;
+  isLike: boolean;
+  isDislike: boolean;
   allowComment: boolean;
   isNotice: boolean;
   isSecret: boolean;
@@ -245,6 +280,7 @@ export interface PostSummaryInfo {
   writerThumbnailPath: string;
   visitCount: number;
   commentCount: number;
+  likeCount: number;
   isSecret: boolean;
   thumbnailPath: string;
   registerTime: string;
@@ -287,6 +323,7 @@ export interface BoardPosts {
   empty: boolean;
 }
 
+
 export interface TrendingPostInfo {
   id: number;
   title: string;
@@ -298,4 +335,59 @@ export interface TrendingPostInfo {
   isSecret: boolean;
   thumbnailPath: string;
   registerTime: string;
+}
+  
+export interface PageAndSize {
+  page?: number;
+  size?: number;
+}
+
+export interface AttendRankInfo {
+  rank: number;
+  thumbnailPath?: string | null;
+  realName: string;
+  generation: string;
+  continuousDay: number;
+  time: string;
+}
+
+export interface TodayAttendRank {
+  content: AttendRankInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface PointRankInfo {
+  realName: string;
+  generation: string;
+  point: number;
+}
+
+export interface PointRank {
+  content: PointRankInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface GameRankInfo {
+  rank: number;
+  realName: string;
+  generation: string;
+  todayEarnedPoint: number;
+  profileImageUrl?: string | null;
+  memberId: number;
 }
