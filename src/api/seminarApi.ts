@@ -16,6 +16,7 @@ const useGetSeminarInfoQuery = (id: number) => {
     axios.get(`/seminars/${id}`).then(({ data }) => {
       const transformedData = {
         ...data,
+        seminarName: data.seminarName.replaceAll('-', '.'),
         openTime: DateTime.fromISO(data.openTime),
         attendanceCloseTime: DateTime.fromISO(data.attendanceCloseTime),
         latenessCloseTime: DateTime.fromISO(data.latenessCloseTime),
@@ -39,7 +40,7 @@ const useGetRecentlyDoneSeminarInfoQuery = () => {
 };
 
 const useGetRecentlyUpcomingSeminarInfoQuery = () => {
-  const fetcher = () => axios.get(`/seminars/recently-upcoming `).then(({ data }) => data);
+  const fetcher = () => axios.get(`/seminars/recently-upcoming`).then(({ data }) => data);
 
   return useQuery<[{ id: number }, { id: number }]>(seminarKeys.getRecentlyUpcomingSeminar, fetcher);
 };
