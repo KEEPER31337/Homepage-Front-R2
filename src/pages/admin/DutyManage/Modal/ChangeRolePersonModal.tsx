@@ -40,11 +40,16 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
   const { mutate: createJob } = useCreateExecutiveJobMutation();
   const { mutate: deleteJob } = useDeleteExecutiveJobMutation();
 
-  const options: { value: number; label: string }[] = [];
-  memberList?.forEach((data) => options.push({ value: data.memberId, label: data.memberName }));
+  const options: { value: number; label: string; group: string }[] = [];
+  memberList?.forEach((data) => options.push({ value: data.memberId, label: data.memberName, group: data.generation }));
+  const sortedOptions = options.sort((a, b) => (a.group > b.group ? 1 : -1));
 
   const [value, setValue] = useState<AutoCompleteValueType>(null);
-  const [prevInfo, setPrevInfo] = useState<{ value: number; label: string }>({ value: -1, label: '' });
+  const [prevInfo, setPrevInfo] = useState<{ value: number; label: string; group: string }>({
+    value: -1,
+    label: '',
+    group: '',
+  });
   const [jobInfo, setJobInfo] = useState<ExecutiveInfo>();
 
   useEffect(() => {
@@ -53,6 +58,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     const currentInfo = {
       value: executiveInfo?.memberId ? executiveInfo.memberId : -1,
       label: executiveInfo?.realName ? executiveInfo.realName : '',
+      group: executiveInfo?.generation ? executiveInfo.generation : '',
     };
 
     setPrevInfo(currentInfo);
@@ -90,7 +96,13 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     >
       <div className="flex items-center">
         <img className="w-[150px]" alt={jobName} src={badgeImage} />
-        <AutoComplete className="mx-12 w-60" items={options} value={value} onChange={(v) => setValue(v)} />
+        <AutoComplete
+          className="mx-12 w-60"
+          items={sortedOptions}
+          value={value}
+          grouped
+          onChange={(v) => setValue(v)}
+        />
       </div>
     </ActionModal>
   );
