@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-
 import { Typography } from '@mui/material';
 import ActionModal from '@components/Modal/ActionModal';
 import StandardInput from '@components/Input/StandardInput';
 import TotalBookNumberSelector from '@pages/admin/LibraryManage/Selector/TotalBookNumberSelector';
-
-import { BookListInfo } from '@api/dto';
-
-type AddBookInfo = Pick<BookListInfo, 'title' | 'author'>;
+import { useAddBookMutation } from '@api/libraryManageApi';
+import ImageUploader from '@components/Uploader/ImageUploader';
 
 interface AddBookModalProps {
   open: boolean;
@@ -15,15 +12,18 @@ interface AddBookModalProps {
 }
 
 const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
-  const [addBookInfo, setAddBookInfo] = useState<AddBookInfo>({
+  const [addBookInfo, setAddBookInfo] = useState({
     title: '',
     author: '',
   });
   const { title, author } = addBookInfo;
-  const [totalBookNumber, setTotalBookNumber] = useState<number>(1);
+  const [totalQuantity, setTotalQuantity] = useState(1);
+  const [thumbnail, setThumbnail] = useState<Blob | null>(null);
 
-  const [isInvalidTitle, setIsInvalidTitle] = useState<boolean>(false);
-  const [isInvalidAuthor, setIsInvalidAuthor] = useState<boolean>(false);
+  const [isInvalidTitle, setIsInvalidTitle] = useState(false);
+  const [isInvalidAuthor, setIsInvalidAuthor] = useState(false);
+
+  const { mutate: addBookMutation } = useAddBookMutation();
 
   const handleAddBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,7 +38,7 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
       title: '',
       author: '',
     });
-    setTotalBookNumber(1);
+    setTotalQuantity(1);
   };
 
   const validate = () => {
@@ -50,9 +50,15 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
   const handleAddBookButtonClick = () => {
     const isValid = validate();
     if (isValid) {
-      // TODO 도서추가 API
-      onClose();
-      resetAddBookInfo();
+      addBookMutation(
+        { bookCoreData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
+        {
+          onSuccess: () => {
+            onClose();
+            resetAddBookInfo();
+          },
+        },
+      );
     }
   };
 
@@ -65,32 +71,37 @@ const AddBookModal = ({ open, onClose }: AddBookModalProps) => {
       actionButtonName="추가"
       onActionButonClick={handleAddBookButtonClick}
     >
-      <div className="space-y-5">
-        <div>
-          <Typography>도서명</Typography>
-          <StandardInput
-            error={isInvalidTitle}
-            helperText={isInvalidTitle && '도서명을 입력해주세요'}
-            name="title"
-            value={title}
-            onChange={handleAddBookInfoChange}
-            className="w-full"
-          />
+      <div className="flex space-x-6">
+        <div className="relative grow space-y-5">
+          <div>
+            <Typography>도서명</Typography>
+            <StandardInput
+              error={isInvalidTitle}
+              helperText={isInvalidTitle && '도서명을 입력해주세요'}
+              name="title"
+              value={title}
+              onChange={handleAddBookInfoChange}
+              className="w-full"
+            />
+          </div>
+          <div>
+            <Typography>저자</Typography>
+            <StandardInput
+              error={isInvalidAuthor}
+              helperText={isInvalidAuthor && '저자명을 입력해주세요'}
+              name="author"
+              value={author}
+              onChange={handleAddBookInfoChange}
+              className="w-full"
+            />
+          </div>
+          <div>
+            <Typography>권수</Typography>
+            <TotalBookNumberSelector value={totalQuantity} setValue={setTotalQuantity} />
+          </div>
         </div>
-        <div>
-          <Typography>저자</Typography>
-          <StandardInput
-            error={isInvalidAuthor}
-            helperText={isInvalidAuthor && '저자명을 입력해주세요'}
-            name="author"
-            value={author}
-            onChange={handleAddBookInfoChange}
-            className="w-full"
-          />
-        </div>
-        <div>
-          <Typography>권수</Typography>
-          <TotalBookNumberSelector value={totalBookNumber} setValue={setTotalBookNumber} />
+        <div className="h-[210px] w-[128px]">
+          <ImageUploader isEdit={false} setThumbnail={setThumbnail} />
         </div>
       </div>
     </ActionModal>

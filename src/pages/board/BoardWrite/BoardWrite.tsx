@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
@@ -8,8 +8,8 @@ import StandardInput from '@components/Input/StandardInput';
 import StandardEditor from '@components/Editor/StandardEditor';
 import FileUploader from '@components/Uploader/FileUploader';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import { useUploadPostMutation } from '@api/postApi';
-import { UploadPostSettings } from '@api/dto';
+import { useEditPostMutation, useUploadPostMutation } from '@api/postApi';
+import { PostInfo, UploadPostSettings } from '@api/dto';
 import { categoryNameToId } from '@utils/converter';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import SettingUploadModal from './Modal/SettingUploadModal';
@@ -18,6 +18,15 @@ const POST_TITLE_MAX_LENGTH = 50;
 
 const BoardWrite = () => {
   const { categoryName } = useParams();
+  const {
+    state: editMode,
+  }: {
+    state: {
+      postId: number;
+      post: PostInfo;
+    } | null;
+  } = useLocation();
+
   const categoryId = categoryName ? categoryNameToId(categoryName) : null;
   if (!categoryId) return null;
 
@@ -36,6 +45,7 @@ const BoardWrite = () => {
   const editorRef = useRef<Editor>();
   const navigate = useNavigate();
   const { mutate: uploadPostMutation } = useUploadPostMutation();
+  const { mutate: editPost } = useEditPostMutation();
   const {
     control,
     getValues,
@@ -55,6 +65,21 @@ const BoardWrite = () => {
 
   const handleUploadButonClick = () => {
     const content = editorRef.current?.getInstance().getMarkdown() || '';
+
+    if (editMode) {
+      editPost(
+        {
+          postId: editMode.postId,
+          editPostInfo: { title: getValues('postTitle'), content, ...postSettingInfo },
+        },
+        {
+          onSuccess: () => {
+            navigate(`/board/${categoryName}`);
+          },
+        },
+      );
+      return;
+    }
 
     uploadPostMutation(
       { request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo }, thumbnail, files },
@@ -82,6 +107,16 @@ const BoardWrite = () => {
     setSettingModalOpen(false);
   };
 
+  useEffect(() => {
+    if (!editMode) return;
+    setPostSettingInfo({
+      isNotice: editMode.post.isNotice,
+      isSecret: editMode.post.isSecret,
+      isTemp: editMode.post.isTemp,
+      allowComment: editMode.post.allowComment,
+    });
+  }, []);
+
   return (
     <div>
       <PageTitle>{categoryName}</PageTitle>
@@ -92,7 +127,7 @@ const BoardWrite = () => {
           </Typography>
           <Controller
             name="postTitle"
-            defaultValue=""
+            defaultValue={editMode ? editMode.post.title : ''}
             control={control}
             rules={{
               required: REQUIRE_ERROR_MSG,
@@ -118,6 +153,7 @@ const BoardWrite = () => {
       <div>
         <StandardEditor
           height="470px"
+          initialValue={editMode?.post.content}
           forwardedRef={editorRef as React.MutableRefObject<Editor>}
           onBlur={handleEditorBlur}
         />
@@ -132,11 +168,13 @@ const BoardWrite = () => {
         <FileUploader files={files} setFiles={setFiles} />
       </div>
       <div className="flex justify-end space-x-2">
-        <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })} disabled={!isValid}>
-          임시저장
-        </OutlinedButton>
+        {!editMode && (
+          <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })} disabled={!isValid}>
+            임시저장
+          </OutlinedButton>
+        )}
         <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: false })} disabled={!isValid || !hasContent}>
-          작성완료
+          {editMode ? '수정하기' : '작성완료'}
         </OutlinedButton>
       </div>
       <SettingUploadModal

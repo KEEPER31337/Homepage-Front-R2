@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import FilledButton from '@components/Button/FilledButton';
 import { Typography } from '@mui/material';
-import {
-  useGetRecentlyDoneSeminarInfoQuery,
-  useGetRecentlyUpcomingSeminarInfoQuery,
-  useGetSeminarInfoQuery,
-} from '@api/seminarApi';
+import { useGetRecentlyDoneSeminarInfoQuery, useGetRecentlyUpcomingSeminarInfoQuery } from '@api/seminarApi';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';

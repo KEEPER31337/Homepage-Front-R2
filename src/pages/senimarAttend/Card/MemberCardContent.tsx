@@ -14,7 +14,6 @@ interface ErrorResponse {
 }
 
 const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
-  const seminarDate = useGetSeminarInfoQuery(seminarId).data?.seminarName.replaceAll('-', '.');
   const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
   const {
     mutate: attend,
@@ -26,7 +25,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState('');
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
-  const [excessModalOn, setExcessModalOn] = useState(false);
+  const [excessModalOpen, setExcessModalOpen] = useState(false);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const isValidActivityStatus = (value: ActivityStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
@@ -39,7 +38,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
 
   const handleAttendButtonClick = () => {
     attend(inputCode);
-    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1 >= 5) setExcessModalOn(true);
+    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) > 5) setExcessModalOpen(true);
   };
 
   useEffect(() => {
@@ -71,17 +70,15 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   return (
     <div className={`${unableSeminar && 'opacity-50'}`}>
       <ConfirmModal
-        open={excessModalOn}
+        open={excessModalOpen}
         modalWidth="sm"
-        onClose={() => setExcessModalOn(false)}
+        onClose={() => setExcessModalOpen(false)}
         title="출석 제한 횟수 초과"
       >
         <Typography>가능한 출석 횟수를 초과했습니다.</Typography>
         <Typography>출석 처리에 문제가 있는 경우 회장님에게 문의해주세요</Typography>
       </ConfirmModal>
-      <Typography className="!mt-[16px] !text-h3 !font-bold ">
-        {seminarData?.seminarName.replaceAll('-', '.')} 세미나
-      </Typography>
+      <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarData?.seminarName} 세미나</Typography>
       <p className="mb-[14px] mt-[26px]">출석 코드</p>
       <div className="mb-[15px]">
         <SeminarInput
@@ -110,13 +107,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         {attendStatus === 'ATTENDANCE' || attendStatus === 'LATENESS' || attendStatus === 'ABSENCE' ? (
           <SeminarAttendStatus status={attendStatus} />
         ) : (
-          <FilledButton
-            onClick={() => {
-              handleAttendButtonClick();
-            }}
-          >
-            출석
-          </FilledButton>
+          <FilledButton onClick={handleAttendButtonClick}>출석</FilledButton>
         )}
       </div>
     </div>
