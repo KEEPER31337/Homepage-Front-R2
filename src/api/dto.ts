@@ -323,7 +323,6 @@ export interface BoardPosts {
   empty: boolean;
 }
 
-
 export interface TrendingPostInfo {
   id: number;
   title: string;
@@ -336,7 +335,7 @@ export interface TrendingPostInfo {
   thumbnailPath: string;
   registerTime: string;
 }
-  
+
 export interface PageAndSize {
   page?: number;
   size?: number;
