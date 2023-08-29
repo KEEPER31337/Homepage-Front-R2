@@ -268,6 +268,7 @@ export interface PostSummaryInfo {
   writerThumbnailPath: string;
   visitCount: number;
   commentCount: number;
+  likeCount: number;
   isSecret: boolean;
   thumbnailPath: string;
   registerTime: string;

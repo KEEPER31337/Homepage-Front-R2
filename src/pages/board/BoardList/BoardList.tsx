@@ -22,6 +22,7 @@ interface BoardRow {
   writerName: string;
   registerTime: string;
   visitCount: number;
+  likeCount: number;
   isSecret: boolean;
 }
 
@@ -31,6 +32,7 @@ const boardColumn: Column<BoardRow>[] = [
   { key: 'writerName', headerName: '작성자' },
   { key: 'registerTime', headerName: '작성일' },
   { key: 'visitCount', headerName: '조회수' },
+  { key: 'likeCount', headerName: '추천수' },
 ];
 
 const BoardList = () => {
