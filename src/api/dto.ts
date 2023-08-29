@@ -64,6 +64,13 @@ export interface BookListSearch {
   size?: number;
 }
 
+export interface BorrowInfoListSearch {
+  status?: 'requests' | 'willreturn' | 'requests_or_willreturn' | 'overdue';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface BookListInfo {
   id: number;
   no: number;
@@ -84,7 +91,10 @@ export interface BorrowInfo {
   requestDatetime: string | null;
   borrowDateTime: string;
   expiredDateTime: string;
-  status: string;
+  bookQuantity: string;
+  currentQuantity: number;
+  totalQuantity: number;
+  status: '대출대기중' | '반납대기중';
 }
 
 export interface BookInfo {
@@ -104,6 +114,8 @@ export interface ManageBookInfo extends BookInfo {
   borrowInfos: BorrowInfo[];
   borrowers: string;
 }
+
+export type BookCoreData = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
