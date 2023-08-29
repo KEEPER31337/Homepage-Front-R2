@@ -3,6 +3,8 @@ import ServerImg from '@components/Image/ServerImg';
 import { StudyInfo } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
 import { Typography } from '@mui/material';
+import ActionButton from '@components/Button/ActionButton';
+import OutlinedButton from '@components/Button/OutlinedButton';
 import { ModalInfo } from '../Study.interface';
 
 interface StudyAccordionHeaderProps {
@@ -33,15 +35,17 @@ const StudyAccordionHeader = ({ study, toggleOpen, setModalInfo }: StudyAccordio
       <Typography variant="h3" fontWeight="semiBold">
         {study.title}
       </Typography>
-      {/* <div className="flex w-full items-center justify-between space-x-2 pr-2">
-        <div className="flex space-x-[22px]">
-          {checkIsMyId(study.headId) && (
-            <div className="space-x-2 pr-2">
-              <OutlinedButton onClick={handleStudyEditButtonClick}>수정</OutlinedButton>
-              <OutlinedButton onClick={handleStudyDeleteButtonClick}>삭제</OutlinedButton>
-            </div>
-          )}
+      {checkIsMyId(study.headId) && (
+        <div className="space-x-2">
+          <ActionButton mode="edit" small onClick={handleStudyEditButtonClick}>
+            수정
+          </ActionButton>
+          <ActionButton mode="delete" small onClick={handleStudyDeleteButtonClick}>
+            삭제
+          </ActionButton>
         </div>
+      )}
+      {/* <div className="flex w-full items-center justify-between space-x-2 pr-2">
         <div className="flex items-center space-x-2">
           <Typography className="!font-semibold">스터디장</Typography>
           <StudyChip fontWeight="Semibold" value={study.headMember.realName} />
