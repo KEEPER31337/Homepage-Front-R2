@@ -9,8 +9,6 @@ interface SeminarInputProps {
 }
 
 const SeminarInput = ({ disabled, helperText, setInputCode, inputCode }: SeminarInputProps) => {
-  // <input key={key} style={inputStyle} disabled value={inputCode[key]} />;
-
   return (
     <div>
       <ReactCodesInput
