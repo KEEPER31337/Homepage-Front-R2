@@ -25,7 +25,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
-  const [excessModalOn, setExcessModalOn] = useState(false);
+  const [excessModalOpen, setExcessModalOpen] = useState(false);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const isValidActivityStatus = (value: ActivityStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
@@ -38,7 +38,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
 
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
-    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1 >= 5) setExcessModalOn(true);
+    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1 >= 5) setExcessModalOpen(true);
   };
 
   useEffect(() => {
@@ -70,9 +70,9 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   return (
     <div className={`${unableSeminar && 'opacity-50'}`}>
       <ConfirmModal
-        open={excessModalOn}
+        open={excessModalOpen}
         modalWidth="sm"
-        onClose={() => setExcessModalOn(false)}
+        onClose={() => setExcessModalOpen(false)}
         title="출석 제한 횟수 초과"
       >
         <Typography>가능한 출석 횟수를 초과했습니다.</Typography>
