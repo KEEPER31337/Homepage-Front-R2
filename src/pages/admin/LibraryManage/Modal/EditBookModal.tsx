@@ -34,7 +34,6 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
   };
 
   const { data: bookDetail } = useGetBookDetailQuery(editBookId);
-  console.log(bookDetail);
 
   useEffect(() => {
     if (bookDetail) {
@@ -56,7 +55,6 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
   const handleEditBookButtonClick = () => {
     const isValid = validate();
     if (isValid) {
-      console.log('추가!', title, author, totalQuantity, thumbnailPath);
       // addBookMutation(
       //   { bookMetaData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
       //   {

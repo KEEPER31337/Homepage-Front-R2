@@ -1,44 +1,82 @@
-import { ChildComponent } from '@components/Table/StandardTable.interface';
-import { AttendRankInfo, attendColumns, attendRows, attendTop4 } from '@mocks/AttendRankApi';
-import { PointRankInfo, pointColumns, pointRows, pointTop4 } from '@mocks/PointRankApi';
+import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 import React, { useState } from 'react';
+import { AttendRankInfo, GameRankInfo } from '@api/dto';
+import {
+  useGetContinuousAttendanceRank,
+  useGetGameRank,
+  useGetPointRank,
+  useGetTodayAttendanceRank,
+} from '@api/rankApi';
+import usePagination from '@hooks/usePagination';
 import StandardTable from '@components/Table/StandardTable';
 import StandardTab from '@components/Tab/StandardTab';
 import { Avatar, Typography } from '@mui/material';
 import TopCard from './TopCard';
 
-const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankInfo>) => {
+interface AttendRankRow {
+  id: number;
+  rank: number;
+  realName: string;
+  generation: string;
+  continuousDay: number;
+  time: string;
+}
+
+interface PointRankRow {
+  id: number;
+  rank: number;
+  realName: string;
+  generation: string;
+  point: number;
+}
+
+const attendColumns: Column<AttendRankRow>[] = [
+  { key: 'rank', headerName: '랭킹' },
+  { key: 'realName', headerName: '이름' },
+  { key: 'generation', headerName: '기수' },
+  { key: 'continuousDay', headerName: '출석' },
+  { key: 'time', headerName: '출석 시간' },
+];
+
+const pointColumns: Column<PointRankRow>[] = [
+  { key: 'rank', headerName: '랭킹' },
+  { key: 'realName', headerName: '이름' },
+  { key: 'generation', headerName: '기수' },
+  { key: 'point', headerName: '포인트' },
+];
+
+const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankRow>) => {
   switch (key) {
     case 'rank':
       return `${value}등`;
-    case 'name':
+    case 'realName':
       return (
         <div className="flex place-items-center">
           <Avatar alt="profile" className="mr-2 !h-6 !w-6" />
           {value}
         </div>
       );
-    case 'no':
+    case 'generation':
       return `${value}기`;
-    case 'attend':
+    case 'continuousDay':
       return `${value}일째 출석 중`;
     default:
       return value;
   }
 };
 
-const PointRankChildComponent = ({ key, value }: ChildComponent<PointRankInfo>) => {
+const PointRankChildComponent = ({ key, value }: ChildComponent<PointRankRow>) => {
   switch (key) {
     case 'rank':
       return `${value}등`;
-    case 'name':
+    case 'realName':
       return (
         <div className="flex place-items-center">
           <Avatar alt="profile" className="mr-2 !h-6 !w-6" />
           {value}
         </div>
       );
-    case 'no':
+    case 'generation':
       return `${value}기`;
     default:
       return value;
@@ -52,6 +90,14 @@ const tapOptions = [
 
 const Rank = () => {
   const [tab, setTab] = useState(0);
+  const { page, getRowNumber } = usePagination();
+
+  const { data: attendRank } = useGetTodayAttendanceRank({ page });
+  const { data: pointRank } = useGetPointRank({ page });
+  const { data: continuousAttendRank } = useGetContinuousAttendanceRank();
+  const { data: gameRank } = useGetGameRank();
+
+  if (!attendRank || !pointRank || !continuousAttendRank || !gameRank) return null;
 
   return (
     <>
@@ -63,17 +109,26 @@ const Rank = () => {
             {tab === 1 && '누적 포인트 랭킹'}
           </Typography>
           {tab === 0 && (
-            <StandardTable<AttendRankInfo>
+            <StandardTable<AttendRankRow>
               columns={attendColumns}
-              rows={attendRows}
+              rows={attendRank.content.map((item) => ({
+                id: item.rank,
+                ...item,
+              }))}
               childComponent={AttendRankChildComponent}
+              paginationOption={{ rowsPerPage: attendRank.size, totalItems: attendRank.totalElements }}
             />
           )}
           {tab === 1 && (
-            <StandardTable<PointRankInfo>
+            <StandardTable<PointRankRow>
               columns={pointColumns}
-              rows={pointRows}
+              rows={pointRank.content.map((item, index) => ({
+                id: getRowNumber({ size: pointRank.size, index }),
+                rank: getRowNumber({ size: pointRank.size, index }),
+                ...item,
+              }))}
               childComponent={PointRankChildComponent}
+              paginationOption={{ rowsPerPage: pointRank.size, totalItems: pointRank.totalElements }}
             />
           )}
         </div>
@@ -84,12 +139,22 @@ const Rank = () => {
           </Typography>
           <div className="flex h-full flex-col justify-between">
             {tab === 0 &&
-              attendTop4.map((item, index) => (
-                <TopCard<AttendRankInfo> key={item.id} item={item} message={`${item.attend}일째 개근`} index={index} />
+              continuousAttendRank.map((item, index) => (
+                <TopCard<AttendRankInfo>
+                  key={item.rank}
+                  item={item}
+                  message={`${item.continuousDay}일째 개근`}
+                  index={index}
+                />
               ))}
             {tab === 1 &&
-              pointTop4.map((item, index) => (
-                <TopCard<PointRankInfo> key={item.id} item={item} message={`${item.point}pt 획득`} index={index} />
+              gameRank.map((item, index) => (
+                <TopCard<GameRankInfo>
+                  key={item.memberId}
+                  item={item}
+                  message={`${item.todayEarnedPoint}pt 획득`}
+                  index={index}
+                />
               ))}
           </div>
         </div>

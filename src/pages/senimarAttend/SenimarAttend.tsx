@@ -1,41 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { DateTime } from 'luxon';
 import FilledButton from '@components/Button/FilledButton';
 import { Typography } from '@mui/material';
-import { useGetSeminarInfoQuery } from '@api/seminarApi';
+import { useGetRecentlyDoneSeminarInfoQuery, useGetRecentlyUpcomingSeminarInfoQuery } from '@api/seminarApi';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
 
 const SeminarAttend = () => {
-  const seminarDate = DateTime.now(); // 이후 삭제
-  const seminarActivated = true; // TODO: useState, api 적용
-  const recentSeminarDate = useGetSeminarInfoQuery(5).data?.openTime.toString().slice(2, 10).replaceAll('-', '.'); // TODO: 이후 최근/예정/이전 세미나 날짜 조회 api로 교체
-  const [futureSeminarDate, setFutureSeminarDate] = useState('towmorrow');
-  const [pastSeminarDate, setPastSeminarDate] = useState('yesterday');
-  const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
-  const cardDateOrder = [pastSeminarDate, recentSeminarDate, futureSeminarDate]; // 해당 세미나 날짜 또는 id 담기
+  const { data: recentlyDoneSeminarId } = useGetRecentlyDoneSeminarInfoQuery();
+  const { data: twoUpcomingSeminarIds } = useGetRecentlyUpcomingSeminarInfoQuery();
+  const recentSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[0]?.id;
+  const futureSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[1]?.id;
+  const cardIdOrder = [recentlyDoneSeminarId, recentSeminarId, futureSeminarId];
+  const [isBoss, setIsBoss] = useState(true); // TODO: api? 적용?
 
   useEffect(() => {
-    setFutureSeminarDate(seminarDate.plus({ days: 1 }).toFormat('yy.MM.dd'));
-    setPastSeminarDate(seminarDate.minus({ days: 1 }).toFormat('yy.MM.dd'));
+    if (!localStorage.getItem('출석시도횟수')) localStorage.setItem('출석시도횟수', '0');
   }, []);
 
   return (
     <>
       <div className="mt-[180px] flex justify-between text-center [&>*:nth-child(2)]:mt-[-50px]">
-        {cardDateOrder.map((date) => {
-          // CardContent 파라미터로 id 또는 date 전달
+        {cardIdOrder.map((seminarId) => {
           return (
-            <SeminarCard key={date}>
-              {seminarActivated ? (
-                <>
-                  <Typography className="!mt-[16px] !text-h3 !font-bold ">{date} 세미나</Typography>
-                  <p className="mb-[14px] mt-[26px]">출석 코드</p>
-                  {isBoss ? <BossCardContent /> : <MemberCardContent />}
-                </>
+            <SeminarCard key={seminarId}>
+              {seminarId !== undefined ? (
+                <div>
+                  {isBoss ? <BossCardContent seminarId={seminarId} /> : <MemberCardContent seminarId={seminarId} />}
+                </div>
               ) : (
-                <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
+                <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">
+                  예정된 세미나가 없습니다.
+                </Typography>
               )}
             </SeminarCard>
           );

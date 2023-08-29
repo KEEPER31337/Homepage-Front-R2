@@ -64,6 +64,13 @@ export interface BookListSearch {
   size?: number;
 }
 
+export interface BorrowInfoListSearch {
+  status?: 'requests' | 'willreturn' | 'requests_or_willreturn' | 'overdue';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface BookListInfo {
   id: number;
   no: number;
@@ -84,7 +91,10 @@ export interface BorrowInfo {
   requestDatetime: string | null;
   borrowDateTime: string;
   expiredDateTime: string;
-  status: string;
+  bookQuantity: string;
+  currentQuantity: number;
+  totalQuantity: number;
+  status: '대출대기중' | '반납대기중' | '대출거부' | '대출승인' | '반납';
 }
 
 export interface BookInfo {
@@ -99,7 +109,6 @@ export interface BookInfo {
 }
 
 export interface ManageBookInfo extends BookInfo {
-  id: number;
   bookDepartment: string;
   borrowInfos: BorrowInfo[];
   borrowers: string;
@@ -270,6 +279,7 @@ export interface PostSummaryInfo {
   writerThumbnailPath: string;
   visitCount: number;
   commentCount: number;
+  likeCount: number;
   isSecret: boolean;
   thumbnailPath: string;
   registerTime: string;
@@ -310,4 +320,59 @@ export interface BoardPosts {
   sort: PageSortInfo;
   numberOfElements: number;
   empty: boolean;
+}
+
+export interface PageAndSize {
+  page?: number;
+  size?: number;
+}
+
+export interface AttendRankInfo {
+  rank: number;
+  thumbnailPath?: string | null;
+  realName: string;
+  generation: string;
+  continuousDay: number;
+  time: string;
+}
+
+export interface TodayAttendRank {
+  content: AttendRankInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface PointRankInfo {
+  realName: string;
+  generation: string;
+  point: number;
+}
+
+export interface PointRank {
+  content: PointRankInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface GameRankInfo {
+  rank: number;
+  realName: string;
+  generation: string;
+  todayEarnedPoint: number;
+  profileImageUrl?: string | null;
+  memberId: number;
 }
