@@ -38,7 +38,7 @@ export interface MemberDetailInfo extends MemberInfo {
 
 export interface PeriodicInfo {
   year: number;
-  seasons: number;
+  season: number;
 }
 
 export interface StaticWriteContentsInfo {
@@ -141,6 +141,7 @@ export interface StudyLinks {
 export interface StudyCore extends StudyLinks, PeriodicInfo {
   title: string;
   information: string;
+  memberIds: { id: number }[];
 }
 
 export interface UploadStudy {

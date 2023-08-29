@@ -8,6 +8,7 @@ import StandardInput from '@components/Input/StandardInput';
 import ImageUploader from '@components/Uploader/ImageUploader';
 import { Controller, useForm } from 'react-hook-form';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { useAddStudyMutation } from '@api/studyApi';
 import { ModalInfo } from '../Study.interface';
 import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
 
@@ -16,25 +17,49 @@ const STUDY_CONTENT_MAX_LENGTH = 100;
 
 interface StudyModalProps {
   open: boolean;
-  handleOpen: () => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   modalInfo: ModalInfo;
 }
 
-const memberList = ['김은지', '장서윤', '송세연'];
-const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
+const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
   const [, setThumbnail] = useState<Blob | null>();
+  const memberIds: { id: number }[] = [];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { mode, selectedStudy } = modalInfo;
-  const { control } = useForm({ mode: 'onBlur' });
+  const { control, getValues } = useForm({ mode: 'onBlur' });
+  const { mutate: addStudy } = useAddStudyMutation();
+
+  const handleAddActionButtonClick = () => {
+    addStudy(
+      {
+        request: {
+          title: getValues('studyTitle'),
+          information: getValues('studyInformation'),
+          gitLink: getValues('gitLink'),
+          notionLink: getValues('notionLink'),
+          etcTitle: getValues('etcTitle'),
+          etcLink: getValues('etcLink'),
+          year: 2023 /* TODO 년도 학기 정보 props로 받아오기 */,
+          season: 1,
+          memberIds,
+        },
+      },
+      {
+        onSuccess: () => {
+          setOpen(false);
+        },
+      },
+    );
+  };
 
   return (
     <ActionModal
       open={open}
-      onClose={handleOpen}
+      onClose={() => setOpen(false)}
       title={mode === 'Edit' ? '스터디 수정' : '스터디 추가'}
       actionButtonName={mode === 'Edit' ? '수정' : '추가'}
-      onActionButonClick={handleOpen}
+      onActionButonClick={handleAddActionButtonClick}
     >
       <div className="mb-10 flex justify-between">
         <Stack flexGrow={1} marginRight={3} spacing={3}>
@@ -67,7 +92,7 @@ const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
           <div>
             <InputLabel className="!font-semibold">스터디 소개</InputLabel>
             <Controller
-              name="studyContent"
+              name="studyInformation"
               defaultValue=""
               control={control}
               rules={{
@@ -108,17 +133,7 @@ const StudyModal = ({ open, handleOpen, modalInfo }: StudyModalProps) => {
           <InputLabel className="!font-semibold">스터디원</InputLabel>
           <div className="flex space-x-2 border-b-2 border-pointBlue pb-[6px]">
             <StudyChip value="박재열" />
-            {memberList.map((member) => (
-              <StudyChipDismissible
-                key={member}
-                value={member}
-                onClick={() => {
-                  /* TODO 추후 멤버 제거 핸들러 구현하고 지울 예정
-                   */
-                  console.log('임시로 구현한 핸들러 함수');
-                }}
-              />
-            ))}
+            {/* TODO autocomplete */}
           </div>
         </div>
       </div>
