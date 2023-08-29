@@ -1,21 +1,15 @@
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
-import { BookInfo } from './dto';
-
-interface getBookListProps {
-  searchType?: 'title' | 'author' | 'all';
-  search?: string;
-  page?: number;
-  size?: number;
-}
+import { BookInfo, BorrowedBookInfo, BookListSearch } from './dto';
 
 const libraryKeys = {
-  bookListContent: (param: getBookListProps) => ['library', 'bookList', param] as const,
+  bookList: (param: BookListSearch) => ['library', 'bookList', param] as const,
+  borrowedBookList: ['library', 'borrowedBookList'] as const,
 };
 
-const useGetBookListQuery = (param: getBookListProps) => {
+const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSearch) => {
   const fetcher = () =>
-    axios.get('/books', { params: { ...param } }).then(({ data }) => {
+    axios.get('/books', { params: { page, size, searchType, search } }).then(({ data }) => {
       const content = data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
         ...rest,
         bookQuantity: `${currentQuantity}/${totalQuantity}`,
@@ -23,7 +17,10 @@ const useGetBookListQuery = (param: getBookListProps) => {
       return { content, totalElement: data.totalElements };
     });
 
-  return useQuery<{ content: BookInfo[]; totalElement: number }>(libraryKeys.bookListContent(param), fetcher);
+  return useQuery<{ content: BookInfo[]; totalElement: number }>(
+    libraryKeys.bookList({ page, size, searchType, search }),
+    fetcher,
+  );
 };
 
 const useRequestBorrowBookMutation = () => {
@@ -32,4 +29,12 @@ const useRequestBorrowBookMutation = () => {
   return useMutation(fetcher);
 };
 
-export { useGetBookListQuery, useRequestBorrowBookMutation };
+const useGetBookBorrowsQuery = ({ page, size }: { page: number; size: number }) => {
+  const fetcher = () =>
+    axios.get(`/books/book-borrows`, { params: { page, size } }).then(({ data }) => {
+      return { content: data.content, totalElement: data.totalElements };
+    });
+  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList, fetcher);
+};
+
+export { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQuery };

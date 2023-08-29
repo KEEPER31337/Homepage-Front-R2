@@ -1,3 +1,7 @@
+import { DateTime } from 'luxon';
+
+export type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
+
 export type Role =
   | 'ROLE_회장'
   | 'ROLE_부회장'
@@ -58,6 +62,20 @@ export interface PageBlockInfo {
   subtitleImages: Array<SubTitleImagesInfo>;
 }
 
+export interface BookListSearch {
+  searchType?: 'title' | 'author' | 'all';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface BorrowInfoListSearch {
+  status?: 'requests' | 'willreturn' | 'requests_or_willreturn' | 'overdue';
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface BookListInfo {
   id: number;
   no: number;
@@ -67,6 +85,23 @@ export interface BookListInfo {
   information: string;
   enable: boolean;
 }
+
+export interface BorrowInfo {
+  borrowInfoId: number;
+  bookId: number;
+  bookTitle: string;
+  author: string;
+  borrowerId: number;
+  borrowerRealName: string;
+  requestDatetime: string | null;
+  borrowDateTime: string;
+  expiredDateTime: string;
+  bookQuantity: string;
+  currentQuantity: number;
+  totalQuantity: number;
+  status: '대출대기중' | '반납대기중';
+}
+
 export interface BookInfo {
   bookId: number;
   thumbnailPath: string;
@@ -76,6 +111,24 @@ export interface BookInfo {
   currentQuantity: number;
   totalQuantity: number;
   canBorrow: boolean;
+}
+
+export interface ManageBookInfo extends BookInfo {
+  id: number;
+  bookDepartment: string;
+  borrowInfos: BorrowInfo[];
+  borrowers: string;
+}
+
+export type BookCoreData = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepartment' | 'totalQuantity'>;
+
+export interface BorrowedBookInfo {
+  borrowInfoId: number;
+  title: string;
+  author: string;
+  overdue: boolean;
+  borrowDate: string;
+  expireDate: string;
 }
 
 export interface StudyLinks {
@@ -129,15 +182,43 @@ export interface SignUpDuplication {
   duplicate: boolean;
 }
 
+export interface SeminarInfo {
+  seminarId: number;
+  seminarName: string;
+  openTime: DateTime;
+  attendanceCloseTime: DateTime;
+  latenessCloseTime: DateTime;
+  statusType: ActivityStatus;
+  attendanceCode: string;
+}
+
+export interface AvailableSeminarInfo {
+  id: number;
+  openTime: string;
+  attendanceCloseTime: string;
+  latenessCloseTime: string;
+  attendanceCode: string;
+  name: string;
+  registerTime: string;
+  updateTime: string;
+}
+
+export interface AttendResponseData {
+  id: number;
+  statusText: string;
+}
 export interface CommentInfo {
   commentId: number;
+  writerId: number;
   writerName: string;
   writerThumbnailPath: string | null;
-  content: string;
+  content: string | null;
   registerTime: string;
   parentId: number | null;
   likeCount: number;
   dislikeCount: number;
+  isLike: boolean;
+  isDislike: boolean;
 }
 
 export interface UploadPostSettings {
@@ -187,6 +268,8 @@ export interface PostInfo {
   nextPost: AdjacentPostInfo;
   likeCount: number;
   dislikeCount: number;
+  isLike: boolean;
+  isDislike: boolean;
   allowComment: boolean;
   isNotice: boolean;
   isSecret: boolean;
@@ -224,8 +307,8 @@ export interface PageableInfo {
 
 export interface BoardSearch {
   categoryId: number;
-  searchType?: 'title' | 'content' | 'writer' | 'title+content';
-  search?: string;
+  searchType?: 'title' | 'content' | 'writer' | 'title+content' | null;
+  search?: string | null;
   page?: number;
   size?: number;
 }

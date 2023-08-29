@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { KeyboardEvent } from 'react';
-import { IconButton, InputAdornment, StandardTextFieldProps, TextField } from '@mui/material';
+import { IconButton, StandardTextFieldProps } from '@mui/material';
 import { MdOutlineSearch } from 'react-icons/md';
+import StandardInput from './StandardInput';
 
 interface SearchInputProps extends StandardTextFieldProps {
   value: string;
@@ -10,27 +11,22 @@ interface SearchInputProps extends StandardTextFieldProps {
 }
 
 const SearchInput = ({ value, onChange, onSearchButtonClick, ...standardTextFieldProps }: SearchInputProps) => {
-  const handleOnKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleOnKeyEnterDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onSearchButtonClick();
     }
   };
 
   return (
-    <TextField
+    <StandardInput
       value={value}
       onChange={onChange}
-      onKeyPress={handleOnKeyEnterPress}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton onClick={onSearchButtonClick}>
-              <MdOutlineSearch size={20} className="fill-pointBlue" />
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-      variant="standard"
+      onKeyDown={handleOnKeyEnterDown}
+      endAdornment={
+        <IconButton onClick={onSearchButtonClick}>
+          <MdOutlineSearch size={20} className="fill-pointBlue" />
+        </IconButton>
+      }
       {...standardTextFieldProps}
     />
   );
