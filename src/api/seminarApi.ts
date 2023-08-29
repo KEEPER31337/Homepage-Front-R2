@@ -39,7 +39,7 @@ const useGetRecentlyDoneSeminarInfoQuery = () => {
 };
 
 const useGetRecentlyUpcomingSeminarInfoQuery = () => {
-  const fetcher = () => axios.get(`/seminars/recently-upcoming `).then(({ data }) => data);
+  const fetcher = () => axios.get(`/seminars/recently-upcoming`).then(({ data }) => data);
 
   return useQuery<[{ id: number }, { id: number }]>(seminarKeys.getRecentlyUpcomingSeminar, fetcher);
 };
