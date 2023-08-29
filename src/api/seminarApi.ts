@@ -16,6 +16,7 @@ const useGetSeminarInfoQuery = (id: number) => {
     axios.get(`/seminars/${id}`).then(({ data }) => {
       const transformedData = {
         ...data,
+        seminarName: data.seminarName.replaceAll('-', '.'),
         openTime: DateTime.fromISO(data.openTime),
         attendanceCloseTime: DateTime.fromISO(data.attendanceCloseTime),
         latenessCloseTime: DateTime.fromISO(data.latenessCloseTime),
