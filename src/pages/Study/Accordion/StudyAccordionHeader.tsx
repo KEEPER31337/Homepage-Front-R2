@@ -2,6 +2,7 @@ import React, { Dispatch, DispatchWithoutAction, SetStateAction } from 'react';
 import ServerImg from '@components/Image/ServerImg';
 import { StudyInfo } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
+import { Typography } from '@mui/material';
 import { ModalInfo } from '../Study.interface';
 
 interface StudyAccordionHeaderProps {
@@ -22,16 +23,18 @@ const StudyAccordionHeader = ({ study, toggleOpen, setModalInfo }: StudyAccordio
   };
 
   return (
-    <div className="flex w-full space-x-2 pl-2 text-left">
+    <div className="flex w-full items-center space-x-4 pl-2">
       <ServerImg
         className="h-16 w-16 object-cover"
         errorClassName="h-16 w-16"
         src={study.thumbnailPath}
         alt="스터디 썸네일"
       />
+      <Typography variant="h3" fontWeight="semiBold">
+        {study.title}
+      </Typography>
       {/* <div className="flex w-full items-center justify-between space-x-2 pr-2">
         <div className="flex space-x-[22px]">
-          <Typography className="!text-h3 !font-semibold">{study.title}</Typography>
           {checkIsMyId(study.headId) && (
             <div className="space-x-2 pr-2">
               <OutlinedButton onClick={handleStudyEditButtonClick}>수정</OutlinedButton>
