@@ -63,6 +63,26 @@ const useDeleteBookMutation = () => {
   });
 };
 
+const useEditBookInfoMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ bookId, bookCoreData }: { bookId: number; bookCoreData: BookCoreData }) =>
+    axios.put(`/manage/books/${bookId}`, bookCoreData);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
+    },
+  });
+};
+
+const useEditBookThumbnailMutation = () => {
+  const fetcher = ({ bookId, thumbnail }: { bookId: number; thumbnail?: Blob | null }) =>
+    axios.patch(`/manage/books/${bookId}`, thumbnail);
+
+  return useMutation(fetcher);
+};
+
 const useGetBookDetailQuery = (bookId: number) => {
   const fetcher = () => axios.get(`/manage/books/${bookId}`).then(({ data }) => data);
 
@@ -175,4 +195,6 @@ export {
   useApproveReturnMutation,
   useDenyReturnMutation,
   useGetBookDetailQuery,
+  useEditBookInfoMutation,
+  useEditBookThumbnailMutation,
 };

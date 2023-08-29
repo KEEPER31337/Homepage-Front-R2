@@ -4,6 +4,7 @@ import ActionModal from '@components/Modal/ActionModal';
 import { useGetBookDetailQuery } from '@api/libraryManageApi';
 import StandardInput from '@components/Input/StandardInput';
 import ImageUploader from '@components/Uploader/ImageUploader';
+import { useEditBookInfoMutation } from '@api/libraryManageApi';
 import TotalBookNumberSelector from '../Selector/TotalBookNumberSelector';
 
 interface SelectorProps {
@@ -13,12 +14,13 @@ interface SelectorProps {
 }
 
 const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
-  const [editBookInfo, setEditBookInfo] = React.useState({
+  const [bookInfo, setBookInfo] = React.useState({
     title: '',
     author: '',
   });
-  const { title, author } = editBookInfo;
+  const { title, author } = bookInfo;
   const [totalQuantity, setTotalQuantity] = useState(1);
+  const bookDepartment = 'ETC';
   const [thumbnailPath, setThumbnailPath] = useState('');
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
 
@@ -27,17 +29,18 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
 
   const handleEditBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setEditBookInfo({
-      ...editBookInfo,
+    setBookInfo({
+      ...bookInfo,
       [name]: value,
     });
   };
 
   const { data: bookDetail } = useGetBookDetailQuery(editBookId);
+  const { mutate: editBookInfo } = useEditBookInfoMutation();
 
   useEffect(() => {
     if (bookDetail) {
-      setEditBookInfo({
+      setBookInfo({
         title: bookDetail.title,
         author: bookDetail.author,
       });
@@ -55,15 +58,14 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
   const handleEditBookButtonClick = () => {
     const isValid = validate();
     if (isValid) {
-      // addBookMutation(
-      //   { bookMetaData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
-      //   {
-      //     onSuccess: () => {
-      //       onClose();
-      //       resetAddBookInfo();
-      //     },
-      //   },
-      // );
+      editBookInfo(
+        { bookCoreData: { title, author, totalQuantity, bookDepartment }, bookId: editBookId },
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        },
+      );
     }
   };
 
