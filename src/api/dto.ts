@@ -323,6 +323,19 @@ export interface BoardPosts {
   empty: boolean;
 }
 
+export interface TrendingPostInfo {
+  id: number;
+  title: string;
+  writerName: string;
+  writerThumbnailPath: string;
+  categoryId: number;
+  categoryName: string;
+  visitCount: number;
+  isSecret: boolean;
+  thumbnailPath: string;
+  registerTime: string;
+}
+
 export interface PageAndSize {
   page?: number;
   size?: number;
