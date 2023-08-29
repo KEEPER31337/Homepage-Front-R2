@@ -38,7 +38,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
 
   const handleAttendButtonClick = () => {
     attend(inputCode.join(''));
-    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1 >= 5) setExcessModalOpen(true);
+    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) > 5) setExcessModalOpen(true);
   };
 
   useEffect(() => {
