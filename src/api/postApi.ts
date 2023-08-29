@@ -3,7 +3,16 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useApiError } from '@hooks/useGetApiError';
 import toast from 'react-hot-toast';
-import { BoardPosts, BoardSearch, FileInfo, PostInfo, PostSummaryInfo, UploadPost, UploadPostCore, TrendingPostInfo } from './dto';
+import {
+  BoardPosts,
+  BoardSearch,
+  FileInfo,
+  PostInfo,
+  PostSummaryInfo,
+  UploadPost,
+  UploadPostCore,
+  TrendingPostInfo,
+} from './dto';
 
 const useUploadPostMutation = () => {
   const fetcher = ({ request, thumbnail, files }: UploadPost) => {
@@ -117,7 +126,7 @@ const useGetTrendPostsQuery = () => {
   const fetcher = () => axios.get('/posts/trend').then(({ data }) => data);
 
   return useQuery<TrendingPostInfo[]>('trendPosts', fetcher);
-}
+};
 const useDownloadFileMutation = () => {
   const fetcher = ({ postId, fileId, fileName }: { postId: number; fileId: number; fileName: string }) =>
     axios
