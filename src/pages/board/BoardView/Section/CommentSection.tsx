@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardActions, Typography } from '@mui/material';
 import CustomBadge from '@components/Badge/CustomBadge';
 import { useCreateCommentMutation, useGetCommentQuery } from '@api/commentApi';
@@ -12,12 +12,13 @@ interface CommentSectionProps {
 }
 
 const CommentSection = ({ allowComment, postId }: CommentSectionProps) => {
+  const [commentContent, setCommentContent] = useState('');
+
   const { data: commentList } = useGetCommentQuery(postId); // TODO postId 정상적으로 받아오지 않을 경우 처리
-  const { mutate } = useCreateCommentMutation();
+  const { mutate: createComment } = useCreateCommentMutation();
 
   const handleWriteCommentClick = () => {
-    // TODO 댓글 작성 API 적용
-    mutate();
+    createComment({ postId, content: commentContent });
   };
 
   const getParentComment = (comments: CommentInfo[]) => {
@@ -52,7 +53,11 @@ const CommentSection = ({ allowComment, postId }: CommentSectionProps) => {
       <Card className={commentList.length > 0 ? 'mt-11' : ''}>
         <CardActions className="border-t border-subBlack bg-middleBlack">
           <CommentWriteCardAction
-            textFieldProps={{ placeholder: '댓글...' }}
+            textFieldProps={{
+              value: commentContent,
+              onChange: (e) => setCommentContent(e.target.value),
+              placeholder: '댓글...',
+            }}
             writeButtonName="댓글 작성"
             onWriteButtonClick={handleWriteCommentClick}
           />

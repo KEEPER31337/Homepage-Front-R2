@@ -17,11 +17,11 @@ import MemberCardContent from './Card/MemberCardContent';
 const SeminarAttend = () => {
   const { data: recentlyDoneSeminarId } = useGetRecentlyDoneSeminarInfoQuery();
   const { data: twoUpcomingSeminarIds } = useGetRecentlyUpcomingSeminarInfoQuery();
+  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const recentSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[0]?.id;
   const futureSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[1]?.id;
   const cardIdOrder = [recentlyDoneSeminarId, recentSeminarId, futureSeminarId];
   const { checkIncludeOneOfAuths } = useCheckAuth();
-  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const authorizedMember = checkIncludeOneOfAuths(['ROLE_회장', 'ROLE_부회장', 'ROLE_서기']);
   const startMember: number | undefined = useRecoilValue(starterState);
   const member: MemberInfo | null = useRecoilValue(memberState);

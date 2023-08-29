@@ -14,7 +14,9 @@ const useCheckAuth = () => {
     return (roles: Role[]) => roles.some((role) => checkAuth(role));
   }, [member]);
 
-  return { checkAuth, checkIncludeOneOfAuths };
+  const checkIsMyId = (id: number) => member?.memberId === id;
+
+  return { checkAuth, checkIncludeOneOfAuths, checkIsMyId };
 };
 
 export default useCheckAuth;

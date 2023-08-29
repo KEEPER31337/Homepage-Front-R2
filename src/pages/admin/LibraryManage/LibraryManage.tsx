@@ -1,43 +1,26 @@
 import React, { useState } from 'react';
-import { BookListInfo } from '@api/dto';
-import PageTitle from '@components/Typography/PageTitle';
-import StandardTable from '@components/Table/StandardTable';
-import OutlinedButton from '@components/Button/OutlinedButton';
-import { ChildComponent } from '@components/Table/StandardTable.interface';
-import { columns, rows } from '@mocks/LibraryManageApi';
-
-import SearchSection from '@components/Section/SearchSection';
-import AddBookModal from './Modal/AddBookModal';
-import DeleteBookModal from './Modal/DeleteBookModal';
+import StandardTab from '@components/Tab/StandardTab';
+import BookManageTab from './Tab/BookManageTab';
+import BorrowingStatusTab from './Tab/BorrowingStatusTab';
+import RequestManageTab from './Tab/RequestManageTab';
 
 const LibraryManage = () => {
-  const childComponent = ({ key, value }: ChildComponent<BookListInfo>) => {
-    switch (key) {
-      case 'enable':
-        return value ? <div className="text-pointBlue">대출가능</div> : <div className="text-subGray">대출불가</div>;
-      default:
-        return value;
-    }
-  };
-  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
-  const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
-  return (
-    <div>
-      <PageTitle>도서관리</PageTitle>
-      <div className="mb-5 flex w-full items-center justify-between">
-        {/* <SearchSection /> */}
-        <div className="flex space-x-2">
-          <OutlinedButton onClick={() => setAddBookModalOpen(true)}>도서 추가</OutlinedButton>
-          <OutlinedButton onClick={() => setDeleteBookModalOpen(true)}>도서 삭제</OutlinedButton>
-          <OutlinedButton>대출 관리</OutlinedButton>
-          <OutlinedButton>반납 관리</OutlinedButton>
+  const tabList = [
+    { id: 0, label: '도서 관리' },
+    { id: 1, label: '승인 요청' },
+    { id: 2, label: '대출 현황' },
+  ];
+  const [tab, setTab] = useState(0);
 
-          <AddBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
-          <DeleteBookModal open={deleteBookModalOpen} onClose={() => setDeleteBookModalOpen(false)} />
-        </div>
+  return (
+    <>
+      <StandardTab options={tabList} tab={tab} setTab={setTab} />
+      <div className="mt-10">
+        {tab === 0 && <BookManageTab />}
+        {tab === 1 && <RequestManageTab />}
+        {tab === 2 && <BorrowingStatusTab />}
       </div>
-      <StandardTable<BookListInfo> columns={columns} rows={rows} childComponent={childComponent} />
-    </div>
+    </>
   );
 };
 

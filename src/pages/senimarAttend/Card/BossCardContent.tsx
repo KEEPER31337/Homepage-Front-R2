@@ -19,8 +19,8 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
-  const { mutate: setSeminarTime, isSuccess } = useStartSeminarMutation(seminarId);
-  const { data: availableSeminarData, refetch: availableSeminarRefetch } = useGetAvailableSeminarInfoQuery();
+  const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
+  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const member: MemberInfo | null = useRecoilValue(memberState);
 
   const handleOnStartSeminar = () => {
@@ -33,18 +33,12 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   };
 
   useEffect(() => {
-    availableSeminarRefetch();
-  }, [isSuccess]);
-
-  useEffect(() => {
     if (seminarData && availableSeminarData?.id === seminarData.seminarId) setSeminarStart(true);
   }, [availableSeminarData]);
 
   return (
     <>
-      <Typography className="!mt-[16px] !text-h3 !font-bold ">
-        {seminarData?.seminarName.replaceAll('-', '.')} 세미나
-      </Typography>
+      <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarData?.seminarName} 세미나</Typography>
       <p className="mb-[14px] mt-[26px]">출석 코드</p>
       <SeminarInput
         disabled
