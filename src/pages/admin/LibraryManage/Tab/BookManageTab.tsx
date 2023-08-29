@@ -10,7 +10,6 @@ import { VscTrash } from 'react-icons/vsc';
 import AddBookModal from '../Modal/AddBookModal';
 
 interface libraryManageRow {
-  id: number;
   no: number;
   title: string;
   author: string;
@@ -69,7 +68,6 @@ const BookManageTab = () => {
   };
   if (!bookManageListData) return null;
 
-  console.log(bookManageListData);
   return (
     <>
       <div className="mb-5 flex justify-between space-x-2">
