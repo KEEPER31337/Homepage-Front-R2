@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { useApiError } from '@hooks/useGetApiError';
+import toast from 'react-hot-toast';
 import { BoardPosts, BoardSearch, FileInfo, PostInfo, PostSummaryInfo, UploadPost, UploadPostCore } from './dto';
 
 const useUploadPostMutation = () => {
@@ -83,10 +85,20 @@ const useGetNoticePostListQuery = ({ categoryId }: { categoryId: number }) => {
   });
 };
 
-const useGetEachPostQuery = (postId: number) => {
-  const fetcher = () => axios.get(`/posts/${postId}`).then(({ data }) => data);
+const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?: string) => {
+  const { handleError } = useApiError({
+    403: {
+      40301: () => {
+        toast.error('게시글의 비밀번호가 일치하지 않습니다.');
+      },
+    },
+  });
+  const fetcher = () => axios.get(`/posts/${postId}`, { params: { password } }).then(({ data }) => data);
 
-  return useQuery<PostInfo>(['post', postId], fetcher);
+  return useQuery<PostInfo>(['post', postId, password], fetcher, {
+    enabled: !isSecret || Boolean(isSecret && password),
+    onError: (err) => handleError(err, 40301),
+  });
 };
 
 const useGetPostFilesQuery = (postId: number) => {

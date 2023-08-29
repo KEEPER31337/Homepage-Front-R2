@@ -22,6 +22,8 @@ interface BoardRow {
   writerName: string;
   registerTime: string;
   visitCount: number;
+  likeCount: number;
+  commentCount: number;
   isSecret: boolean;
 }
 
@@ -31,6 +33,7 @@ const boardColumn: Column<BoardRow>[] = [
   { key: 'writerName', headerName: '작성자' },
   { key: 'registerTime', headerName: '작성일' },
   { key: 'visitCount', headerName: '조회수' },
+  { key: 'likeCount', headerName: '추천수' },
 ];
 
 const BoardList = () => {
@@ -62,7 +65,7 @@ const BoardList = () => {
   const handlePostRowClick = ({ rowData }: { rowData: Row<BoardRow> }) => {
     if (!rowData.id) return;
 
-    navigate(`/board/view/${rowData.id}`);
+    navigate(`/board/view/${rowData.id}`, { state: rowData.isSecret });
   };
 
   const childComponent = ({ key, value, rowData }: ChildComponent<BoardRow>) => {
@@ -79,10 +82,14 @@ const BoardList = () => {
         return rowData.isSecret ? (
           <div className="flex items-center">
             <AiFillLock className="mr-1 fill-pointBlue" />
-            {value}
+            <span>비밀글입니다.</span>
+            {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
           </div>
         ) : (
-          value
+          <div className="flex items-center">
+            <span>{value}</span>
+            {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
+          </div>
         );
       default:
         return value;
