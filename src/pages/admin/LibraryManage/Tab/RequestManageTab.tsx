@@ -16,7 +16,6 @@ import { VscCircleLarge, VscChromeClose } from 'react-icons/vsc';
 import RequestManageSearchSection from '../SearchSection/RequestManageSearchSection';
 
 interface requestManageRow {
-  id: number;
   no: number;
   status: string;
   requestDatetime: string | null;
