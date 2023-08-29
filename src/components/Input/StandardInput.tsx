@@ -17,7 +17,7 @@ const StandardInput = forwardRef(
       <TextField
         ref={ref}
         InputProps={
-          error
+          error || !endAdornment
             ? undefined
             : {
                 className: 'before:!border-pointBlue',

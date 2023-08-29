@@ -79,7 +79,7 @@ const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
               render={({ field, fieldState: { error } }) => {
                 return (
                   <StandardInput
-                    className="w-full"
+                    className="w-64"
                     {...field}
                     error={Boolean(error)}
                     helperText={error?.message}
