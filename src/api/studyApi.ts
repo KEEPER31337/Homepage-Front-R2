@@ -27,7 +27,7 @@ const useDeleteStudyMutation = () => {
 };
 
 const useGetStudyListQuery = ({ year, season }: { year: number; season: number }) => {
-  const fetcher = () => axios.get('/studies', { params: { year, season } }).then(({ data }) => data);
+  const fetcher = () => axios.get('/studies', { params: { year, season } }).then(({ data }) => data.studies);
 
   return useQuery<StudyInfo[]>(['studies', year, season], fetcher);
 };

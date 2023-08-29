@@ -2,11 +2,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react';
 
-import { studyList, yearList } from '@mocks/StudyApi';
+import { yearList } from '@mocks/StudyApi';
 import PageTitle from '@components/Typography/PageTitle';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { SelectChangeEvent } from '@mui/material';
 import Selector from '@components/Selector/Selector';
+import { useGetStudyListQuery } from '@api/studyApi';
 import { ModalInfo } from './Study.interface';
 import StudyModal from './Modal/StudyModal';
 import StudyAccordion from './Accordion/StudyAccordion';
@@ -23,13 +24,12 @@ const seasonList = [
 
 const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: 0, season: 0 });
-  const [currentStudyList, setCurrentStudyList] = useState(studyList);
 
-  const [open, toggleOpen] = useReducer((prev) => !prev, false);
+  const [studyAccoridionOpen, toggleStudyAccoridionOpen] = useReducer((prev) => !prev, false);
   const [studyModalOpen, setStudyModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'Add' });
 
-  const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
+  const { data: studyList } = useGetStudyListQuery({ year: 2023, season: 1 });
 
   const handlePeriodChange = (event: SelectChangeEvent<unknown>) => {
     const { name, value } = event.target;
@@ -44,13 +44,7 @@ const Study = () => {
   /* 처음 한 번만 동작하는 useEffect, 페이지 초기 값 셋팅 */
   useEffect(() => {
     setCurrentPeriod({ year: 0, season: 0 }); /* TODO 현재 연도, 분기 가져와서 초기화 */
-    setCurrentStudyList(studyList); /* TODO 현재 연도/분기에 따른 스터디 리스트 불러와서 초기화 */
   }, []);
-
-  /* 페이지 데이터(year, season)가 업데이트 될 때마다 동작하는 useEffect */
-  useEffect(() => {
-    setCurrentStudyList(studyList); /* TODO 현재 연도/분기에 따른 스터디 리스트 불러와서 초기화 */
-  }, [currentPeriod]);
 
   return (
     <div>
@@ -77,15 +71,14 @@ const Study = () => {
         )}
       </div>
       {Number(yearList[currentPeriod.year].content) < OLD_YEAR_BOUND ? (
-        <OldStudy list={currentStudyList} memberId={myMemberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
+        <OldStudy list={[]} memberId={-1} toggleOpen={toggleStudyAccoridionOpen} setModalInfo={setModalInfo} />
       ) : (
         <div>
-          {currentStudyList?.map((study: any) => (
+          {studyList?.map((study) => (
             <StudyAccordion
-              key={study.id}
+              key={study.studyId}
               study={study}
-              memberId={myMemberId}
-              toggleOpen={toggleOpen}
+              toggleOpen={toggleStudyAccoridionOpen}
               setModalInfo={setModalInfo}
             />
           ))}
