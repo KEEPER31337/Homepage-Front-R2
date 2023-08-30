@@ -1,6 +1,6 @@
-import { StudyListInfo } from '@api/dto';
+import { StudyInfo } from '@api/dto';
 
 export interface ModalInfo {
   mode: 'Add' | 'Edit';
-  selectedStudy?: StudyListInfo;
+  selectedStudy?: StudyInfo;
 }

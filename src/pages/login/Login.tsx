@@ -39,14 +39,8 @@ const Login = () => {
     setIsKeepLogin(e.target.checked);
   };
 
-  const validation = () => {
-    const isError = false;
-
-    return !isError;
-  };
-
   const handleLoginClick = () => {
-    if (validation()) {
+    if (form.id && form.password) {
       login({ loginId: form.id, password: form.password });
     }
   };
@@ -93,7 +87,7 @@ const Login = () => {
           </Stack>
           <HorizonLine />
           <Stack direction="row" spacing={2}>
-            <Link to="/">
+            <Link to="/searchAccount">
               <p className="hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
             </Link>
             <p>|</p>
