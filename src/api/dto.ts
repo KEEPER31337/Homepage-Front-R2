@@ -396,3 +396,23 @@ export interface GameRankInfo {
   profileImageUrl?: string | null;
   memberId: number;
 }
+
+export interface ExecutiveInfo {
+  jobId: number;
+  jobName: string;
+  memberId: number;
+  generation: string;
+  realName: string;
+}
+
+export interface JobList {
+  jobId: number;
+  jobName: string;
+}
+
+export interface memberInfo {
+  memberId: number;
+  memberName: string;
+  generation: string;
+}
+

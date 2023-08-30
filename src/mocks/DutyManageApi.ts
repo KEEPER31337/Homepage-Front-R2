@@ -8,13 +8,13 @@ import administratorBadge from '@assets/dutyManage/badge_7_administrator.gif';
 import librarianBadge from '@assets/dutyManage/badge_8_librarian.gif';
 
 interface RoleDutyList {
-  roleName: string;
+  jobName: string;
   roleDuty: { key: number; content: string }[];
 }
 
 const roleDutyListInfo: RoleDutyList[] = [
   {
-    roleName: '회장',
+    jobName: 'ROLE_회장',
     roleDuty: [
       { key: 1, content: '회장역할 1' },
       { key: 2, content: '회장역할 2' },
@@ -25,7 +25,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: '부회장',
+    jobName: 'ROLE_부회장',
     roleDuty: [
       { key: 1, content: '부회장역할 1' },
       { key: 2, content: '부회장역할 2' },
@@ -40,7 +40,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: '학술부장',
+    jobName: 'ROLE_학술부장',
     roleDuty: [
       { key: 1, content: '학술부장역할 1' },
       { key: 2, content: '학술부장역할 2' },
@@ -55,7 +55,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: '대외부장',
+    jobName: 'ROLE_대외부장',
     roleDuty: [
       { key: 1, content: '대외부장역할 1' },
       { key: 2, content: '대외부장역할 2' },
@@ -66,7 +66,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: '전산관리자',
+    jobName: 'ROLE_전산관리자',
     roleDuty: [
       { key: 1, content: '전산관리자역할 1' },
       { key: 2, content: '전산관리자역할 2' },
@@ -77,7 +77,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: '서기',
+    jobName: 'ROLE_서기',
     roleDuty: [
       { key: 1, content: '서기역할 1' },
       { key: 2, content: '서기역할 2' },
@@ -88,7 +88,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: '사서',
+    jobName: 'ROLE_사서',
     roleDuty: [
       { key: 1, content: '사서역할 1' },
       { key: 2, content: '사서역할 2' },
@@ -103,7 +103,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: '총무',
+    jobName: 'ROLE_총무',
     roleDuty: [
       { key: 1, content: '총무역할 1' },
       { key: 2, content: '총무역할 2' },
@@ -118,7 +118,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: 'FRONT',
+    jobName: 'ROLE_FRONT_전산관리자',
     roleDuty: [
       { key: 1, content: 'FRONT 1' },
       { key: 2, content: 'FRONT 2' },
@@ -129,7 +129,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: 'BACK',
+    jobName: 'ROLE_BACK_전산관리자',
     roleDuty: [
       { key: 1, content: 'BACK 1' },
       {
@@ -144,7 +144,7 @@ const roleDutyListInfo: RoleDutyList[] = [
     ],
   },
   {
-    roleName: 'INFRA',
+    jobName: 'ROLE_INFRA_전산관리자',
     roleDuty: [
       { key: 1, content: 'INFRA 1' },
       { key: 2, content: 'INFRA 2' },
@@ -157,27 +157,14 @@ const roleDutyListInfo: RoleDutyList[] = [
 ];
 
 const roles = [
-  { name: '회장', img: chairmanBadge },
-  { name: '부회장', img: viceChairmanBadge },
-  { name: '대외부장', img: externalManagerBadge },
-  { name: '학술부장', img: studyManagerBadge },
-  { name: '전산관리자', img: ITManagerBadge },
-  { name: '서기', img: clerkBadge },
-  { name: '총무', img: administratorBadge },
-  { name: '사서', img: librarianBadge },
+  { name: 'ROLE_회장', img: chairmanBadge },
+  { name: 'ROLE_부회장', img: viceChairmanBadge },
+  { name: 'ROLE_대외부장', img: externalManagerBadge },
+  { name: 'ROLE_학술부장', img: studyManagerBadge },
+  { name: 'ROLE_전산관리자', img: ITManagerBadge },
+  { name: 'ROLE_서기', img: clerkBadge },
+  { name: 'ROLE_총무', img: administratorBadge },
+  { name: 'ROLE_사서', img: librarianBadge },
 ];
 
-const roleInfos = [
-  { roleName: '회장', rolePersonName: '박재열', generation: '12' },
-  { roleName: '부회장', rolePersonName: '김태연', generation: '11' },
-  { roleName: '대외부장', rolePersonName: '신채원', generation: '13.5' },
-  { roleName: '학술부장', rolePersonName: '이현', generation: '10.5' },
-  { roleName: 'FRONT', rolePersonName: '조승현', generation: '9' },
-  { roleName: 'BACK', rolePersonName: '손현경', generation: '13' },
-  { roleName: 'INFRA', rolePersonName: '전설', generation: '8' },
-  { roleName: '서기', rolePersonName: '한대희', generation: '13' },
-  { roleName: '총무', rolePersonName: '민예진', generation: '12.5' },
-  { roleName: '사서', rolePersonName: '박소현', generation: '13' },
-];
-
-export { roleDutyListInfo, roles, roleInfos };
+export { roleDutyListInfo, roles };

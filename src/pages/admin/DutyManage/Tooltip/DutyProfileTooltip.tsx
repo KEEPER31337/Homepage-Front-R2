@@ -10,19 +10,18 @@ import DutyProfileButton from '../Button/DutyProfileButton';
 import ChangeRolePersonModal from '../Modal/ChangeRolePersonModal';
 
 interface DutyProfileTooltipProps {
-  roleName: string;
+  jobName: string;
 }
 
-const tooltipContent = (roleName: string) =>
+const tooltipContent = (jobName?: string) =>
   useMemo(
     () => (
       <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
         {roleDutyListInfo
-          .filter((duty) => duty.roleName === roleName)
+          .filter((duty) => duty.jobName === jobName)
           .map((data) =>
             data.roleDuty.map((duty) => (
               <ListItem key={duty.key} sx={{ px: '0px', py: '0px' }}>
-                {/* fontWeight: 600 = semi-bold */}
                 <Typography
                   sx={{
                     fontWeight: 600,
@@ -43,24 +42,23 @@ const tooltipContent = (roleName: string) =>
           )}
       </List>
     ),
-    [roleName],
+    [jobName],
   );
 
-const DutyProfileTooltip = ({ roleName }: DutyProfileTooltipProps) => {
+const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [modalOpen, toggleModalOpen] = useReducer((prev) => !prev, false);
 
   let badgeImage;
-  if (roleName === 'FRONT' || roleName === 'BACK' || roleName === 'INFRA') {
-    badgeImage = roles.find((role) => role.name === '전산관리자')?.img;
+  if (jobName.search('전산관리자') !== -1) {
+    badgeImage = roles.find((role) => role.name === 'ROLE_전산관리자')?.img;
   } else {
-    badgeImage = roles.find((role) => role.name === roleName)?.img;
+    badgeImage = roles.find((role) => role.name === jobName)?.img;
   }
-  const modalInfo = { name: roleName, badge: badgeImage };
 
   return (
     <DescriptionRoleDutyTooltip
-      title={roleName !== '전산관리자' ? tooltipContent(roleName) : null}
+      title={jobName !== 'ROLE_전산관리자' ? tooltipContent(jobName) : null}
       open={tooltipOpen}
       onMouseEnter={() => setTooltipOpen(true)}
       onMouseLeave={() => setTooltipOpen(false)}
@@ -68,12 +66,17 @@ const DutyProfileTooltip = ({ roleName }: DutyProfileTooltipProps) => {
     >
       <div>
         <DutyProfileButton
-          roleName={roleName}
+          jobName={jobName}
           badgeImage={badgeImage}
           setTooltipOpen={setTooltipOpen}
           toggleModalOpen={toggleModalOpen}
         />
-        <ChangeRolePersonModal open={modalOpen} toggleOpen={toggleModalOpen} modalInfo={modalInfo} />
+        <ChangeRolePersonModal
+          open={modalOpen}
+          toggleOpen={toggleModalOpen}
+          jobName={jobName}
+          badgeImage={badgeImage}
+        />
       </div>
     </DescriptionRoleDutyTooltip>
   );
