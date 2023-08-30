@@ -36,6 +36,11 @@ export interface MemberDetailInfo extends MemberInfo {
   memberRank: string;
 }
 
+export interface PeriodicInfo {
+  year: number;
+  season: number;
+}
+
 export interface StaticWriteContentsInfo {
   id: number;
   content: string;
@@ -126,40 +131,41 @@ export interface BorrowedBookInfo {
   expireDate: string;
 }
 
+export interface StudyLinks {
+  gitLink?: string;
+  notionLink?: string;
+  etcTitle?: string;
+  etcLink?: string;
+}
+
+export interface StudyCore extends StudyLinks, PeriodicInfo {
+  title: string;
+  information: string;
+  memberIds: { id: number }[];
+}
+
+export interface UploadStudy {
+  request: StudyCore;
+  thumbnail?: Blob | null;
+}
+
+export interface StudyInfo {
+  studyId: number;
+  thumbnailPath: string;
+  title: string;
+  headName: string;
+  memberCount: number;
+}
+
 export interface StudyLinkInfo {
   title: string;
   contents: string;
 }
 
-export interface StudyMemberInfo {
-  id: number;
-  emailAddress: string;
-  nickName: string;
-  realName: string;
-  registerDate: string;
-  point: number;
-  level: number;
-  rank: string;
-  type: string;
-  jobs: string[];
-  thumbnailPath: string;
-  merit: number;
-  demerit: number;
-  generation: number;
-}
-
-export interface StudyListInfo {
-  id: number;
-  title: string;
+export interface StudyDetail {
   information: string;
-  memberNumber: number;
-  registerTime: string;
-  year: number;
-  season: number;
-  link: StudyLinkInfo[];
-  thumbnailPath: string;
-  headMember: StudyMemberInfo;
-  memberList: StudyMemberInfo[];
+  links: StudyLinkInfo[];
+  members: MemberInfo[];
 }
 
 export interface SignUpInfo {
