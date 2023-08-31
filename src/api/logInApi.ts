@@ -13,9 +13,6 @@ const useLoginMutation = () => {
   const setMemberState = useSetRecoilState(memberState);
 
   return useMutation(fetcher, {
-    onError: () => {
-      alert('아이디 또는 비밀번호를 확인해주세요.');
-    },
     onSuccess: ({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs }: MemberDetailInfo) => {
       navigate('/');
       setMemberState({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs });

@@ -3,6 +3,10 @@ import FilledButton from '@components/Button/FilledButton';
 import { DateTime } from 'luxon';
 import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { Typography } from '@mui/material';
+import { MemberInfo } from '@api/dto';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import memberState from '@recoil/member.recoil';
+import starterState from '@recoil/seminarStarter.recoil';
 import Countdown from '../Countdown/Countdown';
 import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
@@ -10,14 +14,18 @@ import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
 const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [seminarStart, setSeminarStart] = useState(false);
+  const setStartMember = useSetRecoilState<number | undefined>(starterState);
   const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
-  const { mutate: setSeminarTime } = useStartSeminarMutation(5); // Todo: 이후 id 파라미터로 받아옴
+  const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
+  const member: MemberInfo | null = useRecoilValue(memberState);
+
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
+    setStartMember(member?.memberId);
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
       latenessCloseTime: startTime.plus({ minutes: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
@@ -35,7 +43,8 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
       <SeminarInput
         disabled
         helperText="ㅤ"
-        inputCode={seminarStart && seminarData ? seminarData?.attendanceCode.split('') : ['', '', '', '']}
+        setInputCode={() => null}
+        inputCode={seminarStart && seminarData ? seminarData?.attendanceCode : ''}
       />
       <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">

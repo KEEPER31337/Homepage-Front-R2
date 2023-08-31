@@ -46,7 +46,7 @@ const RequestManageTab = () => {
   const status = searchParams.get('status') as BorrowInfoListSearch['status'];
   const search = searchParams.get('search') as BorrowInfoListSearch['search'];
 
-  const { data: borrowInfoListData, refetch } = useGetBorrowInfoListQuery({ page, status, search });
+  const { data: borrowInfoListData } = useGetBorrowInfoListQuery({ page, status, search });
 
   const { mutate: ApproveRequest } = useApproveRequestMutation();
   const { mutate: ApproveReturn } = useApproveReturnMutation();
@@ -65,11 +65,7 @@ const RequestManageTab = () => {
     }
 
     if (mutateFunction) {
-      mutateFunction(borrowInfoId, {
-        onSuccess: () => {
-          refetch();
-        },
-      });
+      mutateFunction(borrowInfoId);
     }
   };
 

@@ -20,10 +20,10 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
                 {index + 1}
               </Typography>
               <Typography variant="h3" fontWeight="semibold" marginY="auto" marginLeft={1}>
-                {item.name}
+                {item.realName}
               </Typography>
               <Typography variant="small" marginY="auto" marginLeft={1}>
-                {item.no}기
+                {item.generation}기
               </Typography>
             </div>
             <Typography color="primary" fontWeight="semibold">

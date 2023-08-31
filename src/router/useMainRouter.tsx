@@ -16,6 +16,7 @@ import Rank from '@pages/rank/Rank';
 import Login from '@pages/login/Login';
 import Game from '@pages/Game/Game';
 import Library from '@pages/Library/Library';
+import SearchAccount from '@pages/login/SearchAccount';
 import BoardWrite from '@pages/board/BoardWrite/BoardWrite';
 import BoardView from '@pages/board/BoardView/BoardView';
 
@@ -39,6 +40,10 @@ const useMainRouter = () =>
             {
               path: 'login',
               element: <Login />,
+            },
+            {
+              path: 'searchAccount',
+              element: <SearchAccount />,
             },
           ],
         },

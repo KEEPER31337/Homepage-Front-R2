@@ -13,9 +13,9 @@ interface ActionButtonProps {
 
 const ActionButton = ({ mode, children, onClick, disabled, type, small }: ActionButtonProps) => {
   const setIcon = {
-    add: <VscAdd size={small ? 15 : 24} />,
-    edit: <VscEdit size={small ? 15 : 24} />,
-    delete: <VscTrash size={small ? 15 : 24} />,
+    add: <VscAdd size={small ? 15 : 20} />,
+    edit: <VscEdit size={small ? 15 : 20} />,
+    delete: <VscTrash size={small ? 15 : 20} />,
   };
   return (
     <Button

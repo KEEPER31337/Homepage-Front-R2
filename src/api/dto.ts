@@ -114,7 +114,6 @@ export interface BookInfo {
 }
 
 export interface ManageBookInfo extends BookInfo {
-  id: number;
   bookDepartment: string;
   borrowInfos: BorrowInfo[];
   borrowers: string;
@@ -287,6 +286,7 @@ export interface PostSummaryInfo {
   writerThumbnailPath: string;
   visitCount: number;
   commentCount: number;
+  likeCount: number;
   isSecret: boolean;
   thumbnailPath: string;
   registerTime: string;
@@ -328,3 +328,91 @@ export interface BoardPosts {
   numberOfElements: number;
   empty: boolean;
 }
+
+export interface TrendingPostInfo {
+  id: number;
+  title: string;
+  writerName: string;
+  writerThumbnailPath: string;
+  categoryId: number;
+  categoryName: string;
+  visitCount: number;
+  isSecret: boolean;
+  thumbnailPath: string;
+  registerTime: string;
+}
+
+export interface PageAndSize {
+  page?: number;
+  size?: number;
+}
+
+export interface AttendRankInfo {
+  rank: number;
+  thumbnailPath?: string | null;
+  realName: string;
+  generation: string;
+  continuousDay: number;
+  time: string;
+}
+
+export interface TodayAttendRank {
+  content: AttendRankInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface PointRankInfo {
+  realName: string;
+  generation: string;
+  point: number;
+}
+
+export interface PointRank {
+  content: PointRankInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface GameRankInfo {
+  rank: number;
+  realName: string;
+  generation: string;
+  todayEarnedPoint: number;
+  profileImageUrl?: string | null;
+  memberId: number;
+}
+
+export interface ExecutiveInfo {
+  jobId: number;
+  jobName: string;
+  memberId: number;
+  generation: string;
+  realName: string;
+}
+
+export interface JobList {
+  jobId: number;
+  jobName: string;
+}
+
+export interface memberInfo {
+  memberId: number;
+  memberName: string;
+  generation: string;
+}
+

@@ -7,7 +7,7 @@ import ImageUploader from '@components/Uploader/ImageUploader';
 import { UploadPostSettings } from '@api/dto';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 
-const POST_PASSWORD_MAX_LENGTH = 16;
+export const POST_PASSWORD_MAX_LENGTH = 16;
 
 interface SettingUploadModalProps {
   open: boolean;
