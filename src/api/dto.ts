@@ -99,7 +99,7 @@ export interface BorrowInfo {
   bookQuantity: string;
   currentQuantity: number;
   totalQuantity: number;
-  status: '대출대기중' | '반납대기중' | '대출거부' | '대출승인' | '반납';
+  status: '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
 }
 
 export interface BookInfo {
@@ -414,4 +414,3 @@ export interface memberInfo {
   memberName: string;
   generation: string;
 }
-
