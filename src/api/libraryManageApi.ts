@@ -13,7 +13,7 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
   const fetcher = () =>
     axios.get('/manage/books', { params: { page, size, searchType, search } }).then(({ data }) => {
       const content = data.content.map((bookInfo: ManageBookInfo) => ({
-        id: bookInfo.bookId,
+        bookId: bookInfo.bookId,
         title: bookInfo.title,
         author: bookInfo.author,
         bookQuantity: `${bookInfo.currentQuantity}/${bookInfo.totalQuantity}`,
@@ -30,6 +30,8 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
 };
 
 const useAddBookMutation = () => {
+  const queryClient = useQueryClient();
+
   const fetcher = ({ bookCoreData, thumbnail }: { bookCoreData: BookCoreData; thumbnail?: Blob | null }) => {
     const formData = new FormData();
     formData.append('bookMetaData', new Blob([JSON.stringify(bookCoreData)], { type: 'application/json' }));
@@ -42,13 +44,22 @@ const useAddBookMutation = () => {
     });
   };
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
+    },
+  });
 };
 
 const useDeleteBookMutation = () => {
+  const queryClient = useQueryClient();
   const fetcher = (bookId: number) => axios.delete(`/manage/books/${bookId}`);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
+    },
+  });
 };
 
 const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowInfoListSearch) => {
@@ -111,7 +122,7 @@ const useApproveRequestMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-approve`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
   });
 };
@@ -121,7 +132,7 @@ const useDenyRequestMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-deny`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
   });
 };
@@ -131,7 +142,7 @@ const useApproveReturnMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-approve`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
   });
 };
@@ -141,7 +152,7 @@ const useDenyReturnMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-deny`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
   });
 };
