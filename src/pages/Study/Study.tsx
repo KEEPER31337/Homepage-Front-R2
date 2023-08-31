@@ -8,6 +8,7 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import { SelectChangeEvent } from '@mui/material';
 import Selector from '@components/Selector/Selector';
 import { useGetStudyListQuery } from '@api/studyApi';
+import ActionButton from '@components/Button/ActionButton';
 import { ModalInfo } from './Study.interface';
 import StudyModal from './Modal/StudyModal';
 import StudyAccordion from './Accordion/StudyAccordion';
@@ -67,7 +68,9 @@ const Study = () => {
           />
         </div>
         {Number(yearList[currentPeriod.year].content) >= OLD_YEAR_BOUND && (
-          <OutlinedButton onClick={handleStudyCreateButtonClick}>추가</OutlinedButton>
+          <ActionButton mode="add" onClick={handleStudyCreateButtonClick}>
+            추가
+          </ActionButton>
         )}
       </div>
       {Number(yearList[currentPeriod.year].content) < OLD_YEAR_BOUND ? (
