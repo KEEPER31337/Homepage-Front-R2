@@ -8,8 +8,8 @@ import { IconButton } from '@mui/material';
 import { VscTrash } from 'react-icons/vsc';
 import { useSearchParams } from 'react-router-dom';
 import { BookListSearch } from '@api/dto';
+import LibrarySearchSection from '@pages/Library/SearchSection/LibrarySearchSection';
 import AddBookModal from '../Modal/AddBookModal';
-import LibraryManageSearchSection from '../SearchSection/LibraryManageSearchSection';
 
 interface libraryManageRow {
   no: number;
@@ -67,7 +67,7 @@ const BookManageTab = () => {
   return (
     <>
       <div className="mb-5 flex justify-between space-x-2">
-        <LibraryManageSearchSection />
+        <LibrarySearchSection />
         <ActionButton mode="add" onClick={() => setAddBookModalOpen(true)}>
           추가
         </ActionButton>

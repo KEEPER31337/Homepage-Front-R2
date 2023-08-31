@@ -76,7 +76,7 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
           requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
           bookTitle: borrowInfo.bookTitle,
           author: borrowInfo.author,
-          bookQuantity: '3/3', // `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
+          bookQuantity: `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
           borrowerRealName: borrowInfo.borrowerRealName,
         };
       });
