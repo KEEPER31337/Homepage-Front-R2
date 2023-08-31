@@ -26,12 +26,14 @@ const StudyAccordionHeader = ({ study, toggleOpen, setModalInfo }: StudyAccordio
   return (
     <div className="flex w-full items-center justify-between px-2">
       <div className="flex items-center space-x-4">
-        <ServerImg
-          className="h-16 w-16 object-cover"
-          errorClassName="h-16 w-16"
-          src={study.thumbnailPath}
-          alt="스터디 썸네일"
-        />
+        <div className="relative h-16 w-16">
+          <ServerImg
+            className="absolute inset-0 h-full w-full object-cover"
+            errorClassName="absolute inset-0 m-auto"
+            src={study.thumbnailPath}
+            alt="스터디 썸네일"
+          />
+        </div>
         <Typography variant="h3" fontWeight="semiBold">
           {study.title}
         </Typography>
