@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react';
 
 import { studyList, yearList } from '@mocks/StudyApi';
@@ -22,7 +24,9 @@ const seasonList = [
 const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: 0, season: 0 });
   const [currentStudyList, setCurrentStudyList] = useState(studyList);
+
   const [open, toggleOpen] = useReducer((prev) => !prev, false);
+  const [studyModalOpen, setStudyModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'Add' });
 
   const myMemberId = 1120; /* TODO 추후 로그인 토큰 정보를 가져와 본인의 ID를 저장 */
@@ -33,7 +37,7 @@ const Study = () => {
   };
 
   const handleStudyCreateButtonClick = () => {
-    toggleOpen();
+    setStudyModalOpen(true);
     setModalInfo({ mode: 'Add' });
   };
 
@@ -76,7 +80,7 @@ const Study = () => {
         <OldStudy list={currentStudyList} memberId={myMemberId} toggleOpen={toggleOpen} setModalInfo={setModalInfo} />
       ) : (
         <div>
-          {currentStudyList?.map((study) => (
+          {currentStudyList?.map((study: any) => (
             <StudyAccordion
               key={study.id}
               study={study}
@@ -87,7 +91,7 @@ const Study = () => {
           ))}
         </div>
       )}
-      <StudyModal open={open} handleOpen={toggleOpen} modalInfo={modalInfo} />
+      <StudyModal open={studyModalOpen} setOpen={setStudyModalOpen} modalInfo={modalInfo} />
     </div>
   );
 };

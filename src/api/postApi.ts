@@ -3,7 +3,16 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useApiError } from '@hooks/useGetApiError';
 import toast from 'react-hot-toast';
-import { BoardPosts, BoardSearch, FileInfo, PostInfo, PostSummaryInfo, UploadPost, UploadPostCore } from './dto';
+import {
+  BoardPosts,
+  BoardSearch,
+  FileInfo,
+  PostInfo,
+  PostSummaryInfo,
+  UploadPost,
+  UploadPostCore,
+  TrendingPostInfo,
+} from './dto';
 
 const useUploadPostMutation = () => {
   const fetcher = ({ request, thumbnail, files }: UploadPost) => {
@@ -107,6 +116,17 @@ const useGetPostFilesQuery = (postId: number) => {
   return useQuery<FileInfo[]>(['files', postId], fetcher);
 };
 
+const useGetRecentPostsQuery = () => {
+  const fetcher = () => axios.get('/posts/recent').then(({ data }) => data);
+
+  return useQuery<TrendingPostInfo[]>('recentPosts', fetcher);
+};
+
+const useGetTrendPostsQuery = () => {
+  const fetcher = () => axios.get('/posts/trend').then(({ data }) => data);
+
+  return useQuery<TrendingPostInfo[]>('trendPosts', fetcher);
+};
 const useDownloadFileMutation = () => {
   const fetcher = ({ postId, fileId, fileName }: { postId: number; fileId: number; fileName: string }) =>
     axios
@@ -132,6 +152,8 @@ const useDownloadFileMutation = () => {
 export {
   useUploadPostMutation,
   useGetPostListQuery,
+  useGetRecentPostsQuery,
+  useGetTrendPostsQuery,
   useEditPostMutation,
   useDeletePostMutation,
   useControlPostLikesMutation,
