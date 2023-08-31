@@ -4,12 +4,16 @@ import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
-import { UploadPostSettings } from '@api/dto';
+import { PostInfo, UploadPostSettings } from '@api/dto';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 
 export const POST_PASSWORD_MAX_LENGTH = 16;
 
 interface SettingUploadModalProps {
+  editMode: {
+    postId: number;
+    post: PostInfo;
+  } | null;
   open: boolean;
   onClose: () => void;
   onUploadButonClick: () => void;
@@ -19,6 +23,7 @@ interface SettingUploadModalProps {
 }
 
 const SettingUploadModal = ({
+  editMode,
   open,
   onClose,
   onUploadButonClick,
@@ -68,7 +73,11 @@ const SettingUploadModal = ({
       onActionButonClick={onUploadButonClick}
     >
       <div className="mb-5 h-36">
-        <ImageUploader isEdit={false} setThumbnail={setThumbnail} />
+        <ImageUploader
+          isEdit={Boolean(editMode)}
+          thumbnailPath={editMode?.post.thumbnailPath}
+          setThumbnail={setThumbnail}
+        />
       </div>
       <FormGroup>
         <span>

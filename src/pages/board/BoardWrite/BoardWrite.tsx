@@ -178,6 +178,7 @@ const BoardWrite = () => {
         </OutlinedButton>
       </div>
       <SettingUploadModal
+        editMode={editMode}
         open={settingModalOpen}
         onClose={handleSettingModalClose}
         onUploadButonClick={handleUploadButonClick}
