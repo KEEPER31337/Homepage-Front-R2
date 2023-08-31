@@ -14,7 +14,7 @@ const LibraryManageSearchSection = () => {
   const [, setSearchParams] = useSearchParams();
 
   const handleSearchButtonClick = () => {
-    setSearchParams({ page: String(1), searchType: '', search: search.trim() });
+    setSearchParams({ page: String(1), searchType, search: search.trim() });
   };
 
   return (
