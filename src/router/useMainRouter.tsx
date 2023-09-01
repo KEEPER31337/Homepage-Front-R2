@@ -6,7 +6,7 @@ import SignUp from '@pages/SignUp/SignUp';
 import Study from '@pages/Study/Study';
 import DutyManage from '@pages/admin/DutyManage/DutyManage';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
-import RewordPenaltyManage from '@pages/admin/RewordPenaltyManage/RewordPenaltyManage';
+import MeritManage from '@pages/admin/MeritManage/MeritManage';
 import SeminarManage from '@pages/admin/SeminarManage/SeminarManage';
 import BoardList from '@pages/board/BoardList/BoardList';
 import BoardView from '@pages/board/BoardView/BoardView';
@@ -75,8 +75,8 @@ const useMainRouter = () =>
                   element: <div />,
                 },
                 {
-                  path: 'rewordPenaltyManage',
-                  element: <RewordPenaltyManage />,
+                  path: 'meritManage',
+                  element: <MeritManage />,
                 },
               ],
             },

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Typography } from '@mui/material';
-import { RewordPenaltyTypeInfo } from '@api/dto';
-import { useGetRewordPenaltyLog, useGetRewordPenaltyType } from '@api/rewordPenaltyApi';
+import { MeritTypeInfo } from '@api/dto';
+import { useGetMeritLog, useGetMeritType } from '@api/meritApi';
 import usePagination from '@hooks/usePagination';
 import Selector from '@components/Selector/Selector';
 import StandardTab from '@components/Tab/StandardTab';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 
-interface RewordPenaltyLogRow {
+interface MeritLogRow {
   id: number;
   giveTime: string;
   awarder: string;
@@ -16,7 +16,7 @@ interface RewordPenaltyLogRow {
   reason: string;
 }
 
-const RewordPenaltyLogColumn: Column<RewordPenaltyLogRow>[] = [
+const MeritLogColumn: Column<MeritLogRow>[] = [
   { key: 'id', headerName: '번호' },
   { key: 'giveTime', headerName: '일시' },
   { key: 'awarder', headerName: '이름 (기수)' },
@@ -24,26 +24,26 @@ const RewordPenaltyLogColumn: Column<RewordPenaltyLogRow>[] = [
   { key: 'reason', headerName: '사유' },
 ];
 
-const RewordPenaltyLogChildComponent = ({ value, rowData }: ChildComponent<RewordPenaltyLogRow>) => {
+const MeritLogChildComponent = ({ value, rowData }: ChildComponent<MeritLogRow>) => {
   let color = 'white';
   if (rowData.score > 0) color = 'pointBlue';
   else if (rowData.score < 0) color = 'subRed';
   return <Typography className={`text-${color}`}>{value}</Typography>;
 };
 
-interface RewordPenaltyTypeRow {
+interface MeritTypeRow {
   id: number;
   detail: string;
   score: number;
 }
 
-const RewordPenaltyTypeColumn: Column<RewordPenaltyTypeRow>[] = [
+const MeritTypeColumn: Column<MeritTypeRow>[] = [
   { key: 'id', headerName: '번호' },
   { key: 'detail', headerName: '사유' },
   { key: 'score', headerName: '점수' },
 ];
 
-const RewordPenaltyTypeChildComponent = ({ value, rowData }: ChildComponent<RewordPenaltyTypeRow>) => {
+const MeritTypeChildComponent = ({ value, rowData }: ChildComponent<MeritTypeRow>) => {
   let color = 'white';
   if (rowData.score > 0) color = 'pointBlue';
   else if (rowData.score < 0) color = 'subRed';
@@ -67,15 +67,15 @@ const tabs = [
 
 type ScoreType = 'reword' | 'penalty' | 'all';
 
-const RewordPenaltyManage = () => {
+const MeritManage = () => {
   const [tab, setTab] = useState(0);
   const { page, getRowNumber } = usePagination();
   const [scoreType, setScoreType] = useState<ScoreType>('all');
 
-  const { data: rewordPenaltyLog } = useGetRewordPenaltyLog({ page });
-  const { data: rewordPenaltyType } = useGetRewordPenaltyType({ page });
+  const { data: meritLog } = useGetMeritLog({ page });
+  const { data: meritType } = useGetMeritType({ page });
 
-  const rewordPenaltyTypeFilter = (item: RewordPenaltyTypeInfo) => {
+  const meritTypeFilter = (item: MeritTypeInfo) => {
     switch (scoreType) {
       case 'reword':
         return item.score > 0;
@@ -88,7 +88,7 @@ const RewordPenaltyManage = () => {
     }
   };
 
-  if (!rewordPenaltyLog || !rewordPenaltyType) return null;
+  if (!meritLog || !meritType) return null;
 
   return (
     <>
@@ -103,14 +103,14 @@ const RewordPenaltyManage = () => {
               + 추가
             </Button>
           </div>
-          <StandardTable<RewordPenaltyLogRow>
-            columns={RewordPenaltyLogColumn}
-            rows={rewordPenaltyLog.content.map((item) => ({
+          <StandardTable<MeritLogRow>
+            columns={MeritLogColumn}
+            rows={meritLog.content.map((item) => ({
               awarder: `${item.awarderName} (${item.awarderGeneration})`,
               ...item,
             }))}
-            childComponent={RewordPenaltyLogChildComponent}
-            paginationOption={{ rowsPerPage: rewordPenaltyLog.size, totalItems: rewordPenaltyLog.totalElements }}
+            childComponent={MeritLogChildComponent}
+            paginationOption={{ rowsPerPage: meritLog.size, totalItems: meritLog.totalElements }}
           />
         </div>
       )}
@@ -137,11 +137,11 @@ const RewordPenaltyManage = () => {
               + 추가
             </Button>
           </div>
-          <StandardTable<RewordPenaltyTypeRow>
-            columns={RewordPenaltyTypeColumn}
-            rows={rewordPenaltyType.content.filter(rewordPenaltyTypeFilter)}
-            childComponent={RewordPenaltyTypeChildComponent}
-            paginationOption={{ rowsPerPage: rewordPenaltyType.size, totalItems: rewordPenaltyType.totalElements }}
+          <StandardTable<MeritTypeRow>
+            columns={MeritTypeColumn}
+            rows={meritType.content.filter(meritTypeFilter)}
+            childComponent={MeritTypeChildComponent}
+            paginationOption={{ rowsPerPage: meritType.size, totalItems: meritType.totalElements }}
           />
         </div>
       )}
@@ -149,4 +149,4 @@ const RewordPenaltyManage = () => {
   );
 };
 
-export default RewordPenaltyManage;
+export default MeritManage;

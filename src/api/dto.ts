@@ -397,7 +397,7 @@ export interface GameRankInfo {
   memberId: number;
 }
 
-export interface RewordPenaltyLogInfo {
+export interface MeritLogInfo {
   id: number;
   giveTime: string;
   awarderName?: string;
@@ -407,8 +407,8 @@ export interface RewordPenaltyLogInfo {
   reason: string;
 }
 
-export interface RewordPenaltyLog {
-  content: RewordPenaltyLogInfo[];
+export interface MeritLog {
+  content: MeritLogInfo[];
   pageable: PageableInfo;
   first: boolean;
   last: boolean;
@@ -421,14 +421,14 @@ export interface RewordPenaltyLog {
   empty: boolean;
 }
 
-export interface RewordPenaltyTypeInfo {
+export interface MeritTypeInfo {
   id: number;
   score: number;
   detail: string;
 }
 
-export interface RewordPenaltyType {
-  content: RewordPenaltyTypeInfo[];
+export interface MeritType {
+  content: MeritTypeInfo[];
   pageable: PageableInfo;
   first: boolean;
   last: boolean;
