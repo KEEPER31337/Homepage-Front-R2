@@ -7,9 +7,9 @@ interface AddMeritModalProps {
 }
 
 const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
-  const [rewordInfo, setRewordInfo] = useState({
+  const [meritInfo, setMeritInfo] = useState({
     awarder: null,
-    rewordPenaltyType: null,
+    meritType: null,
   });
 
   return (
