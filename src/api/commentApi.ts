@@ -18,7 +18,7 @@ const useCreateCommentMutation = () => {
 const useGetCommentQuery = (postId: number) => {
   const fetcher = () => axios.get(`/comments/posts/${postId}`).then(({ data }) => data.comments);
 
-  return useQuery<CommentInfo[]>(['comments'], fetcher);
+  return useQuery<CommentInfo[]>(['comments', postId], fetcher);
 };
 
 const useControlCommentLikesMutation = () => {
