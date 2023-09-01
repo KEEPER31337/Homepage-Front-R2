@@ -7,11 +7,12 @@ import CommentCard from '../Card/CommentCard';
 import CommentWriteCardAction from '../Card/CommentWriteCardAction';
 
 interface CommentSectionProps {
+  categoryName: string;
   allowComment: boolean;
   postId: number;
 }
 
-const CommentSection = ({ allowComment, postId }: CommentSectionProps) => {
+const CommentSection = ({ categoryName, allowComment, postId }: CommentSectionProps) => {
   const [commentContent, setCommentContent] = useState('');
 
   const { data: commentList } = useGetCommentQuery(postId); // TODO postId 정상적으로 받아오지 않을 경우 처리
@@ -63,6 +64,13 @@ const CommentSection = ({ allowComment, postId }: CommentSectionProps) => {
           />
         </CardActions>
       </Card>
+      {categoryName === '익명게시판' && (
+        <div className="flex justify-end">
+          <Typography marginTop={1} variant="small" className="text-subOrange">
+            (*익명 게시판은 댓글 삭제가 불가합니다.)
+          </Typography>
+        </div>
+      )}
     </section>
   );
 };
