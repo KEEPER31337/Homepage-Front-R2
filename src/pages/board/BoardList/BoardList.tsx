@@ -1,5 +1,5 @@
 import React from 'react';
-import TableViewSwitchButton from '@components/Button/TableViewSwitchButton';
+import TableViewSwitchButton from '@components/Table/Button/TableViewSwitchButton';
 import StandardTable from '@components/Table/StandardTable';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { AiFillLock } from 'react-icons/ai';
