@@ -260,6 +260,7 @@ export interface PostInfo {
   categoryId: number;
   categoryName: string;
   title: string;
+  writerId: number;
   writerName: string;
   writerThumbnailPath: string | null;
   visitCount: number;
