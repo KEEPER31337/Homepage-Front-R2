@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import FilledButton from '@components/Button/FilledButton';
-import { DateTime } from 'luxon';
-import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { Typography } from '@mui/material';
-import { MemberInfo } from '@api/dto';
+import { DateTime } from 'luxon';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { MemberInfo } from '@api/dto';
+import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import memberState from '@recoil/member.recoil';
 import starterState from '@recoil/seminarStarter.recoil';
+import FilledButton from '@components/Button/FilledButton';
 import Countdown from '../Countdown/Countdown';
-import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarInput from '../Input/SeminarInput';
+import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
 const BossCardContent = ({ seminarId }: { seminarId: number }) => {

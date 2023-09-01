@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { Typography } from '@mui/material';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 
 import LogoNeon from '@assets/logo/logo_neon.svg';
-import WarningModal from '@components/Modal/WarningModal';
-import { Typography } from '@mui/material';
 import { getServerImgUrl } from '@utils/converter';
+import WarningModal from '@components/Modal/WarningModal';
 
 interface ImageUploaderProps {
   title?: string;

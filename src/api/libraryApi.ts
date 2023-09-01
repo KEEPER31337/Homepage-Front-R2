@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
+import axios from 'axios';
 import { BookInfo, BorrowedBookInfo, BookListSearch } from './dto';
 
 const libraryKeys = {
@@ -14,10 +14,10 @@ const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSea
         ...rest,
         bookQuantity: `${currentQuantity}/${totalQuantity}`,
       }));
-      return { content, totalElement: data.totalElements };
+      return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: BookInfo[]; totalElement: number }>(
+  return useQuery<{ content: BookInfo[]; totalElement: number; size: number }>(
     libraryKeys.bookList({ page, size, searchType, search }),
     fetcher,
   );

@@ -1,12 +1,12 @@
+import React, { useEffect, useState } from 'react';
+import { Divider } from '@mui/material';
 import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
+import validateEmail from '@utils/validateEmail';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import WarningModal from '@components/Modal/WarningModal';
-import { Divider } from '@mui/material';
-import validateEmail from '@utils/validateEmail';
-import React, { useEffect, useState } from 'react';
 
 interface searchPWFormProps {
   id: string;

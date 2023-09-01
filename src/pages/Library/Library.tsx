@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import PageTitle from '@components/Typography/PageTitle';
-import StandardTablePagination from '@components/Pagination/StandardTablePagination';
+import { BookListSearch } from '@api/dto';
 import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQuery } from '@api/libraryApi';
 import usePagination from '@hooks/usePagination';
+import StandardTablePagination from '@components/Pagination/StandardTablePagination';
+import PageTitle from '@components/Typography/PageTitle';
 import BookCard from './Card/BookCard';
-import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
+import LibrarySearchSection from './SearchSection/LibrarySearchSection';
+import BorrowStatus from './Status/BorrowStatus';
 
 const MAX_BORROWABLE_BOOKS = 5;
 
@@ -15,24 +18,28 @@ const Library = () => {
   const { mutate: RequestBorrowBook } = useRequestBorrowBookMutation();
 
   const handleRequestBook = (bookId: number) => {
-    RequestBorrowBook(bookId);
-    //  TODO 무조건 완료 모달뜨지 않게 예외처리
-    setRequestBookModalOpen(true);
+    RequestBorrowBook(bookId, {
+      onSuccess: () => {
+        setRequestBookModalOpen(true);
+      },
+    });
   };
-
   const librarian = '박소현';
 
-  const size = 6;
+  const [searchParams] = useSearchParams();
   const { page } = usePagination();
 
-  const { data: bookListData } = useGetBookListQuery({ page, size });
+  const searchType = searchParams.get('searchType') as BookListSearch['searchType'];
+  const search = searchParams.get('search') as BookListSearch['search'];
+
+  const { data: bookListData } = useGetBookListQuery({ page, searchType, search });
   const { data: borrowedBookListData } = useGetBookBorrowsQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
 
   return (
     <div>
       <PageTitle>도서검색</PageTitle>
       <div className="mb-5 flex w-full items-center justify-between">
-        {/* <SearchSection /> */}
+        <LibrarySearchSection />
         <BorrowStatus
           librarian={librarian}
           borrowedBookCount={borrowedBookListData?.totalElement || 0}
@@ -58,7 +65,7 @@ const Library = () => {
           onClose={() => setRequestBookModalOpen(false)}
         />
       </div>
-      <StandardTablePagination rowsPerPage={size} totalItems={bookListData?.totalElement} />
+      <StandardTablePagination rowsPerPage={bookListData?.size} totalItems={bookListData?.totalElement} />
     </div>
   );
 };

@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchSection from '@components/Section/SearchSection';
 
-const BoardSearchSection = () => {
-  const postSearchList = [
-    { id: 'title+content', content: '제목 + 내용' },
-    { id: 'title', content: '제목' },
-    { id: 'content', content: '내용' },
-    { id: 'writer', content: '작성자' },
+const LibrarySearchSection = () => {
+  const librarySearchList = [
+    { id: 'all', content: '도서명 + 저자' },
+    { id: 'title', content: '도서명' },
+    { id: 'author', content: '저자' },
   ];
 
   const [search, setSearch] = useState('');
-  const [searchType, setSearchType] = useState('title+content');
+  const [searchType, setSearchType] = useState('all');
   const [, setSearchParams] = useSearchParams();
 
   const handleSearchButtonClick = () => {
@@ -20,7 +19,7 @@ const BoardSearchSection = () => {
 
   return (
     <SearchSection
-      options={postSearchList}
+      options={librarySearchList}
       selectorValue={searchType}
       setSelectorValue={setSearchType}
       inputValue={search}
@@ -30,4 +29,4 @@ const BoardSearchSection = () => {
   );
 };
 
-export default BoardSearchSection;
+export default LibrarySearchSection;

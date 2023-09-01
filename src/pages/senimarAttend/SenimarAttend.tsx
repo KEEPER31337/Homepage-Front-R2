@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { Typography } from '@mui/material';
+import { useRecoilValue } from 'recoil';
+import { MemberInfo } from '@api/dto';
 import {
   useGetAvailableSeminarInfoQuery,
   useGetRecentlyDoneSeminarInfoQuery,
   useGetRecentlyUpcomingSeminarInfoQuery,
 } from '@api/seminarApi';
 import useCheckAuth from '@hooks/useCheckAuth';
-import { useRecoilValue } from 'recoil';
 import memberState from '@recoil/member.recoil';
-import { MemberInfo } from '@api/dto';
 import starterState from '@recoil/seminarStarter.recoil';
-import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
+import SeminarCard from './Card/SeminarCard';
 
 const SeminarAttend = () => {
   const { data: recentlyDoneSeminarId } = useGetRecentlyDoneSeminarInfoQuery();

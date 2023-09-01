@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Avatar, Chip, Typography } from '@mui/material';
-import OutlinedButton from '@components/Button/OutlinedButton';
-import { PostInfo } from '@api/dto';
-import { VscCalendar, VscEye } from 'react-icons/vsc';
-import ServerImg from '@components/Image/ServerImg';
-import { useDeletePostMutation } from '@api/postApi';
-import ActionModal from '@components/Modal/ActionModal';
 import { useNavigate } from 'react-router-dom';
+import { Avatar, Chip, Typography } from '@mui/material';
+import { VscCalendar, VscEye } from 'react-icons/vsc';
+import { PostInfo } from '@api/dto';
+import { useDeletePostMutation } from '@api/postApi';
+import OutlinedButton from '@components/Button/OutlinedButton';
+import ServerImg from '@components/Image/ServerImg';
+import ActionModal from '@components/Modal/ActionModal';
 
 interface BannerSectionProps {
   postId: number;

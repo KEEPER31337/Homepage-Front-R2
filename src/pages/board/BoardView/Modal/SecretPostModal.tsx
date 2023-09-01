@@ -1,11 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import StandardInput from '@components/Input/StandardInput';
-import ActionModal from '@components/Modal/ActionModal';
-import { Typography } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { POST_PASSWORD_MAX_LENGTH } from '@pages/board/BoardWrite/Modal/SettingUploadModal';
-import { Controller, useForm } from 'react-hook-form';
+import StandardInput from '@components/Input/StandardInput';
+import ActionModal from '@components/Modal/ActionModal';
 
 interface SecretPostModalProps {
   setPassword: Dispatch<SetStateAction<string | undefined>>;

@@ -1,5 +1,5 @@
-import { useGetBlockListQuery } from '@api/aboutApi';
 import React from 'react';
+import { useGetBlockListQuery } from '@api/aboutApi';
 
 const Excellence = () => {
   const { data: excellenceList } = useGetBlockListQuery({ type: 'excellence' });

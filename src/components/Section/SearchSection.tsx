@@ -1,7 +1,7 @@
 import React from 'react';
-import Selector from '@components/Selector/Selector';
-import SearchInput from '@components/Input/SearchInput';
 import { SelectChangeEvent } from '@mui/material';
+import SearchInput from '@components/Input/SearchInput';
+import Selector from '@components/Selector/Selector';
 
 interface SearchSectionProps {
   options: { id: string | number; content: string | number }[];

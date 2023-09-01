@@ -1,7 +1,7 @@
 import React from 'react';
-import useMainRouter from '@router/useMainRouter';
-import { useApiError } from '@hooks/useGetApiError';
 import { useQueryClient } from 'react-query';
+import { useApiError } from '@hooks/useGetApiError';
+import useMainRouter from '@router/useMainRouter';
 
 const App = () => {
   const { handleError } = useApiError();

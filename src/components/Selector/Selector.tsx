@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, SelectProps } from '@mui/material';
 import React from 'react';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, SelectProps } from '@mui/material';
 
 interface SelectorProps extends SelectProps {
   label?: string;
