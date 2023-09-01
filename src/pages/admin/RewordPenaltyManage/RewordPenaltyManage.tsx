@@ -1,12 +1,12 @@
-import StandardTab from '@components/Tab/StandardTab';
-import usePagination from '@hooks/usePagination';
 import React, { useState } from 'react';
-import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
-import { useGetRewordPenaltyLog, useGetRewordPenaltyType } from '@api/rewordPenaltyApi';
-import StandardTable from '@components/Table/StandardTable';
 import { Button, Typography } from '@mui/material';
-import Selector from '@components/Selector/Selector';
 import { RewordPenaltyTypeInfo } from '@api/dto';
+import { useGetRewordPenaltyLog, useGetRewordPenaltyType } from '@api/rewordPenaltyApi';
+import usePagination from '@hooks/usePagination';
+import Selector from '@components/Selector/Selector';
+import StandardTab from '@components/Tab/StandardTab';
+import StandardTable from '@components/Table/StandardTable';
+import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 
 interface RewordPenaltyLogRow {
   id: number;
