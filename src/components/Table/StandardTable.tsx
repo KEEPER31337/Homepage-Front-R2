@@ -7,6 +7,7 @@ import { ChildComponent, Column, Row } from './StandardTable.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface StandardTableProps<T extends Record<string, any>> {
+  size?: 'small' | 'medium';
   columns: Column<T>[];
   fixedRows?: Row<T>[];
   rows: Row<T>[];
@@ -17,6 +18,7 @@ interface StandardTableProps<T extends Record<string, any>> {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const StandardTable = <T extends Record<string, any>>({
+  size = 'small',
   columns,
   fixedRows,
   rows,
@@ -28,7 +30,7 @@ const StandardTable = <T extends Record<string, any>>({
 
   return (
     <div>
-      <Table>
+      <Table size={size} sx={{ '.MuiTableCell-sizeSmall': { paddingY: '14px' } }}>
         <TableHead className="bg-middleBlack">
           <TableRow>
             {columns.map((column) => (
