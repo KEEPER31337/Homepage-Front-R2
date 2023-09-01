@@ -47,6 +47,21 @@ const useEditPostMutation = () => {
   return useMutation(fetcher);
 };
 
+const useEditPostThumbnailMutation = () => {
+  const fetcher = ({ postId, thumbnail }: { postId: number; thumbnail: Blob }) => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/posts/${postId}/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(fetcher);
+};
+
 const useDeletePostMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -155,6 +170,7 @@ export {
   useGetRecentPostsQuery,
   useGetTrendPostsQuery,
   useEditPostMutation,
+  useEditPostThumbnailMutation,
   useDeletePostMutation,
   useControlPostLikesMutation,
   useControlPostDislikesMutation,

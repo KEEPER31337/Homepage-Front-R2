@@ -8,7 +8,7 @@ import StandardInput from '@components/Input/StandardInput';
 import StandardEditor from '@components/Editor/StandardEditor';
 import FileUploader from '@components/Uploader/FileUploader';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import { useEditPostMutation, useUploadPostMutation } from '@api/postApi';
+import { useEditPostMutation, useEditPostThumbnailMutation, useUploadPostMutation } from '@api/postApi';
 import { PostInfo, UploadPostSettings } from '@api/dto';
 import { categoryNameToId } from '@utils/converter';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
@@ -46,6 +46,7 @@ const BoardWrite = () => {
   const navigate = useNavigate();
   const { mutate: uploadPostMutation } = useUploadPostMutation();
   const { mutate: editPost } = useEditPostMutation();
+  const { mutate: editPostThumbnail } = useEditPostThumbnailMutation();
   const {
     control,
     getValues,
@@ -74,7 +75,18 @@ const BoardWrite = () => {
         },
         {
           onSuccess: () => {
-            navigate(`/board/${categoryName}`);
+            if (thumbnail) {
+              editPostThumbnail(
+                { postId: editMode.postId, thumbnail },
+                {
+                  onSuccess: () => {
+                    navigate(`/board/${categoryName}`);
+                  },
+                },
+              );
+            } else {
+              navigate(`/board/${categoryName}`);
+            }
           },
         },
       );
