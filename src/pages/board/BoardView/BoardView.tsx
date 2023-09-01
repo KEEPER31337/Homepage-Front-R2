@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useGetEachPostQuery } from '@api/postApi';
 import { useLocation, useParams } from 'react-router-dom';
-import CommentSection from './Section/CommentSection';
-import AdjacentPostNavSection from './Section/AdjacentPostNavSection';
-import PostSection from './Section/PostSection';
-import BannerSection from './Section/BannerSection';
+import { useGetEachPostQuery } from '@api/postApi';
 import SecretPostModal from './Modal/SecretPostModal';
+import AdjacentPostNavSection from './Section/AdjacentPostNavSection';
+import BannerSection from './Section/BannerSection';
+import CommentSection from './Section/CommentSection';
+import PostSection from './Section/PostSection';
 
 const BoardView = () => {
   const { postId: postIdStr } = useParams();

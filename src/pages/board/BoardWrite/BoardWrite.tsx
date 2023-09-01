@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
-import PageTitle from '@components/Typography/PageTitle';
-import StandardInput from '@components/Input/StandardInput';
-import StandardEditor from '@components/Editor/StandardEditor';
-import FileUploader from '@components/Uploader/FileUploader';
-import OutlinedButton from '@components/Button/OutlinedButton';
-import { useEditPostMutation, useUploadPostMutation } from '@api/postApi';
 import { PostInfo, UploadPostSettings } from '@api/dto';
-import { categoryNameToId } from '@utils/converter';
+import { useEditPostMutation, useUploadPostMutation } from '@api/postApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { categoryNameToId } from '@utils/converter';
+import OutlinedButton from '@components/Button/OutlinedButton';
+import StandardEditor from '@components/Editor/StandardEditor';
+import StandardInput from '@components/Input/StandardInput';
+import PageTitle from '@components/Typography/PageTitle';
+import FileUploader from '@components/Uploader/FileUploader';
 import SettingUploadModal from './Modal/SettingUploadModal';
 
 const POST_TITLE_MAX_LENGTH = 50;

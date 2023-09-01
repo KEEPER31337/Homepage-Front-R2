@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AdjacentPostInfo } from '@api/dto';
 import { Button, Stack, Typography } from '@mui/material';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
+import { AdjacentPostInfo } from '@api/dto';
 
 interface AdjacentPostNavSectionProps {
   previousPost: AdjacentPostInfo | null;

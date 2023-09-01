@@ -1,19 +1,19 @@
 import React from 'react';
-import TableViewSwitchButton from '@components/Button/TableViewSwitchButton';
-import StandardTable from '@components/Table/StandardTable';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Typography } from '@mui/material';
 import { AiFillLock } from 'react-icons/ai';
-import PageTitle from '@components/Typography/PageTitle';
-import OutlinedButton from '@components/Button/OutlinedButton';
+import { useRecoilValue } from 'recoil';
+import { BoardSearch } from '@api/dto';
 import { useGetNoticePostListQuery, useGetPostListQuery } from '@api/postApi';
-import { categoryNameToId } from '@utils/converter';
-import { ChildComponent, Column, Row } from '@components/Table/StandardTable.interface';
 import usePagination from '@hooks/usePagination';
 import tableViewState from '@recoil/view.recoil';
-import { useRecoilValue } from 'recoil';
+import { categoryNameToId } from '@utils/converter';
+import OutlinedButton from '@components/Button/OutlinedButton';
+import TableViewSwitchButton from '@components/Button/TableViewSwitchButton';
 import GridTable from '@components/Table/GridTable';
-import { BoardSearch } from '@api/dto';
-import { Typography } from '@mui/material';
+import StandardTable from '@components/Table/StandardTable';
+import { ChildComponent, Column, Row } from '@components/Table/StandardTable.interface';
+import PageTitle from '@components/Typography/PageTitle';
 import BoardSearchSection from './SearchSection/BoardSearchSection';
 
 interface BoardRow {

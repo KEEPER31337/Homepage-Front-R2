@@ -1,9 +1,9 @@
 import React, { Dispatch, DispatchWithoutAction, SetStateAction } from 'react';
-import ServerImg from '@components/Image/ServerImg';
+import { Chip, Divider, Typography } from '@mui/material';
 import { StudyInfo } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
-import { Chip, Divider, Typography } from '@mui/material';
 import ActionButton from '@components/Button/ActionButton';
+import ServerImg from '@components/Image/ServerImg';
 import { ModalInfo } from '../Study.interface';
 
 interface StudyAccordionHeaderProps {

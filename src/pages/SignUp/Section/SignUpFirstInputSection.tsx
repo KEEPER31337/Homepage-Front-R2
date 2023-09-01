@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Stack } from '@mui/material';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Stack } from '@mui/material';
 import { useSetRecoilState } from 'recoil';
 
-import BackgroundInput from '@components/Input/BackgroundInput';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import BackgroundInput from '@components/Input/BackgroundInput';
 import signUpPageState from '../SignUp.recoil';
 
 interface SignUpFirstInputSectionProps {

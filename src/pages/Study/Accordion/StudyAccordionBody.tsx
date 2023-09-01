@@ -1,9 +1,9 @@
-import { useGetStudyQuery } from '@api/studyApi';
-import { Typography } from '@mui/material';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
-import { Link } from 'react-router-dom';
+import { useGetStudyQuery } from '@api/studyApi';
 
 interface StudyAccordionBodyProps {
   studyId: number;

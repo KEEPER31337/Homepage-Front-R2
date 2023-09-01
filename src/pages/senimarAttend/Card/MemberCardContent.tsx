@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import FilledButton from '@components/Button/FilledButton';
-import ConfirmModal from '@components/Modal/ConfirmModal';
 import { Typography } from '@mui/material';
-import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { AxiosError } from 'axios';
 import { ActivityStatus } from '@api/dto';
+import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
+import FilledButton from '@components/Button/FilledButton';
+import ConfirmModal from '@components/Modal/ConfirmModal';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';

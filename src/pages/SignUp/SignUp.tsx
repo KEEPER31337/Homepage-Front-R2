@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { Box, Stack, Typography } from '@mui/material';
+import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import StepProgress from '@components/Progress/StepProgress';
 import SignUpFirstInputSection from './Section/SignUpFirstInputSection';
 import SignUpSecondInputSection from './Section/SignUpSecondInputSection';

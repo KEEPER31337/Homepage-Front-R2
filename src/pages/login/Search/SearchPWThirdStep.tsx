@@ -1,6 +1,6 @@
-import OutlinedButton from '@components/Button/OutlinedButton';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import OutlinedButton from '@components/Button/OutlinedButton';
 
 const SearchPWThirdStep = () => {
   return (

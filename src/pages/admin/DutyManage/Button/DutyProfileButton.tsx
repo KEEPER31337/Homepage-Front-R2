@@ -1,8 +1,7 @@
 import React from 'react';
 import { Button, Typography } from '@mui/material';
-import muiTheme from '@constants/muiTheme';
-
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
+import muiTheme from '@constants/muiTheme';
 
 interface DutyProfileButtonProps {
   jobName?: string;

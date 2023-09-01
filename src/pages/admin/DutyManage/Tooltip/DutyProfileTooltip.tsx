@@ -2,8 +2,8 @@ import React, { useState, useReducer, useMemo } from 'react';
 import { Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { roleDutyListInfo, roles } from '@mocks/DutyManageApi';
 import muiTheme from '@constants/muiTheme';
+import { roleDutyListInfo, roles } from '@mocks/DutyManageApi';
 
 import DescriptionRoleDutyTooltip from './DescriptionRoleDutyTooltip';
 import DutyProfileButton from '../Button/DutyProfileButton';

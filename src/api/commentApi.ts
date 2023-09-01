@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import axios from 'axios';
 import { CommentInfo } from './dto';
 
 const useCreateCommentMutation = () => {

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Dispatch, DispatchWithoutAction, Fragment, SetStateAction } from 'react';
-import type { StudyInfo } from '@api/dto';
 import { ModalInfo } from './Study.interface';
+import type { StudyInfo } from '@api/dto';
 
 interface OldStudyProps {
   list: StudyInfo[];
