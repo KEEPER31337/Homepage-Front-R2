@@ -1,7 +1,5 @@
 import React from 'react';
-import StandardViewer from '@components/Viewer/StandardViewer';
-import FilledButton from '@components/Button/FilledButton';
-import OutlinedButton from '@components/Button/OutlinedButton';
+import { Button } from '@mui/material';
 import { VscArrowDown, VscArrowUp, VscFile } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
 import {
@@ -10,7 +8,9 @@ import {
   useControlPostDislikesMutation,
   useDownloadFileMutation,
 } from '@api/postApi';
-import { Button } from '@mui/material';
+import FilledButton from '@components/Button/FilledButton';
+import OutlinedButton from '@components/Button/OutlinedButton';
+import StandardViewer from '@components/Viewer/StandardViewer';
 
 interface PostSectionProps {
   postId: number;

@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Dispatch, DispatchWithoutAction, SetStateAction } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
-import { VscChevronDown, VscGithubInverted, VscLink } from 'react-icons/vsc';
-import { SiNotion } from 'react-icons/si';
-
-import type { StudyInfo } from '@api/dto';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import { Link } from 'react-router-dom';
+import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
+import { SiNotion } from 'react-icons/si';
+import { VscChevronDown, VscGithubInverted, VscLink } from 'react-icons/vsc';
+
+import OutlinedButton from '@components/Button/OutlinedButton';
+import StudyAccordionBody from './StudyAccordionBody';
+import StudyAccordionHeader from './StudyAccordionHeader';
 import { ModalInfo } from '../Study.interface';
 import { StudyChip } from '../share/StudyChip';
-import StudyAccordionHeader from './StudyAccordionHeader';
-import StudyAccordionBody from './StudyAccordionBody';
+import type { StudyInfo } from '@api/dto';
 
 interface StudyAccordionProps {
   study: any;

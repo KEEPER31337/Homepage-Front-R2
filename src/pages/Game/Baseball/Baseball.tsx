@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import GameStart from './screens/GameStart';
-import GamePlay from './screens/GamePlay';
 import { useGameStartMutation, useGetBaseBallStatusQuery, useGetGameInfoQuery } from './api/baseballApi';
+import GamePlay from './screens/GamePlay';
+import GameStart from './screens/GameStart';
 
 const Baseball = () => {
   const [bettingPoint, setBettingPoint] = useState<string>('');

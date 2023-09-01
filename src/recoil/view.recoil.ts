@@ -1,6 +1,6 @@
-import { TableType } from '@components/Button/TableViewSwitchButton';
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
+import { TableType } from '@components/Table/StandardTable.interface';
 
 const { persistAtom } = recoilPersist();
 

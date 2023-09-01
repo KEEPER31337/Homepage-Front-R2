@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import axios from 'axios';
 import { StudyCore, StudyDetail, StudyInfo, UploadStudy } from './dto';
 
 const useAddStudyMutation = () => {

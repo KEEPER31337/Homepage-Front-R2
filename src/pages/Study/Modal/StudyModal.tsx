@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { VscGithubInverted, VscLink } from 'react-icons/vsc';
-import { SiNotion } from 'react-icons/si';
-
-import { InputLabel, Stack, Typography } from '@mui/material';
-import ActionModal from '@components/Modal/ActionModal';
-import StandardInput from '@components/Input/StandardInput';
-import ImageUploader from '@components/Uploader/ImageUploader';
 import { Controller, useForm } from 'react-hook-form';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { InputLabel, Stack, Typography } from '@mui/material';
+import { SiNotion } from 'react-icons/si';
+import { VscGithubInverted, VscLink } from 'react-icons/vsc';
+
 import { useAddStudyMutation } from '@api/studyApi';
+import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import StandardInput from '@components/Input/StandardInput';
+import ActionModal from '@components/Modal/ActionModal';
+import ImageUploader from '@components/Uploader/ImageUploader';
 import { ModalInfo } from '../Study.interface';
 import { StudyChip } from '../share/StudyChip';
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar, CardActions, Typography } from '@mui/material';
-import { CommentInfo } from '@api/dto';
 import { useCreateCommentMutation } from '@api/commentApi';
+import { CommentInfo } from '@api/dto';
 import CommentWriteCardAction from './CommentWriteCardAction';
 
 interface CommentCardFooterProps {

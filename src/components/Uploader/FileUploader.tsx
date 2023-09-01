@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
+import { Typography } from '@mui/material';
 import { VscNewFile } from 'react-icons/vsc';
 import FileUploadListTable from './FileUploadList';
 

@@ -1,7 +1,7 @@
 import React from 'react';
+import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { GoKebabHorizontal } from 'react-icons/go';
 import { VscTrash } from 'react-icons/vsc';
-import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { useDeleteCommentMutation } from '@api/commentApi';
 
 interface CommentMenuProps {

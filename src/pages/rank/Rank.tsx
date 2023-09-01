@@ -1,5 +1,5 @@
-import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 import React, { useState } from 'react';
+import { Avatar, Typography } from '@mui/material';
 import { AttendRankInfo, GameRankInfo } from '@api/dto';
 import {
   useGetContinuousAttendanceRank,
@@ -8,9 +8,9 @@ import {
   useGetTodayAttendanceRank,
 } from '@api/rankApi';
 import usePagination from '@hooks/usePagination';
-import StandardTable from '@components/Table/StandardTable';
 import StandardTab from '@components/Tab/StandardTab';
-import { Avatar, Typography } from '@mui/material';
+import StandardTable from '@components/Table/StandardTable';
+import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 import TopCard from './TopCard';
 
 interface AttendRankRow {

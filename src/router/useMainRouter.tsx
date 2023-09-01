@@ -1,24 +1,24 @@
 import React from 'react';
 import { useRoutes } from 'react-router-dom';
-import Home from '@pages/home/Home';
-import SeminarManage from '@pages/admin/SeminarManage/SeminarManage';
-import Study from '@pages/Study/Study';
-import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
-import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
-import DutyManage from '@pages/admin/DutyManage/DutyManage';
-
-import MainLayout from '@components/Layout/MainLayout';
-import FullContainer from '@components/Layout/Container/FullContainer';
-import FitContainer from '@components/Layout/Container/FitContainer';
-import BoardList from '@pages/board/BoardList/BoardList';
-import SignUp from '@pages/SignUp/SignUp';
-import Rank from '@pages/rank/Rank';
-import Login from '@pages/login/Login';
 import Game from '@pages/Game/Game';
 import Library from '@pages/Library/Library';
-import SearchAccount from '@pages/login/SearchAccount';
-import BoardWrite from '@pages/board/BoardWrite/BoardWrite';
+import SignUp from '@pages/SignUp/SignUp';
+import Study from '@pages/Study/Study';
+import DutyManage from '@pages/admin/DutyManage/DutyManage';
+import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
+import SeminarManage from '@pages/admin/SeminarManage/SeminarManage';
+import BoardList from '@pages/board/BoardList/BoardList';
 import BoardView from '@pages/board/BoardView/BoardView';
+import BoardWrite from '@pages/board/BoardWrite/BoardWrite';
+import Home from '@pages/home/Home';
+import Login from '@pages/login/Login';
+import SearchAccount from '@pages/login/SearchAccount';
+import Rank from '@pages/rank/Rank';
+import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
+
+import FitContainer from '@components/Layout/Container/FitContainer';
+import FullContainer from '@components/Layout/Container/FullContainer';
+import MainLayout from '@components/Layout/MainLayout';
 
 const useMainRouter = () =>
   useRoutes([

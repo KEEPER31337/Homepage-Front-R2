@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Card, CardActions, Typography } from '@mui/material';
-import CustomBadge from '@components/Badge/CustomBadge';
 import { useCreateCommentMutation, useGetCommentQuery } from '@api/commentApi';
 import { CommentInfo } from '@api/dto';
+import CustomBadge from '@components/Badge/CustomBadge';
 import CommentCard from '../Card/CommentCard';
 import CommentWriteCardAction from '../Card/CommentWriteCardAction';
 

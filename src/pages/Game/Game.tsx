@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Divider, Stack, Typography } from '@mui/material';
-import StandardTab from '@components/Tab/StandardTab';
+import { useGetMyGameInfoQuery } from '@api/gameApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ConfirmModal from '@components/Modal/ConfirmModal';
-import { useGetMyGameInfoQuery } from '@api/gameApi';
+import StandardTab from '@components/Tab/StandardTab';
 import Baseball from './Baseball/Baseball';
 
 const Game = () => {

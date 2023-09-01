@@ -1,6 +1,6 @@
 import React from 'react';
-import Selector from '@components/Selector/Selector';
 import { SelectChangeEvent } from '@mui/material';
+import Selector from '@components/Selector/Selector';
 
 interface TotalBookNumberProps {
   value: number;
