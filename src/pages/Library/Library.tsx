@@ -6,6 +6,7 @@ import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQue
 import usePagination from '@hooks/usePagination';
 import { useSearchParams } from 'react-router-dom';
 import { BookListSearch } from '@api/dto';
+import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
 import BookCard from './Card/BookCard';
 import BorrowStatus from './Status/BorrowStatus';
 import RequestBookModal from './Modal/RequestBookModal';
@@ -15,7 +16,18 @@ const MAX_BORROWABLE_BOOKS = 5;
 
 const Library = () => {
   const [requestBookModalOpen, setRequestBookModalOpen] = useState(false);
+
+  const [searchParams] = useSearchParams();
+  const { page } = usePagination();
+  const searchType = searchParams.get('searchType') as BookListSearch['searchType'];
+  const search = searchParams.get('search') as BookListSearch['search'];
+
+  const { data: bookListData } = useGetBookListQuery({ page, searchType, search });
+  const { data: borrowedBookListData } = useGetBookBorrowsQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
+  const { data: executiveInfos } = useGetExecutiveInfoQuery();
   const { mutate: RequestBorrowBook } = useRequestBorrowBookMutation();
+
+  const librarian = executiveInfos?.find((role) => role.jobName === 'ROLE_사서')?.realName || '';
 
   const handleRequestBook = (bookId: number) => {
     RequestBorrowBook(bookId, {
@@ -24,16 +36,6 @@ const Library = () => {
       },
     });
   };
-  const librarian = '박소현';
-
-  const [searchParams] = useSearchParams();
-  const { page } = usePagination();
-
-  const searchType = searchParams.get('searchType') as BookListSearch['searchType'];
-  const search = searchParams.get('search') as BookListSearch['search'];
-
-  const { data: bookListData } = useGetBookListQuery({ page, searchType, search });
-  const { data: borrowedBookListData } = useGetBookBorrowsQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
 
   return (
     <div>
