@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('tailwindcss').Config} */
-const withMT = require('@material-tailwind/react/utils/withMT');
 
-module.exports = withMT({
+module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
@@ -17,6 +15,7 @@ module.exports = withMT({
       },
       fontFamily: {
         base: 'IBM Plex Sans KR, system-ui, sans-serif',
+        orbitron: '"Orbitron", sans-serif',
       },
       fontSize: {
         h1: '28px',
@@ -26,13 +25,13 @@ module.exports = withMT({
       },
       spacing: {
         header: '66px',
-        sidebar: '320px',
+        sidebar: '240px',
       },
       maxWidth: {
         container: '1080px',
       },
       minWidth: {
-        sidebar: '320px',
+        sidebar: '240px',
       },
       backgroundImage: {
         galaxy: "url('/public/img/background_galaxy.png')",
@@ -40,4 +39,4 @@ module.exports = withMT({
     },
   },
   plugins: [],
-});
+};

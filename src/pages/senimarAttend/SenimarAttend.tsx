@@ -1,52 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { DateTime } from 'luxon';
-import OutlinedButton from '@components/Button/OutlinedButton';
-import FilledButton from '@components/Button/FilledButton';
-import PageTitle from '@components/Typography/PageTitle';
+import React, { useEffect } from 'react';
 import { Typography } from '@mui/material';
+import {
+  useGetAvailableSeminarInfoQuery,
+  useGetRecentlyDoneSeminarInfoQuery,
+  useGetRecentlyUpcomingSeminarInfoQuery,
+} from '@api/seminarApi';
+import useCheckAuth from '@hooks/useCheckAuth';
+import { useRecoilValue } from 'recoil';
+import memberState from '@recoil/member.recoil';
+import { MemberInfo } from '@api/dto';
+import starterState from '@recoil/seminarStarter.recoil';
 import SeminarCard from './Card/SeminarCard';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
 
 const SeminarAttend = () => {
-  const seminarDate = DateTime.now(); // 이후 삭제
-  const seminarActivated = true; // TODO: useState, api 적용
-  const [recentSeminarDate, setRecentSeminarDate] = useState('today'); // TODO: api 적용
-  const [futureSeminarDate, setFutureSeminarDate] = useState('towmorrow');
-  const [pastSeminarDate, setPastSeminarDate] = useState('yesterday');
-  const [isBoss, setIsBoss] = useState(true); // TODO: api 적용
-  const cardDateOrder = [pastSeminarDate, recentSeminarDate, futureSeminarDate];
+  const { data: recentlyDoneSeminarId } = useGetRecentlyDoneSeminarInfoQuery();
+  const { data: twoUpcomingSeminarIds } = useGetRecentlyUpcomingSeminarInfoQuery();
+  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
+  const recentSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[0]?.id;
+  const futureSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[1]?.id;
+  const cardIdOrder = [recentlyDoneSeminarId, recentSeminarId, futureSeminarId];
+  const { checkIncludeOneOfAuths } = useCheckAuth();
+  const authorizedMember = checkIncludeOneOfAuths(['ROLE_회장', 'ROLE_부회장', 'ROLE_서기']);
+  const startMember: number | undefined = useRecoilValue(starterState);
+  const member: MemberInfo | null = useRecoilValue(memberState);
+
+  const isStarterMember = () => {
+    if (!availableSeminarData?.id) {
+      return authorizedMember;
+    }
+    if (authorizedMember && member?.memberId === startMember) {
+      return true;
+    }
+    return false;
+  };
+
   useEffect(() => {
-    setRecentSeminarDate(DateTime.now().toFormat('yy.MM.dd'));
-    setFutureSeminarDate(seminarDate.plus({ days: 1 }).toFormat('yy.MM.dd'));
-    setPastSeminarDate(seminarDate.minus({ days: 1 }).toFormat('yy.MM.dd'));
+    if (!localStorage.getItem('출석시도횟수')) localStorage.setItem('출석시도횟수', '0');
   }, []);
 
   return (
-    <>
-      <div className="mt-[180px] flex justify-between text-center [&>*:nth-child(2)]:mt-[-50px]">
-        {cardDateOrder.map((date) => {
-          return (
-            <SeminarCard key={date}>
-              {seminarActivated ? (
-                <>
-                  <Typography className="!mt-[16px] !text-h3 !font-bold ">{date} 세미나</Typography>
-                  <p className="mt-[26px] mb-[14px]">출석 코드</p>
-                  {isBoss ? <BossCardContent /> : <MemberCardContent />}
-                </>
-              ) : (
-                <Typography className="text-center text-h3 font-bold">예정된 세미나가 없습니다.</Typography>
-              )}
-            </SeminarCard>
-          );
-        })}
-      </div>
-      {isBoss ? (
-        <FilledButton onClick={() => setIsBoss(false)}>회원권한페이지로</FilledButton>
-      ) : (
-        <FilledButton onClick={() => setIsBoss(true)}>회장권한페이지로</FilledButton>
-      )}
-    </>
+    <div className="mt-[180px] flex justify-between text-center [&>*:nth-child(2)]:mt-[-50px]">
+      {cardIdOrder.map((seminarId) => {
+        return (
+          <SeminarCard key={seminarId}>
+            {seminarId !== undefined ? (
+              <div>
+                {isStarterMember() ? (
+                  <BossCardContent seminarId={seminarId} />
+                ) : (
+                  <MemberCardContent seminarId={seminarId} />
+                )}
+              </div>
+            ) : (
+              <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">
+                예정된 세미나가 없습니다.
+              </Typography>
+            )}
+          </SeminarCard>
+        );
+      })}
+    </div>
   );
 };
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Checkbox, FormControlLabel, Button, Box, CssBaseline, Container, Stack } from '@mui/material';
+import { Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Stack } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
 import { Link } from 'react-router-dom';
+import useLoginMutation from '@api/logInApi';
 
 const HorizonLine = () => {
   return (
@@ -24,13 +25,7 @@ const Login = () => {
     password: '',
   });
   const { id, password } = form;
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    data.append('id', id);
-    data.append('password', password);
-  };
+  const { mutate: login } = useLoginMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -42,6 +37,12 @@ const Login = () => {
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsKeepLogin(e.target.checked);
+  };
+
+  const handleLoginClick = () => {
+    if (form.id && form.password) {
+      login({ loginId: form.id, password: form.password });
+    }
   };
 
   return (
@@ -57,7 +58,7 @@ const Login = () => {
         >
           <Logo className="mb-5 h-20" />
 
-          <Stack component="form" onSubmit={handleSubmit} width="100%">
+          <Stack component="form" onSubmit={handleLoginClick} width="100%">
             <BackgroundInput
               label="아이디"
               required
@@ -76,7 +77,7 @@ const Login = () => {
               value={password}
               onChange={handleChange}
             />
-            <Button variant="outlined" sx={{ height: 56, mt: 2 }}>
+            <Button variant="outlined" sx={{ height: 56, mt: 2 }} onClick={handleLoginClick}>
               로그인
             </Button>
             <FormControlLabel
@@ -86,9 +87,13 @@ const Login = () => {
           </Stack>
           <HorizonLine />
           <Stack direction="row" spacing={2}>
-            <Link to="/">아이디·비밀번호 찾기</Link>
+            <Link to="/searchAccount">
+              <p className="hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
+            </Link>
             <p>|</p>
-            <Link to="/signUp">회원가입</Link>
+            <Link to="/signUp">
+              <p className="hover:underline hover:duration-300">회원가입</p>
+            </Link>
           </Stack>
         </Box>
       </Container>

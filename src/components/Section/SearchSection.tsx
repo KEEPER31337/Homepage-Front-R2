@@ -1,21 +1,41 @@
 import React from 'react';
-import { MdOutlineSearch, MdOutlineArrowDropDown } from 'react-icons/md';
+import Selector from '@components/Selector/Selector';
+import SearchInput from '@components/Input/SearchInput';
+import { SelectChangeEvent } from '@mui/material';
 
-const SearchSection = () => {
+interface SearchSectionProps {
+  options: { id: string | number; content: string | number }[];
+  selectorValue: string | number;
+  setSelectorValue: React.Dispatch<React.SetStateAction<string>>;
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  onSearchButtonClick: () => void;
+}
+
+const SearchSection = ({
+  options,
+  selectorValue,
+  setSelectorValue,
+  inputValue,
+  setInputValue,
+  onSearchButtonClick,
+}: SearchSectionProps) => {
+  const handleSelectorChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectorValue(event.target.value as string);
+  };
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
   return (
-    <div className="flex basis-3/5 gap-4">
-      <div className="flex basis-1/6 items-center justify-between border-b border-pointBlue px-1 py-2">
-        <span>제목 + 내용</span>
-        <MdOutlineArrowDropDown />
-      </div>
-      <div className="flex basis-5/6 items-center justify-between border-b border-pointBlue px-[9px] py-2">
-        <input
-          type="text"
-          placeholder="검색어를 입력하세요"
-          className="grow bg-subBlack placeholder:text-white focus:outline-none"
-        />
-        <MdOutlineSearch size="20" color="#4CEEF9" />
-      </div>
+    <div className="flex items-end space-x-2">
+      <Selector className="w-32" options={options} value={selectorValue} onChange={handleSelectorChange} />
+      <SearchInput
+        className="w-80"
+        placeholder="검색어를 입력하세요."
+        value={inputValue}
+        onChange={handleInputChange}
+        onSearchButtonClick={onSearchButtonClick}
+      />
     </div>
   );
 };

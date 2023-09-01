@@ -1,9 +1,8 @@
 import React from 'react';
-import { Avatar, Card, CardContent, CardMedia } from '@mui/material';
-import { Typography } from '@material-tailwind/react';
+import { Avatar, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { VscComment, VscEye } from 'react-icons/vsc';
-import { DateTime } from 'luxon';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
+import { getServerImgUrl } from '@utils/converter';
 import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
 
 export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps, InteractionScoreProps {
@@ -13,7 +12,7 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
 const CardMainInfo = ({ type, title }: CardMainInfoProps) => {
   return (
     <div>
-      <Typography className="-mt-2 h-3 font-medium text-pointBlue" variant="small">
+      <Typography className="!-mt-2 h-3 font-medium text-pointBlue" variant="small">
         {type ?? ''}
       </Typography>
       <Typography className="font-semibold" variant="paragraph">
@@ -23,18 +22,18 @@ const CardMainInfo = ({ type, title }: CardMainInfoProps) => {
   );
 };
 
-const CardDetailInfo = ({ writerThumbnailPath, writer, registerTime }: CardDetailInfoProps) => {
+const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardDetailInfoProps) => {
   return (
     <div className="flex">
       <Avatar className="mr-2 !h-6 !w-6" src={writerThumbnailPath ?? undefined} />
-      <div>
+      <Stack>
         <Typography className="font-medium" variant="small">
-          {writer}
+          {writerName}
         </Typography>
         <Typography className="font-semibold text-subGray" variant="small">
-          {DateTime.fromISO(registerTime).toFormat('yyyy.MM.dd')}
+          {registerTime}
         </Typography>
-      </div>
+      </Stack>
     </div>
   );
 };
@@ -44,13 +43,13 @@ const InteractionScore = ({ visitCount, commentCount }: InteractionScoreProps) =
     <div className="flex space-x-1.5 text-pointBlue">
       <div className="flex items-center">
         <VscEye className="mr-0.5 fill-pointBlue" size={12} />
-        <Typography className="mt-0.5 font-normal" variant="small">
+        <Typography className="!mt-0.5 font-normal" variant="small">
           {visitCount}
         </Typography>
       </div>
       <div className="flex items-center">
         <VscComment className="mr-0.5 fill-pointBlue" size={12} />
-        <Typography className="mt-0.5 font-normal" variant="small">
+        <Typography className="!mt-0.5 font-normal" variant="small">
           {commentCount}
         </Typography>
       </div>
@@ -63,7 +62,7 @@ const PostingCard = ({
   type,
   title,
   writerThumbnailPath,
-  writer,
+  writerName,
   registerTime,
   visitCount,
   commentCount,
@@ -71,14 +70,23 @@ const PostingCard = ({
   return (
     <Card className="w-52 !rounded-none !bg-middleBlack !bg-none">
       {thumbnailPath ? (
-        <CardMedia className="h-[118px] bg-middleBlack" component="img" src={thumbnailPath} alt="썸네일" />
+        <CardMedia
+          className="h-[118px] bg-middleBlack"
+          component="img"
+          src={getServerImgUrl(thumbnailPath)}
+          alt="썸네일"
+        />
       ) : (
         <Logo className="m-auto h-[118px] w-28" />
       )}
       <CardContent className="flex h-24 flex-col justify-between !bg-mainBlack !p-3">
         <CardMainInfo type={type} title={title} />
         <div className="flex items-end justify-between">
-          <CardDetailInfo writerThumbnailPath={writerThumbnailPath} writer={writer} registerTime={registerTime} />
+          <CardDetailInfo
+            writerThumbnailPath={writerThumbnailPath}
+            writerName={writerName}
+            registerTime={registerTime}
+          />
           <InteractionScore visitCount={visitCount} commentCount={commentCount} />
         </div>
       </CardContent>

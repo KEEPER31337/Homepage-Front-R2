@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 
-import utilApi from '@mocks/UtilApi';
+import LogoNeon from '@assets/logo/logo_neon.svg';
 import WarningModal from '@components/Modal/WarningModal';
-import { Typography } from '@material-tailwind/react';
+import { Typography } from '@mui/material';
+import { getServerImgUrl } from '@utils/converter';
 
 interface ImageUploaderProps {
   title?: string;
   isEdit: boolean;
   thumbnailPath?: string;
-  setThumbnail: React.Dispatch<Blob>;
+  setThumbnail: React.Dispatch<Blob | null>;
 }
 
 type ImageWarningType = 'Multiple' | 'WrongExtension';
@@ -63,17 +64,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
 
   useEffect(() => {
     if (isEdit && thumbnailPath) {
-      const list = thumbnailPath.split('/');
-      const data = utilApi.getThumbnail(list[list.length - 1]);
-      setThumbnail(data);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result;
-        if (base64) {
-          setThumbnailBase64(base64.toString);
-        }
-      };
-      reader.readAsDataURL(data);
+      setThumbnailBase64(getServerImgUrl(thumbnailPath));
     }
   }, []);
 
@@ -104,23 +95,24 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
         className={`
           ${isDragActive ? 'bg-pointBlue/30' : ''} 
           ${thumbnailBase64 ? '' : 'border-2'} 
-          flex h-full items-center justify-center border-dashed !border-pointBlue/30
+          relative flex h-full items-center justify-center border-dashed !border-pointBlue/30 hover:opacity-70
         `}
       >
         {thumbnailBase64 ? (
           <img
-            className={`${isDragActive ? 'opacity-50' : ''} h-full w-full object-cover`}
+            className={`${isDragActive ? 'opacity-50' : ''} absolute inset-0 h-full w-full object-cover`}
             src={thumbnailBase64}
             alt="thumbnail"
           />
         ) : (
-          <div className="flex items-center text-pointBlue/30">
+          <div className="flex items-center text-pointBlue/70">
+            <img className="absolute inset-0 -z-10 m-auto h-2/3 w-2/3 opacity-10" src={LogoNeon} alt="thumbnail" />
             {isDragActive ? (
               <Typography className="mx-2 text-center text-small">이미지를 놓으세요</Typography>
             ) : (
               <div className="text-center">
                 <MdOutlineAddPhotoAlternate className="mx-auto mb-1 h-[30px] w-[30px]" />
-                <Typography className="text-small">
+                <Typography variant="small">
                   클릭 또는 드래그하여
                   <br />
                   이미지를 첨부하세요

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery, useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { SignUpDuplication, SignUpInfo } from './dto';
 
 const signUpKeys = {
