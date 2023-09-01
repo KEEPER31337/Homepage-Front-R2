@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { MeritTypeInfo } from '@api/dto';
-import { useGetMeritLog, useGetMeritType } from '@api/meritApi';
+import { useGetMeritLogQuery, useGetMeritTypeQuery } from '@api/meritApi';
 import usePagination from '@hooks/usePagination';
 import Selector from '@components/Selector/Selector';
 import StandardTab from '@components/Tab/StandardTab';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
+import AddMeritModal from './Modal/AddMeritModal';
+import AddMeritTypeModal from './Modal/AddMeritTypeModal';
+import EditMeritTypeModal from './Modal/EditMeritTypeModal';
 
 interface MeritLogRow {
   id: number;
@@ -72,8 +75,14 @@ const MeritManage = () => {
   const { page, getRowNumber } = usePagination();
   const [scoreType, setScoreType] = useState<ScoreType>('all');
 
-  const { data: meritLog } = useGetMeritLog({ page });
-  const { data: meritType } = useGetMeritType({ page });
+  const [addMeritOpen, setAddMeritOpen] = useState(false);
+  const [addMeritTypeOpen, setAddMeritTypeOpen] = useState(false);
+  const [editMeritTypeId, setEditMeritTypeId] = useState(0);
+
+  const { data: meritLog } = useGetMeritLogQuery({ page });
+  const { data: meritType } = useGetMeritTypeQuery({ page });
+
+  if (!meritLog || !meritType) return null;
 
   const meritTypeFilter = (item: MeritTypeInfo) => {
     switch (scoreType) {
@@ -88,8 +97,6 @@ const MeritManage = () => {
     }
   };
 
-  if (!meritLog || !meritType) return null;
-
   return (
     <>
       <StandardTab options={tabs.map((v) => ({ id: v.id, label: v.label }))} tab={tab} setTab={setTab} />
@@ -97,6 +104,7 @@ const MeritManage = () => {
         <div className="flex w-full flex-col">
           <div className="my-5 flex h-12 w-full">
             <Button
+              onClick={() => setAddMeritOpen(true)}
               variant="outlined"
               className="!ml-auto h-fit !rounded-sm !border-pointBlue !px-6 !font-semibold disabled:!border-subGray"
             >
@@ -131,6 +139,7 @@ const MeritManage = () => {
               ]}
             />
             <Button
+              onClick={() => setAddMeritTypeOpen(true)}
               variant="outlined"
               className="!ml-auto h-fit !rounded-sm !border-pointBlue !px-6 !font-semibold disabled:!border-subGray"
             >
@@ -141,10 +150,14 @@ const MeritManage = () => {
             columns={MeritTypeColumn}
             rows={meritType.content.filter(meritTypeFilter)}
             childComponent={MeritTypeChildComponent}
+            onRowClick={({ rowData }) => setEditMeritTypeId(rowData.id)}
             paginationOption={{ rowsPerPage: meritType.size, totalItems: meritType.totalElements }}
           />
         </div>
       )}
+      <AddMeritModal open={addMeritOpen} onClose={() => setAddMeritOpen(false)} meritTypes={meritType.content} />
+      <AddMeritTypeModal open={addMeritTypeOpen} onClose={() => setAddMeritTypeOpen(false)} />
+      <EditMeritTypeModal meritTypeId={editMeritTypeId} onClose={() => setEditMeritTypeId(0)} />
     </>
   );
 };

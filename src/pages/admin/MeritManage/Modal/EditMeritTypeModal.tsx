@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import ActionModal from '@components/Modal/ActionModal';
 
 interface EditMeritTypeModalProps {
-  open: boolean;
+  meritTypeId: number;
   onClose: () => void;
 }
 
-const EditMeritTypeModal = ({ open, onClose }: EditMeritTypeModalProps) => {
+const EditMeritTypeModal = ({ meritTypeId, onClose }: EditMeritTypeModalProps) => {
   const [meritInfo, setMeritInfo] = useState({
     awarder: null,
     meritType: null,
@@ -14,7 +14,7 @@ const EditMeritTypeModal = ({ open, onClose }: EditMeritTypeModalProps) => {
 
   return (
     <ActionModal
-      open={open}
+      open={meritTypeId !== 0}
       onClose={onClose}
       title="상벌점 부여"
       modalWidth="xs"

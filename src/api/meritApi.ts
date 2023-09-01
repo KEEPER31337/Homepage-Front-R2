@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { PageAndSize, MeritLog, MeritType } from './dto';
 
@@ -7,7 +7,7 @@ const meritKeys = {
   meritType: (param: PageAndSize) => ['merit-type', param] as const,
 };
 
-const useGetMeritLog = ({ page, size = 10 }: PageAndSize) => {
+const useGetMeritLogQuery = ({ page, size = 10 }: PageAndSize) => {
   const fetcher = () =>
     axios
       .get('/merits', {
@@ -20,7 +20,7 @@ const useGetMeritLog = ({ page, size = 10 }: PageAndSize) => {
   });
 };
 
-const useGetMeritType = ({ page, size = 10 }: PageAndSize) => {
+const useGetMeritTypeQuery = ({ page, size = 10 }: PageAndSize) => {
   const fetcher = () =>
     axios
       .get('/merits/types', {
@@ -33,4 +33,49 @@ const useGetMeritType = ({ page, size = 10 }: PageAndSize) => {
   });
 };
 
-export { useGetMeritLog, useGetMeritType };
+const useAddMeritLogMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ awarderId, meritTypeId }: { awarderId: number; meritTypeId: number }) =>
+    axios.post(`/merits`, { awarderId, meritTypeId }).then(({ data }) => data);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: meritKeys.meritLog({ page: 0 }) });
+    },
+  });
+};
+
+const useAddMeritTypeMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ score, reason }: { score: number; reason: string }) =>
+    axios.post(`/merits/types`, { score, reason }).then(({ data }) => data);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: meritKeys.meritType({ page: 0 }) });
+    },
+  });
+};
+
+const useEditMeritTypeMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ score, reason, meritTypeId }: { score: number; reason: string; meritTypeId: string }) =>
+    axios.post(`/merits/types/${meritTypeId}`, { score, reason }).then(({ data }) => data);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: meritKeys.meritType({ page: 0 }) });
+    },
+  });
+};
+
+export {
+  useGetMeritLogQuery,
+  useGetMeritTypeQuery,
+  useAddMeritLogMutation,
+  useAddMeritTypeMutation,
+  useEditMeritTypeMutation,
+};
