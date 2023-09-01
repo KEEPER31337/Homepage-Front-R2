@@ -1,6 +1,6 @@
-import { MemberInfo } from '@api/dto';
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
+import { MemberInfo } from '@api/dto';
 
 const { persistAtom } = recoilPersist();
 

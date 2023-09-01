@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from 'react';
+import { Divider } from '@mui/material';
 import { useChangePasswordMutation } from '@api/SearchAccountApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BackgroundInput from '@components/Input/BackgroundInput';
-import { Divider } from '@mui/material';
-import React, { useEffect, useState } from 'react';
 
 interface searchPWFormProps {
   id: string;

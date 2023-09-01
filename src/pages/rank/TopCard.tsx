@@ -1,5 +1,5 @@
-import { Avatar, Typography } from '@mui/material';
 import React from 'react';
+import { Avatar, Typography } from '@mui/material';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface TopCardProps<T extends Record<string, any>> {

@@ -2,17 +2,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react';
 
-import { yearList } from '@mocks/StudyApi';
-import PageTitle from '@components/Typography/PageTitle';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import { SelectChangeEvent } from '@mui/material';
-import Selector from '@components/Selector/Selector';
 import { useGetStudyListQuery } from '@api/studyApi';
+import { yearList } from '@mocks/StudyApi';
 import ActionButton from '@components/Button/ActionButton';
-import { ModalInfo } from './Study.interface';
-import StudyModal from './Modal/StudyModal';
+import OutlinedButton from '@components/Button/OutlinedButton';
+import Selector from '@components/Selector/Selector';
+import PageTitle from '@components/Typography/PageTitle';
 import StudyAccordion from './Accordion/StudyAccordion';
+import StudyModal from './Modal/StudyModal';
 import OldStudy from './OldStudy';
+import { ModalInfo } from './Study.interface';
 
 const OLD_YEAR_BOUND = 2022;
 

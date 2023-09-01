@@ -1,10 +1,10 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Avatar, Typography } from '@mui/material';
+import { DateTime } from 'luxon';
 import { TrendingPostInfo } from '@api/dto';
 import { useGetRecentPostsQuery, useGetTrendPostsQuery } from '@api/postApi';
 import ServerImg from '@components/Image/ServerImg';
-import { Avatar, Typography } from '@mui/material';
-import { DateTime } from 'luxon';
-import React from 'react';
-import { Link } from 'react-router-dom';
 
 const Card = ({ post }: { post: TrendingPostInfo }) => {
   return (

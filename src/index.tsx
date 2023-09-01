@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { ThemeProvider as MUIThemeProvider } from '@mui/material';
-import { RecoilRoot } from 'recoil';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
+import { RecoilRoot } from 'recoil';
 
 import './tailwind.css';
 import muiTheme from '@constants/muiTheme';

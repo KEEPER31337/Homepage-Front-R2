@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { CategoryMenu } from '@constants/category';
 import { ListItemButton, Typography } from '@mui/material';
+import { CategoryMenu } from '@constants/category';
 import useCheckAuth from '@hooks/useCheckAuth';
 
 interface SubCategoryNavProps {

@@ -1,5 +1,5 @@
-import { useGetBlockListQuery } from '@api/aboutApi';
 import React from 'react';
+import { useGetBlockListQuery } from '@api/aboutApi';
 import { SubTitleImagesInfo } from '@api/dto';
 
 const HistoryItem = ({ subtitleImage }: { subtitleImage: SubTitleImagesInfo }) => {

@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import ActionModal from '@components/Modal/ActionModal';
-
-import AutoComplete, { AutoCompleteValueType } from '@components/Input/AutoComplete';
+import { ExecutiveInfo } from '@api/dto';
 import {
   useGetExecutiveInfoQuery,
   useGetMemberInfoQuery,
   useCreateExecutiveJobMutation,
   useDeleteExecutiveJobMutation,
 } from '@api/dutyManageApi';
-import { ExecutiveInfo } from '@api/dto';
+import AutoComplete, { AutoCompleteValueType } from '@components/Input/AutoComplete';
+import ActionModal from '@components/Modal/ActionModal';
 
 interface ChangeRolePersonModalProps {
   open: boolean;
