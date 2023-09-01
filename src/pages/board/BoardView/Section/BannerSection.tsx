@@ -4,6 +4,7 @@ import { Avatar, Chip, Typography } from '@mui/material';
 import { VscCalendar, VscEye } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
 import { useDeletePostMutation } from '@api/postApi';
+import useCheckAuth from '@hooks/useCheckAuth';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ServerImg from '@components/Image/ServerImg';
 import ActionModal from '@components/Modal/ActionModal';
@@ -18,6 +19,7 @@ const BannerSection = ({ postId, post }: BannerSectionProps) => {
 
   const { mutate: deletePost } = useDeletePostMutation();
   const navigate = useNavigate();
+  const { checkIsMyId } = useCheckAuth();
 
   const handleEditPostClick = () => {
     navigate(`/board/write/${post.categoryName}`, { state: { postId, post } });
@@ -58,10 +60,12 @@ const BannerSection = ({ postId, post }: BannerSectionProps) => {
             </div>
           </div>
         </div>
-        <div className="flex justify-end space-x-2">
-          <OutlinedButton onClick={handleEditPostClick}>글 수정</OutlinedButton>
-          <OutlinedButton onClick={handleDeletePostClick}>글 삭제</OutlinedButton>
-        </div>
+        {checkIsMyId(post.writerId) && (
+          <div className="flex justify-end space-x-2">
+            <OutlinedButton onClick={handleEditPostClick}>글 수정</OutlinedButton>
+            <OutlinedButton onClick={handleDeletePostClick}>글 삭제</OutlinedButton>
+          </div>
+        )}
       </div>
       <ActionModal
         title="게시글 삭제"

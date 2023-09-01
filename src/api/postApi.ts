@@ -47,17 +47,32 @@ const useEditPostMutation = () => {
   return useMutation(fetcher);
 };
 
+const useEditPostThumbnailMutation = () => {
+  const fetcher = ({ postId, thumbnail }: { postId: number; thumbnail: Blob }) => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/posts/${postId}/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(fetcher);
+};
+
 const useDeletePostMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const fetcher = (postId: number) => axios.delete(`/posts/${postId}`);
+  const fetcher = (postId: number) => axios.delete(`/posts/${postId}`).then(({ data }) => data);
 
   return useMutation(fetcher, {
-    onSuccess: () => {
+    onSuccess: ({ categoryName }) => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
-      // TODO API 응답으로 categoryName 반환 반영되면 적용 예정
-      navigate('/board/자유게시판');
+
+      navigate(`/board/${categoryName}`);
     },
   });
 };
@@ -155,6 +170,7 @@ export {
   useGetRecentPostsQuery,
   useGetTrendPostsQuery,
   useEditPostMutation,
+  useEditPostThumbnailMutation,
   useDeletePostMutation,
   useControlPostLikesMutation,
   useControlPostDislikesMutation,
