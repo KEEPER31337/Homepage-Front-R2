@@ -53,8 +53,6 @@ const RequestManageTab = () => {
   const { mutate: DenyRequest } = useDenyRequestMutation();
   const { mutate: DenyReturn } = useDenyReturnMutation();
 
-  if (!borrowInfoListData) return null;
-
   const handleActionButtonClick = (action: 'approve' | 'deny', borrowInfoStatus: string, borrowInfoId: number) => {
     let mutateFunction;
 
@@ -76,31 +74,33 @@ const RequestManageTab = () => {
       </div>
       <StandardTable
         columns={requestManageColumn}
-        rows={borrowInfoListData?.content.map((borrowInfo, bookIndex) => ({
-          no: getRowNumber({ size: borrowInfoListData.size, index: bookIndex }),
-          id: borrowInfo.borrowInfoId,
-          requestManageButton: (
-            <>
-              <IconButton
-                onClick={() => {
-                  handleActionButtonClick('approve', borrowInfo.status, borrowInfo.borrowInfoId);
-                }}
-                className="!mr-2 !p-0"
-              >
-                <VscCircleLarge size={16} className="fill-pointBlue" />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  handleActionButtonClick('deny', borrowInfo.status, borrowInfo.borrowInfoId);
-                }}
-                className="!p-0"
-              >
-                <VscChromeClose size={16} className="fill-subRed" />
-              </IconButton>
-            </>
-          ),
-          ...borrowInfo,
-        }))}
+        rows={
+          borrowInfoListData?.content.map((borrowInfo, bookIndex) => ({
+            no: getRowNumber({ size: borrowInfoListData.size, index: bookIndex }),
+            id: borrowInfo.borrowInfoId,
+            requestManageButton: (
+              <>
+                <IconButton
+                  onClick={() => {
+                    handleActionButtonClick('approve', borrowInfo.status, borrowInfo.borrowInfoId);
+                  }}
+                  className="!mr-2 !p-0"
+                >
+                  <VscCircleLarge size={16} className="fill-pointBlue" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleActionButtonClick('deny', borrowInfo.status, borrowInfo.borrowInfoId);
+                  }}
+                  className="!p-0"
+                >
+                  <VscChromeClose size={16} className="fill-subRed" />
+                </IconButton>
+              </>
+            ),
+            ...borrowInfo,
+          })) || []
+        }
         paginationOption={{ rowsPerPage: borrowInfoListData?.size, totalItems: borrowInfoListData?.totalElement }}
       />
     </>
