@@ -18,6 +18,7 @@ import Game from '@pages/Game/Game';
 import Library from '@pages/Library/Library';
 import BoardWrite from '@pages/board/BoardWrite/BoardWrite';
 import BoardView from '@pages/board/BoardView/BoardView';
+import RewordPenaltyManage from '@pages/admin/RewordPenaltyManage/RewordPenaltyManage';
 
 const useMainRouter = () =>
   useRoutes([
@@ -70,7 +71,7 @@ const useMainRouter = () =>
                 },
                 {
                   path: 'rewordPenaltyManage',
-                  element: <div />,
+                  element: <RewordPenaltyManage />,
                 },
               ],
             },

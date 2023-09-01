@@ -390,3 +390,47 @@ export interface GameRankInfo {
   profileImageUrl?: string | null;
   memberId: number;
 }
+
+export interface RewordPenaltyLogInfo {
+  id: number;
+  giveTime: string;
+  awarderName?: string;
+  awarderGeneration?: string;
+  score: number;
+  meritTypeId: number;
+  reason: string;
+}
+
+export interface RewordPenaltyLog {
+  content: RewordPenaltyLogInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface RewordPenaltyTypeInfo {
+  id: number;
+  score: number;
+  detail: string;
+}
+
+export interface RewordPenaltyType {
+  content: RewordPenaltyTypeInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
