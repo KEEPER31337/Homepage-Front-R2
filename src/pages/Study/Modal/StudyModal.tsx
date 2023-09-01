@@ -10,7 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { useAddStudyMutation } from '@api/studyApi';
 import { ModalInfo } from '../Study.interface';
-import { StudyChip, StudyChipDismissible } from '../share/StudyChip';
+import { StudyChip } from '../share/StudyChip';
 
 const STUDY_TITLE_MAX_LENGTH = 45;
 const STUDY_CONTENT_MAX_LENGTH = 100;
@@ -22,7 +22,7 @@ interface StudyModalProps {
 }
 
 const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
-  const [, setThumbnail] = useState<Blob | null>();
+  const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const memberIds: { id: number }[] = [];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -44,6 +44,7 @@ const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
           season: 1,
           memberIds,
         },
+        thumbnail,
       },
       {
         onSuccess: () => {

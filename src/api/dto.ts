@@ -153,6 +153,7 @@ export interface StudyInfo {
   thumbnailPath: string;
   title: string;
   headName: string;
+  headId: number;
   memberCount: number;
 }
 
