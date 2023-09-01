@@ -414,4 +414,3 @@ export interface memberInfo {
   memberName: string;
   generation: string;
 }
-
