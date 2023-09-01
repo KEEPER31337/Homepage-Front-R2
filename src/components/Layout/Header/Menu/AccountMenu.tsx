@@ -1,7 +1,7 @@
 import React from 'react';
 import { Divider, Menu, MenuItem, MenuList } from '@mui/material';
-import { MemberInfo } from '@api/dto';
 import { useSignOutMutation } from '@api/authApi';
+import { MemberInfo } from '@api/dto';
 
 interface AccountMenuProps {
   userInfo: MemberInfo;

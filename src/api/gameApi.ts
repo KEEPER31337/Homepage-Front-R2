@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useQuery } from 'react-query';
+import axios from 'axios';
 
 export const gameKeys = {
   myInfo: ['myInfo'] as const,

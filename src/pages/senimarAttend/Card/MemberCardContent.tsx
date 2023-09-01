@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import FilledButton from '@components/Button/FilledButton';
-import ConfirmModal from '@components/Modal/ConfirmModal';
 import { Typography } from '@mui/material';
-import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { AxiosError } from 'axios';
 import { ActivityStatus } from '@api/dto';
+import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
+import FilledButton from '@components/Button/FilledButton';
+import ConfirmModal from '@components/Modal/ConfirmModal';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
@@ -23,7 +23,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   } = useAttendSeminarMutation(seminarId);
   const validCode = seminarData?.attendanceCode;
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
-  const [inputCode, setInputCode] = useState([0, 0, 0, 0]);
+  const [inputCode, setInputCode] = useState('');
   const [attendStatus, setAttendStatus] = useState<undefined | ActivityStatus>(undefined);
   const [excessModalOpen, setExcessModalOpen] = useState(false);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
@@ -37,7 +37,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   }, [seminarData]);
 
   const handleAttendButtonClick = () => {
-    attend(inputCode.join(''));
+    attend(inputCode);
     if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) > 5) setExcessModalOpen(true);
   };
 
@@ -50,7 +50,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   }, [isAttendSuccess]);
 
   useEffect(() => {
-    if (inputCode.join('') !== validCode) {
+    if (inputCode !== validCode) {
       const attemptNum = parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1;
       if (attemptNum <= 5) {
         localStorage.setItem('출석시도횟수', String(attemptNum));
@@ -84,8 +84,8 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         <SeminarInput
           disabled={unableSeminar}
           helperText={incorrectCodeMsg}
-          setInputCode={setInputCode}
-          inputCode={unableSeminar ? ['', '', '', ''] : inputCode}
+          setInputCode={(res: string) => setInputCode(res)}
+          inputCode={unableSeminar ? '' : inputCode}
         />
       </div>
 

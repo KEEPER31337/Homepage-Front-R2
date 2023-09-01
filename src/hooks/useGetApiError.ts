@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 type ErrorHandler = (error?: AxiosError) => void;
 

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { Typography } from '@mui/material';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 
 import LogoNeon from '@assets/logo/logo_neon.svg';
-import utilApi from '@mocks/UtilApi';
+import { getServerImgUrl } from '@utils/converter';
 import WarningModal from '@components/Modal/WarningModal';
-import { Typography } from '@mui/material';
 
 interface ImageUploaderProps {
   title?: string;
@@ -64,17 +64,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
 
   useEffect(() => {
     if (isEdit && thumbnailPath) {
-      const list = thumbnailPath.split('/');
-      const data = utilApi.getThumbnail(list[list.length - 1]);
-      setThumbnail(data);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result;
-        if (base64) {
-          setThumbnailBase64(base64.toString);
-        }
-      };
-      reader.readAsDataURL(data);
+      setThumbnailBase64(getServerImgUrl(thumbnailPath));
     }
   }, []);
 

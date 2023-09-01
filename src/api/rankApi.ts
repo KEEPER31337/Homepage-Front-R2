@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useQuery } from 'react-query';
+import axios from 'axios';
 import { AttendRankInfo, GameRankInfo, PageAndSize, PointRank, TodayAttendRank } from './dto';
 
 const rankKeys = {

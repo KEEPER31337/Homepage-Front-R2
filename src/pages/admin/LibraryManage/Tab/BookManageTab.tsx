@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import { VscTrash } from 'react-icons/vsc';
+import { BookListSearch } from '@api/dto';
+import { useGetBookManageListQuery, useDeleteBookMutation } from '@api/libraryManageApi';
 import usePagination from '@hooks/usePagination';
-import { useGetBookManageListQuery } from '@api/libraryManageApi';
-import StandardTable from '@components/Table/StandardTable';
+import LibrarySearchSection from '@pages/Library/SearchSection/LibrarySearchSection';
 import ActionButton from '@components/Button/ActionButton';
+import StandardTable from '@components/Table/StandardTable';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
-import SearchSection from '@components/Section/SearchSection';
 import AddBookModal from '../Modal/AddBookModal';
 
 interface libraryManageRow {
@@ -14,6 +18,7 @@ interface libraryManageRow {
   bookQuantity: string;
   borrowers: string;
   canBorrow: boolean;
+  delete: ReactElement;
 }
 
 const libraryManageColumn: Column<libraryManageRow>[] = [
@@ -26,19 +31,17 @@ const libraryManageColumn: Column<libraryManageRow>[] = [
     key: 'canBorrow',
     headerName: '대출상태',
   },
+  { key: 'delete', headerName: '삭제' },
 ];
 
 const BookManageTab = () => {
   const { page, getRowNumber } = usePagination();
-  const { data: bookManageListData } = useGetBookManageListQuery({ page });
+  const [searchParams] = useSearchParams();
+  const searchType = searchParams.get('searchType') as BookListSearch['searchType'];
+  const search = searchParams.get('search') as BookListSearch['search'];
 
-  const selectorList = [
-    { id: 'all', content: '도서명 + 저자' },
-    { id: 'title', content: '도서명' },
-    { id: 'author', content: '저자' },
-  ];
-  const [inputValue, setInputValue] = useState('');
-  const [selectorValue, setSelectorValue] = useState('all');
+  const { data: bookManageListData } = useGetBookManageListQuery({ page, searchType, search });
+  const { mutate: deleteBookMutation } = useDeleteBookMutation();
 
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
 
@@ -50,27 +53,21 @@ const BookManageTab = () => {
         return value;
     }
   };
-  const handleSearchButtonClick = () => {
-    // TODO 검색 API 호출
-  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleBookRowClick = ({ rowData }: { rowData: Row<libraryManageRow> }) => {
     // TODO 도서 수정 API 호출
   };
 
+  const handleDeleteButtonClick = (bookId: number) => {
+    deleteBookMutation(bookId);
+  };
   if (!bookManageListData) return null;
 
   return (
     <>
       <div className="mb-5 flex justify-between space-x-2">
-        <SearchSection
-          options={selectorList}
-          selectorValue={selectorValue}
-          setSelectorValue={setSelectorValue}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          onSearchButtonClick={handleSearchButtonClick}
-        />
+        <LibrarySearchSection />
         <ActionButton mode="add" onClick={() => setAddBookModalOpen(true)}>
           추가
         </ActionButton>
@@ -79,7 +76,13 @@ const BookManageTab = () => {
       <StandardTable
         columns={libraryManageColumn}
         rows={bookManageListData?.content.map((book, bookIndex) => ({
+          id: book.bookId,
           no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
+          delete: (
+            <IconButton onClick={() => handleDeleteButtonClick(book.bookId)}>
+              <VscTrash size={20} className="fill-subRed" />
+            </IconButton>
+          ),
           ...book,
         }))}
         childComponent={childComponent}

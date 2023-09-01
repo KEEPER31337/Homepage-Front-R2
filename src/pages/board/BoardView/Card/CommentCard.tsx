@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import { CommentInfo } from '@api/dto';
-import ReplyCard from './ReplyCard';
-import CommentCardHeader from './CommentCardHeader';
 import CommentCardFooter from './CommentCardFooter';
+import CommentCardHeader from './CommentCardHeader';
+import ReplyCard from './ReplyCard';
 
 interface CommentCardProps {
   commentInfo: CommentInfo;

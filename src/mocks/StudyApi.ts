@@ -1,6 +1,6 @@
-import { StudyListInfo } from '@api/dto';
-
-const studyList: StudyListInfo[] = [
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+const studyList: any = [
   {
     id: 10,
     title: 'CTF 스터디',

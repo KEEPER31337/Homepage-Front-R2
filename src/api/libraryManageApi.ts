@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
 import { DateTime } from 'luxon';
 import { ManageBookInfo, BookListSearch, BookCoreData, BorrowInfoListSearch, BorrowInfo } from './dto';
 
@@ -13,7 +13,7 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
   const fetcher = () =>
     axios.get('/manage/books', { params: { page, size, searchType, search } }).then(({ data }) => {
       const content = data.content.map((bookInfo: ManageBookInfo) => ({
-        id: bookInfo.bookId,
+        bookId: bookInfo.bookId,
         title: bookInfo.title,
         author: bookInfo.author,
         bookQuantity: `${bookInfo.currentQuantity}/${bookInfo.totalQuantity}`,
@@ -30,6 +30,8 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
 };
 
 const useAddBookMutation = () => {
+  const queryClient = useQueryClient();
+
   const fetcher = ({ bookCoreData, thumbnail }: { bookCoreData: BookCoreData; thumbnail?: Blob | null }) => {
     const formData = new FormData();
     formData.append('bookMetaData', new Blob([JSON.stringify(bookCoreData)], { type: 'application/json' }));
@@ -42,13 +44,22 @@ const useAddBookMutation = () => {
     });
   };
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
+    },
+  });
 };
 
 const useDeleteBookMutation = () => {
+  const queryClient = useQueryClient();
   const fetcher = (bookId: number) => axios.delete(`/manage/books/${bookId}`);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
+    },
+  });
 };
 
 const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowInfoListSearch) => {
@@ -56,8 +67,8 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
     axios.get('/manage/borrow-infos', { params: { page, size, status, search } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
         const borrowStatus: { [key: string]: string } = {
-          대출대기중: '대출 신청',
-          반납대기중: '반납 신청',
+          대출대기: '대출 신청',
+          반납대기: '반납 신청',
         };
         return {
           borrowInfoId: borrowInfo.borrowInfoId,
@@ -65,7 +76,7 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
           requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
           bookTitle: borrowInfo.bookTitle,
           author: borrowInfo.author,
-          bookQuantity: '3/3', // `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
+          bookQuantity: `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
           borrowerRealName: borrowInfo.borrowerRealName,
         };
       });
@@ -82,18 +93,13 @@ const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: Bor
   const fetcher = () =>
     axios.get('/manage/borrow-infos', { params: { page, size, status } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
-        const borrowStatus: { [key: string]: string } = {
-          대출승인: '대출중',
-          반납대기중: '반납대기',
-        };
-
         return {
           bookTitle: borrowInfo.bookTitle,
           author: borrowInfo.author,
           borrowerRealName: borrowInfo.borrowerRealName,
           requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
           expiredDateTime: DateTime.fromISO(borrowInfo?.expiredDateTime || '').toFormat('yyyy.MM.dd'),
-          status: borrowStatus[borrowInfo.status],
+          status: borrowInfo.status,
         };
       });
       return { content, totalElement: data.totalElements, size: data.size };
@@ -111,7 +117,7 @@ const useApproveRequestMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-approve`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
   });
 };
@@ -121,7 +127,7 @@ const useDenyRequestMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-deny`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
   });
 };
@@ -131,7 +137,7 @@ const useApproveReturnMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-approve`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
   });
 };
@@ -141,7 +147,7 @@ const useDenyReturnMutation = () => {
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-deny`);
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['borrowInfoList'] });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
   });
 };

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Stack } from '@mui/material';
+import useLoginMutation from '@api/logInApi';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import BackgroundInput from '@components/Input/BackgroundInput';
-import { Link } from 'react-router-dom';
-import useLoginMutation from '@api/logInApi';
 
 const HorizonLine = () => {
   return (
@@ -39,14 +39,8 @@ const Login = () => {
     setIsKeepLogin(e.target.checked);
   };
 
-  const validation = () => {
-    const isError = false;
-
-    return !isError;
-  };
-
   const handleLoginClick = () => {
-    if (validation()) {
+    if (form.id && form.password) {
       login({ loginId: form.id, password: form.password });
     }
   };
@@ -93,7 +87,7 @@ const Login = () => {
           </Stack>
           <HorizonLine />
           <Stack direction="row" spacing={2}>
-            <Link to="/">
+            <Link to="/searchAccount">
               <p className="hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
             </Link>
             <p>|</p>

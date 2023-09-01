@@ -3,19 +3,19 @@ import PageTitle from '@components/Typography/PageTitle';
 
 import DutyProfileTooltip from './Tooltip/DutyProfileTooltip';
 
-const roleNameArray = [
-  { key: 1, roleName: '학술부장' },
-  { key: 2, roleName: '대외부장' },
-  { key: 3, roleName: '전산관리자' },
-  { key: 4, roleName: '서기' },
-  { key: 5, roleName: '사서' },
-  { key: 6, roleName: '총무' },
+const jobNameArray = [
+  { key: 1, jobName: 'ROLE_학술부장' },
+  { key: 2, jobName: 'ROLE_대외부장' },
+  { key: 3, jobName: 'ROLE_전산관리자' },
+  { key: 4, jobName: 'ROLE_서기' },
+  { key: 5, jobName: 'ROLE_사서' },
+  { key: 6, jobName: 'ROLE_총무' },
 ];
 
-const ITRoleNameArray = [
-  { key: 1, roleName: 'FRONT' },
-  { key: 2, roleName: 'BACK' },
-  { key: 3, roleName: 'INFRA' },
+const ITjobNameArray = [
+  { key: 1, jobName: 'ROLE_FRONT_전산관리자' },
+  { key: 2, jobName: 'ROLE_BACK_전산관리자' },
+  { key: 3, jobName: 'ROLE_INFRA_전산관리자' },
 ];
 
 const MiddleBar = () => {
@@ -26,7 +26,7 @@ const MiddleBar = () => {
       <div className="absolute bottom-[14.5px] right-1/2 h-16 w-0 translate-x-1/2 border-2 border-pointBlue" />
       <div className="absolute bottom-[14.5px] right-[8.8%] h-0 w-[83%] border-2 border-pointBlue" />
       <div className="flex w-full flex-row justify-around">
-        {roleNameArray.map((content) => (
+        {jobNameArray.map((content) => (
           <div
             key={content.key}
             className="flex h-8 w-8 place-items-center justify-center rounded-full border-2 border-pointBlue"
@@ -44,7 +44,7 @@ const ItBar = () => {
     <div className="relative flex h-fit w-full">
       <div className="h-0 w-[24.6%]" />
       <div className="flex w-[34%] flex-row justify-between">
-        {ITRoleNameArray.map((data) => (
+        {ITjobNameArray.map((data) => (
           <div key={data.key} className="h-4 w-4 rounded-full bg-pointBlue" />
         ))}
       </div>
@@ -66,7 +66,7 @@ const ViceChairman = () => {
           </div>
         </div>
         <div className="absolute left-[40%]">
-          <DutyProfileTooltip roleName="부회장" />
+          <DutyProfileTooltip jobName="ROLE_부회장" />
         </div>
       </div>
     </div>
@@ -78,13 +78,13 @@ const DutyManage = () => {
     <div>
       <PageTitle>직책관리</PageTitle>
       <div className="flex flex-col items-center">
-        <DutyProfileTooltip roleName="회장" />
+        <DutyProfileTooltip jobName="ROLE_회장" />
         <ViceChairman />
 
         <MiddleBar />
         <div className="mt-2 flex w-full flex-row items-start justify-around">
-          {roleNameArray.map((content) => (
-            <DutyProfileTooltip key={content.key} roleName={content.roleName} />
+          {jobNameArray.map((content) => (
+            <DutyProfileTooltip key={content.key} jobName={content.jobName} />
           ))}
         </div>
 
@@ -92,8 +92,8 @@ const DutyManage = () => {
         <div className="flex h-fit w-full">
           <div className="h-0 w-[17%]" />
           <div className="flex w-[49%] flex-row items-start justify-around">
-            {ITRoleNameArray.map((content) => (
-              <DutyProfileTooltip key={content.key} roleName={content.roleName} />
+            {ITjobNameArray.map((content) => (
+              <DutyProfileTooltip key={content.key} jobName={content.jobName} />
             ))}
           </div>
         </div>

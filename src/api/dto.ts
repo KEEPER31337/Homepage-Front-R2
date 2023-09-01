@@ -36,6 +36,11 @@ export interface MemberDetailInfo extends MemberInfo {
   memberRank: string;
 }
 
+export interface PeriodicInfo {
+  year: number;
+  season: number;
+}
+
 export interface StaticWriteContentsInfo {
   id: number;
   content: string;
@@ -94,7 +99,7 @@ export interface BorrowInfo {
   bookQuantity: string;
   currentQuantity: number;
   totalQuantity: number;
-  status: '대출대기중' | '반납대기중' | '대출거부' | '대출승인' | '반납';
+  status: '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
 }
 
 export interface BookInfo {
@@ -109,7 +114,6 @@ export interface BookInfo {
 }
 
 export interface ManageBookInfo extends BookInfo {
-  id: number;
   bookDepartment: string;
   borrowInfos: BorrowInfo[];
   borrowers: string;
@@ -126,40 +130,42 @@ export interface BorrowedBookInfo {
   expireDate: string;
 }
 
+export interface StudyLinks {
+  gitLink?: string;
+  notionLink?: string;
+  etcTitle?: string;
+  etcLink?: string;
+}
+
+export interface StudyCore extends StudyLinks, PeriodicInfo {
+  title: string;
+  information: string;
+  memberIds: { id: number }[];
+}
+
+export interface UploadStudy {
+  request: StudyCore;
+  thumbnail?: Blob | null;
+}
+
+export interface StudyInfo {
+  studyId: number;
+  thumbnailPath: string;
+  title: string;
+  headName: string;
+  headId: number;
+  memberCount: number;
+}
+
 export interface StudyLinkInfo {
   title: string;
   contents: string;
 }
 
-export interface StudyMemberInfo {
-  id: number;
-  emailAddress: string;
-  nickName: string;
-  realName: string;
-  registerDate: string;
-  point: number;
-  level: number;
-  rank: string;
-  type: string;
-  jobs: string[];
-  thumbnailPath: string;
-  merit: number;
-  demerit: number;
-  generation: number;
-}
-
-export interface StudyListInfo {
-  id: number;
-  title: string;
+export interface StudyDetail {
   information: string;
-  memberNumber: number;
-  registerTime: string;
-  year: number;
-  season: number;
-  link: StudyLinkInfo[];
-  thumbnailPath: string;
-  headMember: StudyMemberInfo;
-  memberList: StudyMemberInfo[];
+  links: StudyLinkInfo[];
+  members: MemberInfo[];
 }
 
 export interface SignUpInfo {
@@ -433,4 +439,23 @@ export interface RewordPenaltyType {
   sort: PageSortInfo;
   numberOfElements: number;
   empty: boolean;
+}
+
+export interface ExecutiveInfo {
+  jobId: number;
+  jobName: string;
+  memberId: number;
+  generation: string;
+  realName: string;
+}
+
+export interface JobList {
+  jobId: number;
+  jobName: string;
+}
+
+export interface memberInfo {
+  memberId: number;
+  memberName: string;
+  generation: string;
 }

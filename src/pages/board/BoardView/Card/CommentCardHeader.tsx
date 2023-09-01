@@ -1,9 +1,9 @@
 import React from 'react';
-import { MdThumbDown, MdThumbUp } from 'react-icons/md';
 import { Avatar, Button, CardHeader } from '@mui/material';
-import { CommentInfo } from '@api/dto';
-import { useControlCommentLikesMutation, useControlCommentDislikesMutation } from '@api/commentApi';
+import { MdThumbDown, MdThumbUp } from 'react-icons/md';
 import { VscTrash } from 'react-icons/vsc';
+import { useControlCommentLikesMutation, useControlCommentDislikesMutation } from '@api/commentApi';
+import { CommentInfo } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
 import CommentMenu from '../Menu/CommentMenu';
 

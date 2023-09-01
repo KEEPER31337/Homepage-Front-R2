@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 import memberState from '@recoil/member.recoil';
 import { MemberDetailInfo } from './dto';
@@ -13,9 +13,6 @@ const useLoginMutation = () => {
   const setMemberState = useSetRecoilState(memberState);
 
   return useMutation(fetcher, {
-    onError: () => {
-      alert('아이디 또는 비밀번호를 확인해주세요.');
-    },
     onSuccess: ({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs }: MemberDetailInfo) => {
       navigate('/');
       setMemberState({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs });

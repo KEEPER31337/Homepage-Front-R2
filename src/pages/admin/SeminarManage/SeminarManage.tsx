@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import StandardTable from '@components/Table/StandardTable';
 import { columns, rows } from '@mocks/SeminarManageApi';
+import ActionButton from '@components/Button/ActionButton';
+import StandardTable from '@components/Table/StandardTable';
 import PageTitle from '@components/Typography/PageTitle';
 
-import ActionButton from '@components/Button/ActionButton';
 import AddSeminarModal from './Modal/AddSeminarModal';
 import DeleteSeminarModal from './Modal/DeleteSeminarModal';
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Drawer, Toolbar } from '@mui/material';
-import { KEEPER_COLOR, SIDEBAR_WIDTH } from '@constants/keeperTheme';
-import CATEGORIES from '@constants/category';
-import CategoryNav from '@components/Navigation/CategoryNav';
-import useCheckAuth from '@hooks/useCheckAuth';
 import { Role } from '@api/dto';
+import CATEGORIES from '@constants/category';
+import { KEEPER_COLOR, SIDEBAR_WIDTH } from '@constants/keeperTheme';
+import useCheckAuth from '@hooks/useCheckAuth';
+import CategoryNav from '@components/Navigation/CategoryNav';
 
 const Sidebar = () => {
   const executiveRoles: Role[] = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기', 'ROLE_총무', 'ROLE_사서'];

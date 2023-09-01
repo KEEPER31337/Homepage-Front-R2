@@ -1,7 +1,7 @@
-import { useGetBlockListQuery } from '@api/aboutApi';
 import React from 'react';
-import LogoNeon from '@assets/logo/logo_neon.svg';
+import { useGetBlockListQuery } from '@api/aboutApi';
 import { SubTitleImagesInfo } from '@api/dto';
+import LogoNeon from '@assets/logo/logo_neon.svg';
 
 const imagePath = [
   null,

@@ -1,8 +1,8 @@
 import React from 'react';
-import Intro from './Intro';
-import History from './History';
-import Excellence from './Excellence';
 import Activity from './Activity';
+import Excellence from './Excellence';
+import History from './History';
+import Intro from './Intro';
 import Trendings from './Trendings';
 
 const Home = () => {
