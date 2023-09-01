@@ -168,7 +168,7 @@ const BoardWrite = () => {
         <FileUploader files={files} setFiles={setFiles} />
       </div>
       <div className="flex justify-end space-x-2">
-        {!editMode && (
+        {!editMode && !(categoryName === '익명게시판') && (
           <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })} disabled={!isValid}>
             임시저장
           </OutlinedButton>
