@@ -9,9 +9,10 @@ import usePagination from '@hooks/usePagination';
 import tableViewState from '@recoil/view.recoil';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import TableViewSwitchButton from '@components/Button/TableViewSwitchButton';
+import TableViewSwitchButton from '@components/Table/Button/TableViewSwitchButton';
 import GridTable from '@components/Table/GridTable';
 import StandardTable from '@components/Table/StandardTable';
+
 import { ChildComponent, Column, Row } from '@components/Table/StandardTable.interface';
 import PageTitle from '@components/Typography/PageTitle';
 import BoardSearchSection from './SearchSection/BoardSearchSection';
