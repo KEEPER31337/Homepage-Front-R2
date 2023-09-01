@@ -220,6 +220,7 @@ export interface CommentInfo {
   dislikeCount: number;
   isLike: boolean;
   isDislike: boolean;
+  isDeleted: boolean;
 }
 
 export interface UploadPostSettings {
