@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Box } from '@mui/material';
-import ActionModal from '@components/Modal/ActionModal';
-import { useGetBookDetailQuery } from '@api/libraryManageApi';
+import { Typography, Tooltip } from '@mui/material';
+import { useGetBookDetailQuery, useEditBookInfoMutation, useEditBookThumbnailMutation } from '@api/libraryManageApi';
 import StandardInput from '@components/Input/StandardInput';
+import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
-import { useEditBookInfoMutation } from '@api/libraryManageApi';
 import TotalBookNumberSelector from '../Selector/TotalBookNumberSelector';
 
 interface SelectorProps {
@@ -20,6 +19,7 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
   });
   const { title, author } = bookInfo;
   const [totalQuantity, setTotalQuantity] = useState(1);
+  const [bookQuantity, setBookQuantity] = useState('');
   const bookDepartment = 'ETC';
   const [thumbnailPath, setThumbnailPath] = useState('');
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
@@ -37,15 +37,18 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
 
   const { data: bookDetail } = useGetBookDetailQuery(editBookId);
   const { mutate: editBookInfo } = useEditBookInfoMutation();
+  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
 
   useEffect(() => {
     if (bookDetail) {
+      console.log(bookDetail);
       setBookInfo({
         title: bookDetail.title,
         author: bookDetail.author,
       });
       setTotalQuantity(bookDetail.totalQuantity);
       setThumbnailPath(bookDetail.thumbnailPath);
+      setBookQuantity(`${bookDetail.currentQuantity}/${bookDetail.totalQuantity}`);
     }
   }, [bookDetail]);
 
@@ -54,7 +57,7 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
     setIsInvalidAuthor(author === '');
     return title !== '' && author !== '';
   };
-
+  console.log(thumbnailPath);
   const handleEditBookButtonClick = () => {
     const isValid = validate();
     if (isValid) {
@@ -62,7 +65,18 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
         { bookCoreData: { title, author, totalQuantity, bookDepartment }, bookId: editBookId },
         {
           onSuccess: () => {
-            onClose();
+            if (thumbnail) {
+              editBookThumbnail(
+                { bookId: editBookId, thumbnail },
+                {
+                  onSuccess: () => {
+                    console.log('성공!');
+                    onClose();
+                  },
+                },
+              );
+            }
+            //
           },
         },
       );
@@ -87,7 +101,6 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
               name="title"
               value={title}
               onChange={handleEditBookInfoChange}
-              className="w-full"
             />
           </div>
           <div>
@@ -98,12 +111,29 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
               name="author"
               value={author}
               onChange={handleEditBookInfoChange}
-              className="w-full"
             />
           </div>
-          <div>
-            <Typography>권수</Typography>
-            <TotalBookNumberSelector value={totalQuantity} setValue={setTotalQuantity} />
+          <div className="relative">
+            <div>
+              <Typography>권수</Typography>
+              <TotalBookNumberSelector value={totalQuantity} setValue={setTotalQuantity} />
+            </div>
+            <div className="absolute bottom-0 right-0">
+              <Tooltip
+                title={`대출 현황 ${bookQuantity}`}
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: 'rgba(76, 238, 249, 0.15)',
+                      fontSize: '14px',
+                    },
+                  },
+                }}
+                placement="top"
+              >
+                <Typography className="text-pointBlue">도서 현황</Typography>
+              </Tooltip>
+            </div>
           </div>
         </div>
         <div className="h-[210px] w-[128px]">

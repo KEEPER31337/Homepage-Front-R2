@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
 import { DateTime } from 'luxon';
 import { ManageBookInfo, BookListSearch, BookCoreData, BorrowInfoListSearch, BorrowInfo } from './dto';
 
@@ -77,9 +77,16 @@ const useEditBookInfoMutation = () => {
 };
 
 const useEditBookThumbnailMutation = () => {
-  const fetcher = ({ bookId, thumbnail }: { bookId: number; thumbnail?: Blob | null }) =>
-    axios.patch(`/manage/books/${bookId}`, thumbnail);
+  const fetcher = ({ bookId, thumbnail }: { bookId: number; thumbnail: Blob }) => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail);
 
+    return axios.patch(`/manage/books/${bookId}/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
   return useMutation(fetcher);
 };
 
@@ -94,8 +101,8 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
     axios.get('/manage/borrow-infos', { params: { page, size, status, search } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
         const borrowStatus: { [key: string]: string } = {
-          대출대기중: '대출 신청',
-          반납대기중: '반납 신청',
+          대출대기: '대출 신청',
+          반납대기: '반납 신청',
         };
         return {
           borrowInfoId: borrowInfo.borrowInfoId,
@@ -103,7 +110,7 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
           requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
           bookTitle: borrowInfo.bookTitle,
           author: borrowInfo.author,
-          bookQuantity: '3/3', // `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
+          bookQuantity: `${borrowInfo.currentQuantity}/${borrowInfo.totalQuantity}`,
           borrowerRealName: borrowInfo.borrowerRealName,
         };
       });
@@ -120,18 +127,13 @@ const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: Bor
   const fetcher = () =>
     axios.get('/manage/borrow-infos', { params: { page, size, status } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
-        const borrowStatus: { [key: string]: string } = {
-          대출승인: '대출중',
-          반납대기중: '반납대기',
-        };
-
         return {
           bookTitle: borrowInfo.bookTitle,
           author: borrowInfo.author,
           borrowerRealName: borrowInfo.borrowerRealName,
           requestDatetime: DateTime.fromISO(borrowInfo?.requestDatetime || '').toFormat('yyyy.MM.dd'),
           expiredDateTime: DateTime.fromISO(borrowInfo?.expiredDateTime || '').toFormat('yyyy.MM.dd'),
-          status: borrowStatus[borrowInfo.status],
+          status: borrowInfo.status,
         };
       });
       return { content, totalElement: data.totalElements, size: data.size };

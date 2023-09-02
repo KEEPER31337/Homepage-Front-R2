@@ -1,8 +1,8 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import OutlinedButton from '@components/Button/OutlinedButton';
-import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { BookInfo } from '@api/dto';
+import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
+import OutlinedButton from '@components/Button/OutlinedButton';
 
 interface BookCardProps {
   bookInfo: BookInfo;

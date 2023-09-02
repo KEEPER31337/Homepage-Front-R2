@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
 import { gameKeys } from '@api/gameApi';
 import { GameInfo, GameResultInfo, GameStatus } from './baseballDto';
 

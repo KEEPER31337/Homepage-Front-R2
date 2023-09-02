@@ -1,6 +1,6 @@
-import SearchSection from '@components/Section/SearchSection';
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import SearchSection from '@components/Section/SearchSection';
 
 const BoardSearchSection = () => {
   const postSearchList = [

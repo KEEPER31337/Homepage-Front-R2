@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CiBaseball } from 'react-icons/ci';
 import { AuthCodeRef } from 'react-auth-code-input';
-import PointInfo from '../components/PointInfo';
-import CountdownBar from '../components/CountdownBar';
-import TurnInfoBoard from '../components/TurnInfoBoard';
-import NumberInput from '../components/NumberInput';
-import InfoModal, { InfoType } from '../components/InfoModal';
+import { CiBaseball } from 'react-icons/ci';
 import { useGuessMutation, useGetResultQuery } from '../api/baseballApi';
 import { GameInfo, ResultInfo } from '../api/baseballDto';
+import CountdownBar from '../components/CountdownBar';
+import InfoModal, { InfoType } from '../components/InfoModal';
 import NoticeEnd from '../components/NoticeEnd';
+import NumberInput from '../components/NumberInput';
+import PointInfo from '../components/PointInfo';
+import TurnInfoBoard from '../components/TurnInfoBoard';
 
 const INITIAL_TIME_PER_TURN = 30;
 

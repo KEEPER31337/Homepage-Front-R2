@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ActionModal from '@components/Modal/ActionModal';
-import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
 import { DateTime } from 'luxon';
+import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
+import ActionModal from '@components/Modal/ActionModal';
 
 interface AddSeminarModalProps {
   open: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
 
 import muiTheme from '@constants/muiTheme';
 

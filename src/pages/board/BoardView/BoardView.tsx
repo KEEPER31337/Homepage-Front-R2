@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useGetEachPostQuery } from '@api/postApi';
 import { useLocation, useParams } from 'react-router-dom';
-import CommentSection from './Section/CommentSection';
-import AdjacentPostNavSection from './Section/AdjacentPostNavSection';
-import PostSection from './Section/PostSection';
-import BannerSection from './Section/BannerSection';
+import { useGetEachPostQuery } from '@api/postApi';
 import SecretPostModal from './Modal/SecretPostModal';
+import AdjacentPostNavSection from './Section/AdjacentPostNavSection';
+import BannerSection from './Section/BannerSection';
+import CommentSection from './Section/CommentSection';
+import PostSection from './Section/PostSection';
 
 const BoardView = () => {
   const { postId: postIdStr } = useParams();
@@ -16,15 +16,22 @@ const BoardView = () => {
     state: boolean | null;
   } = useLocation();
 
-  const [secretPostModalOpen, setSecretPostModalOpen] = useState(isSecret ?? false);
+  const [secretPostModalOpen, setSecretPostModalOpen] = useState(false);
   const [password, setPassword] = useState<string>();
 
   const { data: postInfo, isSuccess } = useGetEachPostQuery(postId, isSecret, password);
 
   useEffect(() => {
     if (!isSuccess) return;
+
     setSecretPostModalOpen(false);
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (!isSecret) return;
+
+    setSecretPostModalOpen(true);
+  }, [isSecret]);
 
   return (
     <div className="-mt-16 space-y-12">
@@ -35,7 +42,7 @@ const BoardView = () => {
             <PostSection postId={postId} post={postInfo} />
           </div>
           <AdjacentPostNavSection previousPost={postInfo.previousPost} nextPost={postInfo.nextPost} />
-          <CommentSection postId={postId} allowComment={postInfo.allowComment} />
+          <CommentSection categoryName={postInfo.categoryName} postId={postId} allowComment={postInfo.allowComment} />
         </>
       )}
       <SecretPostModal setPassword={setPassword} open={secretPostModalOpen} setOpen={setSecretPostModalOpen} />

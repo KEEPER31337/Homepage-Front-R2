@@ -1,16 +1,16 @@
 import React, { ReactElement, useState } from 'react';
-import usePagination from '@hooks/usePagination';
-import { useGetBookManageListQuery, useDeleteBookMutation } from '@api/libraryManageApi';
-import StandardTable from '@components/Table/StandardTable';
-import ActionButton from '@components/Button/ActionButton';
-import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
+import { useSearchParams } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import { VscTrash } from 'react-icons/vsc';
-import { useSearchParams } from 'react-router-dom';
 import { BookListSearch } from '@api/dto';
+import { useGetBookManageListQuery, useDeleteBookMutation } from '@api/libraryManageApi';
+import usePagination from '@hooks/usePagination';
+import LibrarySearchSection from '@pages/Library/SearchSection/LibrarySearchSection';
+import ActionButton from '@components/Button/ActionButton';
+import StandardTable from '@components/Table/StandardTable';
+import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
 import AddBookModal from '../Modal/AddBookModal';
 import EditBookModal from '../Modal/EditBookModal';
-import LibraryManageSearchSection from '../SearchSection/LibraryManageSearchSection';
 
 interface libraryManageRow {
   no: number;
@@ -57,21 +57,18 @@ const BookManageTab = () => {
   };
 
   const handleBookRowClick = ({ rowData }: { rowData: Row<libraryManageRow> }) => {
-    console.log('수정');
     setEditBookId(rowData.id);
     setEditBookModalOpen(true);
   };
 
   const handleDeleteButtonClick = (bookId: number) => {
-    console.log('삭제');
     deleteBookMutation(bookId);
   };
-  if (!bookManageListData) return null;
 
   return (
     <>
       <div className="mb-5 flex justify-between space-x-2">
-        <LibraryManageSearchSection />
+        <LibrarySearchSection />
         <ActionButton mode="add" onClick={() => setAddBookModalOpen(true)}>
           추가
         </ActionButton>
@@ -79,26 +76,23 @@ const BookManageTab = () => {
       </div>
       <StandardTable
         columns={libraryManageColumn}
-        rows={bookManageListData?.content.map((book, bookIndex) => ({
-          id: book.bookId,
-          no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
-          delete: (
-            <IconButton
-              onClick={(event) => {
-                event.stopPropagation();
-                handleDeleteButtonClick(book.bookId);
-              }}
-            >
-              <VscTrash size={20} className="fill-subRed" />
-            </IconButton>
-          ),
-          ...book,
-        }))}
+        rows={
+          bookManageListData?.content.map((book, bookIndex) => ({
+            id: book.bookId,
+            no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
+            delete: (
+              <IconButton onClick={() => handleDeleteButtonClick(book.bookId)}>
+                <VscTrash size={20} className="fill-subRed" />
+              </IconButton>
+            ),
+            ...book,
+          })) || []
+        }
         childComponent={childComponent}
-        paginationOption={{ rowsPerPage: bookManageListData.size, totalItems: bookManageListData?.totalElement }}
+        paginationOption={{ rowsPerPage: bookManageListData?.size, totalItems: bookManageListData?.totalElement }}
         onRowClick={handleBookRowClick}
       />
-      {!!editBookId && (
+      {!!editBookId && editBookModalOpen && (
         <EditBookModal open={editBookModalOpen} onClose={() => setEditBookModalOpen(false)} editBookId={editBookId} />
       )}
     </>

@@ -1,6 +1,6 @@
-import SearchSection from '@components/Section/SearchSection';
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import SearchSection from '@components/Section/SearchSection';
 
 const LibrarySearchSection = () => {
   const librarySearchList = [
@@ -14,7 +14,7 @@ const LibrarySearchSection = () => {
   const [, setSearchParams] = useSearchParams();
 
   const handleSearchButtonClick = () => {
-    setSearchParams({ page: String(1), searchType: '', search: search.trim() });
+    setSearchParams({ page: String(1), searchType, search: search.trim() });
   };
 
   return (

@@ -1,10 +1,9 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { MdOutlineApps, MdOutlineViewHeadline } from 'react-icons/md';
+import { useRecoilState } from 'recoil';
 import tableViewState from '@recoil/view.recoil';
-
-export type TableType = 'List' | 'Grid';
+import { TableType } from '@components/Table/StandardTable.interface';
 
 const TableViewSwitchButton = () => {
   const [tableView, setTableView] = useRecoilState(tableViewState);
