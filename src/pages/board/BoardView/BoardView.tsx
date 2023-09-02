@@ -35,7 +35,7 @@ const BoardView = () => {
             <PostSection postId={postId} post={postInfo} />
           </div>
           <AdjacentPostNavSection previousPost={postInfo.previousPost} nextPost={postInfo.nextPost} />
-          <CommentSection postId={postId} allowComment={postInfo.allowComment} />
+          <CommentSection categoryName={postInfo.categoryName} postId={postId} allowComment={postInfo.allowComment} />
         </>
       )}
       <SecretPostModal setPassword={setPassword} open={secretPostModalOpen} setOpen={setSecretPostModalOpen} />

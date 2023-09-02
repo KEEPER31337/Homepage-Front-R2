@@ -131,7 +131,14 @@ const BoardWrite = () => {
 
   return (
     <div>
-      <PageTitle>{categoryName}</PageTitle>
+      <div className="flex">
+        <PageTitle>{categoryName}</PageTitle>
+        {categoryName === '익명게시판' && (
+          <Typography marginLeft={2} lineHeight={5} variant="small" className="text-subOrange">
+            *익명 게시판은 글 수정/삭제, 임시저장이 불가합니다.
+          </Typography>
+        )}
+      </div>
       <div className="mb-5 flex w-full items-center">
         <Stack flexDirection="row" marginRight={4}>
           <Typography fontWeight="semibold" className="!mr-2 pt-1">
@@ -180,7 +187,7 @@ const BoardWrite = () => {
         <FileUploader files={files} setFiles={setFiles} />
       </div>
       <div className="flex justify-end space-x-2">
-        {!editMode && (
+        {!editMode && !(categoryName === '익명게시판') && (
           <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })} disabled={!isValid}>
             임시저장
           </OutlinedButton>
