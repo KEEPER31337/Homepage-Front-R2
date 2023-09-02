@@ -25,6 +25,7 @@ const GridTable = <T,>({ rows, paginationOption }: GridTableProps<T>) => {
             visitCount,
             commentCount,
             likeCount,
+            isSecret,
           }) => (
             <PostingCard
               key={id}
@@ -37,6 +38,7 @@ const GridTable = <T,>({ rows, paginationOption }: GridTableProps<T>) => {
               commentCount={commentCount}
               likeCount={likeCount}
               thumbnailPath={thumbnailPath}
+              isSecret={isSecret}
             />
           ),
         )}
