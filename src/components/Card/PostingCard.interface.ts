@@ -12,4 +12,5 @@ export interface CardDetailInfoProps {
 export interface InteractionScoreProps {
   visitCount: number;
   commentCount: number;
+  likeCount: number;
 }

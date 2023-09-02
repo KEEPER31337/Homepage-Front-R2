@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
-import { VscComment, VscEye } from 'react-icons/vsc';
+import { VscComment, VscEye, VscThumbsup } from 'react-icons/vsc';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { getServerImgUrl } from '@utils/converter';
 import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
@@ -38,13 +38,19 @@ const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardD
   );
 };
 
-const InteractionScore = ({ visitCount, commentCount }: InteractionScoreProps) => {
+const InteractionScore = ({ visitCount, commentCount, likeCount }: InteractionScoreProps) => {
   return (
     <div className="flex space-x-1.5 text-pointBlue">
       <div className="flex items-center">
         <VscEye className="mr-0.5 fill-pointBlue" size={12} />
         <Typography className="!mt-0.5 font-normal" variant="small">
           {visitCount}
+        </Typography>
+      </div>
+      <div className="flex items-center">
+        <VscThumbsup className="mr-0.5 fill-pointBlue" size={12} />
+        <Typography className="!mt-0.5 font-normal" variant="small">
+          {likeCount}
         </Typography>
       </div>
       <div className="flex items-center">
@@ -66,6 +72,7 @@ const PostingCard = ({
   registerTime,
   visitCount,
   commentCount,
+  likeCount,
 }: PostingCardProps) => {
   return (
     <Card className="w-52 !rounded-none !bg-middleBlack !bg-none">
@@ -87,7 +94,7 @@ const PostingCard = ({
             writerName={writerName}
             registerTime={registerTime}
           />
-          <InteractionScore visitCount={visitCount} commentCount={commentCount} />
+          <InteractionScore visitCount={visitCount} commentCount={commentCount} likeCount={likeCount} />
         </div>
       </CardContent>
     </Card>
