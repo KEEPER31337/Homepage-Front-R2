@@ -123,7 +123,7 @@ const BoardWrite = () => {
         <PageTitle>{categoryName}</PageTitle>
         {categoryName === '익명게시판' && (
           <Typography marginLeft={2} lineHeight={5} variant="small" className="text-subOrange">
-            (*익명 게시판은 글 수정/삭제, 임시저장이 불가합니다.)
+            *익명 게시판은 글 수정/삭제, 임시저장이 불가합니다.
           </Typography>
         )}
       </div>

@@ -67,7 +67,7 @@ const CommentSection = ({ categoryName, allowComment, postId }: CommentSectionPr
       {categoryName === '익명게시판' && (
         <div className="flex justify-end">
           <Typography marginTop={1} variant="small" className="text-subOrange">
-            (*익명 게시판은 댓글 삭제가 불가합니다.)
+            *익명 게시판은 댓글 삭제가 불가합니다.
           </Typography>
         </div>
       )}
