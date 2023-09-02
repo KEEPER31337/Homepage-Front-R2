@@ -40,24 +40,18 @@ const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardD
 
 const InteractionScore = ({ visitCount, commentCount, likeCount }: InteractionScoreProps) => {
   return (
-    <div className="flex space-x-1.5 text-pointBlue">
+    <div className="absolute bottom-0 right-0 flex space-x-1 text-pointBlue">
       <div className="flex items-center">
         <VscEye className="mr-0.5 fill-pointBlue" size={12} />
-        <Typography className="!mt-0.5 font-normal" variant="small">
-          {visitCount}
-        </Typography>
+        <Typography variant="small">{visitCount}</Typography>
       </div>
       <div className="flex items-center">
         <VscThumbsup className="mr-0.5 fill-pointBlue" size={12} />
-        <Typography className="!mt-0.5 font-normal" variant="small">
-          {likeCount}
-        </Typography>
+        <Typography variant="small">{likeCount}</Typography>
       </div>
       <div className="flex items-center">
         <VscComment className="mr-0.5 fill-pointBlue" size={12} />
-        <Typography className="!mt-0.5 font-normal" variant="small">
-          {commentCount}
-        </Typography>
+        <Typography variant="small">{commentCount}</Typography>
       </div>
     </div>
   );
@@ -88,7 +82,7 @@ const PostingCard = ({
       )}
       <CardContent className="flex h-24 flex-col justify-between !bg-mainBlack !p-3">
         <CardMainInfo type={type} title={title} />
-        <div className="flex items-end justify-between">
+        <div className="relative flex items-end justify-between">
           <CardDetailInfo
             writerThumbnailPath={writerThumbnailPath}
             writerName={writerName}
