@@ -6,42 +6,17 @@ import { Row } from './StandardTable.interface';
 
 interface GridTableProps<T> {
   rows: (PostingCardProps & Row<T>)[];
+  onRowClick?: ({ rowData }: { rowData: Row<T> }) => void;
   paginationOption?: PaginationOption;
 }
 
-const GridTable = <T,>({ rows, paginationOption }: GridTableProps<T>) => {
+const GridTable = <T,>({ rows, onRowClick, paginationOption }: GridTableProps<T>) => {
   return (
     <div>
       <div className="mb-1 grid grid-cols-5 gap-2">
-        {rows.map(
-          ({
-            id,
-            thumbnailPath,
-            type,
-            title,
-            writerThumbnailPath,
-            writerName,
-            registerTime,
-            visitCount,
-            commentCount,
-            likeCount,
-            isSecret,
-          }) => (
-            <PostingCard
-              key={id}
-              type={type}
-              title={title}
-              writerThumbnailPath={writerThumbnailPath}
-              writerName={writerName}
-              registerTime={registerTime}
-              visitCount={visitCount}
-              commentCount={commentCount}
-              likeCount={likeCount}
-              thumbnailPath={thumbnailPath}
-              isSecret={isSecret}
-            />
-          ),
-        )}
+        {rows.map((row) => (
+          <PostingCard<T> row={row} onClick={onRowClick} />
+        ))}
       </div>
       <StandardTablePagination {...paginationOption} />
     </div>

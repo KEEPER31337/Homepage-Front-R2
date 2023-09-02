@@ -129,6 +129,7 @@ const BoardList = () => {
             no: getRowNumber({ size: posts.size, index: postIndex }),
             ...post,
           }))}
+          onRowClick={handlePostRowClick}
           paginationOption={{ rowsPerPage: posts.size, totalItems: posts.totalElements }}
         />
       )}

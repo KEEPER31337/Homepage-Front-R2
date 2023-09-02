@@ -4,6 +4,7 @@ import { AiFillLock } from 'react-icons/ai';
 import { VscComment, VscEye, VscThumbsup } from 'react-icons/vsc';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { getServerImgUrl } from '@utils/converter';
+import { Row } from '@components/Table/StandardTable.interface';
 import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
 
 export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps, InteractionScoreProps {
@@ -58,41 +59,41 @@ const InteractionScore = ({ visitCount, commentCount, likeCount }: InteractionSc
   );
 };
 
-const PostingCard = ({
-  thumbnailPath,
-  type,
-  title,
-  writerThumbnailPath,
-  writerName,
-  registerTime,
-  visitCount,
-  commentCount,
-  likeCount,
-  isSecret,
-}: PostingCardProps) => {
+const PostingCard = <T,>({
+  row,
+  onClick,
+}: {
+  row: PostingCardProps & Row<T>;
+  onClick?: ({ rowData }: { rowData: Row<T> }) => void;
+}) => {
   return (
-    <Card className="w-52 !rounded-none !bg-middleBlack !bg-none">
-      {isSecret && <AiFillLock size={50} className="m-auto h-[118px] fill-pointBlue/30" />}
-      {!isSecret &&
-        (thumbnailPath ? (
+    <Card
+      className={`${
+        onClick ? 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none' : ''
+      } w-52 !rounded-none !bg-middleBlack !bg-none`}
+      onClick={onClick ? () => onClick({ rowData: row }) : undefined}
+    >
+      {row.isSecret && <AiFillLock size={50} className="m-auto h-[118px] fill-pointBlue/30" />}
+      {!row.isSecret &&
+        (row.thumbnailPath ? (
           <CardMedia
             className="h-[118px] bg-middleBlack"
             component="img"
-            src={getServerImgUrl(thumbnailPath)}
+            src={getServerImgUrl(row.thumbnailPath)}
             alt="썸네일"
           />
         ) : (
           <Logo className="m-auto h-[118px] w-28" />
         ))}
       <CardContent className="flex h-24 flex-col justify-between !bg-mainBlack !p-3">
-        <CardMainInfo isSecret={isSecret} type={type} title={title} />
+        <CardMainInfo isSecret={row.isSecret} type={row.type} title={row.title} />
         <div className="relative flex items-end justify-between">
           <CardDetailInfo
-            writerThumbnailPath={writerThumbnailPath}
-            writerName={writerName}
-            registerTime={registerTime}
+            writerThumbnailPath={row.writerThumbnailPath}
+            writerName={row.writerName}
+            registerTime={row.registerTime}
           />
-          <InteractionScore visitCount={visitCount} commentCount={commentCount} likeCount={likeCount} />
+          <InteractionScore visitCount={row.visitCount} commentCount={row.commentCount} likeCount={row.likeCount} />
         </div>
       </CardContent>
     </Card>
