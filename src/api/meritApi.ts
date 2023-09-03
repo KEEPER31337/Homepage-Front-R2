@@ -62,8 +62,8 @@ const useAddMeritTypeMutation = () => {
 const useEditMeritTypeMutation = () => {
   const queryClient = useQueryClient();
 
-  const fetcher = ({ score, reason, meritTypeId }: { score: number; reason: string; meritTypeId: string }) =>
-    axios.post(`/merits/types/${meritTypeId}`, { score, reason }).then(({ data }) => data);
+  const fetcher = ({ score, reason, meritTypeId }: { score: number; reason: string; meritTypeId: number }) =>
+    axios.put(`/merits/types/${meritTypeId}`, { score, reason }).then(({ data }) => data);
 
   return useMutation(fetcher, {
     onSuccess: () => {
