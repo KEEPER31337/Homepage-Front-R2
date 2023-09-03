@@ -13,19 +13,27 @@ interface SelectorProps {
 }
 
 const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
+  const { data: bookDetail, isSuccess } = useGetBookDetailQuery(editBookId);
+  const { mutate: editBookInfo } = useEditBookInfoMutation();
+  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
+
   const [bookInfo, setBookInfo] = React.useState({
     title: '',
     author: '',
   });
   const { title, author } = bookInfo;
   const [totalQuantity, setTotalQuantity] = useState(1);
-  const [bookQuantity, setBookQuantity] = useState('');
-  const bookDepartment = 'ETC';
-  const [thumbnailPath, setThumbnailPath] = useState('');
+  const bookDepartment = 'ETC'; // 추후 삭제
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
 
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
   const [isInvalidAuthor, setIsInvalidAuthor] = useState(false);
+
+  const validate = () => {
+    setIsInvalidTitle(title === '');
+    setIsInvalidAuthor(author === '');
+    return title !== '' && author !== '';
+  };
 
   const handleEditBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,29 +43,6 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
     });
   };
 
-  const { data: bookDetail } = useGetBookDetailQuery(editBookId);
-  const { mutate: editBookInfo } = useEditBookInfoMutation();
-  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
-
-  useEffect(() => {
-    if (bookDetail) {
-      console.log(bookDetail);
-      setBookInfo({
-        title: bookDetail.title,
-        author: bookDetail.author,
-      });
-      setTotalQuantity(bookDetail.totalQuantity);
-      setThumbnailPath(bookDetail.thumbnailPath);
-      setBookQuantity(`${bookDetail.currentQuantity}/${bookDetail.totalQuantity}`);
-    }
-  }, [bookDetail]);
-
-  const validate = () => {
-    setIsInvalidTitle(title === '');
-    setIsInvalidAuthor(author === '');
-    return title !== '' && author !== '';
-  };
-  console.log(thumbnailPath);
   const handleEditBookButtonClick = () => {
     const isValid = validate();
     if (isValid) {
@@ -66,22 +51,24 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
         {
           onSuccess: () => {
             if (thumbnail) {
-              editBookThumbnail(
-                { bookId: editBookId, thumbnail },
-                {
-                  onSuccess: () => {
-                    console.log('성공!');
-                    onClose();
-                  },
-                },
-              );
+              editBookThumbnail({ bookId: editBookId, thumbnail });
             }
-            //
+            onClose();
           },
         },
       );
     }
   };
+
+  useEffect(() => {
+    if (bookDetail) {
+      setBookInfo({
+        title: bookDetail.title,
+        author: bookDetail.author,
+      });
+      setTotalQuantity(bookDetail.totalQuantity);
+    }
+  }, [bookDetail]);
 
   return (
     <ActionModal
@@ -120,7 +107,7 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
             </div>
             <div className="absolute bottom-0 right-0">
               <Tooltip
-                title={`대출 현황 ${bookQuantity}`}
+                title={`대출 현황 ${bookDetail?.currentQuantity}/${bookDetail?.totalQuantity}`}
                 componentsProps={{
                   tooltip: {
                     sx: {
@@ -137,7 +124,7 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
           </div>
         </div>
         <div className="h-[210px] w-[128px]">
-          <ImageUploader isEdit setThumbnail={setThumbnail} thumbnailPath={thumbnailPath} />
+          {isSuccess && <ImageUploader isEdit setThumbnail={setThumbnail} thumbnailPath={bookDetail?.thumbnailPath} />}
         </div>
       </div>
     </ActionModal>
