@@ -15,14 +15,14 @@ const CommentCard = ({ commentInfo, replyComments }: CommentCardProps) => {
     <Card className="!bg-mainBlack !bg-none">
       <CommentCardHeader commentInfo={commentInfo} />
       <CardContent className="mb-5 !px-16">
-        {commentInfo.content && <Typography marginBottom={5}>{commentInfo.content}</Typography>}
+        {!commentInfo.isDeleted && <Typography marginBottom={5}>{commentInfo.content}</Typography>}
         <div className="space-y-3">
           {replyComments.map((replyComment) => (
             <ReplyCard key={replyComment.commentId} commentInfo={replyComment} />
           ))}
         </div>
       </CardContent>
-      {commentInfo.content && <CommentCardFooter commentInfo={commentInfo} />}
+      {!commentInfo.isDeleted && <CommentCardFooter commentInfo={commentInfo} />}
     </Card>
   );
 };

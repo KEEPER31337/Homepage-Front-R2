@@ -11,7 +11,7 @@ const ReplyCard = ({ commentInfo }: ReplyCardProps) => {
   return (
     <Card className="border border-subBlack !bg-middleBlack !bg-none">
       <CommentCardHeader commentInfo={commentInfo} />
-      {commentInfo.content && (
+      {!commentInfo.isDeleted && (
         <Typography paddingX={8} marginBottom={5}>
           {commentInfo.content}
         </Typography>

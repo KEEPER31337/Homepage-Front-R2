@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useApiError } from '@hooks/useGetApiError';
 import {
@@ -47,17 +47,32 @@ const useEditPostMutation = () => {
   return useMutation(fetcher);
 };
 
+const useEditPostThumbnailMutation = () => {
+  const fetcher = ({ postId, thumbnail }: { postId: number; thumbnail: Blob }) => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/posts/${postId}/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(fetcher);
+};
+
 const useDeletePostMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const fetcher = (postId: number) => axios.delete(`/posts/${postId}`);
+  const fetcher = (postId: number) => axios.delete(`/posts/${postId}`).then(({ data }) => data);
 
   return useMutation(fetcher, {
-    onSuccess: () => {
+    onSuccess: ({ categoryName }) => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
-      // TODO API 응답으로 categoryName 반환 반영되면 적용 예정
-      navigate('/board/자유게시판');
+
+      navigate(`/board/${categoryName}`);
     },
   });
 };
@@ -95,10 +110,16 @@ const useGetNoticePostListQuery = ({ categoryId }: { categoryId: number }) => {
 };
 
 const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?: string) => {
+  const location = useLocation();
+
   const { handleError } = useApiError({
     403: {
       40301: () => {
         toast.error('게시글의 비밀번호가 일치하지 않습니다.');
+      },
+      40302: () => {
+        // 비밀글 여부 true로 변경
+        location.state = true;
       },
     },
   });
@@ -106,7 +127,12 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
 
   return useQuery<PostInfo>(['post', postId, password], fetcher, {
     enabled: !isSecret || Boolean(isSecret && password),
-    onError: (err) => handleError(err, 40301),
+    onError: (err) => {
+      if (isSecret === null) {
+        return handleError(err, 40302);
+      }
+      return handleError(err, 40301);
+    },
   });
 };
 
@@ -155,6 +181,7 @@ export {
   useGetRecentPostsQuery,
   useGetTrendPostsQuery,
   useEditPostMutation,
+  useEditPostThumbnailMutation,
   useDeletePostMutation,
   useControlPostLikesMutation,
   useControlPostDislikesMutation,
