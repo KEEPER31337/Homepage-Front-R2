@@ -81,7 +81,13 @@ const BookManageTab = () => {
             id: book.bookId,
             no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
             delete: (
-              <IconButton onClick={() => handleDeleteButtonClick(book.bookId)} className="!p-0">
+              <IconButton
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleDeleteButtonClick(book.bookId);
+                }}
+                className="!p-0"
+              >
                 <VscTrash size={20} className="fill-subRed" />
               </IconButton>
             ),
