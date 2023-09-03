@@ -220,6 +220,7 @@ export interface CommentInfo {
   dislikeCount: number;
   isLike: boolean;
   isDislike: boolean;
+  isDeleted: boolean;
 }
 
 export interface UploadPostSettings {
@@ -260,6 +261,7 @@ export interface PostInfo {
   categoryId: number;
   categoryName: string;
   title: string;
+  writerId: number;
   writerName: string;
   writerThumbnailPath: string | null;
   visitCount: number;

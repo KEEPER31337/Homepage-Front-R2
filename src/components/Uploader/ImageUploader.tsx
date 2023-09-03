@@ -59,7 +59,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
 
   const handleToDefaultImageClick = () => {
     setThumbnailBase64('');
-    setThumbnail(new Blob());
+    setThumbnail(null);
   };
 
   useEffect(() => {

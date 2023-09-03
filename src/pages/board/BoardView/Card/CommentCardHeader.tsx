@@ -26,7 +26,7 @@ const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
     controlDislikes(commentInfo.commentId);
   };
 
-  return commentInfo.content ? (
+  return !commentInfo.isDeleted ? (
     <CardHeader
       avatar={<Avatar className="!h-7 !w-7" alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />}
       action={

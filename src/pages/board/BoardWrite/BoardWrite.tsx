@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
 import { PostInfo, UploadPostSettings } from '@api/dto';
-import { useEditPostMutation, useUploadPostMutation } from '@api/postApi';
+import { useEditPostMutation, useEditPostThumbnailMutation, useUploadPostMutation } from '@api/postApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -46,6 +46,7 @@ const BoardWrite = () => {
   const navigate = useNavigate();
   const { mutate: uploadPostMutation } = useUploadPostMutation();
   const { mutate: editPost } = useEditPostMutation();
+  const { mutate: editPostThumbnail } = useEditPostThumbnailMutation();
   const {
     control,
     getValues,
@@ -74,7 +75,18 @@ const BoardWrite = () => {
         },
         {
           onSuccess: () => {
-            navigate(`/board/${categoryName}`);
+            if (thumbnail) {
+              editPostThumbnail(
+                { postId: editMode.postId, thumbnail },
+                {
+                  onSuccess: () => {
+                    navigate(`/board/${categoryName}`);
+                  },
+                },
+              );
+            } else {
+              navigate(`/board/${categoryName}`);
+            }
           },
         },
       );
@@ -119,7 +131,14 @@ const BoardWrite = () => {
 
   return (
     <div>
-      <PageTitle>{categoryName}</PageTitle>
+      <div className="flex">
+        <PageTitle>{categoryName}</PageTitle>
+        {categoryName === '익명게시판' && (
+          <Typography marginLeft={2} lineHeight={5} variant="small" className="text-subOrange">
+            *익명 게시판은 글 수정/삭제, 임시저장이 불가합니다.
+          </Typography>
+        )}
+      </div>
       <div className="mb-5 flex w-full items-center">
         <Stack flexDirection="row" marginRight={4}>
           <Typography fontWeight="semibold" className="!mr-2 pt-1">
@@ -168,7 +187,7 @@ const BoardWrite = () => {
         <FileUploader files={files} setFiles={setFiles} />
       </div>
       <div className="flex justify-end space-x-2">
-        {!editMode && (
+        {!editMode && !(categoryName === '익명게시판') && (
           <OutlinedButton onClick={() => handleSaveButtonClick({ isTemp: true })} disabled={!isValid}>
             임시저장
           </OutlinedButton>
@@ -178,6 +197,7 @@ const BoardWrite = () => {
         </OutlinedButton>
       </div>
       <SettingUploadModal
+        editMode={editMode}
         open={settingModalOpen}
         onClose={handleSettingModalClose}
         onUploadButonClick={handleUploadButonClick}

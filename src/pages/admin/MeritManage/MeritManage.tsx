@@ -10,7 +10,7 @@ import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 import AddMeritModal from './Modal/AddMeritModal';
 import AddMeritTypeModal from './Modal/AddMeritTypeModal';
-import EditMeritTypeModal from './Modal/EditMeritTypeModal';
+import EditMeritTypeModal, { EditMeritTypeInfo, meritTypeChangeEnable } from './Modal/EditMeritTypeModal';
 
 interface MeritLogRow {
   id: number;
@@ -86,7 +86,7 @@ const MeritManage = () => {
 
   const [addMeritOpen, setAddMeritOpen] = useState(false);
   const [addMeritTypeOpen, setAddMeritTypeOpen] = useState(false);
-  const [editMeritTypeId, setEditMeritTypeId] = useState(0);
+  const [editMeritType, setEditMeritType] = useState<EditMeritTypeInfo | null>(null);
 
   const { data: meritLog } = useGetMeritLogQuery({ page });
   const { data: meritType } = useGetMeritTypeQuery({ page });
@@ -159,14 +159,22 @@ const MeritManage = () => {
             columns={MeritTypeColumn}
             rows={meritType.content.filter(meritTypeFilter)}
             childComponent={MeritTypeChildComponent}
-            onRowClick={({ rowData }) => setEditMeritTypeId(rowData.id)}
+            onRowClick={({ rowData }) =>
+              meritTypeChangeEnable(rowData.id) &&
+              setEditMeritType({
+                id: rowData.id,
+                type: rowData.score > 0 ? 'reword' : 'penalty',
+                score: rowData.score,
+                reason: rowData.detail,
+              })
+            }
             paginationOption={{ rowsPerPage: meritType.size, totalItems: meritType.totalElements }}
           />
         </div>
       )}
       <AddMeritModal open={addMeritOpen} onClose={() => setAddMeritOpen(false)} meritTypes={meritType.content} />
       <AddMeritTypeModal open={addMeritTypeOpen} onClose={() => setAddMeritTypeOpen(false)} />
-      <EditMeritTypeModal meritTypeId={editMeritTypeId} onClose={() => setEditMeritTypeId(0)} />
+      <EditMeritTypeModal meritType={editMeritType} onClose={() => setEditMeritType(null)} />
     </>
   );
 };

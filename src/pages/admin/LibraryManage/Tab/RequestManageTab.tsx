@@ -43,7 +43,7 @@ const requestManageColumn: Column<requestManageRow>[] = [
 const RequestManageTab = () => {
   const { page, getRowNumber } = usePagination();
   const [searchParams] = useSearchParams();
-  const status = searchParams.get('status') as BorrowInfoListSearch['status'];
+  const status = (searchParams.get('status') as BorrowInfoListSearch['status']) || 'requests_or_willreturn';
   const search = searchParams.get('search') as BorrowInfoListSearch['search'];
 
   const { data: borrowInfoListData } = useGetBorrowInfoListQuery({ page, status, search });
@@ -52,8 +52,6 @@ const RequestManageTab = () => {
   const { mutate: ApproveReturn } = useApproveReturnMutation();
   const { mutate: DenyRequest } = useDenyRequestMutation();
   const { mutate: DenyReturn } = useDenyReturnMutation();
-
-  if (!borrowInfoListData) return null;
 
   const handleActionButtonClick = (action: 'approve' | 'deny', borrowInfoStatus: string, borrowInfoId: number) => {
     let mutateFunction;
@@ -76,31 +74,33 @@ const RequestManageTab = () => {
       </div>
       <StandardTable
         columns={requestManageColumn}
-        rows={borrowInfoListData?.content.map((borrowInfo, bookIndex) => ({
-          no: getRowNumber({ size: borrowInfoListData.size, index: bookIndex }),
-          id: borrowInfo.borrowInfoId,
-          requestManageButton: (
-            <>
-              <IconButton
-                onClick={() => {
-                  handleActionButtonClick('approve', borrowInfo.status, borrowInfo.borrowInfoId);
-                }}
-                className="!mr-2 !p-0"
-              >
-                <VscCircleLarge size={16} className="fill-pointBlue" />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  handleActionButtonClick('deny', borrowInfo.status, borrowInfo.borrowInfoId);
-                }}
-                className="!p-0"
-              >
-                <VscChromeClose size={16} className="fill-subRed" />
-              </IconButton>
-            </>
-          ),
-          ...borrowInfo,
-        }))}
+        rows={
+          borrowInfoListData?.content.map((borrowInfo, bookIndex) => ({
+            no: getRowNumber({ size: borrowInfoListData.size, index: bookIndex }),
+            id: borrowInfo.borrowInfoId,
+            requestManageButton: (
+              <>
+                <IconButton
+                  onClick={() => {
+                    handleActionButtonClick('approve', borrowInfo.status, borrowInfo.borrowInfoId);
+                  }}
+                  className="!mr-2 !p-0"
+                >
+                  <VscCircleLarge size={16} className="fill-pointBlue" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleActionButtonClick('deny', borrowInfo.status, borrowInfo.borrowInfoId);
+                  }}
+                  className="!p-0"
+                >
+                  <VscChromeClose size={16} className="fill-subRed" />
+                </IconButton>
+              </>
+            ),
+            ...borrowInfo,
+          })) || []
+        }
         paginationOption={{ rowsPerPage: borrowInfoListData?.size, totalItems: borrowInfoListData?.totalElement }}
       />
     </>

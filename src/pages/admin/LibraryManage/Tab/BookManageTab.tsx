@@ -62,7 +62,6 @@ const BookManageTab = () => {
   const handleDeleteButtonClick = (bookId: number) => {
     deleteBookMutation(bookId);
   };
-  if (!bookManageListData) return null;
 
   return (
     <>
@@ -75,18 +74,20 @@ const BookManageTab = () => {
       </div>
       <StandardTable
         columns={libraryManageColumn}
-        rows={bookManageListData?.content.map((book, bookIndex) => ({
-          id: book.bookId,
-          no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
-          delete: (
-            <IconButton onClick={() => handleDeleteButtonClick(book.bookId)}>
-              <VscTrash size={20} className="fill-subRed" />
-            </IconButton>
-          ),
-          ...book,
-        }))}
+        rows={
+          bookManageListData?.content.map((book, bookIndex) => ({
+            id: book.bookId,
+            no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
+            delete: (
+              <IconButton onClick={() => handleDeleteButtonClick(book.bookId)}>
+                <VscTrash size={20} className="fill-subRed" />
+              </IconButton>
+            ),
+            ...book,
+          })) || []
+        }
         childComponent={childComponent}
-        paginationOption={{ rowsPerPage: bookManageListData.size, totalItems: bookManageListData?.totalElement }}
+        paginationOption={{ rowsPerPage: bookManageListData?.size, totalItems: bookManageListData?.totalElement }}
         onRowClick={handleBookRowClick}
       />
     </>
