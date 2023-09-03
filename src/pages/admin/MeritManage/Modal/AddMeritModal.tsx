@@ -41,8 +41,17 @@ const AddMeritModal = ({ open, onClose, meritTypes }: AddMeritModalProps) => {
   const handleAddMeritButtonClick = () => {
     const isValid = validate();
     if (isValid) {
-      onClose();
-      reset();
+      Promise.all(
+        (meritInfo.awarders as Array<any>).map((awarder) =>
+          addMeritMutation({
+            awarderId: awarder.value as number,
+            meritTypeId: meritInfo.meritTypeId,
+          }),
+        ),
+      ).then(() => {
+        onClose();
+        reset();
+      });
     }
   };
 

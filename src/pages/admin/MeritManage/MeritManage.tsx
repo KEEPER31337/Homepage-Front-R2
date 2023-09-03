@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Typography } from '@mui/material';
+import { DateTime } from 'luxon';
 import { MeritTypeInfo } from '@api/dto';
 import { useGetMeritLogQuery, useGetMeritTypeQuery } from '@api/meritApi';
 import usePagination from '@hooks/usePagination';
@@ -27,11 +28,19 @@ const MeritLogColumn: Column<MeritLogRow>[] = [
   { key: 'reason', headerName: '사유' },
 ];
 
-const MeritLogChildComponent = ({ value, rowData }: ChildComponent<MeritLogRow>) => {
+const MeritLogChildComponent = ({ key, value, rowData }: ChildComponent<MeritLogRow>) => {
   let color = 'white';
   if (rowData.score > 0) color = 'pointBlue';
   else if (rowData.score < 0) color = 'subRed';
-  return <Typography className={`text-${color}`}>{value}</Typography>;
+
+  switch (key) {
+    case 'giveTime':
+      return (
+        <Typography className={`text-${color}`}>{DateTime.fromSQL(value as string).toFormat('yyyy.MM.dd')}</Typography>
+      );
+    default:
+      return <Typography className={`text-${color}`}>{value}</Typography>;
+  }
 };
 
 interface MeritTypeRow {
@@ -72,7 +81,7 @@ type ScoreType = 'reword' | 'penalty' | 'all';
 
 const MeritManage = () => {
   const [tab, setTab] = useState(0);
-  const { page, getRowNumber } = usePagination();
+  const { page } = usePagination();
   const [scoreType, setScoreType] = useState<ScoreType>('all');
 
   const [addMeritOpen, setAddMeritOpen] = useState(false);
@@ -114,7 +123,7 @@ const MeritManage = () => {
           <StandardTable<MeritLogRow>
             columns={MeritLogColumn}
             rows={meritLog.content.map((item) => ({
-              awarder: `${item.awarderName} (${item.awarderGeneration})`,
+              awarder: `${item.awarderName} (${parseFloat(item.awarderGeneration as string)}기)`,
               ...item,
             }))}
             childComponent={MeritLogChildComponent}
