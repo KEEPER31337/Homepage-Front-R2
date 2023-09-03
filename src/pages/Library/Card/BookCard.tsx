@@ -1,9 +1,8 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import { BookInfo } from '@api/dto';
-import LogoNeon from '@assets/logo/logo_neon.svg';
-import { getServerImgUrl } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import ServerImg from '@components/Image/ServerImg';
 
 interface BookCardProps {
   bookInfo: BookInfo;
@@ -13,11 +12,7 @@ const BookCard = ({ bookInfo, onRequestBook }: BookCardProps) => {
   return (
     <div className="flex h-fit bg-mainBlack p-2">
       <div className="mr-2 flex h-[120px] w-[85px] bg-middleBlack">
-        {bookInfo?.thumbnailPath ? (
-          <img src={getServerImgUrl(bookInfo?.thumbnailPath)} alt="thumbnail" />
-        ) : (
-          <img className="" src={LogoNeon} alt="thumbnail" />
-        )}
+        <ServerImg src={bookInfo?.thumbnailPath} alt="library thumbnail" />
       </div>
       <div className="relative grow p-2">
         <div>
