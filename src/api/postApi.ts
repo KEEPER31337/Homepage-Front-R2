@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useApiError } from '@hooks/useGetApiError';
 import {
@@ -110,10 +110,16 @@ const useGetNoticePostListQuery = ({ categoryId }: { categoryId: number }) => {
 };
 
 const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?: string) => {
+  const location = useLocation();
+
   const { handleError } = useApiError({
     403: {
       40301: () => {
         toast.error('게시글의 비밀번호가 일치하지 않습니다.');
+      },
+      40302: () => {
+        // 비밀글 여부 true로 변경
+        location.state = true;
       },
     },
   });
@@ -121,7 +127,12 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
 
   return useQuery<PostInfo>(['post', postId, password], fetcher, {
     enabled: !isSecret || Boolean(isSecret && password),
-    onError: (err) => handleError(err, 40301),
+    onError: (err) => {
+      if (isSecret === null) {
+        return handleError(err, 40302);
+      }
+      return handleError(err, 40301);
+    },
   });
 };
 

@@ -10,6 +10,7 @@ const App = () => {
   queryClient.setDefaultOptions({
     queries: {
       onError: handleError,
+      retry: false,
     },
     mutations: {
       onError: handleError,
