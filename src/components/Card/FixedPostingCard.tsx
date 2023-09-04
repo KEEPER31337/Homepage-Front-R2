@@ -30,37 +30,35 @@ const FixedPostingCard = <T,>({
         <legend className="mx-auto px-4 font-semibold text-pointBlue">공지</legend>
         <div className="relative flex items-center justify-center pb-4 pt-1">
           <ImageList cols={NOTICE_VIEW_NUMBER} gap={30} rowHeight={160}>
-            {fixedRows
-              .slice(currentIndex * NOTICE_VIEW_NUMBER, currentIndex * NOTICE_VIEW_NUMBER + NOTICE_VIEW_NUMBER)
-              .map((row) => (
-                <ImageListItem
-                  key={row.id}
-                  className={`${
-                    onClick ? 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none' : ''
-                  } w-72 bg-middleBlack`}
-                  onClick={onClick ? () => onClick({ rowData: row }) : undefined}
-                >
-                  <ServerImg errorClassName="m-auto h-[118px] w-28" src={row.thumbnailPath ?? ''} alt="게시글 썸네일" />
-                  <ImageListItemBar
-                    className="h-2/5 !bg-transparent !bg-gradient-to-t !from-mainBlack"
-                    title={<CardMainInfo isSecret={row.isSecret} type={row.type} title={row.title} />}
-                    subtitle={
-                      <div className="relative flex h-full items-end justify-between">
-                        <CardDetailInfo
-                          writerThumbnailPath={row.writerThumbnailPath}
-                          writerName={row.writerName}
-                          registerTime={row.registerTime}
-                        />
-                        <InteractionScore
-                          visitCount={row.visitCount}
-                          commentCount={row.commentCount}
-                          likeCount={row.likeCount}
-                        />
-                      </div>
-                    }
-                  />
-                </ImageListItem>
-              ))}
+            {fixedRows.slice(currentIndex * NOTICE_VIEW_NUMBER, (currentIndex + 1) * NOTICE_VIEW_NUMBER).map((row) => (
+              <ImageListItem
+                key={row.id}
+                className={`${
+                  onClick ? 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none' : ''
+                } w-72 bg-middleBlack`}
+                onClick={onClick ? () => onClick({ rowData: row }) : undefined}
+              >
+                <ServerImg errorClassName="m-auto h-[118px] w-28" src={row.thumbnailPath ?? ''} alt="게시글 썸네일" />
+                <ImageListItemBar
+                  className="h-2/5 !bg-transparent !bg-gradient-to-t !from-mainBlack"
+                  title={<CardMainInfo isSecret={row.isSecret} type={row.type} title={row.title} />}
+                  subtitle={
+                    <div className="relative flex h-full items-end justify-between">
+                      <CardDetailInfo
+                        writerThumbnailPath={row.writerThumbnailPath}
+                        writerName={row.writerName}
+                        registerTime={row.registerTime}
+                      />
+                      <InteractionScore
+                        visitCount={row.visitCount}
+                        commentCount={row.commentCount}
+                        likeCount={row.likeCount}
+                      />
+                    </div>
+                  }
+                />
+              </ImageListItem>
+            ))}
           </ImageList>
           {currentIndex !== 0 && (
             <IconButton
@@ -71,7 +69,7 @@ const FixedPostingCard = <T,>({
               <VscChevronLeft />
             </IconButton>
           )}
-          {fixedRows.length - 1 - NOTICE_VIEW_NUMBER > currentIndex && (
+          {fixedRows.length > (currentIndex + 1) * NOTICE_VIEW_NUMBER && (
             <IconButton
               onClick={handleNextButtonClick}
               color="primary"
