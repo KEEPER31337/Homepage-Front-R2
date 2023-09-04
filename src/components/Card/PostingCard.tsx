@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+import { DateTime } from 'luxon';
 import { AiFillLock } from 'react-icons/ai';
 import { VscComment, VscEye, VscThumbsup } from 'react-icons/vsc';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
@@ -11,7 +12,7 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
   thumbnailPath: string | null;
 }
 
-export const CardMainInfo = ({ isSecret, type, title }: CardMainInfoProps) => {
+export const CardMainInfo = ({ isSecret, type, title, registerTime }: CardMainInfoProps) => {
   return (
     <div>
       <Typography className="!-mt-2 h-3 font-medium text-pointBlue" variant="small">
@@ -20,6 +21,9 @@ export const CardMainInfo = ({ isSecret, type, title }: CardMainInfoProps) => {
       <Typography className="font-semibold" variant="paragraph">
         {isSecret ? '비밀글입니다.' : title}
       </Typography>
+      {DateTime.fromISO(registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
+        <span className="ml-1 rounded-sm bg-pointBlue px-1 text-center text-small text-mainBlack">N</span>
+      )}
     </div>
   );
 };
@@ -86,7 +90,7 @@ const PostingCard = <T,>({
           <Logo className="m-auto h-[118px] w-28" />
         ))}
       <CardContent className="flex h-24 flex-col justify-between !bg-mainBlack !p-3">
-        <CardMainInfo isSecret={row.isSecret} type={row.type} title={row.title} />
+        <CardMainInfo isSecret={row.isSecret} type={row.type} title={row.title} registerTime={row.registerTime} />
         <div className="relative flex items-end justify-between">
           <CardDetailInfo
             writerThumbnailPath={row.writerThumbnailPath}
