@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Tooltip } from '@mui/material';
-import { useGetBookDetailQuery, useEditBookInfoMutation, useEditBookThumbnailMutation } from '@api/libraryManageApi';
+import { ManageBookInfo } from '@api/dto';
+import { useAddBookMutation, useEditBookInfoMutation, useEditBookThumbnailMutation } from '@api/libraryManageApi';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
@@ -9,11 +10,11 @@ import TotalBookNumberSelector from '../Selector/TotalBookNumberSelector';
 interface SelectorProps {
   open: boolean;
   onClose: () => void;
-  editBookId: number;
+  bookDetail?: ManageBookInfo;
 }
 
-const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
-  const { data: bookDetail, isSuccess } = useGetBookDetailQuery(editBookId);
+const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
+  const { mutate: addBookMutation } = useAddBookMutation();
   const { mutate: editBookInfo } = useEditBookInfoMutation();
   const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
 
@@ -23,7 +24,6 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
   });
   const { title, author } = bookInfo;
   const [totalQuantity, setTotalQuantity] = useState(1);
-  const bookDepartment = 'ETC'; // 추후 삭제
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
 
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
@@ -35,7 +35,15 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
     return title !== '' && author !== '';
   };
 
-  const handleEditBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const resetBookInfo = () => {
+    setBookInfo({
+      title: '',
+      author: '',
+    });
+    setTotalQuantity(1);
+  };
+
+  const handleBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBookInfo({
       ...bookInfo,
@@ -43,15 +51,29 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
     });
   };
 
-  const handleEditBookButtonClick = () => {
+  const handleAddBookButtonClick = () => {
     const isValid = validate();
     if (isValid) {
+      addBookMutation(
+        { bookCoreData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
+        {
+          onSuccess: () => {
+            onClose();
+            resetBookInfo();
+          },
+        },
+      );
+    }
+  };
+  const handleEditBookButtonClick = () => {
+    const isValid = validate();
+    if (isValid && bookDetail?.bookId) {
       editBookInfo(
-        { bookCoreData: { title, author, totalQuantity, bookDepartment }, bookId: editBookId },
+        { bookCoreData: { title, author, totalQuantity, bookDepartment: 'ETC' }, bookId: bookDetail.bookId },
         {
           onSuccess: () => {
             if (thumbnail) {
-              editBookThumbnail({ bookId: editBookId, thumbnail });
+              editBookThumbnail({ bookId: bookDetail.bookId, thumbnail });
             }
             onClose();
           },
@@ -74,9 +96,9 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
     <ActionModal
       open={open}
       onClose={onClose}
-      title="도서 수정"
-      actionButtonName="수정"
-      onActionButonClick={handleEditBookButtonClick}
+      title={`도서 ${bookDetail ? '수정' : '추가'}`}
+      actionButtonName={bookDetail ? '수정' : '추가'}
+      onActionButonClick={bookDetail ? handleEditBookButtonClick : handleAddBookButtonClick}
     >
       <div className="flex space-x-6">
         <div className="relative grow space-y-5">
@@ -87,7 +109,7 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
               helperText={isInvalidTitle && '도서명을 입력해주세요'}
               name="title"
               value={title}
-              onChange={handleEditBookInfoChange}
+              onChange={handleBookInfoChange}
             />
           </div>
           <div>
@@ -97,7 +119,7 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
               helperText={isInvalidAuthor && '저자명을 입력해주세요'}
               name="author"
               value={author}
-              onChange={handleEditBookInfoChange}
+              onChange={handleBookInfoChange}
             />
           </div>
           <div className="relative">
@@ -106,29 +128,31 @@ const EditBookModal = ({ open, onClose, editBookId }: SelectorProps) => {
               <TotalBookNumberSelector value={totalQuantity} setValue={setTotalQuantity} />
             </div>
             <div className="absolute bottom-0 right-0">
-              <Tooltip
-                title={`대출 현황 ${bookDetail?.currentQuantity}/${bookDetail?.totalQuantity}`}
-                componentsProps={{
-                  tooltip: {
-                    sx: {
-                      bgcolor: 'rgba(76, 238, 249, 0.15)',
-                      fontSize: '14px',
+              {bookDetail && (
+                <Tooltip
+                  title={`대출 현황 ${bookDetail.currentQuantity}/${bookDetail.totalQuantity}`}
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: 'rgba(76, 238, 249, 0.15)',
+                        fontSize: '14px',
+                      },
                     },
-                  },
-                }}
-                placement="top"
-              >
-                <Typography className="text-pointBlue">도서 현황</Typography>
-              </Tooltip>
+                  }}
+                  placement="top"
+                >
+                  <Typography className="text-pointBlue">도서 현황</Typography>
+                </Tooltip>
+              )}
             </div>
           </div>
         </div>
         <div className="h-[210px] w-[128px]">
-          {isSuccess && <ImageUploader isEdit setThumbnail={setThumbnail} thumbnailPath={bookDetail?.thumbnailPath} />}
+          <ImageUploader isEdit setThumbnail={setThumbnail} thumbnailPath={bookDetail && bookDetail.thumbnailPath} />
         </div>
       </div>
     </ActionModal>
   );
 };
 
-export default EditBookModal;
+export default UploadBookModal;

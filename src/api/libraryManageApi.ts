@@ -93,7 +93,7 @@ const useEditBookThumbnailMutation = () => {
 const useGetBookDetailQuery = (bookId: number) => {
   const fetcher = () => axios.get(`/manage/books/${bookId}`).then(({ data }) => data);
 
-  return useQuery<ManageBookInfo>(libraryManageKeys.bookDetail(bookId), fetcher);
+  return useQuery<ManageBookInfo>(libraryManageKeys.bookDetail(bookId), fetcher, { enabled: bookId !== 0 });
 };
 
 const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowInfoListSearch) => {

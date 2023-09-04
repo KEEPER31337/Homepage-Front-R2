@@ -3,14 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import { VscTrash } from 'react-icons/vsc';
 import { BookListSearch } from '@api/dto';
-import { useGetBookManageListQuery, useDeleteBookMutation } from '@api/libraryManageApi';
+import { useGetBookManageListQuery, useDeleteBookMutation, useGetBookDetailQuery } from '@api/libraryManageApi';
 import usePagination from '@hooks/usePagination';
 import LibrarySearchSection from '@pages/Library/SearchSection/LibrarySearchSection';
 import ActionButton from '@components/Button/ActionButton';
 import StandardTable from '@components/Table/StandardTable';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
-import AddBookModal from '../Modal/AddBookModal';
-import EditBookModal from '../Modal/EditBookModal';
+import UploadBookModal from '../Modal/UploadBookModal';
 
 interface libraryManageRow {
   no: number;
@@ -41,12 +40,14 @@ const BookManageTab = () => {
   const searchType = searchParams.get('searchType') as BookListSearch['searchType'];
   const search = searchParams.get('search') as BookListSearch['search'];
 
-  const { data: bookManageListData } = useGetBookManageListQuery({ page, searchType, search });
-  const { mutate: deleteBookMutation } = useDeleteBookMutation();
-
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
   const [editBookModalOpen, setEditBookModalOpen] = useState(false);
   const [editBookId, setEditBookId] = useState(0);
+
+  const { data: bookManageListData } = useGetBookManageListQuery({ page, searchType, search });
+  const { mutate: deleteBookMutation } = useDeleteBookMutation();
+  const { data: bookDetail } = useGetBookDetailQuery(editBookId);
+
   const childComponent = ({ key, value }: ChildComponent<libraryManageRow>) => {
     switch (key) {
       case 'canBorrow':
@@ -72,7 +73,7 @@ const BookManageTab = () => {
         <ActionButton mode="add" onClick={() => setAddBookModalOpen(true)}>
           추가
         </ActionButton>
-        <AddBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
+        <UploadBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
       </div>
       <StandardTable
         columns={libraryManageColumn}
@@ -98,8 +99,8 @@ const BookManageTab = () => {
         paginationOption={{ rowsPerPage: bookManageListData?.size, totalItems: bookManageListData?.totalElement }}
         onRowClick={handleBookRowClick}
       />
-      {!!editBookId && editBookModalOpen && (
-        <EditBookModal open={editBookModalOpen} onClose={() => setEditBookModalOpen(false)} editBookId={editBookId} />
+      {bookDetail && (
+        <UploadBookModal open={editBookModalOpen} onClose={() => setEditBookModalOpen(false)} bookDetail={bookDetail} />
       )}
     </>
   );
