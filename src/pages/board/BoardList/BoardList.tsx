@@ -125,6 +125,10 @@ const BoardList = () => {
       )}
       {tableView === 'Grid' && (
         <GridTable<BoardRow>
+          fixedRows={noticePosts.map((noticePost) => ({
+            no: '공지',
+            ...noticePost,
+          }))}
           rows={posts.content.map((post, postIndex) => ({
             no: getRowNumber({ size: posts.size, index: postIndex }),
             ...post,

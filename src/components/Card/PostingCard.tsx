@@ -11,7 +11,7 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
   thumbnailPath: string | null;
 }
 
-const CardMainInfo = ({ isSecret, type, title }: CardMainInfoProps) => {
+export const CardMainInfo = ({ isSecret, type, title }: CardMainInfoProps) => {
   return (
     <div>
       <Typography className="!-mt-2 h-3 font-medium text-pointBlue" variant="small">
@@ -24,7 +24,7 @@ const CardMainInfo = ({ isSecret, type, title }: CardMainInfoProps) => {
   );
 };
 
-const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardDetailInfoProps) => {
+export const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardDetailInfoProps) => {
   return (
     <div className="flex">
       <Avatar className="mr-2 !h-6 !w-6" src={writerThumbnailPath ?? undefined} />
@@ -40,7 +40,7 @@ const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardD
   );
 };
 
-const InteractionScore = ({ visitCount, commentCount, likeCount }: InteractionScoreProps) => {
+export const InteractionScore = ({ visitCount, commentCount, likeCount }: InteractionScoreProps) => {
   return (
     <div className="absolute bottom-0 right-0 flex space-x-1 text-pointBlue">
       <div className="flex items-center">
