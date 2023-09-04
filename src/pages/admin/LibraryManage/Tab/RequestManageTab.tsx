@@ -43,7 +43,7 @@ const requestManageColumn: Column<requestManageRow>[] = [
 const RequestManageTab = () => {
   const { page, getRowNumber } = usePagination();
   const [searchParams] = useSearchParams();
-  const status = searchParams.get('status') as BorrowInfoListSearch['status'];
+  const status = (searchParams.get('status') as BorrowInfoListSearch['status']) || 'requests_or_willreturn';
   const search = searchParams.get('search') as BorrowInfoListSearch['search'];
 
   const { data: borrowInfoListData } = useGetBorrowInfoListQuery({ page, status, search });
