@@ -137,9 +137,7 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
 };
 
 const useGetPostFilesQuery = (postId: number) => {
-  // TODO API 변경사항 적용
-  const fetcher = () =>
-    axios.get(`/posts/${postId}/files`).then(({ data }) => data.map((file: any) => ({ fileId: file.id, ...file })));
+  const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
 
   return useQuery<FileInfo[]>(['files', postId], fetcher);
 };
