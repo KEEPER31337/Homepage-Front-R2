@@ -12,12 +12,9 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
   thumbnailPath: string | null;
 }
 
-export const CardMainInfo = ({ isSecret, type, title, registerTime }: CardMainInfoProps) => {
+export const CardMainInfo = ({ isSecret, title, registerTime }: CardMainInfoProps) => {
   return (
     <div>
-      <Typography className="!-mt-2 h-3 font-medium text-pointBlue" variant="small">
-        {type ?? ''}
-      </Typography>
       <Typography className="font-semibold" variant="paragraph">
         {isSecret ? '비밀글입니다.' : title}
       </Typography>
@@ -90,7 +87,7 @@ const PostingCard = <T,>({
           <Logo className="m-auto h-[118px] w-28" />
         ))}
       <CardContent className="flex h-24 flex-col justify-between !bg-mainBlack !p-3">
-        <CardMainInfo isSecret={row.isSecret} type={row.type} title={row.title} registerTime={row.registerTime} />
+        <CardMainInfo isSecret={row.isSecret} title={row.title} registerTime={row.registerTime} />
         <div className="relative flex items-end justify-between">
           <CardDetailInfo
             writerThumbnailPath={row.writerThumbnailPath}
