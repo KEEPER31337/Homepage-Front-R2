@@ -1,10 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
 import { PostInfo, UploadPostSettings } from '@api/dto';
-import { useEditPostMutation, useEditPostThumbnailMutation, useUploadPostMutation } from '@api/postApi';
+import {
+  useAddFilesMutation,
+  useDeleteFilesMutation,
+  useEditPostMutation,
+  useEditPostThumbnailMutation,
+  useUploadPostMutation,
+} from '@api/postApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -37,7 +44,9 @@ const BoardWrite = () => {
     allowComment: true,
   });
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
-  const [files, setFiles] = useState<File[]>([]);
+  const [existingFiles, setExistingFiles] = useState<(File & { fileId: number })[]>([]);
+  const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
+  const [fileIdsToDelete, setFileIdsToDelete] = useState<number[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
   const [hasContent, setHasContent] = useState(false);
   const [contentErrMsg, setContentErrMsg] = useState('');
@@ -47,11 +56,14 @@ const BoardWrite = () => {
   const { mutate: uploadPostMutation } = useUploadPostMutation();
   const { mutate: editPost } = useEditPostMutation();
   const { mutate: editPostThumbnail } = useEditPostThumbnailMutation();
+  const { mutate: editAddFiles } = useAddFilesMutation();
+  const { mutate: editDeleteFiles } = useDeleteFilesMutation();
   const {
     control,
     getValues,
     formState: { isValid },
   } = useForm({ mode: 'onBlur' });
+  const queryClient = useQueryClient();
 
   const handleEditorBlur = () => {
     const content = editorRef.current?.getInstance().getMarkdown();
@@ -76,17 +88,18 @@ const BoardWrite = () => {
         {
           onSuccess: () => {
             if (thumbnail) {
-              editPostThumbnail(
-                { postId: editMode.postId, thumbnail },
-                {
-                  onSuccess: () => {
-                    navigate(`/board/${categoryName}`);
-                  },
-                },
-              );
-            } else {
-              navigate(`/board/${categoryName}`);
+              editPostThumbnail({ postId: editMode.postId, thumbnail });
             }
+
+            if (filesToAdd.length > 0) {
+              editAddFiles({ postId: editMode.postId, files: filesToAdd });
+            }
+
+            if (fileIdsToDelete.length > 0) {
+              editDeleteFiles({ postId: editMode.postId, fileIds: fileIdsToDelete });
+            }
+
+            navigate(`/board/${categoryName}`);
           },
         },
       );
@@ -94,7 +107,11 @@ const BoardWrite = () => {
     }
 
     uploadPostMutation(
-      { request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo }, thumbnail, files },
+      {
+        request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo },
+        thumbnail,
+        files: filesToAdd,
+      },
       {
         onSuccess: () => {
           if (postSettingInfo.isTemp) {
@@ -127,6 +144,8 @@ const BoardWrite = () => {
       isTemp: editMode.post.isTemp,
       allowComment: editMode.post.allowComment,
     });
+    const serverFiles: (File & { fileId: number })[] | undefined = queryClient.getQueryData(['files', editMode.postId]);
+    if (serverFiles) setExistingFiles(serverFiles);
   }, []);
 
   return (
@@ -184,7 +203,13 @@ const BoardWrite = () => {
         파일첨부
       </Typography>
       <div className="mb-5">
-        <FileUploader files={files} setFiles={setFiles} />
+        <FileUploader
+          existingFiles={existingFiles}
+          setExistingFiles={setExistingFiles}
+          files={filesToAdd}
+          setFiles={setFilesToAdd}
+          setFileIdsToDelete={setFileIdsToDelete}
+        />
       </div>
       <div className="flex justify-end space-x-2">
         {!editMode && !(categoryName === '익명게시판') && (
