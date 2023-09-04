@@ -14,12 +14,14 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
 
 export const CardMainInfo = ({ isSecret, title, registerTime }: CardMainInfoProps) => {
   return (
-    <div>
-      <Typography className="font-semibold" variant="paragraph">
+    <div className="flex justify-between">
+      <Typography className="w-11/12 truncate font-semibold" variant="paragraph">
         {isSecret ? '비밀글입니다.' : title}
       </Typography>
       {DateTime.fromISO(registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
-        <span className="ml-1 rounded-sm bg-pointBlue px-1 text-center text-small text-mainBlack">N</span>
+        <span className="m-auto h-4 w-4 rounded-sm bg-pointBlue text-center text-small leading-4 text-mainBlack">
+          N
+        </span>
       )}
     </div>
   );
