@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Typography } from '@mui/material';
-import { MeritTypeInfo } from '@api/dto';
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
-import { useAddMeritLogMutation } from '@api/meritApi';
+import { useAddMeritLogMutation, useGetMeritTypeQuery } from '@api/meritApi';
 import AutoComplete, { AutoCompleteValueType } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
 import Selector from '@components/Selector/Selector';
@@ -10,7 +9,6 @@ import Selector from '@components/Selector/Selector';
 interface AddMeritModalProps {
   open: boolean;
   onClose: () => void;
-  meritTypes: MeritTypeInfo[];
 }
 
 type MeritInfo = {
@@ -18,13 +16,14 @@ type MeritInfo = {
   meritTypeId: number;
 };
 
-const AddMeritModal = ({ open, onClose, meritTypes }: AddMeritModalProps) => {
+const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
   const [meritInfo, setMeritInfo] = useState<MeritInfo>({
     awarders: [],
     meritTypeId: 0,
   });
 
   const { data: members } = useGetMemberInfoQuery();
+  const { data: meritTypes } = useGetMeritTypeQuery({ page: 0 });
   const { mutate: addMeritMutation } = useAddMeritLogMutation();
 
   const reset = () => {
@@ -54,6 +53,8 @@ const AddMeritModal = ({ open, onClose, meritTypes }: AddMeritModalProps) => {
       });
     }
   };
+
+  if (!members || !meritTypes) return <div />;
 
   return (
     <ActionModal
@@ -90,7 +91,7 @@ const AddMeritModal = ({ open, onClose, meritTypes }: AddMeritModalProps) => {
               onChange={(e) => {
                 setMeritInfo((prev) => ({ ...prev, meritTypeId: e.target.value as number }));
               }}
-              options={meritTypes.map((type) => ({
+              options={meritTypes.content.map((type) => ({
                 id: type.id,
                 content: type.detail,
               }))}
