@@ -5,7 +5,13 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
 import { PostInfo, UploadPostSettings } from '@api/dto';
-import { useEditPostMutation, useEditPostThumbnailMutation, useUploadPostMutation } from '@api/postApi';
+import {
+  useAddFilesMutation,
+  useDeleteFilesMutation,
+  useEditPostMutation,
+  useEditPostThumbnailMutation,
+  useUploadPostMutation,
+} from '@api/postApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -50,6 +56,8 @@ const BoardWrite = () => {
   const { mutate: uploadPostMutation } = useUploadPostMutation();
   const { mutate: editPost } = useEditPostMutation();
   const { mutate: editPostThumbnail } = useEditPostThumbnailMutation();
+  const { mutate: editAddFiles } = useAddFilesMutation();
+  const { mutate: editDeleteFiles } = useDeleteFilesMutation();
   const {
     control,
     getValues,
@@ -80,17 +88,18 @@ const BoardWrite = () => {
         {
           onSuccess: () => {
             if (thumbnail) {
-              editPostThumbnail(
-                { postId: editMode.postId, thumbnail },
-                {
-                  onSuccess: () => {
-                    navigate(`/board/${categoryName}`);
-                  },
-                },
-              );
-            } else {
-              navigate(`/board/${categoryName}`);
+              editPostThumbnail({ postId: editMode.postId, thumbnail });
             }
+
+            if (filesToAdd.length > 0) {
+              editAddFiles({ postId: editMode.postId, files: filesToAdd });
+            }
+
+            if (fileIdsToDelete.length > 0) {
+              editDeleteFiles({ postId: editMode.postId, fileIds: fileIdsToDelete });
+            }
+
+            navigate(`/board/${categoryName}`);
           },
         },
       );

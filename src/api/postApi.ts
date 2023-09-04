@@ -109,6 +109,29 @@ const useGetNoticePostListQuery = ({ categoryId }: { categoryId: number }) => {
   });
 };
 
+const useAddFilesMutation = () => {
+  const fetcher = ({ postId, files }: { postId: number; files: File[] }) => {
+    const formData = new FormData();
+    files.forEach((file) => formData.append('files', file));
+
+    return axios.post(`/posts/${postId}/files`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(fetcher);
+};
+
+const useDeleteFilesMutation = () => {
+  const fetcher = ({ postId, fileIds }: { postId: number; fileIds: number[] }) => {
+    return axios.delete(`/posts/${postId}/files`, { data: { fileIds } });
+  };
+
+  return useMutation(fetcher);
+};
+
 const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?: string) => {
   const location = useLocation();
 
@@ -187,6 +210,8 @@ export {
   useControlPostLikesMutation,
   useControlPostDislikesMutation,
   useGetNoticePostListQuery,
+  useAddFilesMutation,
+  useDeleteFilesMutation,
   useGetEachPostQuery,
   useGetPostFilesQuery,
   useDownloadFileMutation,
