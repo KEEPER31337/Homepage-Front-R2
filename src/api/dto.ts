@@ -245,6 +245,7 @@ export interface UploadPost {
 
 export interface FileInfo {
   id: number;
+  fileId: number;
   name: string;
   path: string;
   size: number;

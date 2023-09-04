@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
@@ -37,7 +38,9 @@ const BoardWrite = () => {
     allowComment: true,
   });
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
-  const [files, setFiles] = useState<File[]>([]);
+  const [existingFiles, setExistingFiles] = useState<(File & { fileId: number })[]>([]);
+  const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
+  const [fileIdsToDelete, setFileIdsToDelete] = useState<number[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
   const [hasContent, setHasContent] = useState(false);
   const [contentErrMsg, setContentErrMsg] = useState('');
@@ -52,6 +55,7 @@ const BoardWrite = () => {
     getValues,
     formState: { isValid },
   } = useForm({ mode: 'onBlur' });
+  const queryClient = useQueryClient();
 
   const handleEditorBlur = () => {
     const content = editorRef.current?.getInstance().getMarkdown();
@@ -94,7 +98,11 @@ const BoardWrite = () => {
     }
 
     uploadPostMutation(
-      { request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo }, thumbnail, files },
+      {
+        request: { categoryId, title: getValues('postTitle'), content, ...postSettingInfo },
+        thumbnail,
+        files: filesToAdd,
+      },
       {
         onSuccess: () => {
           if (postSettingInfo.isTemp) {
@@ -127,6 +135,8 @@ const BoardWrite = () => {
       isTemp: editMode.post.isTemp,
       allowComment: editMode.post.allowComment,
     });
+    const serverFiles: (File & { fileId: number })[] | undefined = queryClient.getQueryData(['files', editMode.postId]);
+    if (serverFiles) setExistingFiles(serverFiles);
   }, []);
 
   return (
@@ -184,7 +194,13 @@ const BoardWrite = () => {
         파일첨부
       </Typography>
       <div className="mb-5">
-        <FileUploader files={files} setFiles={setFiles} />
+        <FileUploader
+          existingFiles={existingFiles}
+          setExistingFiles={setExistingFiles}
+          files={filesToAdd}
+          setFiles={setFilesToAdd}
+          setFileIdsToDelete={setFileIdsToDelete}
+        />
       </div>
       <div className="flex justify-end space-x-2">
         {!editMode && !(categoryName === '익명게시판') && (

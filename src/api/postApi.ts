@@ -137,7 +137,9 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
 };
 
 const useGetPostFilesQuery = (postId: number) => {
-  const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
+  // TODO API 변경사항 적용
+  const fetcher = () =>
+    axios.get(`/posts/${postId}/files`).then(({ data }) => data.map((file: any) => ({ fileId: file.id, ...file })));
 
   return useQuery<FileInfo[]>(['files', postId], fetcher);
 };
@@ -153,6 +155,7 @@ const useGetTrendPostsQuery = () => {
 
   return useQuery<TrendingPostInfo[]>('trendPosts', fetcher);
 };
+
 const useDownloadFileMutation = () => {
   const fetcher = ({ postId, fileId, fileName }: { postId: number; fileId: number; fileName: string }) =>
     axios

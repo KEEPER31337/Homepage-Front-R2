@@ -4,8 +4,8 @@ import { VscTrash } from 'react-icons/vsc';
 import { formatFileSize } from '@utils/converter';
 
 interface FileUploadListTableProps {
-  files: File[];
-  onDeleteButtonClick: (fileName: string) => void;
+  files: (File & { fileId?: number })[];
+  onDeleteButtonClick: (fileName: string, fileId?: number) => void;
 }
 
 const FileUploadListTable = ({ files, onDeleteButtonClick }: FileUploadListTableProps) => {
@@ -25,7 +25,7 @@ const FileUploadListTable = ({ files, onDeleteButtonClick }: FileUploadListTable
               <TableCell>{file.name}</TableCell>
               <TableCell>{formatFileSize(file.size)}</TableCell>
               <TableCell>
-                <IconButton onClick={() => onDeleteButtonClick(file.name)}>
+                <IconButton onClick={() => onDeleteButtonClick(file.name, file.fileId)}>
                   <VscTrash size={20} className="fill-subRed" />
                 </IconButton>
               </TableCell>
