@@ -41,7 +41,7 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
       <div className="mb-10 mt-2 flex justify-end gap-3 text-pointBlue">
         {files &&
           files.map((file) => (
-            <Button key={file.id} className="flex" onClick={() => handleDownloadFileClick(file.id, file.name)}>
+            <Button key={file.fileId} className="flex" onClick={() => handleDownloadFileClick(file.fileId, file.name)}>
               <VscFile className="mr-1" size={24} />
               <span>{file.name}</span>
             </Button>

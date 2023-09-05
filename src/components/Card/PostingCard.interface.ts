@@ -1,6 +1,7 @@
 export interface CardMainInfoProps {
-  type?: string;
   title: string;
+  isSecret: boolean;
+  registerTime: string;
 }
 
 export interface CardDetailInfoProps {
@@ -12,4 +13,5 @@ export interface CardDetailInfoProps {
 export interface InteractionScoreProps {
   visitCount: number;
   commentCount: number;
+  likeCount: number;
 }
