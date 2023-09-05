@@ -21,7 +21,7 @@ interface PostSectionProps {
 const PostSection = ({ postId, post }: PostSectionProps) => {
   const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, false);
 
-  const { data: files } = useGetPostFilesQuery(postId);
+  const { data: files } = useGetPostFilesQuery(postId, fileOpen);
   const { mutate: controlLikes } = useControlPostLikesMutation();
   const { mutate: controlDislikes } = useControlPostDislikesMutation();
   const { mutate: downloadFile } = useDownloadFileMutation();

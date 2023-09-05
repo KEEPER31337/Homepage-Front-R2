@@ -159,10 +159,10 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
   });
 };
 
-const useGetPostFilesQuery = (postId: number) => {
+const useGetPostFilesQuery = (postId: number, fileOpen: boolean) => {
   const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
 
-  return useQuery<FileInfo[]>(['files', postId], fetcher);
+  return useQuery<FileInfo[]>(['files', postId], fetcher, { enabled: fileOpen });
 };
 
 const useGetRecentPostsQuery = () => {
