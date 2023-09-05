@@ -41,7 +41,7 @@ const FixedPostingCard = <T,>({
                 <ServerImg errorClassName="m-auto h-[118px] w-28" src={row.thumbnailPath ?? ''} alt="게시글 썸네일" />
                 <ImageListItemBar
                   className="h-2/5 !bg-transparent !bg-gradient-to-t !from-mainBlack"
-                  title={<CardMainInfo isSecret={row.isSecret} type={row.type} title={row.title} />}
+                  title={<CardMainInfo isSecret={row.isSecret} title={row.title} registerTime={row.registerTime} />}
                   subtitle={
                     <div className="relative flex h-full items-end justify-between">
                       <CardDetailInfo

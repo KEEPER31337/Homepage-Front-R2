@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { DateTime } from 'luxon';
 import { AiFillLock } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import { BoardSearch } from '@api/dto';
@@ -80,16 +81,20 @@ const BoardList = () => {
           value
         );
       case 'title':
-        return rowData.isSecret ? (
+        return (
           <div className="flex items-center">
-            <AiFillLock className="mr-1 fill-pointBlue" />
-            <span>비밀글입니다.</span>
+            {rowData.isSecret ? (
+              <>
+                <AiFillLock className="mr-1 fill-pointBlue" />
+                <span>비밀글입니다.</span>
+              </>
+            ) : (
+              <span>{value}</span>
+            )}
             {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
-          </div>
-        ) : (
-          <div className="flex items-center">
-            <span>{value}</span>
-            {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
+            {DateTime.fromISO(rowData.registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
+              <span className="ml-1 rounded-sm bg-pointBlue px-1 text-center text-small text-mainBlack">N</span>
+            )}
           </div>
         );
       default:
