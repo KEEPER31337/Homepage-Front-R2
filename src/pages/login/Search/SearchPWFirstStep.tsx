@@ -4,7 +4,7 @@ import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAc
 import validateEmail from '@utils/validateEmail';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import BackgroundInput from '@components/Input/BackgroundInput';
+import StandardInput from '@components/Input/StandardInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import WarningModal from '@components/Modal/WarningModal';
 
@@ -109,11 +109,12 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
       <div className="mx-20 my-12 flex flex-col justify-center gap-10">
         <div className="relative flex justify-between gap-10">
           <p className="mt-4 leading-4">아이디</p>
-          <BackgroundInput className="w-[70%]" required name="id" value={form.id} onChange={handleChange} />
+          <StandardInput hasBackground className="w-[70%]" required name="id" value={form.id} onChange={handleChange} />
         </div>
         <div className="relative flex justify-between gap-10">
           <p className="mt-4 leading-4">이메일</p>
-          <BackgroundInput
+          <StandardInput
+            hasBackground
             className="w-[70%]"
             required
             disabled={isSent}
@@ -137,7 +138,8 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
         </WarningModal>
         <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">인증코드</p>
-          <BackgroundInput
+          <StandardInput
+            hasBackground
             className="w-[70%]"
             required
             disabled={!isSent}
