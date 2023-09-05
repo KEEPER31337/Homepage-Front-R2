@@ -14,20 +14,19 @@ interface SelectorProps {
 }
 
 const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
-  const { mutate: addBookMutation } = useAddBookMutation();
-  const { mutate: editBookInfo } = useEditBookInfoMutation();
-  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
-
-  const [bookInfo, setBookInfo] = React.useState({
+  const [bookInfo, setBookInfo] = useState({
     title: '',
     author: '',
   });
   const { title, author } = bookInfo;
   const [totalQuantity, setTotalQuantity] = useState(1);
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
-
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
   const [isInvalidAuthor, setIsInvalidAuthor] = useState(false);
+
+  const { mutate: addBookMutation } = useAddBookMutation();
+  const { mutate: editBookInfo } = useEditBookInfoMutation();
+  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
 
   const validate = () => {
     setIsInvalidTitle(title === '');
@@ -101,7 +100,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
       onActionButonClick={bookDetail ? handleEditBookButtonClick : handleAddBookButtonClick}
     >
       <div className="flex space-x-6">
-        <div className="relative grow space-y-5">
+        <div className="space-y-5">
           <div>
             <Typography>도서명</Typography>
             <StandardInput
