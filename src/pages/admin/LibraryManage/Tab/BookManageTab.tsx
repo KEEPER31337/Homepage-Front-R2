@@ -3,13 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import { VscTrash } from 'react-icons/vsc';
 import { BookListSearch } from '@api/dto';
-import { useGetBookManageListQuery, useDeleteBookMutation } from '@api/libraryManageApi';
+import { useGetBookManageListQuery, useDeleteBookMutation, useGetBookDetailQuery } from '@api/libraryManageApi';
 import usePagination from '@hooks/usePagination';
 import LibrarySearchSection from '@pages/Library/SearchSection/LibrarySearchSection';
 import ActionButton from '@components/Button/ActionButton';
 import StandardTable from '@components/Table/StandardTable';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
-import AddBookModal from '../Modal/AddBookModal';
+import UploadBookModal from '../Modal/UploadBookModal';
 
 interface libraryManageRow {
   no: number;
@@ -40,10 +40,13 @@ const BookManageTab = () => {
   const searchType = searchParams.get('searchType') as BookListSearch['searchType'];
   const search = searchParams.get('search') as BookListSearch['search'];
 
+  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
+  const [editBookModalOpen, setEditBookModalOpen] = useState(false);
+  const [editBookId, setEditBookId] = useState(0);
+
   const { data: bookManageListData } = useGetBookManageListQuery({ page, searchType, search });
   const { mutate: deleteBookMutation } = useDeleteBookMutation();
-
-  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
+  const { data: bookDetail } = useGetBookDetailQuery(editBookId);
 
   const childComponent = ({ key, value }: ChildComponent<libraryManageRow>) => {
     switch (key) {
@@ -54,9 +57,9 @@ const BookManageTab = () => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleBookRowClick = ({ rowData }: { rowData: Row<libraryManageRow> }) => {
-    // TODO 도서 수정 API 호출
+    setEditBookId(rowData.id);
+    setEditBookModalOpen(true);
   };
 
   const handleDeleteButtonClick = (bookId: number) => {
@@ -70,7 +73,7 @@ const BookManageTab = () => {
         <ActionButton mode="add" onClick={() => setAddBookModalOpen(true)}>
           추가
         </ActionButton>
-        <AddBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
+        <UploadBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
       </div>
       <StandardTable
         columns={libraryManageColumn}
@@ -79,7 +82,13 @@ const BookManageTab = () => {
             id: book.bookId,
             no: getRowNumber({ size: bookManageListData.size, index: bookIndex }),
             delete: (
-              <IconButton onClick={() => handleDeleteButtonClick(book.bookId)}>
+              <IconButton
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleDeleteButtonClick(book.bookId);
+                }}
+                className="!p-0"
+              >
                 <VscTrash size={20} className="fill-subRed" />
               </IconButton>
             ),
@@ -90,6 +99,9 @@ const BookManageTab = () => {
         paginationOption={{ rowsPerPage: bookManageListData?.size, totalItems: bookManageListData?.totalElement }}
         onRowClick={handleBookRowClick}
       />
+      {bookDetail && (
+        <UploadBookModal open={editBookModalOpen} onClose={() => setEditBookModalOpen(false)} bookDetail={bookDetail} />
+      )}
     </>
   );
 };
