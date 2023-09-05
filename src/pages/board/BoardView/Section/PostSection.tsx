@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Button } from '@mui/material';
 import { VscArrowDown, VscArrowUp, VscFolder, VscFolderOpened } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
@@ -12,6 +12,7 @@ import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import FileViewer from '@components/Viewer/FileViewer';
 import StandardViewer from '@components/Viewer/StandardViewer';
+import WarningDeductPointModal from '../Modal/WarningDeductPointModal';
 
 interface PostSectionProps {
   postId: number;
@@ -20,6 +21,7 @@ interface PostSectionProps {
 
 const PostSection = ({ postId, post }: PostSectionProps) => {
   const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, false);
+  const [warningModalOpen, setWarningModalOpen] = useState(false);
 
   const { data: files } = useGetPostFilesQuery(postId, fileOpen);
   const { mutate: controlLikes } = useControlPostLikesMutation();
@@ -27,6 +29,16 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
   const { mutate: downloadFile } = useDownloadFileMutation();
 
   const handleFileOpenButtonClick = () => {
+    if (post.categoryName === '시험게시판') {
+      setWarningModalOpen(true);
+      return;
+    }
+
+    toggleFileOpen();
+  };
+
+  const handleWarningModalActionClick = () => {
+    setWarningModalOpen(false);
     toggleFileOpen();
   };
 
@@ -82,6 +94,13 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
           </OutlinedButton>
         )}
       </div>
+      {post.categoryName === '시험게시판' && (
+        <WarningDeductPointModal
+          open={warningModalOpen}
+          onClose={() => setWarningModalOpen(false)}
+          onActionButonClick={handleWarningModalActionClick}
+        />
+      )}
     </div>
   );
 };
