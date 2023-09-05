@@ -4,6 +4,7 @@ import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAc
 import validateEmail from '@utils/validateEmail';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import EmailAuthInput from '@components/Input/EmailAuthInput';
 import StandardInput from '@components/Input/StandardInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import WarningModal from '@components/Modal/WarningModal';
@@ -113,19 +114,13 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
         </div>
         <div className="relative flex justify-between gap-10">
           <p className="mt-4 leading-4">이메일</p>
-          <StandardInput
-            hasBackground
+          <EmailAuthInput
             className="w-[70%]"
-            required
-            disabled={isSent}
-            name="email"
+            inputDisabled={isSent}
             value={form.email}
             onChange={handleChange}
-            endAdornment={
-              <FilledButton small disabled={!isValidEmail || isSent} onClick={handleRequestVerificationCode}>
-                인증 요청
-              </FilledButton>
-            }
+            buttonDisabled={!isValidEmail || isSent}
+            onAuthButtonClick={handleRequestVerificationCode}
           />
         </div>
         <WarningModal
