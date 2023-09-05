@@ -15,9 +15,9 @@ const Profile = () => {
   const [tab, setTab] = useState(0);
 
   return (
-    <div className="flex h-full">
-      <div className="w-1/4 border border-subGray">프로필</div>
-      <div className="flex w-3/4 flex-col">
+    <div className="grid h-full xl:grid-cols-[25%_75%]">
+      <div className="w-full border border-subGray">프로필</div>
+      <div className="flex w-full flex-col">
         <StandardTab options={tabList} tab={tab} setTab={setTab} />
         <div className="mt-4 h-full border border-subGray p-2">
           {tab === 0 && <AttendanceTab />}
