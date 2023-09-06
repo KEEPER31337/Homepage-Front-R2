@@ -1,12 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
-import { ExecutiveInfo, JobList, memberInfo } from './dto';
+import { ExecutiveInfo, JobList, memberInfo, MemberDetailInfo } from './dto';
 
 const dutyManageKeys = {
   executiveInfo: ['executiveInfo'] as const,
   jobList: ['jobList'] as const,
   memberInfo: ['memberInfo'] as const,
 };
+
+type ExecutiveMember = Pick<MemberDetailInfo, 'memberId' | 'generation' | 'realName'>;
 
 const useGetExecutiveInfoQuery = () => {
   const fetcher = () => axios.get(`/members/executives`).then(({ data }) => data);
@@ -49,7 +51,7 @@ const useDeleteExecutiveJobMutation = () => {
 const useGetMemberInfoQuery = () => {
   const fetcher = () => axios.get(`members/real-name`).then(({ data }) => data);
 
-  return useQuery<memberInfo[]>(dutyManageKeys.memberInfo, fetcher);
+  return useQuery<ExecutiveMember[]>(dutyManageKeys.memberInfo, fetcher);
 };
 
 export {
