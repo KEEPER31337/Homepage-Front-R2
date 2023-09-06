@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 const FullContainer = () => {
   return (
-    <div className="w-full pt-header">
+    <div className="flex w-full justify-center pt-16">
       <Outlet />
     </div>
   );
