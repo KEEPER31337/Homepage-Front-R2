@@ -8,7 +8,7 @@ interface TextTimerProps {
 
 const TextTimer = ({ expirationTime }: TextTimerProps) => {
   const [remainingSeconds, setRemainingSeconds] = useState(
-    Math.ceil(expirationTime.diff(DateTime.now()).as('seconds')),
+    Math.floor(expirationTime.diff(DateTime.now()).as('seconds')),
   );
 
   useEffect(() => {
