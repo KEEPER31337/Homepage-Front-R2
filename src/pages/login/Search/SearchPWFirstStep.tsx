@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Divider } from '@mui/material';
+import { DateTime } from 'luxon';
 import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
 import validateEmail from '@utils/validateEmail';
-import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
 import StandardInput from '@components/Input/StandardInput';
+import TimerInput from '@components/Input/TimerInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import WarningModal from '@components/Modal/WarningModal';
 
+const TIMER_DURATION_SECOND = 300;
 interface searchPWFormProps {
   id: string;
   email: string;
   verificationCode: string;
 }
+
 interface SearchPWFirstStepProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   form: searchPWFormProps;
   setForm: React.Dispatch<React.SetStateAction<searchPWFormProps>>;
 }
+
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
   const { mutate: requestAuthcode } = useRequestAuthCodeMutation();
   const { data: checkAuthcodeData } = useCheckAuthCodeQuery({
@@ -28,8 +32,6 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   });
 
   const [isSent, setIsSent] = useState(false);
-  const [seconds, setSeconds] = useState(300);
-  const [timer, setTimer] = useState('05:00');
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
   const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
@@ -82,24 +84,6 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     setMailAuthenticationModalOpen(false);
   };
 
-  useEffect(() => {
-    const minute = Math.floor(seconds / 60);
-    const second = seconds % 60;
-    const interval = setInterval(() => {
-      if (isSent === true) {
-        if (seconds > 0) {
-          setSeconds((prevSeconds) => prevSeconds - 1);
-          setTimer(`${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`);
-          if (seconds === 0) {
-            setTimer('시간이 만료되었습니다.');
-          }
-        }
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [isSent, seconds]);
-
   return (
     <>
       <div className="pb-8 pt-10 text-center">
@@ -133,15 +117,13 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
         </WarningModal>
         <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">인증코드</p>
-          <StandardInput
-            hasBackground
+          <TimerInput
             className="w-[70%]"
-            required
-            disabled={!isSent}
             name="verificationCode"
             value={form.verificationCode}
             onChange={handleChange}
-            endAdornment={<p>{timer}</p>}
+            disabled={!isSent}
+            expirationTime={DateTime.now().plus({ seconds: TIMER_DURATION_SECOND })}
           />
         </div>
         <div className="responsive flex w-full justify-between">
