@@ -2,6 +2,7 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Game from '@pages/Game/Game';
 import Library from '@pages/Library/Library';
+import Profile from '@pages/Profile/Profile';
 import SignUp from '@pages/SignUp/SignUp';
 import Study from '@pages/Study/Study';
 import DutyManage from '@pages/admin/DutyManage/DutyManage';
@@ -148,6 +149,10 @@ const useMainRouter = () =>
                   ],
                 },
               ],
+            },
+            {
+              path: 'profile',
+              element: <Profile />,
             },
           ],
         },
