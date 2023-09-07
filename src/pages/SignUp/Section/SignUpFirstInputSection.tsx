@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import { useSetRecoilState } from 'recoil';
 
 import OutlinedButton from '@components/Button/OutlinedButton';
-import BackgroundInput from '@components/Input/BackgroundInput';
+import StandardInput from '@components/Input/StandardInput';
 import signUpPageState from '../SignUp.recoil';
 
 interface SignUpFirstInputSectionProps {
@@ -45,7 +45,9 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
           },
         }}
         render={({ field, fieldState: { error } }) => {
-          return <BackgroundInput label="아이디" {...field} error={Boolean(error)} helperText={error?.message} />;
+          return (
+            <StandardInput hasBackground label="아이디" {...field} error={Boolean(error)} helperText={error?.message} />
+          );
         }}
       />
       <Controller
@@ -65,7 +67,8 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         }}
         render={({ field, fieldState: { error } }) => {
           return (
-            <BackgroundInput
+            <StandardInput
+              hasBackground
               type="password"
               label="비밀번호"
               {...field}
@@ -91,7 +94,8 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         }}
         render={({ field, fieldState: { error } }) => {
           return (
-            <BackgroundInput
+            <StandardInput
+              hasBackground
               type="password"
               label="비밀번호 확인"
               {...field}
