@@ -54,7 +54,7 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
     }
   };
 
-  if (!members || !meritTypes) return <div />;
+  if (!members || !meritTypes) return null;
 
   return (
     <ActionModal
