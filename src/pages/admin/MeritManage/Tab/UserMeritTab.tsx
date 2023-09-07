@@ -1,7 +1,7 @@
 import React from 'react';
 
 const UserMeritTab = () => {
-  return <div />;
+  return null;
 };
 
 export default UserMeritTab;

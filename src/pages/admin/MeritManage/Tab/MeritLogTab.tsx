@@ -45,7 +45,7 @@ const MeritLogTab = () => {
 
   const { data: meritLog } = useGetMeritLogQuery({ page });
 
-  if (!meritLog) return <div />;
+  if (!meritLog) return null;
 
   return (
     <div className="flex w-full flex-col">

@@ -40,7 +40,7 @@ const MeritTypeTab = () => {
 
   const { data: meritType } = useGetMeritTypeQuery({ page });
 
-  if (!meritType) return <div />;
+  if (!meritType) return null;
 
   const meritTypeFilter = (item: MeritTypeInfo) => {
     switch (scoreType) {
