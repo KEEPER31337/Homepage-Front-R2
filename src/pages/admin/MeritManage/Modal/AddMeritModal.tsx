@@ -65,38 +65,36 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
       actionButtonName="추가"
       onActionButonClick={handleAddMeritButtonClick}
     >
-      <div className="flex space-x-6">
-        <div className="relative grow space-y-5">
-          <div>
-            <Typography>회원</Typography>
-            <AutoComplete
-              className="w-full"
-              value={meritInfo.awarders}
-              multiple
-              onChange={(v) => {
-                setMeritInfo((prev) => ({ ...prev, awarders: v }));
-              }}
-              items={members?.map((member) => ({
-                value: member.memberId,
-                label: `${member.memberName} (${member.generation})`,
-                group: member.generation,
-              }))}
-            />
-          </div>
-          <div>
-            <Typography>사유</Typography>
-            <Selector
-              className="w-full"
-              value={meritInfo.meritTypeId}
-              onChange={(e) => {
-                setMeritInfo((prev) => ({ ...prev, meritTypeId: e.target.value as number }));
-              }}
-              options={meritTypes.content.map((type) => ({
-                id: type.id,
-                content: type.detail,
-              }))}
-            />
-          </div>
+      <div className="grow space-y-5">
+        <div>
+          <Typography>회원</Typography>
+          <AutoComplete
+            className="w-full"
+            value={meritInfo.awarders}
+            multiple
+            onChange={(v) => {
+              setMeritInfo((prev) => ({ ...prev, awarders: v }));
+            }}
+            items={members?.map((member) => ({
+              value: member.memberId,
+              label: `${member.memberName} (${member.generation})`,
+              group: member.generation,
+            }))}
+          />
+        </div>
+        <div>
+          <Typography>사유</Typography>
+          <Selector
+            className="w-full"
+            value={meritInfo.meritTypeId}
+            onChange={(e) => {
+              setMeritInfo((prev) => ({ ...prev, meritTypeId: e.target.value as number }));
+            }}
+            options={meritTypes.content.map((type) => ({
+              id: type.id,
+              content: type.detail,
+            }))}
+          />
         </div>
       </div>
     </ActionModal>
