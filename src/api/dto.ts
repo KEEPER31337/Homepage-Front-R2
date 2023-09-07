@@ -28,7 +28,7 @@ export interface MemberInfo {
 export interface MemberDetailInfo extends MemberInfo {
   birthday: string;
   studentId: string;
-  generation: number;
+  generation: string;
   point: number;
   level: number;
   totalAttendance: number;
@@ -245,6 +245,7 @@ export interface UploadPost {
 
 export interface FileInfo {
   id: number;
+  fileId: number;
   name: string;
   path: string;
   size: number;
