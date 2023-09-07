@@ -7,8 +7,7 @@ import ActionButton from '@components/Button/ActionButton';
 import Selector from '@components/Selector/Selector';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
-import AddMeritTypeModal from '../Modal/AddMeritTypeModal';
-import EditMeritTypeModal, { EditMeritTypeInfo, meritTypeChangeEnable } from '../Modal/EditMeritTypeModal';
+import SettingMeritTypeModal, { MeritTypeModalInfo, meritTypeChangeEnable } from '../Modal/SettingMeritTypeModal';
 
 interface MeritTypeRow {
   id: number;
@@ -36,7 +35,7 @@ const MeritTypeTab = () => {
   const [scoreType, setScoreType] = useState<ScoreType>('all');
 
   const [addMeritTypeOpen, setAddMeritTypeOpen] = useState(false);
-  const [editMeritType, setEditMeritType] = useState<EditMeritTypeInfo | null>(null);
+  const [editMeritType, setEditMeritType] = useState<MeritTypeModalInfo | null>(null);
 
   const { data: meritType } = useGetMeritTypeQuery({ page });
 
@@ -90,8 +89,8 @@ const MeritTypeTab = () => {
         }
         paginationOption={{ rowsPerPage: meritType.size, totalItems: meritType.totalElements }}
       />
-      <AddMeritTypeModal open={addMeritTypeOpen} onClose={() => setAddMeritTypeOpen(false)} />
-      <EditMeritTypeModal meritType={editMeritType} onClose={() => setEditMeritType(null)} />
+      <SettingMeritTypeModal<'add'> status={addMeritTypeOpen} onClose={() => setAddMeritTypeOpen(false)} />
+      <SettingMeritTypeModal<'edit'> status={editMeritType} onClose={() => setEditMeritType(null)} />
     </div>
   );
 };
