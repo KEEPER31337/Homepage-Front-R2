@@ -77,7 +77,7 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
             }}
             items={members?.map((member) => ({
               value: member.memberId,
-              label: `${member.memberName} (${member.generation})`,
+              label: `${member.realName} (${member.generation})`,
               group: member.generation,
             }))}
           />
