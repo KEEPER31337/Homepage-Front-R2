@@ -3,8 +3,8 @@ import axios from 'axios';
 import { PageAndSize, MeritLog, MeritType } from './dto';
 
 const meritKeys = {
-  meritLog: (param: PageAndSize) => ['merit-log', param] as const,
-  meritType: (param: PageAndSize) => ['merit-type', param] as const,
+  meritLog: (param: PageAndSize) => ['meritLog', param] as const,
+  meritType: (param: PageAndSize) => ['meritType', param] as const,
 };
 
 const useGetMeritLogQuery = ({ page, size = 10 }: PageAndSize) => {
