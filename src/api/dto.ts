@@ -418,3 +418,22 @@ export interface memberInfo {
   memberName: string;
   generation: string;
 }
+
+export interface PointLogInfo {
+  point: number;
+  description: string;
+  date: string;
+}
+
+export interface PointLog {
+  content: PointLogInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
