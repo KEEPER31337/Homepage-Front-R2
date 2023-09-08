@@ -23,7 +23,7 @@ const BookTab = () => {
           대출기간은 승인된 대출일자로 부터 <span className="text-pointBlue">14</span>일간 입니다.
         </BookGuide>
         <BookGuide>
-          도서 관련 문의는 사서<span className="text-pointBlue">({librarian})</span>에게 문의 가능합니다.
+          도서 관련 문의는 사서(<span className="text-pointBlue">{librarian}</span>)에게 문의 가능합니다.
         </BookGuide>
       </div>
       <div className="flex h-full flex-col space-y-5">
