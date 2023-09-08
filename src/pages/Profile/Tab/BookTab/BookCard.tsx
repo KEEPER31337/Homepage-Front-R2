@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { DateTime } from 'luxon';
 import { BorrowedBookInfo } from '@api/dto';
@@ -11,8 +11,8 @@ interface BookGuideProps {
 }
 const BookCard = ({ bookInfo }: BookGuideProps) => {
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex flex-col items-center space-y-2">
+    <div className="flex flex-col items-center ">
+      <div className="flex flex-col items-center  space-y-2">
         <div
           className={`${
             !bookInfo?.status ? 'h-[240px] w-[170px]' : 'h-[120px] w-[85px]'
@@ -20,7 +20,21 @@ const BookCard = ({ bookInfo }: BookGuideProps) => {
         >
           <ServerImg src="" alt="library thumbnail" />
         </div>
-        <div>{bookInfo?.bookTitle}</div>
+        <Tooltip
+          title={bookInfo?.bookTitle}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                bgcolor: 'rgba(76, 238, 249, 0.15)',
+                fontSize: '14px',
+              },
+            },
+          }}
+          placement="top"
+        >
+          <div className="w-[170px] truncate text-center">{bookInfo?.bookTitle}</div>
+        </Tooltip>
+
         <div className="w-full border border-pointBlue" />
         <div className="flex w-full  justify-between  ">
           {!bookInfo?.status && (
