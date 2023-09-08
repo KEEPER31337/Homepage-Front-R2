@@ -15,7 +15,7 @@ const TextButton = ({ children, onClick, disabled, type, small }: TextButtonProp
       variant="text"
       className={`${
         small ? '!text-small' : '!px-6'
-      } h-fit !rounded-sm !font-semibold hover:!bg-pointBlue/10 active:!bg-pointBlue/30 disabled:!text-subGray`}
+      } h-fit !rounded-sm !bg-subBlack !font-semibold hover:!bg-pointBlue/10 active:!bg-pointBlue/30 disabled:!text-subGray`}
       type={type}
       onClick={onClick}
       disabled={disabled}
