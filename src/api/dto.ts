@@ -123,11 +123,12 @@ export type BookCoreData = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepart
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
-  title: string;
+  bookTitle: string;
   author: string;
   overdue: boolean;
-  borrowDate: string;
-  expireDate: string;
+  borrowDateTime: string;
+  expireDateTime: string;
+  status: '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
 }
 
 export interface StudyLinks {
