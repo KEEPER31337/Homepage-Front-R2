@@ -1,31 +1,64 @@
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
 
 import { DateTime } from 'luxon';
+import { useSetRecoilState } from 'recoil';
+import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { emailRegex } from '@utils/validateEmail';
+import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
 import TimerInput from '@components/Input/TimerInput';
+import signUpPageState from '../SignUp.recoil';
 
 const SignUpThirdInputSection = () => {
   const expiredSeconds = 300; // TODO API에서 받아오기
+  const [isEmailSent, setIsEmailSent] = useState(false);
 
-  const { control } = useForm({ mode: 'onBlur' });
+  const setSignUpPageState = useSetRecoilState(signUpPageState);
+  const navigate = useNavigate();
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+  } = useForm({ mode: 'onBlur' });
 
   const handleRequestVerificationCode = () => {
-    //
+    setIsEmailSent(true);
+  };
+
+  const handleThirdStepFormSubmit: SubmitHandler<FieldValues> = ({ email, authCode }) => {
+    setSignUpPageState((prev) => ({ ...prev, email, authCode }));
+
+    // TODO 가입 성공 시
+    navigate('/login');
   };
 
   return (
-    <Stack spacing={2}>
+    <Stack component="form" spacing={2} onSubmit={handleSubmit(handleThirdStepFormSubmit)}>
       <Controller
         name="email"
         defaultValue=""
         control={control}
         rules={{
-          required: '필수 정보입니다.',
+          required: REQUIRE_ERROR_MSG,
+          pattern: {
+            value: emailRegex,
+            message: '이메일 주소를 다시 확인해주세요.',
+          },
         }}
-        render={({ field }) => {
-          return <EmailAuthInput {...field} label="이메일" onAuthButtonClick={handleRequestVerificationCode} />;
+        render={({ field, fieldState: { error } }) => {
+          return (
+            <EmailAuthInput
+              label="이메일"
+              {...field}
+              error={Boolean(error)}
+              helperText={error?.message}
+              buttonDisabled={Boolean(error)}
+              onAuthButtonClick={handleRequestVerificationCode}
+            />
+          );
         }}
       />
       <Controller
@@ -33,18 +66,26 @@ const SignUpThirdInputSection = () => {
         defaultValue=""
         control={control}
         rules={{
-          required: '필수 정보입니다.',
+          required: REQUIRE_ERROR_MSG,
         }}
-        render={({ field }) => {
+        render={({ field, fieldState: { error } }) => {
           return (
             <TimerInput
-              {...field}
               label="인증코드 입력"
+              {...field}
+              error={Boolean(error)}
+              helperText={error?.message}
+              disabled={!isEmailSent}
               expirationTime={DateTime.now().plus({ seconds: expiredSeconds })}
             />
           );
         }}
       />
+      <div className="absolute bottom-0 right-0">
+        <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
+          완료
+        </OutlinedButton>
+      </div>
     </Stack>
   );
 };
