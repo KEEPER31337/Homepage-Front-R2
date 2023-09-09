@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack } from '@mui/material';
+import { DateTime } from 'luxon';
+import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
 
 import StandardInput from '@components/Input/StandardInput';
 
 const SignUpSecondInputSection = () => {
+  const [date, setDate] = useState<DateTime | null>(null);
   return (
     <Stack spacing={2}>
       <Stack spacing={2} direction="row" justifyContent="space-between">
@@ -35,6 +38,7 @@ const SignUpSecondInputSection = () => {
         }}
       />
       {/* TODO "생일 DatePicker" */}
+      <StandardDatePicker hasBackground label="test" date={date} setDate={setDate} />
     </Stack>
   );
 };
