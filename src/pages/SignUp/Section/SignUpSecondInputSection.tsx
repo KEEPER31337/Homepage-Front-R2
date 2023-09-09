@@ -1,23 +1,37 @@
-import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import React from 'react';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Stack } from '@mui/material';
-import { DateTime } from 'luxon';
+import { useSetRecoilState } from 'recoil';
 import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
 import StandardInput from '@components/Input/StandardInput';
+import signUpPageState from '../SignUp.recoil';
 
 const NAME_MAX_LENGTH = 20;
 
-const SignUpSecondInputSection = () => {
-  const [date, setDate] = useState<DateTime | null>(null);
+interface SignUpFirstInputSectionProps {
+  setCurrentStep: React.Dispatch<React.SetStateAction<1 | 2 | 3>>;
+}
 
-  const { control } = useForm({ mode: 'onBlur' });
+const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProps) => {
+  const setSignUpPageState = useSetRecoilState(signUpPageState);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+  } = useForm({ mode: 'onBlur' });
+
+  const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ loginId, password }) => {
+    setSignUpPageState((prev) => ({ ...prev, loginId, password }));
+    setCurrentStep(3);
+  };
 
   return (
-    <Stack spacing={2}>
+    <Stack component="form" spacing={2} onSubmit={handleSubmit(handleSecondStepFormSubmit)}>
       <Controller
-        name="name"
+        name="realName"
         defaultValue=""
         control={control}
         rules={{
@@ -44,7 +58,7 @@ const SignUpSecondInputSection = () => {
         rules={{
           required: REQUIRE_ERROR_MSG,
           pattern: {
-            value: /^[0-9]$/,
+            value: /^[0-9]+$/,
             message: NUMBER_ERROR_MSG,
           },
         }}
@@ -54,8 +68,31 @@ const SignUpSecondInputSection = () => {
           );
         }}
       />
+      <Controller
+        name="birthday"
+        defaultValue=""
+        control={control}
+        render={({ field, fieldState: { error } }) => {
+          return (
+            <StandardDatePicker
+              hasBackground
+              label={
+                <>
+                  <span className="mr-1">생일</span>
+                  <span className="opacity-30">(선택)</span>
+                </>
+              }
+              {...field}
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          );
+        }}
+      />
       <div className="absolute bottom-0 right-0">
-        <OutlinedButton type="submit">다음</OutlinedButton>
+        <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
+          다음
+        </OutlinedButton>
       </div>
     </Stack>
   );
