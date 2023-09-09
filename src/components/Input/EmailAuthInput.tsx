@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { StandardTextFieldProps } from '@mui/material';
 import FilledButton from '@components/Button/FilledButton';
 import StandardInput from './StandardInput';
@@ -11,34 +11,38 @@ interface EmailAuthInputProps extends StandardTextFieldProps {
   onAuthButtonClick: () => void;
 }
 
-const EmailAuthInput = ({
-  ref,
-  className,
-  value,
-  onChange,
-  inputDisabled,
-  buttonDisabled,
-  onAuthButtonClick,
-  ...standardTextFieldProps
-}: EmailAuthInputProps) => {
-  return (
-    <StandardInput
-      ref={ref}
-      hasBackground
-      className={className}
-      required
-      disabled={inputDisabled}
-      name="email"
-      value={value}
-      onChange={onChange}
-      {...standardTextFieldProps}
-      endAdornment={
-        <FilledButton small disabled={buttonDisabled} onClick={onAuthButtonClick}>
-          인증 요청
-        </FilledButton>
-      }
-    />
-  );
-};
+const EmailAuthInput = forwardRef(
+  (
+    {
+      className,
+      value,
+      onChange,
+      inputDisabled,
+      buttonDisabled,
+      onAuthButtonClick,
+      ...standardTextFieldProps
+    }: EmailAuthInputProps,
+    ref?: React.ForwardedRef<HTMLDivElement>,
+  ) => {
+    return (
+      <StandardInput
+        ref={ref}
+        hasBackground
+        className={className}
+        required
+        disabled={inputDisabled}
+        name="email"
+        value={value}
+        onChange={onChange}
+        {...standardTextFieldProps}
+        endAdornment={
+          <FilledButton small disabled={buttonDisabled} onClick={onAuthButtonClick}>
+            인증 요청
+          </FilledButton>
+        }
+      />
+    );
+  },
+);
 
 export default EmailAuthInput;

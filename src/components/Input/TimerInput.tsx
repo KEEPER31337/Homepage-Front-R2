@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { StandardTextFieldProps } from '@mui/material';
 import { DateTime } from 'luxon';
 import TextTimer from '@components/Typography/TextTimer';
@@ -11,28 +11,25 @@ interface TimerInputProps extends StandardTextFieldProps {
   expirationTime: DateTime;
 }
 
-const TimerInput = ({
-  ref,
-  expirationTime,
-  className,
-  value,
-  onChange,
-  disabled,
-  ...standardTextFieldProps
-}: TimerInputProps) => {
-  return (
-    <StandardInput
-      ref={ref}
-      required
-      hasBackground
-      className={className}
-      disabled={disabled}
-      value={value}
-      onChange={onChange}
-      {...standardTextFieldProps}
-      endAdornment={!disabled && <TextTimer expirationTime={expirationTime} />}
-    />
-  );
-};
+const TimerInput = forwardRef(
+  (
+    { expirationTime, className, value, onChange, disabled, ...standardTextFieldProps }: TimerInputProps,
+    ref?: React.ForwardedRef<HTMLDivElement>,
+  ) => {
+    return (
+      <StandardInput
+        ref={ref}
+        required
+        hasBackground
+        className={className}
+        disabled={disabled}
+        value={value}
+        onChange={onChange}
+        {...standardTextFieldProps}
+        endAdornment={!disabled && <TextTimer expirationTime={expirationTime} />}
+      />
+    );
+  },
+);
 
 export default TimerInput;
