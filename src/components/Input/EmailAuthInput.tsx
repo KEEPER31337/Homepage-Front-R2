@@ -6,8 +6,8 @@ import StandardInput from './StandardInput';
 interface EmailAuthInputProps extends StandardTextFieldProps {
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  inputDisabled: boolean;
-  buttonDisabled: boolean;
+  inputDisabled?: boolean;
+  buttonDisabled?: boolean;
   onAuthButtonClick: () => void;
 }
 

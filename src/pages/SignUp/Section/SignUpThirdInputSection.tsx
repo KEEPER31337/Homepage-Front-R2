@@ -1,18 +1,48 @@
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Stack } from '@mui/material';
 
-import StandardInput from '@components/Input/StandardInput';
+import { DateTime } from 'luxon';
+import EmailAuthInput from '@components/Input/EmailAuthInput';
+import TimerInput from '@components/Input/TimerInput';
 
 const SignUpThirdInputSection = () => {
+  const expiredSeconds = 300; // TODO API에서 받아오기
+
+  const { control } = useForm({ mode: 'onBlur' });
+
+  const handleRequestVerificationCode = () => {
+    //
+  };
+
   return (
     <Stack spacing={2}>
-      {/* TODO 인증요청 버튼 포함 이메일 인풋 */}
-      <StandardInput
-        hasBackground
-        value=""
-        label="인증코드"
-        onChange={() => {
-          // TODO
+      <Controller
+        name="email"
+        defaultValue=""
+        control={control}
+        rules={{
+          required: '필수 정보입니다.',
+        }}
+        render={({ field }) => {
+          return <EmailAuthInput {...field} label="이메일" onAuthButtonClick={handleRequestVerificationCode} />;
+        }}
+      />
+      <Controller
+        name="authCode"
+        defaultValue=""
+        control={control}
+        rules={{
+          required: '필수 정보입니다.',
+        }}
+        render={({ field }) => {
+          return (
+            <TimerInput
+              {...field}
+              label="인증코드 입력"
+              expirationTime={DateTime.now().plus({ seconds: expiredSeconds })}
+            />
+          );
         }}
       />
     </Stack>

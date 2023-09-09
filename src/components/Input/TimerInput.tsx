@@ -7,7 +7,7 @@ import StandardInput from './StandardInput';
 interface TimerInputProps extends StandardTextFieldProps {
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  disabled: boolean;
+  disabled?: boolean;
   expirationTime: DateTime;
 }
 
