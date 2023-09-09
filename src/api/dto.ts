@@ -123,6 +123,7 @@ export type BookCoreData = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepart
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
+  thumbnailPath: string;
   bookTitle: string;
   author: string;
   overdue: boolean;

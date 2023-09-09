@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { BookInfo, BorrowedBookInfo, BookListSearch } from './dto';
 
@@ -10,6 +10,7 @@ const libraryKeys = {
 const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSearch) => {
   const fetcher = () =>
     axios.get('/books', { params: { page, size, searchType, search } }).then(({ data }) => {
+      console.log(data);
       const content = data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
         ...rest,
         bookQuantity: `${currentQuantity}/${totalQuantity}`,
@@ -37,4 +38,45 @@ const useGetBookBorrowsQuery = ({ page, size }: { page: number; size: number }) 
   return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList, fetcher);
 };
 
-export { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQuery };
+const useRequestReturnBookMutation = () => {
+  const queryClient = useQueryClient();
+  const fetcher = (selectedBookId: number) => axios.patch(`/books/borrows/${selectedBookId}/request-return`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+    },
+  });
+};
+
+const useCancleReturnBookMutation = () => {
+  const queryClient = useQueryClient();
+  const fetcher = (selectedBookId: number) => axios.patch(`/books/borrows/${selectedBookId}/cancel-return`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+    },
+  });
+};
+
+const useCancleBorrowBookMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (selectedBookId: number) => axios.delete(`/books/borrows/${selectedBookId}/cancel-borrow`);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+    },
+  });
+};
+
+export {
+  useGetBookListQuery,
+  useRequestBorrowBookMutation,
+  useGetBookBorrowsQuery,
+  useRequestReturnBookMutation,
+  useCancleReturnBookMutation,
+  useCancleBorrowBookMutation,
+};
