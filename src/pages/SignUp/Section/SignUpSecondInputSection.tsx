@@ -54,8 +54,6 @@ const SignUpSecondInputSection = () => {
           );
         }}
       />
-      {/* TODO "생일 DatePicker" */}
-      <StandardDatePicker hasBackground label="test" date={date} setDate={setDate} />
       <div className="absolute bottom-0 right-0">
         <OutlinedButton type="submit">다음</OutlinedButton>
       </div>

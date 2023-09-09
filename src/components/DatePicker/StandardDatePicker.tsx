@@ -5,31 +5,37 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { DateTime } from 'luxon';
 
 interface StandardDatePickerProps {
-  date: DateTime | null;
-  setDate: React.Dispatch<React.SetStateAction<DateTime | null>>;
-  label?: string;
+  value: DateTime | null;
+  onChange: (value: DateTime | null, keyboardInputValue?: string | undefined) => void;
+  label?: React.ReactNode;
   hasBackground?: boolean;
+  error?: boolean;
+  helperText?: string;
 }
 
-const StandardDatePicker = ({ date, setDate, label, hasBackground }: StandardDatePickerProps) => {
+const StandardDatePicker = ({ value, onChange, label, hasBackground, error, helperText }: StandardDatePickerProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <DatePicker
         label={label}
         inputFormat="yyyy.MM.dd"
         OpenPickerButtonProps={{ size: 'small', color: 'primary' }}
-        value={date}
-        onChange={(newValue) => {
-          setDate(newValue);
-        }}
+        value={value}
+        onChange={onChange}
         renderInput={(params) => (
           <TextField
             {...params}
             variant="standard"
-            InputProps={{
-              className: `before:!border-pointBlue pr-1 ${hasBackground ? 'bg-subGray/5 h-12' : ''}`,
-              ...params.InputProps,
-            }}
+            InputProps={
+              error
+                ? undefined
+                : {
+                    className: `before:!border-pointBlue pr-1 ${hasBackground ? 'bg-subGray/5 h-12' : ''}`,
+                    ...params.InputProps,
+                  }
+            }
+            error={error}
+            helperText={helperText}
             sx={hasBackground ? { '.MuiFormLabel-root[data-shrink=false]': { top: 8 } } : undefined}
           />
         )}
