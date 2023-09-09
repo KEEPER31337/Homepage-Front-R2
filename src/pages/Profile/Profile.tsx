@@ -15,11 +15,11 @@ const Profile = () => {
   const [tab, setTab] = useState(0);
 
   return (
-    <div className="grid h-full xl:grid-cols-[25%_75%]">
-      <div className="w-full border border-subGray">프로필</div>
-      <div className="flex w-full flex-col">
+    <div className="mb-40 mt-header flex w-full flex-col justify-start xl:flex-row xl:justify-center">
+      <div className="flex h-1/4 w-full border border-subGray xl:h-full xl:w-80">프로필</div>
+      <div className="flex h-3/4 w-full max-w-container flex-col xl:h-full">
         <StandardTab options={tabList} tab={tab} setTab={setTab} />
-        <div className="mt-4 h-full border border-subGray p-2">
+        <div className="mt-4 flex h-full border border-subGray p-4">
           {tab === 0 && <AttendanceTab />}
           {tab === 1 && <BoardTab />}
           {tab === 2 && <BookTab />}
