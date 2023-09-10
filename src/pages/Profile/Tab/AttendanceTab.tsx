@@ -48,6 +48,7 @@ const AttendanceTab = () => {
         </IconButton>
       </div>
       <ButtonGroup>
+        <TextButton small>🗓️ 총 출석일</TextButton>
         <TextButton small>🌱 개근 일차</TextButton>
         <TextButton small>🏅 오늘 출석</TextButton>
         <TextButton small>⭐️ pt</TextButton>
