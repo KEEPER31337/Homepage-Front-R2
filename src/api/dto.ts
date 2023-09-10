@@ -417,3 +417,8 @@ export interface memberInfo {
   memberName: string;
   generation: string;
 }
+
+export interface CallenderChartInfo {
+  day: string;
+  value: number;
+}
