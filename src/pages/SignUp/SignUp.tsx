@@ -19,7 +19,7 @@ const SignUp = () => {
 
   const stepInputSection = {
     1: <SignUpFirstInputSection setCurrentStep={setCurrentStep} />,
-    2: <SignUpSecondInputSection />,
+    2: <SignUpSecondInputSection setCurrentStep={setCurrentStep} />,
     3: <SignUpThirdInputSection />,
   };
 
