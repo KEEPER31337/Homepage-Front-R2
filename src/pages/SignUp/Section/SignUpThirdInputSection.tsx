@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 
 import { DateTime } from 'luxon';
 import { useSetRecoilState } from 'recoil';
-import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
+import { useCheckEmailDuplicationQuery, useEmailAuthMutation } from '@api/signUpApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { emailRegex } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -14,7 +14,7 @@ import TimerInput from '@components/Input/TimerInput';
 import signUpPageState from '../SignUp.recoil';
 
 const SignUpThirdInputSection = () => {
-  const expiredSeconds = 300; // TODO API에서 받아오기
+  const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
   const [isEmailSent, setIsEmailSent] = useState(false);
 
   const setSignUpPageState = useSetRecoilState(signUpPageState);
@@ -31,6 +31,8 @@ const SignUpThirdInputSection = () => {
     email: getValues('email'),
     enabled: isEmailSent,
   });
+
+  const { mutate: emailAuth } = useEmailAuthMutation();
 
   const handleRequestVerificationCode = () => {
     setIsEmailSent(true);
@@ -49,7 +51,14 @@ const SignUpThirdInputSection = () => {
     if (isEmailDuplicate.duplicate === true) {
       setError('email', { message: '이미 존재하는 이메일입니다.' });
       setIsEmailSent(false);
+      return;
     }
+
+    emailAuth(getValues('email'), {
+      onSuccess: ({ expiredSeconds }) => {
+        setExpirationTime(DateTime.now().plus({ seconds: expiredSeconds }));
+      },
+    });
   }, [checkEmailDuplicationSuccess]);
 
   return (
@@ -93,7 +102,7 @@ const SignUpThirdInputSection = () => {
               error={Boolean(error)}
               helperText={error?.message}
               disabled={!isEmailDuplicate || isEmailDuplicate.duplicate || !isEmailSent}
-              expirationTime={DateTime.now().plus({ seconds: expiredSeconds })}
+              expirationTime={expirationTime}
             />
           );
         }}

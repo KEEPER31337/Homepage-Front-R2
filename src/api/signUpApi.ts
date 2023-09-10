@@ -15,7 +15,7 @@ const useSignUpMutation = () => {
 };
 
 const useEmailAuthMutation = () => {
-  const fetcher = (email: string) => axios.post('/sign-up/email-auth', { email });
+  const fetcher = (email: string) => axios.post('/sign-up/email-auth', { email }).then(({ data }) => data);
 
   return useMutation(fetcher);
 };

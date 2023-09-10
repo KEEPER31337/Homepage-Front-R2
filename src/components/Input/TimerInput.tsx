@@ -8,7 +8,7 @@ interface TimerInputProps extends StandardTextFieldProps {
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   disabled?: boolean;
-  expirationTime: DateTime;
+  expirationTime: DateTime | null;
 }
 
 const TimerInput = forwardRef(
@@ -26,7 +26,7 @@ const TimerInput = forwardRef(
         value={value}
         onChange={onChange}
         {...standardTextFieldProps}
-        endAdornment={!disabled && <TextTimer expirationTime={expirationTime} />}
+        endAdornment={!disabled && expirationTime && <TextTimer expirationTime={expirationTime} />}
       />
     );
   },
