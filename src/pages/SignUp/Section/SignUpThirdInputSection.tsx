@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
 
 import { DateTime } from 'luxon';
-import { useSetRecoilState } from 'recoil';
-import { useCheckEmailDuplicationQuery, useEmailAuthMutation } from '@api/signUpApi';
+import { useRecoilValue } from 'recoil';
+import { useCheckEmailDuplicationQuery, useEmailAuthMutation, useSignUpMutation } from '@api/signUpApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { emailRegex } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -17,7 +17,7 @@ const SignUpThirdInputSection = () => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
   const [isEmailSent, setIsEmailSent] = useState(false);
 
-  const setSignUpPageState = useSetRecoilState(signUpPageState);
+  const signUpParams = useRecoilValue(signUpPageState);
   const navigate = useNavigate();
   const {
     control,
@@ -33,16 +33,21 @@ const SignUpThirdInputSection = () => {
   });
 
   const { mutate: emailAuth } = useEmailAuthMutation();
+  const { mutate: signUp } = useSignUpMutation();
 
   const handleRequestVerificationCode = () => {
     setIsEmailSent(true);
   };
 
   const handleThirdStepFormSubmit: SubmitHandler<FieldValues> = ({ email, authCode }) => {
-    setSignUpPageState((prev) => ({ ...prev, email, authCode }));
-
-    // TODO 가입 성공 시
-    navigate('/login');
+    signUp(
+      { ...signUpParams, email, authCode },
+      {
+        onSuccess: () => {
+          navigate('/login');
+        },
+      },
+    );
   };
 
   useEffect(() => {
