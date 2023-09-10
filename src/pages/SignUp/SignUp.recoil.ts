@@ -6,7 +6,6 @@ const signUpPageState = atom({
     loginId: '',
     email: '',
     realName: '',
-    nickname: '',
     authCode: '',
     birthday: '',
     studentId: '',

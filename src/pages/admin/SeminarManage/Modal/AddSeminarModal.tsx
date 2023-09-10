@@ -20,6 +20,10 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
     setDate(null);
   };
 
+  const handleDateChange = (newValue: DateTime | null) => {
+    setDate(newValue);
+  };
+
   return (
     <ActionModal
       open={open}
@@ -29,7 +33,7 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
       onActionButonClick={handleAddSeminarButtonClick}
     >
       <div className="flex justify-center">
-        <StandardDatePicker date={date} setDate={setDate} label="날짜" />
+        <StandardDatePicker value={date} onChange={handleDateChange} label="날짜" />
       </div>
     </ActionModal>
   );
