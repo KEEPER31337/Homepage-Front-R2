@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ButtonGroup, Card, CardContent, CardHeader, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { ButtonGroup, Card, CardContent, CardHeader, IconButton, Stack, Typography } from '@mui/material';
 import { ResponsiveCalendar } from '@nivo/calendar';
-import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
+import { VscChevronLeft, VscChevronRight, VscPinned } from 'react-icons/vsc';
 import { CallenderChartInfo } from '@api/dto';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
 import TextButton from '@components/Button/TextButton';
@@ -21,7 +21,7 @@ const AttendanceTab = () => {
   };
 
   return (
-    <Stack width="100%" paddingX={6}>
+    <Stack width="100%" paddingX={6} paddingY={4}>
       <div className="h-36">
         <ResponsiveCalendar
           theme={{
@@ -52,11 +52,21 @@ const AttendanceTab = () => {
         <TextButton small>🏅 오늘 출석</TextButton>
         <TextButton small>⭐️ pt</TextButton>
       </ButtonGroup>
-      <div className="mx-2 mt-2 w-3/5">
-        <Card>
+      <div className="mx-2 mt-2 flex gap-4">
+        <Card className="w-1/2">
           <CardHeader title={<Typography>오늘의 출석 포인트</Typography>} />
           <CardContent>test</CardContent>
         </Card>
+        <div className="m-5 space-y-4">
+          <div className="flex gap-1">
+            <VscPinned size={24} className="fill-pointBlue" />
+            <Typography>출석 포인트는 기본, 개근, 등수, 랜덤 포인트로 획득이 가능합니다.</Typography>
+          </div>
+          <div className="flex gap-1">
+            <VscPinned size={24} className="fill-pointBlue" />
+            <Typography>개근, 등수에 따른 획득 가능 포인트는 각 🌱, 🏅 영역을 클릭하면 확인할 수 있습니다.</Typography>
+          </div>
+        </div>
       </div>
     </Stack>
   );
