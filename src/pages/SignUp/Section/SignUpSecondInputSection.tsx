@@ -37,7 +37,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
         rules={{
           required: REQUIRE_ERROR_MSG,
           maxLength: {
-            value: 20,
+            value: NAME_MAX_LENGTH,
             message: `이름은 최대 ${NAME_MAX_LENGTH}글자 입력이 가능합니다.`,
           },
           pattern: {
