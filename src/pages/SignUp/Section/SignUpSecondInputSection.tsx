@@ -23,8 +23,8 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
 
-  const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ loginId, password }) => {
-    setSignUpPageState((prev) => ({ ...prev, loginId, password }));
+  const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
+    setSignUpPageState((prev) => ({ ...prev, realName, studentId, birthday }));
     setCurrentStep(3);
   };
 
