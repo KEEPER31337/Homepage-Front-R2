@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { IconButton, Stack } from '@mui/material';
+import { ButtonGroup, IconButton, Stack } from '@mui/material';
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 import { CallenderChartInfo } from '@api/dto';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
+import TextButton from '@components/Button/TextButton';
 
 const AttendanceTab = () => {
   const data: CallenderChartInfo[] = []; // TODO API 받아오기
@@ -20,7 +21,7 @@ const AttendanceTab = () => {
   };
 
   return (
-    <Stack width="100%">
+    <Stack width="100%" paddingX={6}>
       <div className="h-36">
         <ResponsiveCalendar
           theme={{
@@ -35,10 +36,10 @@ const AttendanceTab = () => {
           dayBorderColor={KEEPER_COLOR.middleBlack}
           monthBorderColor={KEEPER_COLOR.middleBlack}
           dayBorderWidth={4}
-          margin={{ top: 20, right: 70, bottom: 5, left: 70 }}
+          margin={{ top: 20, right: 12, bottom: 5, left: 12 }}
         />
       </div>
-      <div className="mr-16 flex items-center justify-end">
+      <div className="flex items-center justify-end">
         <IconButton onClick={handlePrevButtonClick} color="primary">
           <VscChevronLeft />
         </IconButton>
@@ -46,6 +47,12 @@ const AttendanceTab = () => {
           <VscChevronRight />
         </IconButton>
       </div>
+      <ButtonGroup>
+        <TextButton small>🗓️ 총 출석일</TextButton>
+        <TextButton small>🌱 개근 일차</TextButton>
+        <TextButton small>🏅 오늘 출석</TextButton>
+        <TextButton small>⭐️ pt</TextButton>
+      </ButtonGroup>
     </Stack>
   );
 };
