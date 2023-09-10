@@ -47,15 +47,17 @@ const PointTab = () => {
   if (!pointLog) return null;
 
   return (
-    <StandardTable<PointLogRow>
-      columns={pointLogColumns}
-      rows={pointLog.content.map((item, index) => ({
-        id: getRowNumber({ size: pointLog.size, index }),
-        ...item,
-      }))}
-      childComponent={PointLogChildComponent}
-      paginationOption={{ rowsPerPage: pointLog.size, totalItems: pointLog.totalElements }}
-    />
+    <div className="w-full">
+      <StandardTable<PointLogRow>
+        columns={pointLogColumns}
+        rows={pointLog.content.map((item, index) => ({
+          id: getRowNumber({ size: pointLog.size, index }),
+          ...item,
+        }))}
+        childComponent={PointLogChildComponent}
+        paginationOption={{ rowsPerPage: pointLog.size, totalItems: pointLog.totalElements }}
+      />
+    </div>
   );
 };
 
