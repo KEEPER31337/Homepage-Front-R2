@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ButtonGroup, IconButton, Stack } from '@mui/material';
+import { ButtonGroup, Card, CardContent, CardHeader, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 import { CallenderChartInfo } from '@api/dto';
@@ -48,11 +48,16 @@ const AttendanceTab = () => {
         </IconButton>
       </div>
       <ButtonGroup>
-        <TextButton small>🗓️ 총 출석일</TextButton>
         <TextButton small>🌱 개근 일차</TextButton>
         <TextButton small>🏅 오늘 출석</TextButton>
         <TextButton small>⭐️ pt</TextButton>
       </ButtonGroup>
+      <div className="mx-2 mt-2 w-3/5">
+        <Card>
+          <CardHeader title={<Typography>오늘의 출석 포인트</Typography>} />
+          <CardContent>test</CardContent>
+        </Card>
+      </div>
     </Stack>
   );
 };
