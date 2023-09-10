@@ -46,6 +46,10 @@ const useMainRouter = () =>
               path: 'searchAccount',
               element: <SearchAccount />,
             },
+            {
+              path: 'profile',
+              element: <Profile />,
+            },
           ],
         },
         {
@@ -149,10 +153,6 @@ const useMainRouter = () =>
                   ],
                 },
               ],
-            },
-            {
-              path: 'profile',
-              element: <Profile />,
             },
           ],
         },

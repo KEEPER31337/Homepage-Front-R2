@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { forwardRef } from 'react';
 import { StandardTextFieldProps, TextField, InputAdornment } from '@mui/material';
 
@@ -6,22 +5,23 @@ interface StandardInputProps extends StandardTextFieldProps {
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   endAdornment?: React.ReactNode;
+  hasBackground?: boolean;
 }
 
 const StandardInput = forwardRef(
   (
-    { value, onChange, error, endAdornment, ...standardTextFieldProps }: StandardInputProps,
+    { value, onChange, error, endAdornment, hasBackground = false, ...standardTextFieldProps }: StandardInputProps,
     ref?: React.ForwardedRef<HTMLDivElement>,
   ) => {
     return (
       <TextField
         ref={ref}
         InputProps={
-          error || !endAdornment
+          error
             ? undefined
             : {
-                className: 'before:!border-pointBlue',
-                endAdornment: (
+                className: `before:!border-pointBlue ${hasBackground ? 'bg-subGray/5 h-12' : ''}`,
+                endAdornment: endAdornment && (
                   <InputAdornment position="end" sx={{ p: 1 }}>
                     {endAdornment}
                   </InputAdornment>
@@ -33,6 +33,7 @@ const StandardInput = forwardRef(
         error={error}
         {...standardTextFieldProps}
         variant="standard"
+        sx={hasBackground ? { '.MuiFormLabel-root[data-shrink=false]': { top: 8 } } : undefined}
       />
     );
   },

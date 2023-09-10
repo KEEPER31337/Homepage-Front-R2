@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Stack } from '@mui/material';
 import useLoginMutation from '@api/logInApi';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import BackgroundInput from '@components/Input/BackgroundInput';
+import StandardInput from '@components/Input/StandardInput';
 
 const HorizonLine = () => {
   return (
@@ -59,7 +59,8 @@ const Login = () => {
           <Logo className="mb-5 h-20" />
 
           <Stack component="form" onSubmit={handleLoginClick} width="100%">
-            <BackgroundInput
+            <StandardInput
+              hasBackground
               label="아이디"
               required
               fullWidth
@@ -68,7 +69,8 @@ const Login = () => {
               value={id}
               onChange={handleChange}
             />
-            <BackgroundInput
+            <StandardInput
+              hasBackground
               label="비밀번호"
               required
               fullWidth
