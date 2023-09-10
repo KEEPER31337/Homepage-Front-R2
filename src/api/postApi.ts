@@ -12,7 +12,14 @@ import {
   UploadPost,
   UploadPostCore,
   TrendingPostInfo,
+  PageAndSize,
+  MemberPost,
 } from './dto';
+
+const postKeys = {
+  memberPost: (param: PageAndSize) => ['memberPost', param] as const,
+  memberTempPost: (param: PageAndSize) => ['memberTempPost', param] as const,
+};
 
 const useUploadPostMutation = () => {
   const fetcher = ({ request, thumbnail, files }: UploadPost) => {
@@ -199,6 +206,22 @@ const useDownloadFileMutation = () => {
   });
 };
 
+const useGetMemberPostsQuery = ({ page, size = 10 }: PageAndSize) => {
+  const fetcher = () => axios.get('/posts/members', { params: { page, size } }).then(({ data }) => data);
+
+  return useQuery<MemberPost>(postKeys.memberPost({ page, size }), fetcher, {
+    keepPreviousData: true,
+  });
+};
+
+const useGetMemberTempPostsQuery = ({ page, size = 10 }: PageAndSize) => {
+  const fetcher = () => axios.get('/posts/members/temp', { params: { page, size } }).then(({ data }) => data);
+
+  return useQuery<MemberPost>(postKeys.memberTempPost({ page, size }), fetcher, {
+    keepPreviousData: true,
+  });
+};
+
 export {
   useUploadPostMutation,
   useGetPostListQuery,
@@ -215,4 +238,6 @@ export {
   useGetEachPostQuery,
   useGetPostFilesQuery,
   useDownloadFileMutation,
+  useGetMemberPostsQuery,
+  useGetMemberTempPostsQuery,
 };
