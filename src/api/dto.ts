@@ -172,7 +172,6 @@ export interface SignUpInfo {
   loginId: string;
   email: string;
   realName: string;
-  nickname: string;
   authCode: string;
   birthday: string;
   studentId: string;

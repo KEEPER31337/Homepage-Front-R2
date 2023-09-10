@@ -16,18 +16,14 @@ const StandardInput = forwardRef(
     return (
       <TextField
         ref={ref}
-        InputProps={
-          error
-            ? undefined
-            : {
-                className: `before:!border-pointBlue ${hasBackground ? 'bg-subGray/5 h-12' : ''}`,
-                endAdornment: endAdornment && (
-                  <InputAdornment position="end" sx={{ p: 1 }}>
-                    {endAdornment}
-                  </InputAdornment>
-                ),
-              }
-        }
+        InputProps={{
+          className: `${error ? '' : 'before:!border-pointBlue'} ${hasBackground ? 'bg-subGray/5 h-12' : ''}`,
+          endAdornment: endAdornment && (
+            <InputAdornment position="end" sx={{ p: 1 }}>
+              {endAdornment}
+            </InputAdornment>
+          ),
+        }}
         value={value}
         onChange={onChange}
         error={error}
