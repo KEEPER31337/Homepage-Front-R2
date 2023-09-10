@@ -24,7 +24,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
   } = useForm({ mode: 'onBlur' });
 
   const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
-    setSignUpPageState((prev) => ({ ...prev, realName, studentId, birthday }));
+    setSignUpPageState((prev) => ({ ...prev, realName, studentId, birthday: birthday.toFormat('yyyy.MM.dd') }));
     setCurrentStep(3);
   };
 
