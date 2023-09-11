@@ -39,6 +39,7 @@ const muiTheme = createTheme({
         root: {
           input: {
             colorScheme: 'dark',
+            WebkitBackgroundClip: 'text !important',
           },
         },
       },
