@@ -9,9 +9,10 @@ interface ActionButtonProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   small?: boolean;
+  className?: string;
 }
 
-const ActionButton = ({ mode, children, onClick, disabled, type, small }: ActionButtonProps) => {
+const ActionButton = ({ mode, children, onClick, disabled, type, small, className }: ActionButtonProps) => {
   const setIcon = {
     add: <VscAdd size={small ? 15 : 20} />,
     edit: <VscEdit size={small ? 15 : 20} />,
@@ -22,7 +23,7 @@ const ActionButton = ({ mode, children, onClick, disabled, type, small }: Action
       variant="outlined"
       className={`${
         small ? '!text-small' : '!px-6'
-      } h-fit !rounded-sm !border-pointBlue !font-semibold disabled:!border-subGray`}
+      } h-fit !rounded-sm !border-pointBlue !font-semibold disabled:!border-subGray ${className}`}
       type={type}
       onClick={onClick}
       disabled={disabled}
