@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Divider } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
-import validateEmail from '@utils/validateEmail';
+import { validateEmail } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
 import StandardInput from '@components/Input/StandardInput';
