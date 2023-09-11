@@ -399,6 +399,50 @@ export interface GameRankInfo {
   memberId: number;
 }
 
+export interface MeritLogInfo {
+  id: number;
+  giveTime: string;
+  awarderName?: string;
+  awarderGeneration?: string;
+  score: number;
+  meritTypeId: number;
+  reason: string;
+}
+
+export interface MeritLog {
+  content: MeritLogInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface MeritTypeInfo {
+  id: number;
+  score: number;
+  detail: string;
+}
+
+export interface MeritType {
+  content: MeritTypeInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
 export interface ExecutiveInfo {
   jobId: number;
   jobName: string;
