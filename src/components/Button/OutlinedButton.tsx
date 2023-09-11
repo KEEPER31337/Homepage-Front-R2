@@ -9,15 +9,25 @@ interface OutlinedButtonProps {
   small?: boolean;
   startIcon?: JSX.Element;
   endIcon?: JSX.Element;
+  className?: string;
 }
 
-const OutlinedButton = ({ children, onClick, disabled, type, small, startIcon, endIcon }: OutlinedButtonProps) => {
+const OutlinedButton = ({
+  children,
+  onClick,
+  disabled,
+  type,
+  small,
+  startIcon,
+  endIcon,
+  className,
+}: OutlinedButtonProps) => {
   return (
     <Button
       variant="outlined"
       className={`${
         small ? '!text-small' : '!px-6'
-      } h-fit !rounded-sm !border-pointBlue !font-semibold disabled:!border-subGray`}
+      } h-fit !rounded-sm !border-pointBlue !font-semibold disabled:!border-subGray  ${className}`}
       type={type}
       onClick={onClick}
       disabled={disabled}

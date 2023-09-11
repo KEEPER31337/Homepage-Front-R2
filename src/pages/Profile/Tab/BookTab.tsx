@@ -1,7 +1,5 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import { VscStarFull } from 'react-icons/vsc';
-
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
 import {
   useGetBookBorrowsQuery,
@@ -22,30 +20,29 @@ const BookTab = () => {
   const { mutate: cancleReturnBookMutation } = useCancleReturnBookMutation();
   const { mutate: cancleBorrowBookMutation } = useCancleBorrowBookMutation();
 
-  console.log(borrowedBookListData);
-
   const librarian = executiveInfos?.find((role) => role.jobName === 'ROLE_사서')?.realName || '';
 
-  const renderBookCard = (status: string, mutationCallback: (id: number) => void) => {
-    const booksToRender = borrowedBookListData?.content?.filter((bookInfo) => bookInfo.status === status);
+  const borrowLength = borrowedBookListData?.content?.filter((bookInfo) => bookInfo.status === '대출대기').length;
+  const returnLength = borrowedBookListData?.content?.filter((bookInfo) => bookInfo.status === '반납대기').length;
 
-    if (!booksToRender?.length) return null;
+  const renderBookCard = (status: string, mutationCallback: (id: number) => void) => {
+    const booksToRender = borrowedBookListData?.content?.filter((bookInfo) => bookInfo.status === status) || [];
+
+    if (!booksToRender.length && status !== '대출중') return null;
 
     return (
       <div className="flex flex-col">
-        <div className="flex">
-          <VscStarFull className="fill-pointBlue" size={20} />
-          <Typography className="text-pointBlue">{status}</Typography>
-        </div>
-
-        <div className="flex flex-row flex-wrap   ">
-          {booksToRender?.map((bookInfo) => (
-            <BookCard
-              key={bookInfo.borrowInfoId}
-              bookInfo={bookInfo}
-              onClick={() => mutationCallback(bookInfo.borrowInfoId)}
-            />
-          ))}
+        <Typography className="pl-1 text-pointBlue">{status}</Typography>
+        <div className="flex flex-row flex-wrap">
+          {Array.from(status === '대출중' ? { length: 5 } : { length: booksToRender.length }, (v, i) => i).map(
+            (index) => (
+              <BookCard
+                key={booksToRender[index]?.borrowInfoId || index * -1}
+                bookInfo={booksToRender[index]}
+                onClick={() => mutationCallback(booksToRender[index]?.borrowInfoId)}
+              />
+            ),
+          )}
         </div>
       </div>
     );
@@ -64,10 +61,16 @@ const BookTab = () => {
           도서 관련 문의는 사서(<span className="text-pointBlue">{librarian}</span>)에게 문의 가능합니다.
         </BookGuide>
       </div>
-      <div className="flex">
+      <div className="flex flex-col space-y-4">
         {renderBookCard('대출중', requestReturnBookMutation)}
-        {renderBookCard('반납대기', cancleReturnBookMutation)}
-        {renderBookCard('대출대기', cancleBorrowBookMutation)}
+        <div className="flex flex-col">
+          {renderBookCard('대출대기', cancleBorrowBookMutation)}
+          {renderBookCard('반납대기', cancleReturnBookMutation)}
+          <div className="flex w-full flex-col items-center space-y-1">
+            {borrowLength === 0 && <Typography>대출대기가 없습니다</Typography>}
+            {returnLength === 0 && <Typography>반납대기가 없습니다</Typography>}
+          </div>
+        </div>
       </div>
     </div>
   );
