@@ -1,6 +1,8 @@
+import toast from 'react-hot-toast';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { gameKeys } from '@api/gameApi';
+import { useApiError } from '@hooks/useGetApiError';
 import { GameInfo, GameResultInfo, GameStatus } from './baseballDto';
 
 export const baseballKeys = {
@@ -22,6 +24,14 @@ const useGetBaseBallStatusQuery = () => {
 };
 
 const useGameStartMutation = () => {
+  const { handleError } = useApiError({
+    400: {
+      40001: () => {
+        toast.error('포인트가 부족합니다.');
+      },
+    },
+  });
+
   const fetcher = ({ bettingPoint }: { bettingPoint: number }) =>
     axios.post('/game/baseball/start', { bettingPoint }).then(({ data }) => data);
 
@@ -38,6 +48,7 @@ const useGameStartMutation = () => {
         });
       }
     },
+    onError: (err) => handleError(err, 40001),
   });
 };
 
