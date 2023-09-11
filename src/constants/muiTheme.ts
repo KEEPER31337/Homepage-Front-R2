@@ -34,6 +34,15 @@ const muiTheme = createTheme({
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          input: {
+            colorScheme: 'dark',
+          },
+        },
+      },
+    },
   },
 });
 
