@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { useAddMeritTypeMutation, useEditMeritTypeMutation } from '@api/meritApi';
+import RadioButton from '@components/Input/RadioButton';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import Selector from '@components/Selector/Selector';
-import RadioButton from '../Input/RadioButton';
 
 type RewordOrPenalty = 'reword' | 'penalty';
 
