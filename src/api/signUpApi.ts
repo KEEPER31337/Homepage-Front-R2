@@ -3,7 +3,7 @@ import axios from 'axios';
 import { SignUpDuplication, SignUpInfo } from './dto';
 
 export const signUpKeys = {
-  idDuplication: ['sighUp', 'duplication', 'loginId'] as const,
+  idDuplication: (loginId: string) => ['sighUp', 'duplication', 'loginId', loginId] as const,
   emailDuplication: (email: string) => ['sighUp', 'duplication', 'email', email] as const,
   studentIdDuplication: (studentId: string) => ['sighUp', 'duplication', 'studentId', studentId] as const,
 };
@@ -20,10 +20,10 @@ const useEmailAuthMutation = () => {
   return useMutation(fetcher);
 };
 
-const useCheckLoginIdDuplicationQuery = ({ loginId }: { loginId: string }) => {
+const useCheckLoginIdDuplicationQuery = ({ loginId, enabled }: { loginId: string; enabled: boolean }) => {
   const fetcher = () => axios.get('/sign-up/exists/login-id', { params: { loginId } }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.idDuplication, fetcher);
+  return useQuery<SignUpDuplication>(signUpKeys.idDuplication(loginId), fetcher, { enabled });
 };
 
 const useCheckEmailDuplicationQuery = ({ email, enabled }: { email: string; enabled: boolean }) => {
