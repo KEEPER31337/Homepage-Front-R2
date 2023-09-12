@@ -2,10 +2,10 @@ import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 import { SignUpDuplication, SignUpInfo } from './dto';
 
-const signUpKeys = {
+export const signUpKeys = {
   idDuplication: ['sighUp', 'duplication', 'loginId'] as const,
   emailDuplication: (email: string) => ['sighUp', 'duplication', 'email', email] as const,
-  studentIdDuplication: ['sighUp', 'duplication', 'studentId'] as const,
+  studentIdDuplication: (studentId: string) => ['sighUp', 'duplication', 'studentId', studentId] as const,
 };
 
 const useSignUpMutation = () => {
@@ -32,10 +32,10 @@ const useCheckEmailDuplicationQuery = ({ email, enabled }: { email: string; enab
   return useQuery<SignUpDuplication>(signUpKeys.emailDuplication(email), fetcher, { enabled });
 };
 
-const useCheckStudentIdDuplicationQuery = ({ studentId }: { studentId: string }) => {
+const useCheckStudentIdDuplicationQuery = ({ studentId, enabled }: { studentId: string; enabled: boolean }) => {
   const fetcher = () => axios.get('/sign-up/exists/student-id', { params: { studentId } }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.studentIdDuplication, fetcher);
+  return useQuery<SignUpDuplication>(signUpKeys.studentIdDuplication(studentId), fetcher, { enabled });
 };
 
 export {
