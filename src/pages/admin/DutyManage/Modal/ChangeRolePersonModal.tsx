@@ -6,7 +6,7 @@ import {
   useCreateExecutiveJobMutation,
   useDeleteExecutiveJobMutation,
 } from '@api/dutyManageApi';
-import AutoComplete, { AutoCompleteValueType } from '@components/Input/AutoComplete';
+import AutoComplete, { SingleAutoCompleteValue } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
 
 interface ChangeRolePersonModalProps {
@@ -43,7 +43,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
   memberList?.forEach((data) => options.push({ value: data.memberId, label: data.realName, group: data.generation }));
   const sortedOptions = options.sort((a, b) => (a.group > b.group ? 1 : -1));
 
-  const [value, setValue] = useState<AutoCompleteValueType>(null);
+  const [value, setValue] = useState<SingleAutoCompleteValue>(null);
   const [prevInfo, setPrevInfo] = useState<{ value: number; label: string; group: string }>({
     value: -1,
     label: '',
