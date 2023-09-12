@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import { Stack } from '@mui/material';
+import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
+import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
 import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
 import StandardInput from '@components/Input/StandardInput';
@@ -15,18 +19,52 @@ interface SignUpFirstInputSectionProps {
 }
 
 const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProps) => {
+  const [studentIdState, setStudentIdState] = useState('');
+  const [checkStudentIdDuplicateEnabled, setCheckStudentIdDuplicateEnabled] = useState(false);
   const setSignUpPageState = useSetRecoilState(signUpPageState);
 
   const {
     control,
     handleSubmit,
+    watch,
+    getValues,
+    setError,
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
+
+  const queryClient = useQueryClient();
+  const { data: isStudentIdDuplicate } = useCheckStudentIdDuplicationQuery({
+    studentId: studentIdState,
+    enabled: checkStudentIdDuplicateEnabled,
+  });
 
   const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
     setSignUpPageState((prev) => ({ ...prev, realName, studentId, birthday: birthday.toFormat('yyyy.MM.dd') }));
     setCurrentStep(3);
   };
+
+  const handleCheckStudentIdDuplicateClick = () => {
+    setCheckStudentIdDuplicateEnabled(true);
+    setStudentIdState(getValues('studentId'));
+  };
+
+  useEffect(() => {
+    if (!isStudentIdDuplicate) return;
+
+    if (isStudentIdDuplicate.duplicate === true) {
+      setError('studentId', { message: '이미 존재하는 학번입니다.' });
+      setCheckStudentIdDuplicateEnabled(false);
+    }
+  }, [isStudentIdDuplicate]);
+
+  useEffect(() => {
+    if (!isStudentIdDuplicate) return;
+
+    if (isStudentIdDuplicate.duplicate === false) {
+      setCheckStudentIdDuplicateEnabled(false);
+      queryClient.setQueryData(signUpKeys.studentIdDuplication(studentIdState), undefined);
+    }
+  }, [watch('studentId')]);
 
   return (
     <Stack component="form" spacing={2} onSubmit={handleSubmit(handleSecondStepFormSubmit)}>
@@ -62,9 +100,28 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
             message: NUMBER_ERROR_MSG,
           },
         }}
-        render={({ field, fieldState: { error } }) => {
+        render={({ field, fieldState: { error, isDirty } }) => {
           return (
-            <StandardInput hasBackground label="학번" {...field} error={Boolean(error)} helperText={error?.message} />
+            <StandardInput
+              hasBackground
+              label="학번"
+              {...field}
+              error={Boolean(error)}
+              helperText={error?.message}
+              endAdornment={
+                isStudentIdDuplicate?.duplicate === false && !error ? (
+                  <VscCheck size={20} className="fill-pointBlue" />
+                ) : (
+                  <FilledButton
+                    small
+                    onClick={handleCheckStudentIdDuplicateClick}
+                    disabled={Boolean(error) || !isDirty}
+                  >
+                    중복 확인
+                  </FilledButton>
+                )
+              }
+            />
           );
         }}
       />
@@ -90,7 +147,10 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
         }}
       />
       <div className="absolute bottom-0 right-0">
-        <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
+        <OutlinedButton
+          type="submit"
+          disabled={!isValid || isSubmitting || !isStudentIdDuplicate || isStudentIdDuplicate.duplicate === true}
+        >
           다음
         </OutlinedButton>
       </div>

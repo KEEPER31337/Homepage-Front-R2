@@ -86,7 +86,8 @@ const SignUpThirdInputSection = () => {
               {...field}
               error={Boolean(error)}
               helperText={error?.message}
-              buttonDisabled={Boolean(error) || !isDirty}
+              inputDisabled={isEmailSent && checkEmailDuplicationSuccess}
+              buttonDisabled={Boolean(error) || !isDirty || isEmailSent}
               onAuthButtonClick={handleRequestVerificationCode}
             />
           );
