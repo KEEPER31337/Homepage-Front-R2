@@ -29,7 +29,6 @@ const EmailAuthInput = forwardRef(
         ref={ref}
         hasBackground
         className={className}
-        required
         disabled={inputDisabled}
         name="email"
         value={value}
