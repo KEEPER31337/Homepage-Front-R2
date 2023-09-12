@@ -17,7 +17,7 @@ import {
 } from './dto';
 
 const postKeys = {
-  memberPost: (param: PageAndSize) => ['memberPost', param] as const,
+  memberPost: (param: PageAndSize & { memberId: number }) => ['memberPost', param] as const,
   memberTempPost: (param: PageAndSize) => ['memberTempPost', param] as const,
 };
 
@@ -206,10 +206,10 @@ const useDownloadFileMutation = () => {
   });
 };
 
-const useGetMemberPostsQuery = ({ page, size = 10 }: PageAndSize) => {
-  const fetcher = () => axios.get('/posts/members', { params: { page, size } }).then(({ data }) => data);
+const useGetMemberPostsQuery = ({ page, size = 10, memberId }: PageAndSize & { memberId: number }) => {
+  const fetcher = () => axios.get(`/posts/members/${memberId}`, { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<MemberPost>(postKeys.memberPost({ page, size }), fetcher, {
+  return useQuery<MemberPost>(postKeys.memberPost({ page, size, memberId }), fetcher, {
     keepPreviousData: true,
   });
 };
