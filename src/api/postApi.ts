@@ -215,7 +215,7 @@ const useGetMemberPostsQuery = ({ page, size = 10 }: PageAndSize) => {
 };
 
 const useGetMemberTempPostsQuery = ({ page, size = 10 }: PageAndSize) => {
-  const fetcher = () => axios.get('/posts/members/temp', { params: { page, size } }).then(({ data }) => data);
+  const fetcher = () => axios.get('/posts/temp', { params: { page, size } }).then(({ data }) => data);
 
   return useQuery<MemberPost>(postKeys.memberTempPost({ page, size }), fetcher, {
     keepPreviousData: true,
