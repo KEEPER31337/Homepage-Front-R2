@@ -91,7 +91,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
               helperText={error?.message}
               endAdornment={
                 isLoginIdDuplicate?.duplicate === false && !error ? (
-                  <VscCheck className="fill-pointBlue" />
+                  <VscCheck size={20} className="fill-pointBlue" />
                 ) : (
                   <FilledButton small onClick={handleCheckLoginIdDuplicateClick} disabled={Boolean(error) || !isDirty}>
                     중복 확인

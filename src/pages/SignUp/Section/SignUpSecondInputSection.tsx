@@ -110,7 +110,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
               helperText={error?.message}
               endAdornment={
                 isStudentIdDuplicate?.duplicate === false && !error ? (
-                  <VscCheck className="fill-pointBlue" />
+                  <VscCheck size={20} className="fill-pointBlue" />
                 ) : (
                   <FilledButton
                     small
