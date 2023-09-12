@@ -147,7 +147,10 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
         }}
       />
       <div className="absolute bottom-0 right-0">
-        <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
+        <OutlinedButton
+          type="submit"
+          disabled={!isValid || isSubmitting || !isStudentIdDuplicate || isStudentIdDuplicate.duplicate === true}
+        >
           다음
         </OutlinedButton>
       </div>
