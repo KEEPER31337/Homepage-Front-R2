@@ -17,10 +17,12 @@ const AccountMenu = ({ userInfo, anchorEl, open, onClose }: AccountMenuProps) =>
 
   const handleProfileClick = () => {
     navigate('profile');
+    onClose();
   };
 
   const handleLogOutClick = () => {
     logout();
+    onClose();
   };
 
   return (

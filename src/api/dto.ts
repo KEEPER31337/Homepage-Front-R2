@@ -172,7 +172,6 @@ export interface SignUpInfo {
   loginId: string;
   email: string;
   realName: string;
-  nickname: string;
   authCode: string;
   birthday: string;
   studentId: string;
@@ -400,6 +399,50 @@ export interface GameRankInfo {
   memberId: number;
 }
 
+export interface MeritLogInfo {
+  id: number;
+  giveTime: string;
+  awarderName?: string;
+  awarderGeneration?: string;
+  score: number;
+  meritTypeId: number;
+  reason: string;
+}
+
+export interface MeritLog {
+  content: MeritLogInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface MeritTypeInfo {
+  id: number;
+  score: number;
+  detail: string;
+}
+
+export interface MeritType {
+  content: MeritTypeInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
 export interface ExecutiveInfo {
   jobId: number;
   jobName: string;
@@ -463,4 +506,28 @@ export interface MemberTempPost {
   sort: PageSortInfo;
   numberOfElements: number;
   empty: boolean;
+}
+
+export interface PointLogInfo {
+  point: number;
+  description: string;
+  date: string;
+}
+
+export interface PointLog {
+  content: PointLogInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface CallenderChartInfo {
+  day: string;
+  value: number;
 }

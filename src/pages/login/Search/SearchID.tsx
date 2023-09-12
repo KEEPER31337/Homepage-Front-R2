@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Divider } from '@mui/material';
 import { useSearchIdMutation } from '@api/SearchAccountApi';
-import validateEmail from '@utils/validateEmail';
+import { validateEmail } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';

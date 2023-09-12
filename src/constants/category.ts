@@ -206,7 +206,7 @@ const CATEGORIES: Category[] = [
       {
         id: 706,
         name: '상벌점관리',
-        path: 'rewordPenaltyManage',
+        path: 'meritManage',
         roles: ['ROLE_회장', 'ROLE_서기'],
       },
     ],
