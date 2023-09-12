@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Autocomplete, Chip, TextField } from '@mui/material';
 
 interface AutoCompleteItem {
@@ -42,6 +42,12 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
     (onChange as MultiOnChangeFuncType)([...fixed, ...nonFixed]);
   };
 
+  useEffect(() => {
+    if (multiple) {
+      multiSuperOnChange([]);
+    }
+  }, []);
+
   return (
     <Autocomplete
       className={className}
@@ -59,6 +65,12 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
           <Chip label={option.label} {...getTagProps({ index })} disabled={option?.fixed} className="!-z-10" />
         ))
       }
+      renderOption={(props, option) => (
+        <li key={`${option.label}_${option.value}`} {...props}>
+          {option.label}
+          {option?.fixed && <span className="text-xs text-gray-400"> (기본값)</span>}
+        </li>
+      )}
     />
   );
 };
