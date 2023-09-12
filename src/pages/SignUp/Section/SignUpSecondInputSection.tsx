@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
-import { useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
+import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
 import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -18,20 +19,23 @@ interface SignUpFirstInputSectionProps {
 }
 
 const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProps) => {
+  const [studentIdState, setStudentIdState] = useState('');
   const [checkStudentIdDuplicateEnabled, setCheckStudentIdDuplicateEnabled] = useState(false);
   const setSignUpPageState = useSetRecoilState(signUpPageState);
 
   const {
     control,
     handleSubmit,
+    watch,
     getValues,
     setError,
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
 
+  const queryClient = useQueryClient();
   const { data: isStudentIdDuplicate, isSuccess: checkStudentIdDuplicationSuccess } = useCheckStudentIdDuplicationQuery(
     {
-      studentId: getValues('studentId'),
+      studentId: studentIdState,
       enabled: checkStudentIdDuplicateEnabled,
     },
   );
@@ -43,6 +47,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
 
   const handleCheckStudentIdDuplicateClick = () => {
     setCheckStudentIdDuplicateEnabled(true);
+    setStudentIdState(getValues('studentId'));
   };
 
   useEffect(() => {
@@ -53,6 +58,15 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
       setCheckStudentIdDuplicateEnabled(false);
     }
   }, [checkStudentIdDuplicationSuccess]);
+
+  useEffect(() => {
+    if (!isStudentIdDuplicate) return;
+
+    if (isStudentIdDuplicate.duplicate === false) {
+      setCheckStudentIdDuplicateEnabled(false);
+      queryClient.setQueryData(signUpKeys.studentIdDuplication(studentIdState), undefined);
+    }
+  }, [watch('studentId')]);
 
   return (
     <Stack component="form" spacing={2} onSubmit={handleSubmit(handleSecondStepFormSubmit)}>
