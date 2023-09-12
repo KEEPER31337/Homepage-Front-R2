@@ -33,12 +33,10 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
   } = useForm({ mode: 'onBlur' });
 
   const queryClient = useQueryClient();
-  const { data: isStudentIdDuplicate, isSuccess: checkStudentIdDuplicationSuccess } = useCheckStudentIdDuplicationQuery(
-    {
-      studentId: studentIdState,
-      enabled: checkStudentIdDuplicateEnabled,
-    },
-  );
+  const { data: isStudentIdDuplicate } = useCheckStudentIdDuplicationQuery({
+    studentId: studentIdState,
+    enabled: checkStudentIdDuplicateEnabled,
+  });
 
   const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
     setSignUpPageState((prev) => ({ ...prev, realName, studentId, birthday: birthday.toFormat('yyyy.MM.dd') }));
@@ -57,7 +55,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
       setError('studentId', { message: '이미 존재하는 학번입니다.' });
       setCheckStudentIdDuplicateEnabled(false);
     }
-  }, [checkStudentIdDuplicationSuccess]);
+  }, [isStudentIdDuplicate]);
 
   useEffect(() => {
     if (!isStudentIdDuplicate) return;
