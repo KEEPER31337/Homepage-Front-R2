@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
-import { PageAndSize, MeritLog, MeritType } from './dto';
+import { PageAndSize, MeritLog, MeritType, MembersMerit } from './dto';
 
 const meritKeys = {
   meritLog: (param: PageAndSize) => ['meritLog', param] as const,
   meritType: (param: PageAndSize) => ['meritType', param] as const,
+  membersMerit: (param: PageAndSize) => ['membersMerit', param] as const,
 };
 
 const useGetMeritLogQuery = ({ page, size = 10 }: PageAndSize) => {
@@ -29,6 +30,19 @@ const useGetMeritTypeQuery = ({ page, size = 10 }: PageAndSize) => {
       .then(({ data }) => data);
 
   return useQuery<MeritType>(meritKeys.meritType({ page, size }), fetcher, {
+    keepPreviousData: true,
+  });
+};
+
+const useGetMembersMeritQuery = ({ page, size = 10 }: PageAndSize) => {
+  const fetcher = () =>
+    axios
+      .get('/merits/members', {
+        params: { page, size },
+      })
+      .then(({ data }) => data);
+
+  return useQuery<MembersMerit>(meritKeys.membersMerit({ page, size }), fetcher, {
     keepPreviousData: true,
   });
 };
@@ -75,6 +89,7 @@ const useEditMeritTypeMutation = () => {
 export {
   useGetMeritLogQuery,
   useGetMeritTypeQuery,
+  useGetMembersMeritQuery,
   useAddMeritLogMutation,
   useAddMeritTypeMutation,
   useEditMeritTypeMutation,

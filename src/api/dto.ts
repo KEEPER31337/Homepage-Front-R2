@@ -443,6 +443,28 @@ export interface MeritType {
   empty: boolean;
 }
 
+export interface MembersMeritInfo {
+  memberId: number;
+  memberName: string;
+  generation: string;
+  merit: number;
+  demerit: number;
+}
+
+export interface MembersMerit {
+  content: MembersMeritInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
 export interface ExecutiveInfo {
   jobId: number;
   jobName: string;
