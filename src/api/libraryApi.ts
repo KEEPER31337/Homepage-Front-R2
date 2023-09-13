@@ -10,7 +10,6 @@ const libraryKeys = {
 const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSearch) => {
   const fetcher = () =>
     axios.get('/books', { params: { page, size, searchType, search } }).then(({ data }) => {
-      console.log(data);
       const content = data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
         ...rest,
         bookQuantity: `${currentQuantity}/${totalQuantity}`,
