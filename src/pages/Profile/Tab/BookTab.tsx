@@ -37,7 +37,7 @@ const BookTab = () => {
           {Array.from(status === '대출중' ? { length: 5 } : { length: booksToRender.length }, (v, i) => i).map(
             (index) => (
               <BookCard
-                key={booksToRender[index]?.borrowInfoId || index * -1}
+                key={booksToRender[index]?.borrowInfoId}
                 bookInfo={booksToRender[index]}
                 onClick={() => mutationCallback(booksToRender[index]?.borrowInfoId)}
               />
@@ -67,7 +67,7 @@ const BookTab = () => {
           {renderBookCard('대출대기', cancleBorrowBookMutation)}
           {renderBookCard('반납대기', cancleReturnBookMutation)}
         </div>
-        <div className="flex flex-col items-center space-y-1">
+        <div className="flex w-full flex-col items-center space-y-1">
           {borrowLength === 0 && <Typography>대출대기가 없습니다</Typography>}
           {returnLength === 0 && <Typography>반납대기가 없습니다</Typography>}
         </div>
