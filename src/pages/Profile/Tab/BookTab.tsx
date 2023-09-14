@@ -61,7 +61,7 @@ const BookTab = () => {
           도서 관련 문의는 사서(<span className="text-pointBlue">{librarian}</span>)에게 문의 가능합니다.
         </BookGuide>
       </div>
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col space-y-4 overflow-y-scroll">
         {renderBookCard('대출중', requestReturnBookMutation)}
         <div className="flex flex-row flex-wrap">
           {renderBookCard('대출대기', cancleBorrowBookMutation)}
