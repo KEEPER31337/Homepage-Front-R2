@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import { useAddMeritLogMutation, useGetMeritTypeQuery } from '@api/meritApi';
-import AutoComplete, { AutoCompleteValueType } from '@components/Input/AutoComplete';
+import AutoComplete, { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
 import Selector from '@components/Selector/Selector';
 
@@ -12,7 +12,7 @@ interface AddMeritModalProps {
 }
 
 type MeritInfo = {
-  awarders: AutoCompleteValueType;
+  awarders: MultiAutoCompleteValue;
   meritTypeId: number;
 };
 
@@ -34,14 +34,14 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
   };
 
   const validate = () => {
-    return (meritInfo.awarders as Array<unknown>).length > 0 && meritInfo.meritTypeId !== 0;
+    return meritInfo.awarders.length > 0 && meritInfo.meritTypeId !== 0;
   };
 
   const handleAddMeritButtonClick = () => {
     const isValid = validate();
     if (isValid) {
       Promise.all(
-        (meritInfo.awarders as Array<any>).map((awarder) =>
+        meritInfo.awarders.map((awarder) =>
           addMeritMutation({
             awarderId: awarder.value as number,
             meritTypeId: meritInfo.meritTypeId,
