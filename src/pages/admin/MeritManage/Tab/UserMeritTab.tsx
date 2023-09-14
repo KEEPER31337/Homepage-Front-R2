@@ -5,6 +5,7 @@ import usePagination from '@hooks/usePagination';
 import Selector from '@components/Selector/Selector';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
+import MemberMeritModal, { MemberMeritModalState } from '../Modal/MemberMeritModal';
 
 interface MembersMeritRow {
   id: number;
@@ -41,6 +42,10 @@ type SortType = 'highestReword' | 'highestPenalty';
 const UserMeritTab = () => {
   const { page, getRowNumber } = usePagination();
   const [sortType, setSortType] = useState<SortType>('highestReword');
+  const [memberMeritOpen, setMemberMeritOpen] = useState<MemberMeritModalState>({
+    memberId: 0,
+    title: '',
+  });
 
   const { data: membersMerit } = useGetMembersMeritQuery({ page });
 
@@ -68,8 +73,19 @@ const UserMeritTab = () => {
           id: getRowNumber({ size: membersMerit.size, index }),
           ...member,
         }))}
+        onRowClick={({ rowData }) => {
+          setMemberMeritOpen({
+            memberId: rowData.memberId,
+            title: `${parseFloat(rowData.generation)}기 ${rowData.memberName} 회원의 상벌점 내역`,
+          });
+        }}
         childComponent={MembersMeritChildComponent}
         paginationOption={{ rowsPerPage: membersMerit.size, totalItems: membersMerit.totalElements }}
+      />
+      <MemberMeritModal
+        title={memberMeritOpen.title}
+        memberId={memberMeritOpen.memberId}
+        setMemberId={setMemberMeritOpen}
       />
     </div>
   );

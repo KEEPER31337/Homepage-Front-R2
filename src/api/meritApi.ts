@@ -6,6 +6,7 @@ const meritKeys = {
   meritLog: (param: PageAndSize) => ['meritLog', param] as const,
   meritType: (param: PageAndSize) => ['meritType', param] as const,
   membersMerit: (param: PageAndSize) => ['membersMerit', param] as const,
+  memberMerit: (param: PageAndSize & { memberId: number }) => ['memberMerit', param] as const,
 };
 
 const useGetMeritLogQuery = ({ page, size = 10 }: PageAndSize) => {
@@ -43,6 +44,19 @@ const useGetMembersMeritQuery = ({ page, size = 10 }: PageAndSize) => {
       .then(({ data }) => data);
 
   return useQuery<MembersMerit>(meritKeys.membersMerit({ page, size }), fetcher, {
+    keepPreviousData: true,
+  });
+};
+
+const useGetMemberMeritQuery = ({ page, size = 10, memberId }: PageAndSize & { memberId: number }) => {
+  const fetcher = () =>
+    axios
+      .get(`/merits/members/${memberId}`, {
+        params: { page, size },
+      })
+      .then(({ data }) => data);
+
+  return useQuery<MeritLog>(meritKeys.memberMerit({ page, size, memberId }), fetcher, {
     keepPreviousData: true,
   });
 };
@@ -90,6 +104,7 @@ export {
   useGetMeritLogQuery,
   useGetMeritTypeQuery,
   useGetMembersMeritQuery,
+  useGetMemberMeritQuery,
   useAddMeritLogMutation,
   useAddMeritTypeMutation,
   useEditMeritTypeMutation,
