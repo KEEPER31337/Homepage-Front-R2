@@ -136,6 +136,12 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
   const location = useLocation();
 
   const { handleError } = useApiError({
+    400: {
+      default: () => {
+        // TODO 페이지 문구로 띄워주기
+        toast.error('게시글 열람 조건을 충족하지 않습니다.');
+      },
+    },
     403: {
       40301: () => {
         toast.error('게시글의 비밀번호가 일치하지 않습니다.');
