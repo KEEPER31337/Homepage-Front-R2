@@ -12,16 +12,16 @@ const useGetProfileQuery = (memberId: number) => {
   return useQuery<ProfileInfo>(profileKeys.profileInfo, fetcher, { enabled: memberId !== 0 });
 };
 
-const useFollowMutation = (memberId: number) => {
-  const fetcher = () => axios.post(`/members/${memberId}/follow`);
+const useFollowMemberMutation = () => {
+  const fetcher = (memberId: number) => axios.post(`/members/${memberId}/follow`);
 
   return useMutation(fetcher);
 };
 
-const useUnFollowMutation = (memberId: number) => {
-  const fetcher = () => axios.post(`/members/${memberId}/unfollow `);
+const useUnFollowMemberMutation = () => {
+  const fetcher = (memberId: number) => axios.post(`/members/${memberId}/unfollow `);
 
   return useMutation(fetcher);
 };
 
-export { useGetProfileQuery, useFollowMutation, useUnFollowMutation };
+export { useGetProfileQuery, useFollowMemberMutation, useUnFollowMemberMutation };
