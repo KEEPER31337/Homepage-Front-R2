@@ -5,10 +5,10 @@ import './pagination.css';
 import usePagination from '@hooks/usePagination';
 import { PaginationOption } from './StandardTablePagination.interface';
 
-const StandardTablePagination = ({ rowsPerPage = 10, totalItems = -1 }: PaginationOption) => {
+const StandardTablePagination = ({ pageKey, rowsPerPage = 10, totalItems = -1 }: PaginationOption) => {
   const totalPages = Math.ceil(totalItems / rowsPerPage);
 
-  const { page, setPage } = usePagination();
+  const { page, setPage } = usePagination(pageKey);
 
   const setoffPageDiff = (prevPage: number, reverse?: boolean) => {
     // TablePagination page의 인덱스와 Pagination page의 인덱스 간 차이(1) 상쇄를 위한 동작입니다.
