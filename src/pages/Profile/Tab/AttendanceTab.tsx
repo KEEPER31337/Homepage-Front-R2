@@ -3,14 +3,17 @@ import { ButtonGroup, Card, CardContent, CardHeader, IconButton, Stack, Typograp
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { DateTime } from 'luxon';
 import { VscChevronLeft, VscChevronRight, VscPinned } from 'react-icons/vsc';
-import { CallenderChartInfo } from '@api/dto';
+import { useRecoilValue } from 'recoil';
+import { useGetAttendanceInfoListQuery } from '@api/attendance';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
+import memberState from '@recoil/member.recoil';
 import TextButton from '@components/Button/TextButton';
 
 const AttendanceTab = () => {
-  const data: CallenderChartInfo[] = []; // TODO API 받아오기
-
   const [year, setYear] = useState(DateTime.now().year);
+
+  const member = useRecoilValue(memberState);
+  const { data } = useGetAttendanceInfoListQuery({ memberId: member?.memberId, year });
 
   const handlePrevButtonClick = () => {
     setYear((prev) => prev - 1);
@@ -24,22 +27,24 @@ const AttendanceTab = () => {
     <Stack className="w-full md:px-10 md:py-6 lg:px-12 lg:py-8">
       <div className="overflow-x-scroll">
         <div className="h-24 w-[580px] md:h-36 md:w-auto">
-          <ResponsiveCalendar
-            theme={{
-              labels: { text: { fill: 'white' } },
-            }}
-            data={data}
-            from={DateTime.fromObject({ year }).startOf('year').toJSDate()}
-            to={DateTime.fromObject({ year }).endOf('year').toJSDate()}
-            align="top"
-            emptyColor={KEEPER_COLOR.subBlack}
-            colors={[KEEPER_COLOR.pointBlue]}
-            dayBorderColor={KEEPER_COLOR.middleBlack}
-            monthBorderColor={KEEPER_COLOR.middleBlack}
-            dayBorderWidth={1}
-            monthBorderWidth={0}
-            margin={{ top: 20, right: 20, bottom: 5, left: 20 }}
-          />
+          {data && (
+            <ResponsiveCalendar
+              theme={{
+                labels: { text: { fill: 'white' } },
+              }}
+              data={data}
+              from={DateTime.fromObject({ year }).startOf('year').toJSDate()}
+              to={DateTime.fromObject({ year }).endOf('year').toJSDate()}
+              align="top"
+              emptyColor={KEEPER_COLOR.subBlack}
+              colors={[KEEPER_COLOR.pointBlue]}
+              dayBorderColor={KEEPER_COLOR.middleBlack}
+              monthBorderColor={KEEPER_COLOR.middleBlack}
+              dayBorderWidth={1}
+              monthBorderWidth={0}
+              margin={{ top: 20, right: 20, bottom: 5, left: 20 }}
+            />
+          )}
         </div>
       </div>
       <div className="flex items-center justify-end">
