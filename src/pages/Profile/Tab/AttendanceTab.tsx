@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { ButtonGroup, Card, CardContent, CardHeader, IconButton, Stack, Typography } from '@mui/material';
+import {
+  ButtonGroup,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { DateTime } from 'luxon';
 import { VscChevronLeft, VscChevronRight, VscPinned } from 'react-icons/vsc';
@@ -13,7 +22,7 @@ const AttendanceTab = () => {
   const [year, setYear] = useState(DateTime.now().year);
 
   const member = useRecoilValue(memberState);
-  const { data } = useGetAttendanceInfoListQuery({ memberId: member?.memberId, year });
+  const { data, isLoading } = useGetAttendanceInfoListQuery({ memberId: member?.memberId, year });
 
   const handlePrevButtonClick = () => {
     setYear((prev) => prev - 1);
@@ -27,23 +36,29 @@ const AttendanceTab = () => {
     <Stack className="w-full md:px-10 md:py-6 lg:px-12 lg:py-8">
       <div className="overflow-x-scroll">
         <div className="h-24 w-[580px] md:h-36 md:w-auto">
-          {data && (
-            <ResponsiveCalendar
-              theme={{
-                labels: { text: { fill: 'white' } },
-              }}
-              data={data}
-              from={DateTime.fromObject({ year }).startOf('year').toJSDate()}
-              to={DateTime.fromObject({ year }).endOf('year').toJSDate()}
-              align="top"
-              emptyColor={KEEPER_COLOR.subBlack}
-              colors={[KEEPER_COLOR.pointBlue]}
-              dayBorderColor={KEEPER_COLOR.middleBlack}
-              monthBorderColor={KEEPER_COLOR.middleBlack}
-              dayBorderWidth={1}
-              monthBorderWidth={0}
-              margin={{ top: 20, right: 20, bottom: 5, left: 20 }}
-            />
+          {isLoading ? (
+            <Stack height="100%" justifyContent="center" alignItems="center">
+              <CircularProgress />
+            </Stack>
+          ) : (
+            data && (
+              <ResponsiveCalendar
+                theme={{
+                  labels: { text: { fill: 'white' } },
+                }}
+                data={data}
+                from={DateTime.fromObject({ year }).startOf('year').toJSDate()}
+                to={DateTime.fromObject({ year }).endOf('year').toJSDate()}
+                align="top"
+                emptyColor={KEEPER_COLOR.subBlack}
+                colors={[KEEPER_COLOR.pointBlue]}
+                dayBorderColor={KEEPER_COLOR.middleBlack}
+                monthBorderColor={KEEPER_COLOR.middleBlack}
+                dayBorderWidth={1}
+                monthBorderWidth={0}
+                margin={{ top: 20, right: 20, bottom: 5, left: 20 }}
+              />
+            )
           )}
         </div>
       </div>
