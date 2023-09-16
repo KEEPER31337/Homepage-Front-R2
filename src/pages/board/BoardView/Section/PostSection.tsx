@@ -57,18 +57,22 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
   return (
     <div className="min-h-[520px] bg-middleBlack px-14 py-10">
       <StandardViewer className="mb-4 min-h-[330px]" content={post.content} />
-      <Button
-        className="hover:!bg-transparent"
-        variant="text"
-        onClick={handleFileOpenButtonClick}
-        startIcon={fileOpen ? <VscFolderOpened /> : <VscFolder />}
-      >
-        첨부파일
-      </Button>
-      {fileOpen && (
-        <div className="mb-10 mt-2 flex justify-end gap-3 text-pointBlue">
-          {files && <FileViewer files={files} onRowClick={handleDownloadFileClick} />}
-        </div>
+      {post.fileCount > 0 && (
+        <>
+          <Button
+            className="hover:!bg-transparent"
+            variant="text"
+            onClick={handleFileOpenButtonClick}
+            startIcon={fileOpen ? <VscFolderOpened /> : <VscFolder />}
+          >
+            첨부파일 ({post.fileCount})
+          </Button>
+          {fileOpen && (
+            <div className="mb-10 mt-2 flex justify-end gap-3 text-pointBlue">
+              {files && <FileViewer files={files} onRowClick={handleDownloadFileClick} />}
+            </div>
+          )}
+        </>
       )}
       <div className="mt-8 flex items-center justify-center space-x-2">
         {post.isLike ? (
