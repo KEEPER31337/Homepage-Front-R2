@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
-import {
-  ButtonGroup,
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-  IconButton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { CircularProgress, IconButton, Stack } from '@mui/material';
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { DateTime } from 'luxon';
-import { VscChevronLeft, VscChevronRight, VscPinned } from 'react-icons/vsc';
+import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 import { useRecoilValue } from 'recoil';
 import { useGetAttendanceInfoListQuery } from '@api/attendance';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
 import memberState from '@recoil/member.recoil';
-import TextButton from '@components/Button/TextButton';
 
-const AttendanceTab = () => {
+const AttendanceChartSection = () => {
   const [year, setYear] = useState(DateTime.now().year);
 
   const member = useRecoilValue(memberState);
@@ -33,7 +23,7 @@ const AttendanceTab = () => {
   };
 
   return (
-    <Stack className="w-full md:px-10 md:py-6 lg:px-12 lg:py-8">
+    <div>
       <div className="overflow-x-scroll">
         <div className="h-24 w-[580px] md:h-36 md:w-auto">
           {isLoading ? (
@@ -70,34 +60,8 @@ const AttendanceTab = () => {
           <VscChevronRight />
         </IconButton>
       </div>
-      <div className="mx-2 mt-2 flex flex-col gap-4 xl:flex-row">
-        <div className="w-full xl:w-1/2">
-          <ButtonGroup>
-            <TextButton small>🗓️ 총 출석일</TextButton>
-            <TextButton small>🌱 개근 일차</TextButton>
-            <TextButton small>🏅 오늘 출석</TextButton>
-            <TextButton small>⭐️ pt</TextButton>
-          </ButtonGroup>
-          <Card>
-            <CardHeader title={<Typography>오늘의 출석 포인트</Typography>} />
-            <CardContent>test</CardContent>
-          </Card>
-        </div>
-        <div className="m-2 space-y-4 md:m-5">
-          <div className="flex flex-col gap-1 sm:flex-row">
-            <VscPinned size={24} className="min-w-fit fill-pointBlue" />
-            <Typography className="w-auto">출석 포인트는 기본, 개근, 등수, 랜덤 포인트로 획득이 가능합니다.</Typography>
-          </div>
-          <div className="flex flex-col gap-1 sm:flex-row">
-            <VscPinned size={24} className="min-w-fit fill-pointBlue" />
-            <Typography className="whitespace-break-spaces">
-              개근, 등수에 따른 획득 가능 포인트는 각 🌱, 🏅 영역을 클릭하면 확인할 수 있습니다.
-            </Typography>
-          </div>
-        </div>
-      </div>
-    </Stack>
+    </div>
   );
 };
 
-export default AttendanceTab;
+export default AttendanceChartSection;
