@@ -1,10 +1,9 @@
 import React from 'react';
-import Typography from '@mui/material/Typography';
+import { Avatar, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useGetProfileQuery } from '@api/memberApi';
 import memberState from '@recoil/member.recoil';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import ServerImg from '@components/Image/ServerImg';
 
 const ProfileSection = () => {
   const userInfo = useRecoilValue(memberState);
@@ -12,8 +11,12 @@ const ProfileSection = () => {
 
   return (
     <div className="flex w-full flex-col space-y-8 p-4">
-      <div className="m-4 flex h-64 w-64 bg-subBlack">
-        <ServerImg src={profileInfo?.thumbnailPath || ''} alt="profile thumbnail" />
+      <div className="m-4">
+        <Avatar
+          className="!h-64 !w-64 !bg-subBlack !text-white"
+          alt="profile thumbnail"
+          src={userInfo?.thumbnailPath || ''}
+        />
       </div>
       <div className="flex items-center justify-between">
         <Typography variant="h1" className="!font-semibold">
