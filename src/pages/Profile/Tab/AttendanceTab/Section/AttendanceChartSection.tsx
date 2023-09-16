@@ -3,16 +3,17 @@ import { CircularProgress, IconButton, Stack } from '@mui/material';
 import { ResponsiveCalendar } from '@nivo/calendar';
 import { DateTime } from 'luxon';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
-import { useRecoilValue } from 'recoil';
-import { useGetAttendanceInfoListQuery } from '@api/attendance';
+import { useGetAttendanceInfoListQuery } from '@api/attendanceApi';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
-import memberState from '@recoil/member.recoil';
 
-const AttendanceChartSection = () => {
+interface AttendanceChartSectionProps {
+  memberId: number;
+}
+
+const AttendanceChartSection = ({ memberId }: AttendanceChartSectionProps) => {
   const [year, setYear] = useState(DateTime.now().year);
 
-  const member = useRecoilValue(memberState);
-  const { data, isLoading } = useGetAttendanceInfoListQuery({ memberId: member?.memberId, year });
+  const { data, isLoading } = useGetAttendanceInfoListQuery({ memberId, year });
 
   const handlePrevButtonClick = () => {
     setYear((prev) => prev - 1);

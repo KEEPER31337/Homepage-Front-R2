@@ -530,3 +530,9 @@ export interface ProfileInfo {
   follower: FollowInfo[];
   followee: FollowInfo[];
 }
+
+export interface TodayAttendInfo {
+  continuousDay: number;
+  todayRank: number;
+  todayPoint: number;
+}
