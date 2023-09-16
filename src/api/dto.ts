@@ -509,3 +509,24 @@ export interface CallenderChartInfo {
   day: string;
   value: number;
 }
+
+export interface FollowInfo {
+  id: number;
+  name: string;
+  generation: string;
+  thumbnailPath: string | null;
+}
+
+export interface ProfileInfo {
+  id: number;
+  realName: string;
+  generation: string;
+  birthday: string;
+  emailAddress: string;
+  thumbnailPath: string | null;
+  point: number;
+  memberType: string;
+  memberJobs: Role[];
+  follower: FollowInfo[];
+  followee: FollowInfo[];
+}

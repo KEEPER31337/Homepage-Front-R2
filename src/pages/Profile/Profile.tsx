@@ -4,6 +4,7 @@ import AttendanceTab from './Tab/AttendanceTab';
 import BoardTab from './Tab/BoardTab';
 import BookTab from './Tab/BookTab';
 import PointTab from './Tab/PointTab';
+import ProfileTab from './Tab/ProfileTab';
 
 const Profile = () => {
   const tabList = [
@@ -16,7 +17,9 @@ const Profile = () => {
 
   return (
     <div className="mb-40 mt-header flex w-full flex-col justify-start xl:flex-row xl:justify-center">
-      <div className="flex w-full border border-subGray xl:h-full xl:w-80">프로필</div>
+      <div className="flex w-full border border-subGray xl:h-full xl:w-80">
+        <ProfileTab />
+      </div>
       <div className="flex w-full max-w-container flex-col xl:h-full">
         <StandardTab options={tabList} tab={tab} setTab={setTab} />
         <div className="mt-4 flex h-full border border-subGray p-4">
