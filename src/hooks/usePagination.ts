@@ -11,12 +11,12 @@ const usePagination = (pageKey = 'page') => {
   };
 
   const setPage = (newPage: number) => {
-    setSearchParams({ ...Object.fromEntries(searchParams), page: String(newPage) });
+    setSearchParams({ ...Object.fromEntries(searchParams), [pageKey]: String(newPage) });
   };
 
   useEffect(() => {
     if (!searchParams.get(pageKey)) {
-      setSearchParams({ ...Object.fromEntries(searchParams), page: String(1) });
+      setSearchParams({ ...Object.fromEntries(searchParams), [pageKey]: String(1) });
     }
   }, [page]);
 
