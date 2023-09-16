@@ -46,7 +46,7 @@ const AttendanceTab = () => {
         <IconButton onClick={handlePrevButtonClick} color="primary">
           <VscChevronLeft />
         </IconButton>
-        <IconButton onClick={handleNextButtonClick} color="primary">
+        <IconButton onClick={handleNextButtonClick} color="primary" disabled={year === DateTime.now().year}>
           <VscChevronRight />
         </IconButton>
       </div>
