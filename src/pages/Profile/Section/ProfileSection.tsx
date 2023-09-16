@@ -6,7 +6,7 @@ import memberState from '@recoil/member.recoil';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ServerImg from '@components/Image/ServerImg';
 
-const ProfileTab = () => {
+const ProfileSection = () => {
   const userInfo = useRecoilValue(memberState);
   const { data: profileInfo } = useGetProfileQuery(userInfo?.memberId || 0);
 
@@ -56,4 +56,4 @@ const ProfileTab = () => {
   );
 };
 
-export default ProfileTab;
+export default ProfileSection;
