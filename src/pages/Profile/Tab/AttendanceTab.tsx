@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ButtonGroup, Card, CardContent, CardHeader, IconButton, Stack, Typography } from '@mui/material';
 import { ResponsiveCalendar } from '@nivo/calendar';
+import { DateTime } from 'luxon';
 import { VscChevronLeft, VscChevronRight, VscPinned } from 'react-icons/vsc';
 import { CallenderChartInfo } from '@api/dto';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
@@ -8,16 +9,15 @@ import TextButton from '@components/Button/TextButton';
 
 const AttendanceTab = () => {
   const data: CallenderChartInfo[] = []; // TODO API 받아오기
-  const year = { from: '2015-01-01', to: '2015-05-07' }; // TODO
 
-  const [, setCurrentIndex] = useState(0);
+  const [year, setYear] = useState(DateTime.now().year);
 
   const handlePrevButtonClick = () => {
-    setCurrentIndex((prevIndex) => prevIndex - 1);
+    setYear((prev) => prev - 1);
   };
 
   const handleNextButtonClick = () => {
-    setCurrentIndex((prevIndex) => prevIndex + 1);
+    setYear((prev) => prev + 1);
   };
 
   return (
@@ -29,8 +29,8 @@ const AttendanceTab = () => {
               labels: { text: { fill: 'white' } },
             }}
             data={data}
-            from={year.from}
-            to={year.to}
+            from={DateTime.fromObject({ year }).startOf('year').toJSDate()}
+            to={DateTime.fromObject({ year }).endOf('year').toJSDate()}
             align="top"
             emptyColor={KEEPER_COLOR.subBlack}
             colors={[KEEPER_COLOR.pointBlue]}
