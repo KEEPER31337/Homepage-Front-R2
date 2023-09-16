@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Divider } from '@mui/material';
 import { useSearchIdMutation } from '@api/SearchAccountApi';
-import validateEmail from '@utils/validateEmail';
+import { validateEmail } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import BackgroundInput from '@components/Input/BackgroundInput';
+import StandardInput from '@components/Input/StandardInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import WarningModal from '@components/Modal/WarningModal';
 
@@ -63,7 +63,14 @@ const SearchID = () => {
             <div className="mx-20 flex flex-col justify-center gap-10 pb-12 pt-8">
               <div className="relative my-10 flex justify-between gap-10">
                 <p className="mt-4 leading-4">이메일</p>
-                <BackgroundInput className="w-[70%]" required name="email" value={email} onChange={handleEmailChange} />
+                <StandardInput
+                  hasBackground
+                  className="w-[70%]"
+                  required
+                  name="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                />
               </div>
             </div>
             <Divider className="bg-pointBlue" />

@@ -1,0 +1,47 @@
+import React, { forwardRef } from 'react';
+import { StandardTextFieldProps } from '@mui/material';
+import FilledButton from '@components/Button/FilledButton';
+import StandardInput from './StandardInput';
+
+interface EmailAuthInputProps extends StandardTextFieldProps {
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  inputDisabled?: boolean;
+  buttonDisabled?: boolean;
+  onAuthButtonClick: () => void;
+}
+
+const EmailAuthInput = forwardRef(
+  (
+    {
+      className,
+      value,
+      onChange,
+      inputDisabled,
+      buttonDisabled,
+      onAuthButtonClick,
+      ...standardTextFieldProps
+    }: EmailAuthInputProps,
+    ref?: React.ForwardedRef<HTMLDivElement>,
+  ) => {
+    return (
+      <StandardInput
+        ref={ref}
+        hasBackground
+        className={className}
+        disabled={inputDisabled}
+        name="email"
+        value={value}
+        onChange={onChange}
+        {...standardTextFieldProps}
+        endAdornment={
+          <FilledButton small disabled={buttonDisabled} onClick={onAuthButtonClick}>
+            인증 요청
+          </FilledButton>
+        }
+      />
+    );
+  },
+);
+
+export default EmailAuthInput;

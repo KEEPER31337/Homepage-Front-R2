@@ -5,6 +5,7 @@ import { ManageBookInfo, BookListSearch, BookCoreData, BorrowInfoListSearch, Bor
 
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
+  bookDetail: (param: number) => ['library', 'bookDetail', param] as const,
   borrowInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'borrowInfoList', param] as const,
   overdueInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'overdueInfoList', param] as const,
 };
@@ -60,6 +61,39 @@ const useDeleteBookMutation = () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
     },
   });
+};
+
+const useEditBookInfoMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ bookId, bookCoreData }: { bookId: number; bookCoreData: BookCoreData }) =>
+    axios.put(`/manage/books/${bookId}`, bookCoreData);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
+    },
+  });
+};
+
+const useEditBookThumbnailMutation = () => {
+  const fetcher = ({ bookId, thumbnail }: { bookId: number; thumbnail: Blob }) => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/manage/books/${bookId}/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+  return useMutation(fetcher);
+};
+
+const useGetBookDetailQuery = (bookId: number) => {
+  const fetcher = () => axios.get(`/manage/books/${bookId}`).then(({ data }) => data);
+
+  return useQuery<ManageBookInfo>(libraryManageKeys.bookDetail(bookId), fetcher, { enabled: bookId !== 0 });
 };
 
 const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowInfoListSearch) => {
@@ -162,4 +196,7 @@ export {
   useDenyRequestMutation,
   useApproveReturnMutation,
   useDenyReturnMutation,
+  useGetBookDetailQuery,
+  useEditBookInfoMutation,
+  useEditBookThumbnailMutation,
 };

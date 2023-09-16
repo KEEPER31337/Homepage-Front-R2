@@ -28,7 +28,7 @@ export interface MemberInfo {
 export interface MemberDetailInfo extends MemberInfo {
   birthday: string;
   studentId: string;
-  generation: number;
+  generation: string;
   point: number;
   level: number;
   totalAttendance: number;
@@ -123,11 +123,13 @@ export type BookCoreData = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepart
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
-  title: string;
+  thumbnailPath: string;
+  bookTitle: string;
   author: string;
   overdue: boolean;
-  borrowDate: string;
-  expireDate: string;
+  borrowDateTime: string;
+  expireDateTime: string;
+  status: '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
 }
 
 export interface StudyLinks {
@@ -172,7 +174,6 @@ export interface SignUpInfo {
   loginId: string;
   email: string;
   realName: string;
-  nickname: string;
   authCode: string;
   birthday: string;
   studentId: string;
@@ -400,6 +401,72 @@ export interface GameRankInfo {
   memberId: number;
 }
 
+export interface MeritLogInfo {
+  id: number;
+  giveTime: string;
+  awarderName?: string;
+  awarderGeneration?: string;
+  score: number;
+  meritTypeId: number;
+  reason: string;
+}
+
+export interface MeritLog {
+  content: MeritLogInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface MeritTypeInfo {
+  id: number;
+  score: number;
+  detail: string;
+}
+
+export interface MeritType {
+  content: MeritTypeInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface MembersMeritInfo {
+  memberId: number;
+  memberName: string;
+  generation: string;
+  merit: number;
+  demerit: number;
+}
+
+export interface MembersMerit {
+  content: MembersMeritInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
 export interface ExecutiveInfo {
   jobId: number;
   jobName: string;
@@ -417,4 +484,49 @@ export interface memberInfo {
   memberId: number;
   memberName: string;
   generation: string;
+}
+
+export interface PointLogInfo {
+  point: number;
+  description: string;
+  date: string;
+}
+
+export interface PointLog {
+  content: PointLogInfo[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: PageableInfo;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+}
+
+export interface CallenderChartInfo {
+  day: string;
+  value: number;
+}
+
+export interface FollowInfo {
+  id: number;
+  name: string;
+  generation: string;
+  thumbnailPath: string | null;
+}
+
+export interface ProfileInfo {
+  id: number;
+  realName: string;
+  generation: string;
+  birthday: string;
+  emailAddress: string;
+  thumbnailPath: string | null;
+  point: number;
+  memberType: string;
+  memberJobs: Role[];
+  follower: FollowInfo[];
+  followee: FollowInfo[];
 }

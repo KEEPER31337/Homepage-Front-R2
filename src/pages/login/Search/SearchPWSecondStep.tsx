@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Divider } from '@mui/material';
 import { useChangePasswordMutation } from '@api/SearchAccountApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
-import BackgroundInput from '@components/Input/BackgroundInput';
+import StandardInput from '@components/Input/StandardInput';
 
 interface searchPWFormProps {
   id: string;
@@ -71,7 +71,7 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
         <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">신규 비밀번호</p>
           <div className="flex w-[70%] flex-col">
-            <BackgroundInput required name="newPassword" value={form.newPassword} onChange={handleChange} />
+            <StandardInput hasBackground required name="newPassword" value={form.newPassword} onChange={handleChange} />
             {form.newPassword && !passwordRegex.test(form.newPassword) && (
               <p className="mt-2 text-left text-red-500">8~20자 영문과 숫자를 사용하세요.</p>
             )}
@@ -80,7 +80,13 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
         <div className="flex justify-between gap-10">
           <p className="mt-4 leading-4">비밀번호 확인</p>
           <div className="flex w-[70%] flex-col">
-            <BackgroundInput required name="confirmPassword" value={form.confirmPassword} onChange={handleChange} />
+            <StandardInput
+              hasBackground
+              required
+              name="confirmPassword"
+              value={form.confirmPassword}
+              onChange={handleChange}
+            />
             {form.confirmPassword !== '' && (
               <p className={`${isSame ? 'text-pointBlue' : 'text-red-500'} text-left`}>
                 {isSame ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}

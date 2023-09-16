@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Autocomplete, Chip, TextField } from '@mui/material';
 
-export interface Item {
+interface AutoCompleteItem {
   value: unknown;
   label: string;
   fixed?: boolean;
   group?: string;
 }
 
-export type AutoCompleteValueType = Array<Item> | Item | null;
+export type SingleAutoCompleteValue = AutoCompleteItem | null;
+export type MultiAutoCompleteValue = Array<AutoCompleteItem>;
 
-interface AutoCompleteProps {
-  items?: Array<Item>;
-  value: Array<Item> | Item | null;
-  onChange?: (value: Array<Item> | Item | null) => void;
-  multiple?: boolean;
+type MultiOnChangeFuncType = (value: MultiAutoCompleteValue) => void;
+type SingleOnChangeFuncType = (value: SingleAutoCompleteValue) => void;
+
+interface AutoCompleteProps<Multiple> {
+  items?: Array<AutoCompleteItem>;
+  value: Multiple extends true ? MultiAutoCompleteValue : SingleAutoCompleteValue;
+  multiple?: Multiple;
+  onChange?: Multiple extends true ? MultiOnChangeFuncType : SingleOnChangeFuncType;
   grouped?: boolean;
   placeholder?: string;
   className?: string;
 }
 
-const AutoComplete = ({
+const AutoComplete = <Multiple extends boolean | undefined = false>({
   items = [],
   value,
   onChange = () => {
@@ -30,23 +34,29 @@ const AutoComplete = ({
   grouped = false,
   placeholder = '',
   className = '',
-}: AutoCompleteProps) => {
-  const superOnChange = (v: Array<Item> | Item | null) => {
-    if (multiple) {
-      const fixed = items.filter((item) => item.fixed);
-      const nonFixed = (v as Array<Item>).filter((item) => !item?.fixed);
-      onChange([...fixed, ...nonFixed]);
-    } else {
-      onChange(v);
-    }
+}: AutoCompleteProps<Multiple>) => {
+  const singleSuperOnChange = (v: SingleAutoCompleteValue) => (onChange as SingleOnChangeFuncType)(v);
+  const multiSuperOnChange = (v: MultiAutoCompleteValue) => {
+    const fixed = items.filter((item) => item.fixed);
+    const nonFixed = v.filter((item) => !item?.fixed);
+    (onChange as MultiOnChangeFuncType)([...fixed, ...nonFixed]);
   };
+
+  useEffect(() => {
+    if (multiple) {
+      multiSuperOnChange([]);
+    }
+  }, []);
 
   return (
     <Autocomplete
       className={className}
       options={items}
       value={value}
-      onChange={(e, v) => superOnChange(v)}
+      onChange={(e, v) =>
+        multiple ? multiSuperOnChange(v as MultiAutoCompleteValue) : singleSuperOnChange(v as SingleAutoCompleteValue)
+      }
+      isOptionEqualToValue={(option, v) => option.value === v.value}
       multiple={multiple}
       groupBy={(option) => (grouped ? option.group || 'etc' : '')}
       renderInput={(params) => <TextField {...params} variant="standard" placeholder={placeholder} />}
@@ -55,6 +65,12 @@ const AutoComplete = ({
           <Chip label={option.label} {...getTagProps({ index })} disabled={option?.fixed} className="!-z-10" />
         ))
       }
+      renderOption={(props, option) => (
+        <li key={`${option.label}_${option.value}`} {...props}>
+          {option.label}
+          {option?.fixed && <span className="text-xs text-gray-400"> (기본값)</span>}
+        </li>
+      )}
     />
   );
 };

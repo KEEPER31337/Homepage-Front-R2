@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LogoNeon from '@assets/logo/logo_neon.svg';
+import LogoNeon, { ReactComponent as LogoNeonComponent } from '@assets/logo/logo_neon.svg';
 import { getServerImgUrl } from '@utils/converter';
 
 interface ServerImg {
@@ -18,8 +18,10 @@ const ServerImg = ({ src, alt, className, errorClassName }: ServerImg) => {
     setError(true);
   };
 
-  return (
+  return src ? (
     <img src={srcWithServerUrl} alt={alt} onError={handleImgError} className={error ? errorClassName : className} />
+  ) : (
+    <LogoNeonComponent className={errorClassName || ''} />
   );
 };
 

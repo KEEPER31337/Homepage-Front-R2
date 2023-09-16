@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.0",
     "@mui/x-date-pickers": "^5.0.18",
+    "@nivo/calendar": "^0.83.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.4.3",

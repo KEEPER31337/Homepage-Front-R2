@@ -15,7 +15,7 @@ const Sidebar = () => {
       className="h-screen w-sidebar"
       variant="permanent"
       sx={{
-        display: { sm: 'block', xs: 'none' },
+        display: { lg: 'block', xs: 'none' },
         [`& .MuiDrawer-paper`]: { width: SIDEBAR_WIDTH, bgcolor: KEEPER_COLOR.mainBlack },
       }}
     >
