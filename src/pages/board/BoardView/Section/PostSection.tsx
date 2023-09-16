@@ -22,6 +22,7 @@ interface PostSectionProps {
 const PostSection = ({ postId, post }: PostSectionProps) => {
   const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
+  const hasWarningModal = post.categoryName === '시험게시판' && post.isRead === false && !fileOpen;
 
   const { data: files } = useGetPostFilesQuery(postId, fileOpen);
   const { mutate: controlLikes } = useControlPostLikesMutation();
@@ -29,7 +30,7 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
   const { mutate: downloadFile } = useDownloadFileMutation();
 
   const handleFileOpenButtonClick = () => {
-    if (post.categoryName === '시험게시판') {
+    if (hasWarningModal) {
       setWarningModalOpen(true);
       return;
     }
@@ -98,7 +99,7 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
           </OutlinedButton>
         )}
       </div>
-      {post.categoryName === '시험게시판' && (
+      {hasWarningModal && (
         <WarningDeductPointModal
           open={warningModalOpen}
           onClose={() => setWarningModalOpen(false)}

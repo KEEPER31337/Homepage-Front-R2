@@ -276,6 +276,7 @@ export interface PostInfo {
   fileCount: number;
   isLike: boolean;
   isDislike: boolean;
+  isRead: boolean;
   allowComment: boolean;
   isNotice: boolean;
   isSecret: boolean;
