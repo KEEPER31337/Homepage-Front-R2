@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
@@ -10,10 +10,12 @@ import TextButton from '@components/Button/TextButton';
 import FollowList from './FollowList';
 
 const ProfileSection = () => {
-  const { memberId: otherMemberId } = useParams();
+  const { memberId } = useParams();
+  const otherMemberId = Number(memberId) || 0;
   const myMemberId = useRecoilValue(memberState)?.memberId;
 
-  const { data: profileInfo } = useGetProfileQuery(Number(otherMemberId) || 0);
+  const { data: profileInfo } = useGetProfileQuery(otherMemberId);
+  console.log(otherMemberId, profileInfo);
   const { mutate: FollowMember } = useFollowMemberMutation();
   const { mutate: UnFollowMember } = useUnFollowMemberMutation();
 
@@ -30,6 +32,20 @@ const ProfileSection = () => {
     else setFollowState(state);
   };
 
+  const isFollowed = () => {
+    return profileInfo?.follower.some((follower) => follower.id === myMemberId);
+  };
+
+  const handleFollowButtonClick = () => {
+    if (isFollowed()) UnFollowMember(otherMemberId);
+    else FollowMember(otherMemberId);
+  };
+
+  useEffect(() => {
+    // yourParam 값에 따라 원하는 동작 수행
+    console.log(`yourParam changed to ${otherMemberId}`);
+    // 렌더링이 필요한 업데이트를 수행할 수 있습니다.
+  }, [otherMemberId]);
   return (
     <div className="flex w-full flex-col space-y-8 p-4">
       <Avatar
@@ -99,8 +115,8 @@ const ProfileSection = () => {
           </>
         ) : (
           <>
-            <OutlinedButton className="w-full" onClick={() => FollowMember(profileInfo?.id || 0)}>
-              팔로우
+            <OutlinedButton className="w-full" onClick={handleFollowButtonClick}>
+              {isFollowed() ? '언팔로우' : '팔로우'}
             </OutlinedButton>
             <OutlinedButton className="w-full">포인트 선물</OutlinedButton>
           </>
