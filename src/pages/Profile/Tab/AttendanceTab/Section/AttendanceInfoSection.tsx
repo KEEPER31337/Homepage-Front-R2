@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ButtonGroup, Card, CardContent, List, ListItem, ListItemText, ListSubheader, Typography } from '@mui/material';
-import { useGetTodayAttendanceInfoQuery, useGetTodayAttendancePointQuery } from '@api/attendanceApi';
+import { ButtonGroup, Typography } from '@mui/material';
+import { useGetTodayAttendanceInfoQuery } from '@api/attendanceApi';
 import TextButton from '@components/Button/TextButton';
+import TodayAttendPointCard from '../Card/TodayAttendPointCard';
 
 interface AttendanceInfoSectionProps {
   memberId: number;
@@ -10,7 +11,6 @@ interface AttendanceInfoSectionProps {
 const AttendanceInfoSection = ({ memberId }: AttendanceInfoSectionProps) => {
   const [, setSelectedCard] = useState(1);
   const { data: todayAttendInfo } = useGetTodayAttendanceInfoQuery({ memberId });
-  const { data: todayAttendPoint } = useGetTodayAttendancePointQuery();
 
   return (
     <div className="w-full xl:w-1/2">
@@ -30,31 +30,7 @@ const AttendanceInfoSection = ({ memberId }: AttendanceInfoSectionProps) => {
           ⭐️ {todayAttendInfo?.todayPoint}pt
         </TextButton>
       </ButtonGroup>
-      <Card>
-        <CardContent>
-          <List
-            dense
-            subheader={
-              <ListSubheader color="inherit" sx={{ bgcolor: 'transparent' }}>
-                오늘의 출석 포인트
-              </ListSubheader>
-            }
-          >
-            <ListItem secondaryAction={<>{todayAttendPoint?.point} Point</>}>
-              <ListItemText primary="⭐️ 기본 포인트" />
-            </ListItem>
-            <ListItem secondaryAction={<>{todayAttendPoint?.continuousPoint} Point</>}>
-              <ListItemText primary="⭐️ 개근 포인트" />
-            </ListItem>
-            <ListItem secondaryAction={<>{todayAttendPoint?.rankPoint} Point</>}>
-              <ListItemText primary="⭐️ 등수 포인트" />
-            </ListItem>
-            <ListItem secondaryAction={<>{todayAttendPoint?.randomPoint} Point</>}>
-              <ListItemText primary="⭐️ 랜덤 포인트" />
-            </ListItem>
-          </List>
-        </CardContent>
-      </Card>
+      <TodayAttendPointCard />
     </div>
   );
 };
