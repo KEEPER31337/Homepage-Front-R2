@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { CircularProgress, IconButton, Stack } from '@mui/material';
-import { ResponsiveCalendar } from '@nivo/calendar';
+import { CalendarTooltipProps, ResponsiveCalendar } from '@nivo/calendar';
 import { DateTime } from 'luxon';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 import { useGetAttendanceInfoListQuery } from '@api/attendanceApi';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
+import CustomBadge from '@components/Badge/CustomBadge';
 
 interface AttendanceChartSectionProps {
   memberId: number;
 }
+
+const CustomTooltip = ({ day }: CalendarTooltipProps) => {
+  return <CustomBadge>{day}</CustomBadge>;
+};
 
 const AttendanceChartSection = ({ memberId }: AttendanceChartSectionProps) => {
   const [year, setYear] = useState(DateTime.now().year);
@@ -48,6 +53,7 @@ const AttendanceChartSection = ({ memberId }: AttendanceChartSectionProps) => {
                 dayBorderWidth={1}
                 monthBorderWidth={0}
                 margin={{ top: 20, right: 20, bottom: 5, left: 20 }}
+                tooltip={CustomTooltip}
               />
             )
           )}
