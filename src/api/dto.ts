@@ -273,8 +273,10 @@ export interface PostInfo {
   nextPost: AdjacentPostInfo;
   likeCount: number;
   dislikeCount: number;
+  fileCount: number;
   isLike: boolean;
   isDislike: boolean;
+  isRead: boolean;
   allowComment: boolean;
   isNotice: boolean;
   isSecret: boolean;
