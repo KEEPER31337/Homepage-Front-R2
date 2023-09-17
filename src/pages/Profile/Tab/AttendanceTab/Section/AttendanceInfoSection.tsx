@@ -9,7 +9,7 @@ interface AttendanceInfoSectionProps {
 }
 
 const AttendanceInfoSection = ({ memberId }: AttendanceInfoSectionProps) => {
-  const [, setSelectedCard] = useState(1);
+  const [selectedCard, setSelectedCard] = useState<'continuousDay' | 'todayRank' | 'todayPoint'>('todayPoint');
   const { data: todayAttendInfo } = useGetTodayAttendanceInfoQuery({ memberId });
 
   return (
@@ -20,17 +20,17 @@ const AttendanceInfoSection = ({ memberId }: AttendanceInfoSectionProps) => {
             🗓️ 총 출석일 {/* TODO API 추가되면 받아오기 */}일
           </Typography>
         </TextButton>
-        <TextButton onClick={() => setSelectedCard(1)} small>
+        <TextButton onClick={() => setSelectedCard('continuousDay')} small>
           🌱 개근 {todayAttendInfo?.continuousDay}일차
         </TextButton>
-        <TextButton onClick={() => setSelectedCard(2)} small>
+        <TextButton onClick={() => setSelectedCard('todayRank')} small>
           🏅 오늘 출석 {todayAttendInfo?.todayRank}등
         </TextButton>
-        <TextButton onClick={() => setSelectedCard(3)} small>
+        <TextButton onClick={() => setSelectedCard('todayPoint')} small>
           ⭐️ {todayAttendInfo?.todayPoint}pt
         </TextButton>
       </ButtonGroup>
-      <TodayAttendPointCard />
+      {selectedCard === 'todayPoint' && <TodayAttendPointCard />}
     </div>
   );
 };
