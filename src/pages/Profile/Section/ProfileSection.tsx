@@ -10,30 +10,29 @@ import TextButton from '@components/Button/TextButton';
 import FollowList from './FollowList';
 
 const ProfileSection = () => {
-  const { memberId } = useParams();
-  const otherMemberId = Number(memberId) || 0;
-  const myMemberId = useRecoilValue(memberState)?.memberId;
+  const [followState, setFollowState] = useState('none');
 
-  const { data: profileInfo } = useGetProfileQuery(otherMemberId);
-  console.log(otherMemberId, profileInfo);
+  const { memberId } = useParams();
+  const myMemberId = useRecoilValue(memberState)?.memberId;
+  const otherMemberId = Number(memberId) || 0;
+
+  const { data: profileInfo, refetch } = useGetProfileQuery(otherMemberId);
   const { mutate: FollowMember } = useFollowMemberMutation();
   const { mutate: UnFollowMember } = useUnFollowMemberMutation();
 
-  const [followState, setFollowState] = useState('none');
-
-  const aaa: { [key: string]: { state: string; list: FollowInfo[] } } = {
+  const followInfo: { [key: string]: { state: string; list: FollowInfo[] } } = {
     follower: { state: '팔로워', list: profileInfo?.follower || [] },
     following: { state: '팔로잉', list: profileInfo?.followee || [] },
     none: { state: '', list: [] },
   };
 
+  const isFollowed = () => {
+    return profileInfo?.follower.some((follower) => follower.id === myMemberId);
+  };
+
   const handleFollowStateButtonClick = (state: string) => {
     if (followState === state) setFollowState('none');
     else setFollowState(state);
-  };
-
-  const isFollowed = () => {
-    return profileInfo?.follower.some((follower) => follower.id === myMemberId);
   };
 
   const handleFollowButtonClick = () => {
@@ -42,10 +41,9 @@ const ProfileSection = () => {
   };
 
   useEffect(() => {
-    // yourParam 값에 따라 원하는 동작 수행
-    console.log(`yourParam changed to ${otherMemberId}`);
-    // 렌더링이 필요한 업데이트를 수행할 수 있습니다.
+    refetch();
   }, [otherMemberId]);
+
   return (
     <div className="flex w-full flex-col space-y-8 p-4">
       <Avatar
@@ -66,23 +64,23 @@ const ProfileSection = () => {
             className={`${followState !== 'follower' && '!text-white'} !p-0 !font-medium`}
             onClick={() => handleFollowStateButtonClick('follower')}
           >
-            팔로워 {aaa.follower.list.length}
+            팔로워 {followInfo.follower.list.length}
           </TextButton>
           <TextButton
             className={`${followState !== 'following' && '!text-white'} !p-0 !font-medium`}
             onClick={() => handleFollowStateButtonClick('following')}
           >
-            팔로잉 {aaa.following.list.length}
+            팔로잉 {followInfo.following.list.length}
           </TextButton>
         </div>
 
         {followState !== 'none' &&
-          (aaa[followState].list.length !== 0 ? (
-            <div className="h-[160px] overflow-auto bg-pointBlue/10">
-              <FollowList followState={followState} followlist={aaa[followState].list} />
+          (followInfo[followState].list.length !== 0 ? (
+            <div className="h-[120px] overflow-auto bg-pointBlue/10">
+              <FollowList followlist={followInfo[followState].list} />
             </div>
           ) : (
-            <div className="bg-pointBlue/10 text-center">{aaa[followState].state} 목록이 없습니다</div>
+            <div className="text-center">{followInfo[followState].state} 목록이 없습니다</div>
           ))}
       </div>
 
@@ -95,7 +93,7 @@ const ProfileSection = () => {
         <div className="w-full border border-pointBlue" />
       </div>
 
-      <div className="flex space-x-5">
+      <div className="flex space-x-6">
         <div className="flex flex-col space-y-4">
           <Typography>기수</Typography>
           <Typography>이메일</Typography>

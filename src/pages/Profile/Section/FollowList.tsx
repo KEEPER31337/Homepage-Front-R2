@@ -1,15 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Avatar } from '@mui/material';
-import { List, ListItemIcon, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { List, ListItemIcon, ListItem, ListItemButton, ListItemText, Avatar } from '@mui/material';
 import { FollowInfo } from '@api/dto';
 
 interface FollowListProps {
-  followState: string;
   followlist: FollowInfo[];
 }
 
-const FollowList = ({ followState, followlist }: FollowListProps) => {
+const FollowList = ({ followlist }: FollowListProps) => {
   const navigate = useNavigate();
 
   return (
@@ -17,6 +15,7 @@ const FollowList = ({ followState, followlist }: FollowListProps) => {
       <ListItem className="flex flex-col" disablePadding>
         {followlist.map((followInfo) => (
           <ListItemButton
+            key={followInfo.id}
             className="w-full !p-0"
             onClick={() => {
               navigate(`/profile/${followInfo.id}`);
@@ -29,7 +28,7 @@ const FollowList = ({ followState, followlist }: FollowListProps) => {
                 src={followInfo?.thumbnailPath || ''}
               />
             </ListItemIcon>
-            <ListItemText primary={`${followInfo.generation}기 ${followInfo.name}`} />
+            <ListItemText primary={`${followInfo.generation.replace('.0', '')}기 ${followInfo.name}`} />
           </ListItemButton>
         ))}
       </ListItem>

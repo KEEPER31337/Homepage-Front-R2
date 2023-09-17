@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { ProfileInfo } from './dto';
 
@@ -13,15 +13,25 @@ const useGetProfileQuery = (memberId: number) => {
 };
 
 const useFollowMemberMutation = () => {
+  const queryClient = useQueryClient();
   const fetcher = (memberId: number) => axios.post(`/members/${memberId}/follow`);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo });
+    },
+  });
 };
 
 const useUnFollowMemberMutation = () => {
+  const queryClient = useQueryClient();
   const fetcher = (memberId: number) => axios.delete(`/members/${memberId}/unfollow`);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo });
+    },
+  });
 };
 
 export { useGetProfileQuery, useFollowMemberMutation, useUnFollowMemberMutation };
