@@ -486,6 +486,52 @@ export interface memberInfo {
   generation: string;
 }
 
+export interface MemberPostInfo {
+  id: number;
+  title: string;
+  categoryId: number;
+  categoryName: string;
+  visitCount: number;
+  isSecret: boolean;
+  registerTime: string;
+}
+
+export interface MemberPost {
+  content: MemberPostInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface MemberTempPostInfo {
+  id: number;
+  title: string;
+  categoryId: number;
+  categoryName: string;
+  registerTime: string;
+}
+
+export interface MemberTempPost {
+  content: MemberTempPostInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
 export interface PointLogInfo {
   point: number;
   description: string;
