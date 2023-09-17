@@ -531,6 +531,13 @@ export interface ProfileInfo {
   followee: FollowInfo[];
 }
 
+export interface TodayAttendPoint {
+  point: number;
+  continuousPoint: number;
+  rankPoint: number;
+  randomPoint: number;
+}
+
 export interface TodayAttendInfo {
   continuousDay: number;
   todayRank: number;

@@ -1,15 +1,22 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { CallenderChartInfo, TodayAttendInfo } from './dto';
+import { CallenderChartInfo, TodayAttendInfo, TodayAttendPoint } from './dto';
 
 const attendanceKeys = {
+  todayAttendancePoint: ['todayAttendancePoint'],
   todayAttendanceInfo: ({ memberId }: { memberId: number }) => ['todayAttendanceInfo', memberId],
   attendanceInfoList: ({ memberId, year }: { memberId: number; year: number }) => [
     'attendanceInfoList',
     memberId,
     year,
   ],
+};
+
+const useGetTodayAttendancePointQuery = () => {
+  const fetcher = () => axios.get(`/attendances/point`).then(({ data }) => data);
+
+  return useQuery<TodayAttendPoint>(attendanceKeys.todayAttendancePoint, fetcher);
 };
 
 const useGetTodayAttendanceInfoQuery = ({ memberId }: { memberId: number }) => {
@@ -29,4 +36,4 @@ const useGetAttendanceInfoListQuery = ({ memberId, year }: { memberId: number; y
   return useQuery<CallenderChartInfo[]>(attendanceKeys.attendanceInfoList({ memberId, year }), fetcher);
 };
 
-export { useGetTodayAttendanceInfoQuery, useGetAttendanceInfoListQuery };
+export { useGetTodayAttendancePointQuery, useGetTodayAttendanceInfoQuery, useGetAttendanceInfoListQuery };
