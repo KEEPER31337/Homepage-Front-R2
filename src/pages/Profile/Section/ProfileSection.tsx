@@ -16,9 +16,9 @@ const ProfileSection = () => {
   const myMemberId = useRecoilValue(memberState)?.memberId;
   const otherMemberId = Number(memberId) || 0;
 
-  const { data: profileInfo, refetch } = useGetProfileQuery(otherMemberId);
-  const { mutate: FollowMember } = useFollowMemberMutation();
-  const { mutate: UnFollowMember } = useUnFollowMemberMutation();
+  const { data: profileInfo } = useGetProfileQuery(otherMemberId);
+  const { mutate: FollowMember } = useFollowMemberMutation(otherMemberId);
+  const { mutate: UnFollowMember } = useUnFollowMemberMutation(otherMemberId);
 
   const followInfo: { [key: string]: { state: string; list: FollowInfo[] } } = {
     follower: { state: '팔로워', list: profileInfo?.follower || [] },
@@ -36,13 +36,9 @@ const ProfileSection = () => {
   };
 
   const handleFollowButtonClick = () => {
-    if (isFollowed()) UnFollowMember(otherMemberId);
-    else FollowMember(otherMemberId);
+    if (isFollowed()) UnFollowMember();
+    else FollowMember();
   };
-
-  useEffect(() => {
-    refetch();
-  }, [otherMemberId]);
 
   return (
     <div className="flex w-full flex-col space-y-8 p-4">
