@@ -126,7 +126,12 @@ const SignUpThirdInputSection = () => {
               {...field}
               error={Boolean(error)}
               helperText={error?.message}
-              disabled={!isEmailDuplicate || isEmailDuplicate.duplicate || !isEmailSent}
+              disabled={
+                !isEmailDuplicate ||
+                isEmailDuplicate.duplicate ||
+                !isEmailSent ||
+                Boolean(expirationTime && expirationTime < DateTime.now())
+              }
               expirationTime={expirationTime}
             />
           );
@@ -150,7 +155,10 @@ const SignUpThirdInputSection = () => {
         </div>
       )}
       <div className="absolute bottom-0 right-0">
-        <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
+        <OutlinedButton
+          type="submit"
+          disabled={!isValid || isSubmitting || Boolean(expirationTime && expirationTime < DateTime.now())}
+        >
           완료
         </OutlinedButton>
       </div>
