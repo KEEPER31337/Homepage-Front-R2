@@ -37,7 +37,7 @@ const BookTab = () => {
           {Array.from(status === '대출중' ? { length: 5 } : { length: booksToRender.length }, (v, i) => i).map(
             (index) => (
               <BookCard
-                key={booksToRender[index]?.borrowInfoId}
+                key={index}
                 bookInfo={booksToRender[index]}
                 onClick={() => mutationCallback(booksToRender[index]?.borrowInfoId)}
               />
