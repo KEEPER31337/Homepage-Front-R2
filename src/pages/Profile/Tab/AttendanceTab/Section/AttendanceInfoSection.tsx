@@ -3,6 +3,7 @@ import { ButtonGroup, Typography } from '@mui/material';
 import { useGetTodayAttendanceInfoQuery } from '@api/attendanceApi';
 import TextButton from '@components/Button/TextButton';
 import AttendRankPointCard from '../Card/AttendRankPointCard';
+import ContinuousDayPointCard from '../Card/ContinuousDayPointCard';
 import TodayAttendPointCard from '../Card/TodayAttendPointCard';
 
 interface AttendanceInfoSectionProps {
@@ -31,6 +32,7 @@ const AttendanceInfoSection = ({ memberId }: AttendanceInfoSectionProps) => {
           ⭐️ {todayAttendInfo?.todayPoint}pt
         </TextButton>
       </ButtonGroup>
+      {selectedCard === 'continuousDay' && <ContinuousDayPointCard />}
       {selectedCard === 'todayRank' && <AttendRankPointCard />}
       {selectedCard === 'todayPoint' && <TodayAttendPointCard />}
     </div>
