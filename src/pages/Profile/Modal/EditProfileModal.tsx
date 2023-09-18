@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
 import { Stack } from '@mui/material';
+import { DateTime } from 'luxon';
 import { VscCheck } from 'react-icons/vsc';
 import { ProfileInfo } from '@api/dto';
-import { useEditProfileMutation } from '@api/memberApi';
+import { useEditProfileMutation, useEditProfileThumbnailMutation } from '@api/memberApi';
 import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
 import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import FilledButton from '@components/Button/FilledButton';
@@ -24,7 +25,7 @@ const NAME_MAX_LENGTH = 20;
 const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps) => {
   const [studentIdState, setStudentIdState] = useState('');
   const [checkStudentIdDuplicateEnabled, setCheckStudentIdDuplicateEnabled] = useState(false);
-  const [, setThumbnail] = useState<Blob | null>(null);
+  const [thumbnail, setThumbnail] = useState<Blob | null>(null);
 
   const { control, handleSubmit, watch, getValues, setError } = useForm({ mode: 'onBlur' });
 
@@ -34,13 +35,18 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
     enabled: checkStudentIdDuplicateEnabled,
   });
   const { mutate: editProfile } = useEditProfileMutation();
+  const { mutate: editProfileThumbnail } = useEditProfileThumbnailMutation();
 
   const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
     editProfile(
       { realName, studentId, birthday: birthday?.toFormat('yyyy.MM.dd') },
       {
         onSuccess: () => {
-          //
+          if (thumbnail) {
+            editProfileThumbnail({ thumbnail });
+          }
+
+          onClose();
         },
       },
     );
@@ -81,7 +87,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
       <Stack direction={{ sm: 'column', md: 'row' }} spacing={4} justifyContent="space-between" alignItems="center">
         <div className="mx-auto my-6 h-52 w-52 rounded-full md:mb-0">
           <ProfileImageUploader
-            isEdit={false}
+            isEdit
             thumbnailPath={profileInfo.thumbnailPath ?? undefined}
             setThumbnail={setThumbnail}
           />
@@ -153,7 +159,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
           />
           <Controller
             name="birthday"
-            defaultValue={profileInfo.birthday}
+            defaultValue={DateTime.fromISO(profileInfo.birthday)}
             control={control}
             render={({ field, fieldState: { error } }) => {
               return (

@@ -88,10 +88,10 @@ const ProfileImageUploader = ({ isEdit, thumbnailPath, setThumbnail }: ProfileIm
         `}
       >
         {thumbnailBase64 ? (
-          <img
-            className={`${isDragActive ? 'opacity-50' : ''} absolute inset-0 h-full w-full rounded-full object-cover`}
+          <Avatar
+            sx={{ width: 'inherit', height: 'inherit' }}
+            className={`${isDragActive ? 'opacity-50' : ''} !absolute inset-0 -z-10 m-auto`}
             src={thumbnailBase64}
-            alt="thumbnail"
           />
         ) : (
           <div className="flex items-center text-pointBlue/70">

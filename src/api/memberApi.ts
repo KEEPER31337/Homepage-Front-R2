@@ -31,4 +31,25 @@ const useEditProfileMutation = () => {
   return useMutation(fetcher);
 };
 
-export { useGetProfileQuery, useFollowMutation, useUnFollowMutation, useEditProfileMutation };
+const useEditProfileThumbnailMutation = () => {
+  const fetcher = ({ thumbnail }: { thumbnail: Blob }) => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/members/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(fetcher);
+};
+
+export {
+  useGetProfileQuery,
+  useFollowMutation,
+  useUnFollowMutation,
+  useEditProfileMutation,
+  useEditProfileThumbnailMutation,
+};
