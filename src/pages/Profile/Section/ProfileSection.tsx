@@ -60,7 +60,13 @@ const ProfileSection = () => {
         </OutlinedButton>
         <OutlinedButton className="w-full">계정 정보 수정</OutlinedButton>
       </div>
-      <EditProfileModal open={editProfileModalOpen} onClose={() => setEditProfileModalOpen(false)} />
+      {profileInfo && (
+        <EditProfileModal
+          profileInfo={profileInfo}
+          open={editProfileModalOpen}
+          onClose={() => setEditProfileModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import { useQueryClient } from 'react-query';
 import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
+import { ProfileInfo } from '@api/dto';
 import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
 import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import FilledButton from '@components/Button/FilledButton';
@@ -12,13 +13,14 @@ import ActionModal from '@components/Modal/ActionModal';
 import ProfileImageUploader from '@components/Uploader/ProfileImageUploader';
 
 interface EditProfileModalProps {
+  profileInfo: ProfileInfo;
   open: boolean;
   onClose: () => void;
 }
 
 const NAME_MAX_LENGTH = 20;
 
-const EditProfileModal = ({ open, onClose }: EditProfileModalProps) => {
+const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps) => {
   const [studentIdState, setStudentIdState] = useState('');
   const [checkStudentIdDuplicateEnabled, setCheckStudentIdDuplicateEnabled] = useState(false);
   const [, setThumbnail] = useState<Blob | null>(null);
@@ -71,7 +73,11 @@ const EditProfileModal = ({ open, onClose }: EditProfileModalProps) => {
     >
       <Stack direction={{ sm: 'column', md: 'row' }} spacing={4} justifyContent="space-between" alignItems="center">
         <div className="mx-auto my-6 h-52 w-52 rounded-full md:mb-0">
-          <ProfileImageUploader isEdit={false} setThumbnail={setThumbnail} />
+          <ProfileImageUploader
+            isEdit={false}
+            thumbnailPath={profileInfo.thumbnailPath ?? undefined}
+            setThumbnail={setThumbnail}
+          />
         </div>
         <Stack
           width={{ sm: '100%', md: '55%' }}
@@ -81,7 +87,7 @@ const EditProfileModal = ({ open, onClose }: EditProfileModalProps) => {
         >
           <Controller
             name="realName"
-            defaultValue=""
+            defaultValue={profileInfo.realName}
             control={control}
             rules={{
               required: REQUIRE_ERROR_MSG,
@@ -109,7 +115,7 @@ const EditProfileModal = ({ open, onClose }: EditProfileModalProps) => {
           />
           <Controller
             name="studentId"
-            defaultValue=""
+            defaultValue={/* TODO 기존 학번 API 받아오기 */ ''}
             control={control}
             rules={{
               required: REQUIRE_ERROR_MSG,
@@ -145,7 +151,7 @@ const EditProfileModal = ({ open, onClose }: EditProfileModalProps) => {
           />
           <Controller
             name="birthday"
-            defaultValue=""
+            defaultValue={profileInfo.birthday}
             control={control}
             render={({ field, fieldState: { error } }) => {
               return (
