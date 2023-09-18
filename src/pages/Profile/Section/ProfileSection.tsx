@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { FollowInfo } from '@api/dto';
 import { useGetProfileQuery, useFollowMemberMutation, useUnFollowMemberMutation } from '@api/memberApi';
 import memberState from '@recoil/member.recoil';
+import { getServerImgUrl } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
 import FollowList from './FollowList';
@@ -44,8 +45,7 @@ const ProfileSection = () => {
     <div className="flex w-full flex-col space-y-8 p-4">
       <Avatar
         className="m-4 !h-64 !w-64 !bg-subBlack !text-white"
-        alt="profile thumbnail"
-        src={profileInfo?.thumbnailPath || ''}
+        src={profileInfo?.thumbnailPath ? getServerImgUrl(profileInfo?.thumbnailPath) : ''}
       />
       <div className="flex items-center justify-between">
         <Typography variant="h1" className="!font-semibold">
