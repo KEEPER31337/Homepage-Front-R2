@@ -482,12 +482,6 @@ export interface JobList {
   jobName: string;
 }
 
-export interface memberInfo {
-  memberId: number;
-  memberName: string;
-  generation: string;
-}
-
 export interface MemberPostInfo {
   id: number;
   title: string;
