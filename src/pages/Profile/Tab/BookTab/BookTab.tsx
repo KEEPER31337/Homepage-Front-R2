@@ -7,8 +7,8 @@ import {
   useCancleReturnBookMutation,
   useCancleBorrowBookMutation,
 } from '@api/libraryApi';
-import BookCard from './BookCard';
-import BookGuide from './BookGuide';
+import BookCard from './Card/BookCard';
+import BookGuide from './Guide/BookGuide';
 
 const MAX_BORROWABLE_BOOKS = 5;
 
