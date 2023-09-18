@@ -19,9 +19,37 @@ const useFollowMutation = (memberId: number) => {
 };
 
 const useUnFollowMutation = (memberId: number) => {
-  const fetcher = () => axios.post(`/members/${memberId}/unfollow `);
+  const fetcher = () => axios.post(`/members/${memberId}/unfollow`);
 
   return useMutation(fetcher);
 };
 
-export { useGetProfileQuery, useFollowMutation, useUnFollowMutation };
+const useEditProfileMutation = () => {
+  const fetcher = ({ realName, birthday, studentId }: Pick<ProfileInfo, 'realName' | 'birthday' | 'studentId'>) =>
+    axios.patch(`/members/profile`, { realName, birthday, studentId });
+
+  return useMutation(fetcher);
+};
+
+const useEditProfileThumbnailMutation = () => {
+  const fetcher = ({ thumbnail }: { thumbnail: Blob }) => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/members/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(fetcher);
+};
+
+export {
+  useGetProfileQuery,
+  useFollowMutation,
+  useUnFollowMutation,
+  useEditProfileMutation,
+  useEditProfileThumbnailMutation,
+};

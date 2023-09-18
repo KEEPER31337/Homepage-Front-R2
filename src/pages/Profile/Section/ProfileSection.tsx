@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useGetProfileQuery } from '@api/memberApi';
 import memberState from '@recoil/member.recoil';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import EditProfileModal from '../Modal/EditProfileModal';
 
 const ProfileSection = () => {
+  const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
+
   const userInfo = useRecoilValue(memberState);
   const { data: profileInfo } = useGetProfileQuery(userInfo?.memberId || 0);
 
@@ -52,9 +55,18 @@ const ProfileSection = () => {
         </div>
       </div>
       <div className="flex flex-col space-y-4">
-        <OutlinedButton className="w-full">프로필 수정</OutlinedButton>
+        <OutlinedButton className="w-full" onClick={() => setEditProfileModalOpen(true)}>
+          프로필 수정
+        </OutlinedButton>
         <OutlinedButton className="w-full">계정 정보 수정</OutlinedButton>
       </div>
+      {profileInfo && (
+        <EditProfileModal
+          profileInfo={profileInfo}
+          open={editProfileModalOpen}
+          onClose={() => setEditProfileModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

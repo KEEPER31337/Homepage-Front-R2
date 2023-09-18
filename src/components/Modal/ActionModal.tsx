@@ -40,7 +40,7 @@ const ActionModal = ({
         {title}
         {endAdornment}
       </DialogTitle>
-      <DialogContent className="min-h-[80px] min-w-[350px]">{children}</DialogContent>
+      <DialogContent className="sm:min-h-[80px] sm:min-w-[350px]">{children}</DialogContent>
       <DialogActions>
         <TextButton onClick={onClose}>취소</TextButton>
         <FilledButton disabled={actionButtonDisabled} onClick={onActionButonClick}>
