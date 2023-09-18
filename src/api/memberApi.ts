@@ -24,4 +24,11 @@ const useUnFollowMutation = (memberId: number) => {
   return useMutation(fetcher);
 };
 
-export { useGetProfileQuery, useFollowMutation, useUnFollowMutation };
+const useEditProfileMutation = () => {
+  const fetcher = ({ realName, birthday, studentId }: Pick<ProfileInfo, 'realName' | 'birthday' | 'studentId'>) =>
+    axios.patch(`/members/profile`, { realName, birthday, studentId });
+
+  return useMutation(fetcher);
+};
+
+export { useGetProfileQuery, useFollowMutation, useUnFollowMutation, useEditProfileMutation };

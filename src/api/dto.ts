@@ -561,6 +561,7 @@ export interface FollowInfo {
 
 export interface ProfileInfo {
   id: number;
+  studentId?: number;
   realName: string;
   generation: string;
   birthday: string;

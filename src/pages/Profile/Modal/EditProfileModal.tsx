@@ -4,6 +4,7 @@ import { useQueryClient } from 'react-query';
 import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
 import { ProfileInfo } from '@api/dto';
+import { useEditProfileMutation } from '@api/memberApi';
 import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
 import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import FilledButton from '@components/Button/FilledButton';
@@ -32,9 +33,17 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
     studentId: studentIdState,
     enabled: checkStudentIdDuplicateEnabled,
   });
+  const { mutate: editProfile } = useEditProfileMutation();
 
-  const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = () => {
-    // TODO
+  const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
+    editProfile(
+      { realName, studentId, birthday: birthday?.toFormat('yyyy.MM.dd') },
+      {
+        onSuccess: () => {
+          //
+        },
+      },
+    );
   };
 
   const handleCheckStudentIdDuplicateClick = () => {
@@ -67,9 +76,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
       title="프로필 수정"
       modalWidth="sm"
       actionButtonName="수정"
-      onActionButonClick={() => {
-        //
-      }}
+      onActionButonClick={handleSubmit(handleSecondStepFormSubmit)}
     >
       <Stack direction={{ sm: 'column', md: 'row' }} spacing={4} justifyContent="space-between" alignItems="center">
         <div className="mx-auto my-6 h-52 w-52 rounded-full md:mb-0">
@@ -79,12 +86,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
             setThumbnail={setThumbnail}
           />
         </div>
-        <Stack
-          width={{ sm: '100%', md: '55%' }}
-          component="form"
-          spacing={2}
-          onSubmit={handleSubmit(handleSecondStepFormSubmit)}
-        >
+        <Stack width={{ sm: '100%', md: '55%' }} component="form" spacing={2}>
           <Controller
             name="realName"
             defaultValue={profileInfo.realName}
