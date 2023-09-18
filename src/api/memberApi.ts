@@ -19,7 +19,7 @@ const useFollowMutation = (memberId: number) => {
 };
 
 const useUnFollowMutation = (memberId: number) => {
-  const fetcher = () => axios.post(`/members/${memberId}/unfollow `);
+  const fetcher = () => axios.post(`/members/${memberId}/unfollow`);
 
   return useMutation(fetcher);
 };
