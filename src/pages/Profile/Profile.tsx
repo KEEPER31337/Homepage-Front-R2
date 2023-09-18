@@ -3,7 +3,7 @@ import StandardTab from '@components/Tab/StandardTab';
 import ProfileSection from './Section/ProfileSection';
 import AttendanceTab from './Tab/AttendanceTab/AttendanceTab';
 import BoardTab from './Tab/BoardTab';
-import BookTab from './Tab/BookTab';
+import BookTab from './Tab/BookTab/BookTab';
 import PointTab from './Tab/PointTab';
 
 const Profile = () => {
