@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { List, ListItemIcon, ListItem, ListItemButton, ListItemText, Avatar } from '@mui/material';
 import { FollowInfo } from '@api/dto';
+import { getServerImgUrl } from '@utils/converter';
 
 interface FollowListProps {
   followlist: FollowInfo[];
@@ -25,7 +26,7 @@ const FollowList = ({ followlist }: FollowListProps) => {
               <Avatar
                 className="m-1 !h-8 !w-8 !bg-subBlack !text-white"
                 alt="profile thumbnail"
-                src={followInfo?.thumbnailPath || ''}
+                src={followInfo?.thumbnailPath ? getServerImgUrl(followInfo?.thumbnailPath) : ''}
               />
             </ListItemIcon>
             <ListItemText primary={`${followInfo.generation.replace('.0', '')}기 ${followInfo.name}`} />
