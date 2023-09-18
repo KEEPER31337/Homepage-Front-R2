@@ -273,8 +273,10 @@ export interface PostInfo {
   nextPost: AdjacentPostInfo;
   likeCount: number;
   dislikeCount: number;
+  fileCount: number;
   isLike: boolean;
   isDislike: boolean;
+  isRead: boolean;
   allowComment: boolean;
   isNotice: boolean;
   isSecret: boolean;
@@ -575,4 +577,17 @@ export interface ProfileInfo {
   memberJobs: Role[];
   follower: FollowInfo[];
   followee: FollowInfo[];
+}
+
+export interface TodayAttendPoint {
+  point: number;
+  continuousPoint: number;
+  rankPoint: number;
+  randomPoint: number;
+}
+
+export interface TodayAttendInfo {
+  continuousDay: number;
+  todayRank: number;
+  todayPoint: number;
 }
