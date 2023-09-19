@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import StandardTab from '@components/Tab/StandardTab';
 import ProfileSection from './Section/ProfileSection';
 import AttendanceTab from './Tab/AttendanceTab/AttendanceTab';
-import BoardTab from './Tab/BoardTab';
+import BoardTab from './Tab/BoardTab/BoardTab';
 import BookTab from './Tab/BookTab';
-import PointTab from './Tab/PointTab';
+import PointTab from './Tab/PointTab/PointTab';
 
 const Profile = () => {
   const tabList = [
