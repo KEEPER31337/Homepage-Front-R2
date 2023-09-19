@@ -59,6 +59,13 @@ const useEditEmailMutation = () => {
   return useMutation(fetcher);
 };
 
+const useEditPasswordMutation = () => {
+  const fetcher = ({ newPassword }: { newPassword: string }) =>
+    axios.patch('/members/change-password', { newPassword }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
 export {
   useGetProfileQuery,
   useFollowMutation,
@@ -67,4 +74,5 @@ export {
   useEditProfileThumbnailMutation,
   useNewEmailAuthMutation,
   useEditEmailMutation,
+  useEditPasswordMutation,
 };

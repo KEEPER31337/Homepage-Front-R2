@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { Divider, Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
-import { useEditEmailMutation, useNewEmailAuthMutation } from '@api/memberApi';
+import { useEditEmailMutation, useEditPasswordMutation, useNewEmailAuthMutation } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { emailRegex } from '@utils/validateEmail';
@@ -168,8 +168,10 @@ const EditPasswordSection = () => {
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
 
-  const handlePasswordFormSubmit: SubmitHandler<FieldValues> = () => {
-    //
+  const { mutate: editPassword } = useEditPasswordMutation();
+
+  const handlePasswordFormSubmit: SubmitHandler<FieldValues> = ({ newPassword }) => {
+    editPassword({ newPassword });
   };
 
   return (
