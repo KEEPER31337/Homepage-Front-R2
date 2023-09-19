@@ -32,11 +32,13 @@ const TempBoardChildComponent = ({ key, value }: ChildComponent<TempBoardRow>) =
   }
 };
 
+const rowCnt = 5;
+
 const TempBoardTable = () => {
   const navigate = useNavigate();
   const { page, getRowNumber } = usePagination();
 
-  const { data: tempBoard } = useGetMemberTempPostsQuery({ page });
+  const { data: tempBoard } = useGetMemberTempPostsQuery({ page, size: rowCnt });
 
   if (!tempBoard) return null;
 

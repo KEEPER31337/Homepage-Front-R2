@@ -37,12 +37,14 @@ const MyBoardChildComponent = ({ key, value }: ChildComponent<MyBoardRow>) => {
   }
 };
 
+const rowCnt = 5;
+
 const MyBoardTable = () => {
   const userInfo = useRecoilValue(memberState);
   const navigate = useNavigate();
   const { page, getRowNumber } = usePagination();
 
-  const { data: myBoard } = useGetMemberPostsQuery({ page, memberId: userInfo?.memberId as number });
+  const { data: myBoard } = useGetMemberPostsQuery({ page, size: rowCnt, memberId: userInfo?.memberId as number });
 
   if (!myBoard) return null;
 
