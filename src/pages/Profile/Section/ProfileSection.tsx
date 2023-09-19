@@ -72,7 +72,7 @@ const ProfileSection = () => {
           onClose={() => setEditProfileModalOpen(false)}
         />
       )}
-      <SendPointModal open={sendPointModalOpen} onClose={() => setSendPointModalOpen(false)} sendTo={1} />
+      <SendPointModal open={sendPointModalOpen} onClose={() => setSendPointModalOpen(false)} sendTo={4} />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { InputLabel } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useGetProfileQuery } from '@api/memberApi';
+import { useSendPointMutation } from '@api/pointApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import memberState from '@recoil/member.recoil';
 import StandardInput from '@components/Input/StandardInput';
@@ -18,8 +19,30 @@ interface SendPointModalProps {
 
 const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
   const userInfo = useRecoilValue(memberState);
-  const { control, getValues } = useForm({ mode: 'onBlur' });
+  const {
+    control,
+    getValues,
+    formState: { isValid },
+  } = useForm({ mode: 'onBlur' });
   const { data: profileInfo } = useGetProfileQuery(userInfo?.memberId || 0);
+  const { mutate: sendPoint } = useSendPointMutation();
+
+  const handleSendActionButtonClick = () => {
+    if (isValid) {
+      sendPoint(
+        {
+          point: getValues('point'),
+          message: getValues('message'),
+          memberId: sendTo,
+        },
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        },
+      );
+    }
+  };
 
   return (
     <ActionModal
@@ -28,9 +51,7 @@ const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
       title="포인트 선물"
       modalWidth="sm"
       actionButtonName="선물"
-      onActionButonClick={() => {
-        return null;
-      }}
+      onActionButonClick={handleSendActionButtonClick}
     >
       {profileInfo && (
         <div className="mb-5 gap-y-5">
