@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { Divider, Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
-import { useNewEmailAuthMutation } from '@api/memberApi';
+import { useEditEmailMutation, useNewEmailAuthMutation } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { emailRegex } from '@utils/validateEmail';
@@ -22,6 +23,7 @@ const EditEmailSection = () => {
     handleSubmit,
     getValues,
     setError,
+    reset,
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
 
@@ -30,13 +32,22 @@ const EditEmailSection = () => {
     enabled: isEmailSent,
   });
   const { mutate: newEmailAuth } = useNewEmailAuthMutation();
+  const { mutate: editEmail } = useEditEmailMutation();
 
   const handleRequestVerificationCode = () => {
     setIsEmailSent(true);
   };
 
-  const handleEmailFormSubmit: SubmitHandler<FieldValues> = () => {
-    // TODO
+  const handleEmailFormSubmit: SubmitHandler<FieldValues> = ({ email, auth, password }) => {
+    editEmail(
+      { email, auth, password },
+      {
+        onSuccess: () => {
+          toast.success('이메일 변경 성공하였습니다.');
+          reset();
+        },
+      },
+    );
   };
 
   useEffect(() => {
@@ -62,9 +73,10 @@ const EditEmailSection = () => {
       spacing={{ xs: 2, md: 4 }}
       marginBottom={4}
       justifyContent="space-between"
+      component="form"
       onSubmit={handleSubmit(handleEmailFormSubmit)}
     >
-      <Stack spacing={1} component="form" onSubmit={handleSubmit(handleEmailFormSubmit)}>
+      <Stack spacing={1}>
         <Typography fontWeight="semibold">이메일 변경</Typography>
         <Controller
           name="password"
@@ -112,7 +124,7 @@ const EditEmailSection = () => {
           }}
         />
         <Controller
-          name="authCode"
+          name="auth"
           defaultValue=""
           control={control}
           rules={{
