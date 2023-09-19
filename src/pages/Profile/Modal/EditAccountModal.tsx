@@ -72,7 +72,6 @@ const EditEmailSection = () => {
       width={{ sm: '100%' }}
       spacing={{ xs: 2, md: 4 }}
       marginBottom={4}
-      justifyContent="space-between"
       component="form"
       onSubmit={handleSubmit(handleEmailFormSubmit)}
     >
@@ -159,6 +158,113 @@ const EditEmailSection = () => {
   );
 };
 
+const EditPasswordSection = () => {
+  const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
+
+  const {
+    control,
+    getValues,
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+  } = useForm({ mode: 'onBlur' });
+
+  const handlePasswordFormSubmit: SubmitHandler<FieldValues> = () => {
+    //
+  };
+
+  return (
+    <Stack
+      width={{ sm: '100%' }}
+      spacing={{ xs: 2, md: 4 }}
+      marginBottom={4}
+      component="form"
+      onSubmit={handleSubmit(handlePasswordFormSubmit)}
+    >
+      <Stack spacing={1}>
+        <Typography fontWeight="semibold">비밀번호 변경</Typography>
+        <Controller
+          name="password"
+          defaultValue=""
+          control={control}
+          rules={{
+            required: '필수 정보입니다.',
+          }}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <StandardInput
+                hasBackground
+                type="password"
+                label="현재 비밀번호"
+                {...field}
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            );
+          }}
+        />
+        <Controller
+          name="newPassword"
+          defaultValue=""
+          control={control}
+          rules={{
+            required: '필수 정보입니다.',
+            minLength: {
+              value: 8,
+              message: '8글자 이상 입력해주세요.',
+            },
+            pattern: {
+              value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,
+              message: '8~20자 영문과 숫자를 사용하세요.',
+            },
+          }}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <StandardInput
+                hasBackground
+                type="password"
+                label="새 비밀번호"
+                {...field}
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            );
+          }}
+        />
+        <Controller
+          name="newPasswordConfirm"
+          defaultValue=""
+          control={control}
+          rules={{
+            required: '필수 정보입니다.',
+            validate: {
+              confirmMatchPassward: (value) => {
+                if (getValues('newPassword') !== value) return '비밀번호가 일치하지 않습니다.';
+                setPasswordConfirmSuccessMsg('비밀번호가 일치합니다.');
+                return undefined;
+              },
+            },
+          }}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <StandardInput
+                hasBackground
+                type="password"
+                label="새 비밀번호 확인"
+                {...field}
+                error={Boolean(error)}
+                helperText={error?.message || passwordConfirmSuccessMsg}
+              />
+            );
+          }}
+        />
+      </Stack>
+      <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
+        다음
+      </OutlinedButton>
+    </Stack>
+  );
+};
+
 interface EditAccountModalProps {
   open: boolean;
   onClose: () => void;
@@ -175,6 +281,7 @@ const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
         justifyContent="space-between"
       >
         <EditEmailSection />
+        <EditPasswordSection />
       </Stack>
     </ConfirmModal>
   );
