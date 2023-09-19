@@ -42,7 +42,7 @@ const rowCnt = 5;
 const MyBoardTable = () => {
   const userInfo = useRecoilValue(memberState);
   const navigate = useNavigate();
-  const { page, getRowNumber } = usePagination();
+  const { page, getRowNumber } = usePagination('myBoardPage');
 
   const { data: myBoard } = useGetMemberPostsQuery({ page, size: rowCnt, memberId: userInfo?.memberId as number });
 
@@ -59,7 +59,7 @@ const MyBoardTable = () => {
         }))}
         childComponent={MyBoardChildComponent}
         onRowClick={({ rowData }) => navigate(`/board/view/${rowData.id}`)}
-        paginationOption={{ rowsPerPage: myBoard.size, totalItems: myBoard.totalElements }}
+        paginationOption={{ pageKey: 'myBoardPage', rowsPerPage: myBoard.size, totalItems: myBoard.totalElements }}
       />
     </div>
   );

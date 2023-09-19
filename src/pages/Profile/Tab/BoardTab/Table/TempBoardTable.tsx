@@ -36,7 +36,7 @@ const rowCnt = 5;
 
 const TempBoardTable = () => {
   const navigate = useNavigate();
-  const { page, getRowNumber } = usePagination();
+  const { page, getRowNumber } = usePagination('tempBoardPage');
 
   const { data: tempBoard } = useGetMemberTempPostsQuery({ page, size: rowCnt });
 
@@ -53,7 +53,11 @@ const TempBoardTable = () => {
         }))}
         childComponent={TempBoardChildComponent}
         onRowClick={({ rowData }) => navigate(`/board/view/${rowData.id}`)}
-        paginationOption={{ rowsPerPage: tempBoard.size, totalItems: tempBoard.totalElements }}
+        paginationOption={{
+          pageKey: 'tempBoardPage',
+          rowsPerPage: tempBoard.size,
+          totalItems: tempBoard.totalElements,
+        }}
       />
     </div>
   );
