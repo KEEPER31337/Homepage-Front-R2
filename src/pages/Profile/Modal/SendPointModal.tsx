@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { InputLabel } from '@mui/material';
 import { useRecoilValue } from 'recoil';
