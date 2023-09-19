@@ -152,7 +152,7 @@ const EditEmailSection = () => {
         type="submit"
         disabled={!isValid || isSubmitting || Boolean(expirationTime && expirationTime < DateTime.now())}
       >
-        완료
+        이메일 변경
       </OutlinedButton>
     </Stack>
   );
@@ -261,7 +261,7 @@ const EditPasswordSection = () => {
         />
       </Stack>
       <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
-        다음
+        비밀번호 변경
       </OutlinedButton>
     </Stack>
   );
