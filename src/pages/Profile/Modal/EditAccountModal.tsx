@@ -3,6 +3,7 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import { Divider, Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
+import { useNewEmailAuthMutation } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { emailRegex } from '@utils/validateEmail';
@@ -13,7 +14,7 @@ import TimerInput from '@components/Input/TimerInput';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 
 const EditEmailSection = () => {
-  const [expirationTime] = useState<DateTime | null>(null);
+  const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
   const [isEmailSent, setIsEmailSent] = useState(false);
 
   const {
@@ -28,6 +29,7 @@ const EditEmailSection = () => {
     email: getValues('email'),
     enabled: isEmailSent,
   });
+  const { mutate: newEmailAuth } = useNewEmailAuthMutation();
 
   const handleRequestVerificationCode = () => {
     setIsEmailSent(true);
@@ -43,7 +45,15 @@ const EditEmailSection = () => {
     if (isEmailDuplicate.duplicate === true) {
       setError('email', { message: '이미 존재하는 이메일입니다.' });
       setIsEmailSent(false);
+      return;
     }
+
+    newEmailAuth(getValues('email'), {
+      onSuccess: () => {
+        setExpirationTime(DateTime.now().plus({ seconds: 300 }));
+        // TODO 유효시간 받아오기 setExpirationTime(DateTime.now().plus({ seconds: expiredSeconds }));
+      },
+    });
   }, [checkEmailDuplicationSuccess]);
 
   return (

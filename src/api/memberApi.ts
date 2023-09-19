@@ -46,10 +46,17 @@ const useEditProfileThumbnailMutation = () => {
   return useMutation(fetcher);
 };
 
+const useNewEmailAuthMutation = () => {
+  const fetcher = (email: string) => axios.post('/members/email-auth', { email }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
 export {
   useGetProfileQuery,
   useFollowMutation,
   useUnFollowMutation,
   useEditProfileMutation,
   useEditProfileThumbnailMutation,
+  useNewEmailAuthMutation,
 };
