@@ -8,6 +8,7 @@ import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { emailRegex } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
+import StandardInput from '@components/Input/StandardInput';
 import TimerInput from '@components/Input/TimerInput';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 
@@ -56,6 +57,26 @@ const EditEmailSection = () => {
       <Stack spacing={1} component="form" onSubmit={handleSubmit(handleEmailFormSubmit)}>
         <Typography fontWeight="semibold">이메일 변경</Typography>
         <Controller
+          name="password"
+          defaultValue=""
+          control={control}
+          rules={{
+            required: '필수 정보입니다.',
+          }}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <StandardInput
+                hasBackground
+                type="password"
+                label="현재 비밀번호"
+                {...field}
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            );
+          }}
+        />
+        <Controller
           name="email"
           defaultValue=""
           control={control}
@@ -69,7 +90,7 @@ const EditEmailSection = () => {
           render={({ field, fieldState: { error, isDirty } }) => {
             return (
               <EmailAuthInput
-                label="이메일"
+                label="새 이메일"
                 {...field}
                 error={Boolean(error)}
                 helperText={error?.message}
