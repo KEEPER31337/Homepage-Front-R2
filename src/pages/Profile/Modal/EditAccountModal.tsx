@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Button, Divider, Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
+import { VscSignOut } from 'react-icons/vsc';
 import { useEditEmailMutation, useEditPasswordMutation, useNewEmailAuthMutation } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { emailRegex } from '@utils/validateEmail';
+import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
 import StandardInput from '@components/Input/StandardInput';
@@ -273,6 +275,15 @@ interface EditAccountModalProps {
 }
 
 const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
+  const [startWithdrawal, setStartWithdrawal] = useState(false);
+
+  const {
+    control,
+    getValues,
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+  } = useForm({ mode: 'onBlur' });
+
   return (
     <ConfirmModal open={open} onClose={onClose} title="계정 정보 수정" modalWidth="md">
       <Stack
@@ -285,6 +296,41 @@ const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
         <EditEmailSection />
         <EditPasswordSection />
       </Stack>
+      <Button
+        color="secondary"
+        variant="text"
+        onClick={() => setStartWithdrawal((prev) => !prev)}
+        startIcon={<VscSignOut size={20} className="fill-subRed" />}
+      >
+        <Typography className="align-middle text-subRed">탈퇴하기</Typography>
+      </Button>
+      {startWithdrawal && (
+        <Stack paddingLeft={3} direction="row" alignItems="center" spacing={2}>
+          <Controller
+            name="rawPassword"
+            defaultValue=""
+            control={control}
+            rules={{
+              required: '필수 정보입니다.',
+            }}
+            render={({ field, fieldState: { error } }) => {
+              return (
+                <StandardInput
+                  className="h-16"
+                  type="password"
+                  label="현재 비밀번호"
+                  {...field}
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                />
+              );
+            }}
+          />
+          <FilledButton small disabled={!isValid}>
+            탈퇴
+          </FilledButton>
+        </Stack>
+      )}
     </ConfirmModal>
   );
 };
