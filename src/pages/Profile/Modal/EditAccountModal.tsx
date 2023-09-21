@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { Button, Divider, Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
 import { VscSignOut } from 'react-icons/vsc';
-import { useEditEmailMutation, useEditPasswordMutation, useNewEmailAuthMutation } from '@api/memberApi';
+import { useSetRecoilState } from 'recoil';
+import {
+  useEditEmailMutation,
+  useEditPasswordMutation,
+  useNewEmailAuthMutation,
+  useWithdrawalMutation,
+} from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import memberState from '@recoil/member.recoil';
 import { emailRegex } from '@utils/validateEmail';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -276,13 +284,28 @@ interface EditAccountModalProps {
 
 const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
   const [startWithdrawal, setStartWithdrawal] = useState(false);
+  const setMemberState = useSetRecoilState(memberState);
 
   const {
     control,
-    getValues,
     handleSubmit,
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
+  const navigate = useNavigate();
+
+  const { mutate: withdrawal } = useWithdrawalMutation();
+
+  const handleWithdrawalSubmit: SubmitHandler<FieldValues> = ({ rawPassword }) => {
+    withdrawal(
+      { rawPassword },
+      {
+        onSuccess: () => {
+          setMemberState(null);
+          navigate('/');
+        },
+      },
+    );
+  };
 
   return (
     <ConfirmModal open={open} onClose={onClose} title="계정 정보 수정" modalWidth="md">
@@ -305,7 +328,14 @@ const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
         <Typography className="align-middle text-subRed">탈퇴하기</Typography>
       </Button>
       {startWithdrawal && (
-        <Stack paddingLeft={3} direction="row" alignItems="center" spacing={2}>
+        <Stack
+          component="form"
+          paddingLeft={3}
+          direction="row"
+          alignItems="center"
+          spacing={2}
+          onSubmit={handleSubmit(handleWithdrawalSubmit)}
+        >
           <Controller
             name="rawPassword"
             defaultValue=""
@@ -326,7 +356,7 @@ const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
               );
             }}
           />
-          <FilledButton small disabled={!isValid}>
+          <FilledButton type="submit" small disabled={isSubmitting || !isValid}>
             탈퇴
           </FilledButton>
         </Stack>
