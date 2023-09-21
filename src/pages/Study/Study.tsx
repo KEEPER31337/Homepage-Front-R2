@@ -56,14 +56,14 @@ const Study = () => {
       <div className="mb-5 flex items-center justify-between">
         <div className="flex space-x-2">
           <Selector
-            className="w-24"
+            className="w-28"
             name="year"
             options={yearList}
             value={currentPeriod.year}
             onChange={handlePeriodChange}
           />
           <Selector
-            className="w-24"
+            className="w-28"
             name="season"
             options={seasonList}
             value={currentPeriod.season}
