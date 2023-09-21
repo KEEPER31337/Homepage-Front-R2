@@ -74,9 +74,7 @@ const ProfileSection = () => {
 
         {followState !== 'none' &&
           (followInfo[followState].list.length !== 0 ? (
-            <div className="h-[120px] overflow-auto bg-pointBlue/10">
-              <FollowList followlist={followInfo[followState].list} />
-            </div>
+            <FollowList followlist={followInfo[followState].list} />
           ) : (
             <div className="text-center">{followInfo[followState].state} 목록이 없습니다</div>
           ))}
@@ -98,7 +96,7 @@ const ProfileSection = () => {
           <Typography>생년월일</Typography>
         </div>
         <div className="flex flex-col space-y-4">
-          <Typography>{profileInfo?.generation.replace('.0', '')} 기</Typography>
+          <Typography>{profileInfo?.generation}기</Typography>
           <Typography>{profileInfo?.emailAddress}</Typography>
           <Typography>{profileInfo?.birthday}</Typography>
         </div>
