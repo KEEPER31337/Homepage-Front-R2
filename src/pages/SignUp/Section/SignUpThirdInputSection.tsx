@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
 import { useRecoilValue } from 'recoil';
@@ -11,11 +11,13 @@ import { emailRegex } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
 import TimerInput from '@components/Input/TimerInput';
+import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import signUpPageState from '../SignUp.recoil';
 
 const SignUpThirdInputSection = () => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
 
   const signUpParams = useRecoilValue(signUpPageState);
   const navigate = useNavigate();
@@ -24,6 +26,7 @@ const SignUpThirdInputSection = () => {
     handleSubmit,
     getValues,
     setError,
+    reset,
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
 
@@ -48,6 +51,22 @@ const SignUpThirdInputSection = () => {
         },
       },
     );
+  };
+
+  const handleOtherEmailButtonClick = () => {
+    setMailAuthenticationModalOpen(false);
+    setIsEmailSent(false);
+    setExpirationTime(null);
+    reset();
+  };
+
+  const handleResendMailButtonClick = () => {
+    emailAuth(getValues('email'), {
+      onSuccess: ({ expiredSeconds }) => {
+        setExpirationTime(DateTime.now().plus({ seconds: expiredSeconds }));
+        setMailAuthenticationModalOpen(false);
+      },
+    });
   };
 
   useEffect(() => {
@@ -107,14 +126,39 @@ const SignUpThirdInputSection = () => {
               {...field}
               error={Boolean(error)}
               helperText={error?.message}
-              disabled={!isEmailDuplicate || isEmailDuplicate.duplicate || !isEmailSent}
+              disabled={
+                !isEmailDuplicate ||
+                isEmailDuplicate.duplicate ||
+                !isEmailSent ||
+                Boolean(expirationTime && expirationTime < DateTime.now())
+              }
               expirationTime={expirationTime}
             />
           );
         }}
       />
+      {isEmailSent && checkEmailDuplicationSuccess && (
+        <div className="relative">
+          <Typography
+            className="absolute right-0 w-fit hover:underline hover:underline-offset-4"
+            component="button"
+            onClick={() => setMailAuthenticationModalOpen(true)}
+          >
+            인증 메일이 오지 않았나요?
+          </Typography>
+          <MailAuthenticationModal
+            open={mailAuthenticationModalOpen}
+            onClose={() => setMailAuthenticationModalOpen(false)}
+            onOtherEmailButtonClick={handleOtherEmailButtonClick}
+            onResendMailButtonClick={handleResendMailButtonClick}
+          />
+        </div>
+      )}
       <div className="absolute bottom-0 right-0">
-        <OutlinedButton type="submit" disabled={!isValid || isSubmitting}>
+        <OutlinedButton
+          type="submit"
+          disabled={!isValid || isSubmitting || Boolean(expirationTime && expirationTime < DateTime.now())}
+        >
           완료
         </OutlinedButton>
       </div>
