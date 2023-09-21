@@ -1,13 +1,32 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
-import { ProfileInfo } from './dto';
+import { formatGeneration } from '@utils/converter';
+import { FollowInfo, ProfileInfo } from './dto';
 
 const profileKeys = {
   profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
 };
 
 const useGetProfileQuery = (memberId: number) => {
-  const fetcher = () => axios.get(`/members/${memberId}/profile`).then(({ data }) => data);
+  const fetcher = () =>
+    axios.get(`/members/${memberId}/profile`).then(({ data }) => {
+      return {
+        ...data,
+        generation: formatGeneration(data.generation),
+        follower: data.follower.map((followerInfo: FollowInfo) => {
+          return {
+            ...followerInfo,
+            generation: formatGeneration(followerInfo.generation),
+          };
+        }),
+        followee: data.followee.map((followeeInfo: FollowInfo) => {
+          return {
+            ...followeeInfo,
+            generation: formatGeneration(followeeInfo.generation),
+          };
+        }),
+      };
+    });
 
   return useQuery<ProfileInfo>(profileKeys.profileInfo(memberId), fetcher, { enabled: memberId !== 0 });
 };

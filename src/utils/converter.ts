@@ -25,8 +25,12 @@ const categoryNameToId = (categoryName: string) => {
   return null;
 };
 
+const formatGeneration = (generation: string) => {
+  return `${generation.replace('.0', '')}`;
+};
+
 const getServerImgUrl = (url: string) => {
   return `${process.env.REACT_APP_API_URL}/${url}`;
 };
 
-export { formatFileSize, categoryNameToId, getServerImgUrl };
+export { formatFileSize, categoryNameToId, getServerImgUrl, formatGeneration };
