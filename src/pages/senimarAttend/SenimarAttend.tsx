@@ -20,7 +20,7 @@ const SeminarAttend = () => {
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const recentSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[0]?.id;
   const futureSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[1]?.id;
-  const cardIdOrder = [recentlyDoneSeminarId || -3, recentSeminarId || -2, futureSeminarId || -1];
+  const cardIdOrder = [recentlyDoneSeminarId, recentSeminarId, futureSeminarId];
   const { checkIncludeOneOfAuths } = useCheckAuth();
   const authorizedMember = checkIncludeOneOfAuths(['ROLE_회장', 'ROLE_부회장', 'ROLE_서기']);
   const startMember: number | undefined = useRecoilValue(starterState);
@@ -35,7 +35,6 @@ const SeminarAttend = () => {
     }
     return false;
   };
-  console.log(cardIdOrder);
 
   useEffect(() => {
     if (!localStorage.getItem('출석시도횟수')) localStorage.setItem('출석시도횟수', '0');
@@ -43,19 +42,23 @@ const SeminarAttend = () => {
 
   return (
     <div className="mt-[180px] flex justify-between text-center [&>*:nth-child(2)]:mt-[-50px]">
-      {cardIdOrder.map((id) => {
-        return (
-          <SeminarCard key={id}>
-            {id > 0 ? (
-              <div>{isStarterMember() ? <BossCardContent seminarId={id} /> : <MemberCardContent seminarId={id} />}</div>
-            ) : (
-              <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">
-                예정된 세미나가 없습니다.
-              </Typography>
-            )}
-          </SeminarCard>
-        );
-      })}
+      {Array.from({ length: 3 }, (v, i) => i).map((index) => (
+        <SeminarCard key={index}>
+          {cardIdOrder[index] !== undefined ? (
+            <div>
+              {isStarterMember() ? (
+                <BossCardContent seminarId={Number(cardIdOrder[index])} />
+              ) : (
+                <MemberCardContent seminarId={Number(cardIdOrder[index])} />
+              )}
+            </div>
+          ) : (
+            <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">
+              예정된 세미나가 없습니다.
+            </Typography>
+          )}
+        </SeminarCard>
+      ))}
     </div>
   );
 };
