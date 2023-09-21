@@ -13,7 +13,7 @@ interface BookGuideProps {
 const BookCard = ({ bookInfo, onClick }: BookGuideProps) => {
   return (
     <div className="m-1 flex w-[120px] flex-col space-y-2 lg:w-[150px] xl:w-[180px]">
-      <div className={`${!bookInfo && 'opacity-50'} relative flex h-[180px] bg-subBlack  lg:h-[210px] xl:h-[240px]`}>
+      <div className={`${!bookInfo && 'opacity-50'} relative flex h-[180px] bg-subBlack lg:h-[210px] xl:h-[240px]`}>
         <ServerImg src={bookInfo?.thumbnailPath || ''} alt="library thumbnail" />
         <div className={`${bookInfo && 'p-1'} absolute bottom-0 flex w-full flex-col space-y-1 bg-middleBlack/50`}>
           <Tooltip
