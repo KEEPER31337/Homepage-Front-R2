@@ -97,7 +97,12 @@ const Study = () => {
           )}
         </div>
       )}
-      <StudyModal open={studyModalOpen} setOpen={setStudyModalOpen} modalInfo={modalInfo} />
+      <StudyModal
+        open={studyModalOpen}
+        setOpen={setStudyModalOpen}
+        modalInfo={modalInfo}
+        currentPeriod={currentPeriod}
+      />
     </div>
   );
 };
