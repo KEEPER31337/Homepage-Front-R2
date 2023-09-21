@@ -34,4 +34,32 @@ const useUnFollowMemberMutation = (memberId: number) => {
   });
 };
 
-export { useGetProfileQuery, useFollowMemberMutation, useUnFollowMemberMutation };
+const useEditProfileMutation = () => {
+  const fetcher = ({ realName, birthday, studentId }: Pick<ProfileInfo, 'realName' | 'birthday' | 'studentId'>) =>
+    axios.patch(`/members/profile`, { realName, birthday, studentId });
+
+  return useMutation(fetcher);
+};
+
+const useEditProfileThumbnailMutation = () => {
+  const fetcher = ({ thumbnail }: { thumbnail: Blob }) => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/members/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(fetcher);
+};
+
+export {
+  useGetProfileQuery,
+  useFollowMemberMutation,
+  useUnFollowMemberMutation,
+  useEditProfileMutation,
+  useEditProfileThumbnailMutation,
+};

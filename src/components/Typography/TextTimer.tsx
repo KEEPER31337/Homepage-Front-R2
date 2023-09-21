@@ -18,7 +18,7 @@ const TextTimer = ({ expirationTime }: TextTimerProps) => {
         return;
       }
 
-      setRemainingSeconds((prev) => prev - 1);
+      setRemainingSeconds(Math.floor(expirationTime.diff(DateTime.now()).as('seconds')));
     }, 1000);
 
     return () => clearInterval(interval);

@@ -273,8 +273,10 @@ export interface PostInfo {
   nextPost: AdjacentPostInfo;
   likeCount: number;
   dislikeCount: number;
+  fileCount: number;
   isLike: boolean;
   isDislike: boolean;
+  isRead: boolean;
   allowComment: boolean;
   isNotice: boolean;
   isSecret: boolean;
@@ -480,10 +482,50 @@ export interface JobList {
   jobName: string;
 }
 
-export interface memberInfo {
-  memberId: number;
-  memberName: string;
-  generation: string;
+export interface MemberPostInfo {
+  id: number;
+  title: string;
+  categoryId: number;
+  categoryName: string;
+  visitCount: number;
+  isSecret: boolean;
+  registerTime: string;
+}
+
+export interface MemberPost {
+  content: MemberPostInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface MemberTempPostInfo {
+  id: number;
+  title: string;
+  categoryId: number;
+  categoryName: string;
+  registerTime: string;
+}
+
+export interface MemberTempPost {
+  content: MemberTempPostInfo[];
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
 }
 
 export interface PointLogInfo {
@@ -519,6 +561,7 @@ export interface FollowInfo {
 
 export interface ProfileInfo {
   id: number;
+  studentId?: number;
   realName: string;
   generation: string;
   birthday: string;
@@ -529,4 +572,17 @@ export interface ProfileInfo {
   memberJobs: Role[];
   follower: FollowInfo[];
   followee: FollowInfo[];
+}
+
+export interface TodayAttendPoint {
+  point: number;
+  continuousPoint: number;
+  rankPoint: number;
+  randomPoint: number;
+}
+
+export interface TodayAttendInfo {
+  continuousDay: number;
+  todayRank: number;
+  todayPoint: number;
 }

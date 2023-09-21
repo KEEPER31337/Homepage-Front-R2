@@ -12,7 +12,14 @@ import {
   UploadPost,
   UploadPostCore,
   TrendingPostInfo,
+  PageAndSize,
+  MemberPost,
 } from './dto';
+
+const postKeys = {
+  memberPost: (param: PageAndSize & { memberId: number }) => ['memberPost', param] as const,
+  memberTempPost: (param: PageAndSize) => ['memberTempPost', param] as const,
+};
 
 const useUploadPostMutation = () => {
   const fetcher = ({ request, thumbnail, files }: UploadPost) => {
@@ -136,6 +143,12 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
   const location = useLocation();
 
   const { handleError } = useApiError({
+    400: {
+      default: () => {
+        // TODO 페이지 문구로 띄워주기
+        toast.error('게시글 열람 조건을 충족하지 않습니다.');
+      },
+    },
     403: {
       40301: () => {
         toast.error('게시글의 비밀번호가 일치하지 않습니다.');
@@ -159,10 +172,10 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
   });
 };
 
-const useGetPostFilesQuery = (postId: number) => {
+const useGetPostFilesQuery = (postId: number, fileOpen: boolean) => {
   const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
 
-  return useQuery<FileInfo[]>(['files', postId], fetcher);
+  return useQuery<FileInfo[]>(['files', postId], fetcher, { enabled: fileOpen });
 };
 
 const useGetRecentPostsQuery = () => {
@@ -199,6 +212,22 @@ const useDownloadFileMutation = () => {
   });
 };
 
+const useGetMemberPostsQuery = ({ page, size = 10, memberId }: PageAndSize & { memberId: number }) => {
+  const fetcher = () => axios.get(`/posts/members/${memberId}`, { params: { page, size } }).then(({ data }) => data);
+
+  return useQuery<MemberPost>(postKeys.memberPost({ page, size, memberId }), fetcher, {
+    keepPreviousData: true,
+  });
+};
+
+const useGetMemberTempPostsQuery = ({ page, size = 10 }: PageAndSize) => {
+  const fetcher = () => axios.get('/posts/temp', { params: { page, size } }).then(({ data }) => data);
+
+  return useQuery<MemberPost>(postKeys.memberTempPost({ page, size }), fetcher, {
+    keepPreviousData: true,
+  });
+};
+
 export {
   useUploadPostMutation,
   useGetPostListQuery,
@@ -215,4 +244,6 @@ export {
   useGetEachPostQuery,
   useGetPostFilesQuery,
   useDownloadFileMutation,
+  useGetMemberPostsQuery,
+  useGetMemberTempPostsQuery,
 };

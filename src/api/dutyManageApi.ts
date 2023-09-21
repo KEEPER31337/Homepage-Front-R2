@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
-import { ExecutiveInfo, JobList, memberInfo, MemberDetailInfo } from './dto';
+import { ExecutiveInfo, JobList, MemberDetailInfo } from './dto';
 
 const dutyManageKeys = {
   executiveInfo: ['executiveInfo'] as const,

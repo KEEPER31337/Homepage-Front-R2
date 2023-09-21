@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useReducer, useState } from 'react';
 import { Button } from '@mui/material';
-import { VscArrowDown, VscArrowUp, VscFile } from 'react-icons/vsc';
+import { VscArrowDown, VscArrowUp, VscFolder, VscFolderOpened } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
 import {
   useGetPostFilesQuery,
@@ -10,7 +10,9 @@ import {
 } from '@api/postApi';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import FileViewer from '@components/Viewer/FileViewer';
 import StandardViewer from '@components/Viewer/StandardViewer';
+import WarningDeductPointModal from '../Modal/WarningDeductPointModal';
 
 interface PostSectionProps {
   postId: number;
@@ -18,10 +20,28 @@ interface PostSectionProps {
 }
 
 const PostSection = ({ postId, post }: PostSectionProps) => {
-  const { data: files } = useGetPostFilesQuery(postId);
+  const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, false);
+  const [warningModalOpen, setWarningModalOpen] = useState(false);
+  const hasWarningModal = post.categoryName === '시험게시판' && post.isRead === false && !fileOpen;
+
+  const { data: files } = useGetPostFilesQuery(postId, fileOpen);
   const { mutate: controlLikes } = useControlPostLikesMutation();
   const { mutate: controlDislikes } = useControlPostDislikesMutation();
   const { mutate: downloadFile } = useDownloadFileMutation();
+
+  const handleFileOpenButtonClick = () => {
+    if (hasWarningModal) {
+      setWarningModalOpen(true);
+      return;
+    }
+
+    toggleFileOpen();
+  };
+
+  const handleWarningModalActionClick = () => {
+    setWarningModalOpen(false);
+    toggleFileOpen();
+  };
 
   const handleDownloadFileClick = (fileId: number, fileName: string) => {
     downloadFile({ postId, fileId, fileName });
@@ -37,17 +57,25 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
 
   return (
     <div className="min-h-[520px] bg-middleBlack px-14 py-10">
-      <StandardViewer className="min-h-[330px]" content={post.content} />
-      <div className="mb-10 mt-2 flex justify-end gap-3 text-pointBlue">
-        {files &&
-          files.map((file) => (
-            <Button key={file.fileId} className="flex" onClick={() => handleDownloadFileClick(file.fileId, file.name)}>
-              <VscFile className="mr-1" size={24} />
-              <span>{file.name}</span>
-            </Button>
-          ))}
-      </div>
-      <div className="flex items-center justify-center space-x-2">
+      <StandardViewer className="mb-4 min-h-[330px]" content={post.content} />
+      {post.fileCount > 0 && (
+        <>
+          <Button
+            className="hover:!bg-transparent"
+            variant="text"
+            onClick={handleFileOpenButtonClick}
+            startIcon={fileOpen ? <VscFolderOpened /> : <VscFolder />}
+          >
+            첨부파일 ({post.fileCount})
+          </Button>
+          {fileOpen && (
+            <div className="mb-10 mt-2 flex justify-end gap-3 text-pointBlue">
+              {files && <FileViewer files={files} onRowClick={handleDownloadFileClick} />}
+            </div>
+          )}
+        </>
+      )}
+      <div className="mt-8 flex items-center justify-center space-x-2">
         {post.isLike ? (
           <FilledButton small onClick={handleLikeButtonClick}>
             <VscArrowUp className="mr-1" size={10} />
@@ -71,6 +99,13 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
           </OutlinedButton>
         )}
       </div>
+      {hasWarningModal && (
+        <WarningDeductPointModal
+          open={warningModalOpen}
+          onClose={() => setWarningModalOpen(false)}
+          onActionButonClick={handleWarningModalActionClick}
+        />
+      )}
     </div>
   );
 };

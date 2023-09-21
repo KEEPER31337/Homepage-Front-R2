@@ -9,9 +9,11 @@ import { getServerImgUrl } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
 import FollowList from './FollowList';
+import EditProfileModal from '../Modal/EditProfileModal';
 
 const ProfileSection = () => {
   const [followState, setFollowState] = useState('none');
+  const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
 
   const { memberId } = useParams();
   const myMemberId = useRecoilValue(memberState)?.memberId;
@@ -116,6 +118,13 @@ const ProfileSection = () => {
           </>
         )}
       </div>
+      {profileInfo && (
+        <EditProfileModal
+          profileInfo={profileInfo}
+          open={editProfileModalOpen}
+          onClose={() => setEditProfileModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
