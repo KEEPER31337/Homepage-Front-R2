@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react';
 
-import { SelectChangeEvent } from '@mui/material';
+import { SelectChangeEvent, Typography } from '@mui/material';
 import { useGetStudyListQuery } from '@api/studyApi';
 import { yearList } from '@mocks/StudyApi';
 import ActionButton from '@components/Button/ActionButton';
@@ -77,14 +77,21 @@ const Study = () => {
         <OldStudy list={[]} memberId={-1} toggleOpen={toggleStudyAccoridionOpen} setModalInfo={setModalInfo} />
       ) : (
         <div>
-          {studyList?.map((study) => (
-            <StudyAccordion
-              key={study.studyId}
-              study={study}
-              toggleOpen={toggleStudyAccoridionOpen}
-              setModalInfo={setModalInfo}
-            />
-          ))}
+          {studyList && studyList.length > 0 ? (
+            studyList.map((study) => (
+              <StudyAccordion
+                key={study.studyId}
+                study={study}
+                toggleOpen={toggleStudyAccoridionOpen}
+                setModalInfo={setModalInfo}
+              />
+            ))
+          ) : (
+            <Typography marginY={15} paddingY={8} textAlign="center" className="border-y border-pointBlue/70">
+              현재 등록된 스터디가 없습니다. <span className="text-pointBlue">+ 추가</span> 버튼을 클릭하여 스터디를
+              추가하세요.
+            </Typography>
+          )}
         </div>
       )}
       <StudyModal open={studyModalOpen} setOpen={setStudyModalOpen} modalInfo={modalInfo} />
