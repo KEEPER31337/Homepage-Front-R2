@@ -16,7 +16,7 @@ const AccountMenu = ({ userInfo, anchorEl, open, onClose }: AccountMenuProps) =>
   const { mutate: logout } = useSignOutMutation();
 
   const handleProfileClick = () => {
-    navigate('profile');
+    navigate(`profile/${userInfo.memberId}`);
     onClose();
   };
 
