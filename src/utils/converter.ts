@@ -26,7 +26,7 @@ const categoryNameToId = (categoryName: string) => {
 };
 
 const formatGeneration = (generation: string) => {
-  return `${generation.replace('.0', '')}`;
+  return generation.replace('.0', '');
 };
 
 const getServerImgUrl = (url: string) => {

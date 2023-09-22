@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar, Typography } from '@mui/material';
-import { useRecoilValue } from 'recoil';
 import { FollowInfo } from '@api/dto';
 import { useGetProfileQuery, useFollowMemberMutation, useUnFollowMemberMutation } from '@api/memberApi';
-import memberState from '@recoil/member.recoil';
+import useCheckAuth from '@hooks/useCheckAuth';
 import { getServerImgUrl } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
@@ -16,12 +15,13 @@ const ProfileSection = () => {
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
 
   const { memberId } = useParams();
-  const myMemberId = useRecoilValue(memberState)?.memberId;
+  const { checkIsMyId } = useCheckAuth();
+
   const otherMemberId = Number(memberId) || 0;
 
   const { data: profileInfo } = useGetProfileQuery(otherMemberId);
-  const { mutate: FollowMember } = useFollowMemberMutation(otherMemberId);
-  const { mutate: UnFollowMember } = useUnFollowMemberMutation(otherMemberId);
+  const { mutate: followMember } = useFollowMemberMutation(otherMemberId);
+  const { mutate: unFollowMember } = useUnFollowMemberMutation(otherMemberId);
 
   const followInfo: { [key: string]: { state: string; list: FollowInfo[] } } = {
     follower: { state: '팔로워', list: profileInfo?.follower || [] },
@@ -30,7 +30,7 @@ const ProfileSection = () => {
   };
 
   const isFollowed = () => {
-    return profileInfo?.follower.some((follower) => follower.id === myMemberId);
+    return profileInfo?.follower.some((follower) => checkIsMyId(follower.id));
   };
 
   const handleFollowStateButtonClick = (state: string) => {
@@ -39,8 +39,8 @@ const ProfileSection = () => {
   };
 
   const handleFollowButtonClick = () => {
-    if (isFollowed()) UnFollowMember();
-    else FollowMember();
+    if (isFollowed()) unFollowMember();
+    else followMember();
   };
 
   return (
@@ -102,7 +102,7 @@ const ProfileSection = () => {
         </div>
       </div>
       <div className="flex flex-col space-y-4">
-        {myMemberId === profileInfo?.id ? (
+        {profileInfo && checkIsMyId(profileInfo.id) ? (
           <>
             <OutlinedButton className="w-full">프로필 수정</OutlinedButton>
             <OutlinedButton className="w-full">계정 정보 수정</OutlinedButton>
