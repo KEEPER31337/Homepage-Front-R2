@@ -9,10 +9,10 @@ import FilledButton from '@components/Button/FilledButton';
 import AccountMenu from './Menu/AccountMenu';
 
 const Header = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const userInfo = useRecoilValue(memberState);
-  const open = Boolean(anchorEl);
+  const profileMenuOpen = Boolean(anchorEl);
 
   const handleDrawerToggle = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
@@ -59,7 +59,7 @@ const Header = () => {
                 <VscAccount fill="#4CEEF9" />
               </IconButton>
             </div>
-            <AccountMenu userInfo={userInfo} anchorEl={anchorEl} open={open} onClose={handleMenuClose} />
+            <AccountMenu userInfo={userInfo} anchorEl={anchorEl} open={profileMenuOpen} onClose={handleMenuClose} />
           </>
         ) : (
           <Link to="/login">
