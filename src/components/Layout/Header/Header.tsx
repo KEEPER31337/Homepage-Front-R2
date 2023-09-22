@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
-import { VscAccount, VscGithubInverted } from 'react-icons/vsc';
+import { VscAccount, VscGithubInverted, VscThreeBars } from 'react-icons/vsc';
 import { useRecoilValue } from 'recoil';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import memberState from '@recoil/member.recoil';
@@ -10,8 +10,13 @@ import AccountMenu from './Menu/AccountMenu';
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const userInfo = useRecoilValue(memberState);
   const open = Boolean(anchorEl);
+
+  const handleDrawerToggle = () => {
+    setMobileSidebarOpen(!mobileSidebarOpen);
+  };
 
   const handleAccountIconClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -26,10 +31,21 @@ const Header = () => {
       className="h-header border-b border-pointBlue !bg-mainBlack !bg-none"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
-      <Toolbar className="flex justify-between">
-        <Link to="/">
-          <Logo className="h-8" />
-        </Link>
+      <Toolbar className="flex items-center justify-between">
+        <div className="flex items-center">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: { xs: 1, sm: 2 }, display: { lg: 'none' } }}
+          >
+            <VscThreeBars />
+          </IconButton>
+          <Link to="/">
+            <Logo className="h-6 sm:h-8" />
+          </Link>
+        </div>
         {userInfo ? (
           <>
             <div>
