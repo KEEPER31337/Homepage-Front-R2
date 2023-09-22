@@ -108,7 +108,7 @@ const useAddSeminarMutation = () => {
   return useMutation(fetcher, {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminarList });
-      return response.data;
+      return response;
     },
   });
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { DateTime } from 'luxon';
 import { useAddSeminarMutation } from '@api/seminarApi';
 import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
@@ -12,7 +12,7 @@ interface AddSeminarModalProps {
 const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
   const [seminarDate, setSeminarDate] = useState(DateTime.now());
 
-  const { mutate: addSeminar, isSuccess: isAddSeminarSuccess } = useAddSeminarMutation();
+  const { mutate: addSeminar } = useAddSeminarMutation();
 
   const handleClose = () => {
     setOpen(false);
@@ -20,16 +20,16 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
   };
 
   const handleAddSeminarButtonClick = () => {
-    addSeminar(seminarDate);
+    addSeminar(seminarDate, {
+      onSuccess: () => {
+        handleClose();
+      },
+    });
   };
 
   const handleDateChange = (newValue: DateTime | null) => {
     if (newValue) setSeminarDate(newValue);
   };
-
-  useEffect(() => {
-    handleClose();
-  }, [isAddSeminarSuccess]);
 
   return (
     <ActionModal

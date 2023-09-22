@@ -11,7 +11,7 @@ interface DeleteSeminarModalProps {
 
 const DeleteSeminarModal = ({ open, setOpen }: DeleteSeminarModalProps) => {
   const { data: seminarList } = useGetSeminarListQuery();
-  const { mutate: deleteSeminar, isSuccess: isDeleteSeminarSuccess } = useDeleteSeminarMutation();
+  const { mutate: deleteSeminar, data: aaa } = useDeleteSeminarMutation();
   const [seminarId, setSeminarId] = useState(0);
 
   const handleClose = () => {
@@ -19,19 +19,17 @@ const DeleteSeminarModal = ({ open, setOpen }: DeleteSeminarModalProps) => {
   };
 
   const handleDeleteSeminarButtonClick = () => {
-    deleteSeminar(seminarId);
+    deleteSeminar(seminarId, {
+      onSuccess: () => {
+        console.log(aaa);
+        handleClose();
+      },
+    });
   };
 
   const handleSeminarChange = (event: SelectChangeEvent<unknown>) => {
     setSeminarId(Number(event.target.value));
   };
-
-  useEffect(() => {
-    if (isDeleteSeminarSuccess) {
-      handleClose();
-      // TODO 세미나 삭제 토스트 메시지
-    }
-  }, [isDeleteSeminarSuccess]);
 
   useEffect(() => {
     setSeminarId(Number(seminarList?.at(-1)?.id));
