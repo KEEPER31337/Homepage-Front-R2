@@ -9,14 +9,17 @@ import memberState from '@recoil/member.recoil';
 import FilledButton from '@components/Button/FilledButton';
 import AccountMenu from './Menu/AccountMenu';
 
-const Header = () => {
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+interface HeaderProps {
+  setMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header = ({ setMobileSidebarOpen }: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const userInfo = useRecoilValue(memberState);
   const profileMenuOpen = Boolean(anchorEl);
 
   const handleDrawerToggle = () => {
-    setMobileSidebarOpen(!mobileSidebarOpen);
+    setMobileSidebarOpen((prev) => !prev);
   };
 
   const handleAccountIconClick = (event: React.MouseEvent<HTMLButtonElement>) => {
