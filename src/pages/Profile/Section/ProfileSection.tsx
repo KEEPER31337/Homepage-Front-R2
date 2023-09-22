@@ -8,11 +8,13 @@ import { getServerImgUrl } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
 import FollowList from './FollowList';
+import EditAccountModal from '../Modal/EditAccountModal';
 import EditProfileModal from '../Modal/EditProfileModal';
 
 const ProfileSection = () => {
   const [followState, setFollowState] = useState('none');
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
+  const [editAccountModalOpen, setEditAccountModalOpen] = useState(false);
 
   const { memberId } = useParams();
   const { checkIsMyId } = useCheckAuth();
@@ -104,8 +106,12 @@ const ProfileSection = () => {
       <div className="flex flex-col space-y-4">
         {profileInfo && checkIsMyId(profileInfo.id) ? (
           <>
-            <OutlinedButton className="w-full">프로필 수정</OutlinedButton>
-            <OutlinedButton className="w-full">계정 정보 수정</OutlinedButton>
+            <OutlinedButton className="w-full" onClick={() => setEditProfileModalOpen(true)}>
+              프로필 수정
+            </OutlinedButton>
+            <OutlinedButton className="w-full" onClick={() => setEditAccountModalOpen(true)}>
+              계정 정보 수정
+            </OutlinedButton>
           </>
         ) : (
           <>
@@ -123,6 +129,7 @@ const ProfileSection = () => {
           onClose={() => setEditProfileModalOpen(false)}
         />
       )}
+      <EditAccountModal open={editAccountModalOpen} onClose={() => setEditAccountModalOpen(false)} />
     </div>
   );
 };

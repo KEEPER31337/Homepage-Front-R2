@@ -75,10 +75,33 @@ const useEditProfileThumbnailMutation = () => {
   return useMutation(fetcher);
 };
 
+const useNewEmailAuthMutation = () => {
+  const fetcher = (email: string) => axios.post('/members/email-auth', { email }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
+const useEditEmailMutation = () => {
+  const fetcher = ({ email, auth, password }: { email: string; auth: string; password: string }) =>
+    axios.patch('/members/email', { email, auth, password }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
+const useEditPasswordMutation = () => {
+  const fetcher = ({ newPassword }: { newPassword: string }) =>
+    axios.patch('/members/change-password', { newPassword }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
 export {
   useGetProfileQuery,
   useFollowMemberMutation,
   useUnFollowMemberMutation,
   useEditProfileMutation,
   useEditProfileThumbnailMutation,
+  useNewEmailAuthMutation,
+  useEditEmailMutation,
+  useEditPasswordMutation,
 };

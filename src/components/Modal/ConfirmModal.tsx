@@ -22,7 +22,7 @@ const ConfirmModal = ({ open, onClose, modalWidth, title, children }: ConfirmMod
         <VscChromeClose className="fill-pointBlue" size={28} />
       </IconButton>
       <DialogTitle className="!font-bold text-pointBlue">{title}</DialogTitle>
-      <DialogContent className="min-h-[80px] min-w-[350px]">{children}</DialogContent>
+      <DialogContent className="sm:min-h-[80px] sm:min-w-[350px]">{children}</DialogContent>
     </Dialog>
   );
 };
