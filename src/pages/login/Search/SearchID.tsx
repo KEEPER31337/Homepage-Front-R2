@@ -89,7 +89,7 @@ const SearchID = () => {
         </>
       ) : (
         <>
-          <div className="mb-4 flex flex-col gap-8 pb-8 pt-16 text-center text-xs sm:pb-10 sm:pt-20">
+          <div className="mb-4 flex flex-col gap-8 pb-8 pt-16 text-center sm:pb-10 sm:pt-20">
             <p className="text-paragraph sm:text-base">회원님의 KEPPER 아이디가</p>
             <p className="text-h3 font-bold text-pointBlue">{email}</p>
             <p className="text-paragraph sm:text-base">이메일로 발송되었습니다.</p>
