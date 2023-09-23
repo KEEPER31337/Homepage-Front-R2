@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react';
 
 import { SelectChangeEvent, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
+import { StudyInfo } from '@api/dto';
 import { useGetStudyListQuery } from '@api/studyApi';
 import ActionButton from '@components/Button/ActionButton';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import Selector from '@components/Selector/Selector';
 import PageTitle from '@components/Typography/PageTitle';
 import StudyAccordion from './Accordion/StudyAccordion';
@@ -36,7 +35,6 @@ const Study = () => {
 
   const [studyAccoridionOpen, toggleStudyAccoridionOpen] = useReducer((prev) => !prev, false);
   const [studyModalOpen, setStudyModalOpen] = useState(false);
-  const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'Add' });
 
   const { data: studyList } = useGetStudyListQuery({ year: currentPeriod.year, season: currentPeriod.season });
 
@@ -47,7 +45,6 @@ const Study = () => {
 
   const handleStudyCreateButtonClick = () => {
     setStudyModalOpen(true);
-    setModalInfo({ mode: 'Add' });
   };
 
   return (
@@ -77,7 +74,7 @@ const Study = () => {
         )}
       </div>
       {Number(currentPeriod.year) < OLD_YEAR_BOUND ? (
-        <OldStudy list={[]} memberId={-1} toggleOpen={toggleStudyAccoridionOpen} setModalInfo={setModalInfo} />
+        <OldStudy list={[]} memberId={-1} toggleOpen={toggleStudyAccoridionOpen} />
       ) : (
         <div>
           {studyList && studyList.length > 0 ? (
@@ -86,7 +83,7 @@ const Study = () => {
                 key={study.studyId}
                 study={study}
                 toggleOpen={toggleStudyAccoridionOpen}
-                setModalInfo={setModalInfo}
+                currentPeriod={currentPeriod}
               />
             ))
           ) : (
@@ -97,12 +94,7 @@ const Study = () => {
           )}
         </div>
       )}
-      <StudyModal
-        open={studyModalOpen}
-        setOpen={setStudyModalOpen}
-        modalInfo={modalInfo}
-        currentPeriod={currentPeriod}
-      />
+      <StudyModal open={studyModalOpen} setOpen={setStudyModalOpen} currentPeriod={currentPeriod} />
     </div>
   );
 };

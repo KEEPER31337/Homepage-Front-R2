@@ -37,10 +37,10 @@ const useGetStudyListQuery = ({ year, season }: { year: number; season: number }
   return useQuery<StudyInfo[]>(['studies', year, season], fetcher);
 };
 
-const useGetStudyQuery = ({ studyId }: { studyId: number }) => {
+const useGetStudyQuery = ({ studyId, enabled }: { studyId: number; enabled?: boolean }) => {
   const fetcher = () => axios.get(`/studies/${studyId}`).then(({ data }) => data);
 
-  return useQuery<StudyDetail>(['studies', studyId], fetcher);
+  return useQuery<StudyDetail>(['studies', studyId], fetcher, { enabled });
 };
 
 const useEditStudyThumbnailMutation = ({ studyId }: { studyId: number }) => {
