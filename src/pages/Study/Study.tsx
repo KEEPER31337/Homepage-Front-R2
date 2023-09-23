@@ -1,12 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useState } from 'react';
 
 import { SelectChangeEvent, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useGetStudyListQuery } from '@api/studyApi';
 import ActionButton from '@components/Button/ActionButton';
-import OutlinedButton from '@components/Button/OutlinedButton';
 import Selector from '@components/Selector/Selector';
 import PageTitle from '@components/Typography/PageTitle';
 import StudyAccordion from './Accordion/StudyAccordion';
@@ -33,8 +30,6 @@ const seasonList = [
 
 const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: DateTime.now().year, season: DateTime.now().quarter });
-
-  const [studyAccoridionOpen, toggleStudyAccoridionOpen] = useReducer((prev) => !prev, false);
   const [studyModalOpen, setStudyModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'Add' });
   const isAfterOldYearBound = Number(currentPeriod.year) >= OLD_YEAR_BOUND;
@@ -81,14 +76,7 @@ const Study = () => {
       {isAfterOldYearBound ? (
         <div>
           {studyList && studyList.length > 0 ? (
-            studyList.map((study) => (
-              <StudyAccordion
-                key={study.studyId}
-                study={study}
-                toggleOpen={toggleStudyAccoridionOpen}
-                setModalInfo={setModalInfo}
-              />
-            ))
+            studyList.map((study) => <StudyAccordion key={study.studyId} study={study} setModalInfo={setModalInfo} />)
           ) : (
             <Typography marginY={15} paddingY={8} textAlign="center" className="border-y border-pointBlue/70">
               현재 등록된 스터디가 없습니다. <span className="text-pointBlue">+ 추가</span> 버튼을 클릭하여 스터디를
