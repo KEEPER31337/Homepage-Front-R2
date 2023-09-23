@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Divider } from '@mui/material';
+import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useSearchIdMutation } from '@api/SearchAccountApi';
 import { validateEmail } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -16,6 +16,8 @@ const SearchID = () => {
   const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
 
   const { mutate: searchId } = useSearchIdMutation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -87,19 +89,20 @@ const SearchID = () => {
         </>
       ) : (
         <>
-          <div className="flex flex-col gap-6 pb-10 pt-20 text-center">
-            <p>회원님의 KEPPER 아이디가</p>
+          <div className="mb-4 flex flex-col gap-8 pb-8 pt-16 text-center text-xs sm:pb-10 sm:pt-20">
+            <p className="text-paragraph sm:text-base">회원님의 KEPPER 아이디가</p>
             <p className="text-h3 font-bold text-pointBlue">{email}</p>
-            <p>이메일로 발송되었습니다.</p>
+            <p className="text-paragraph sm:text-base">이메일로 발송되었습니다.</p>
           </div>
-          <div className="text-right">
-            <button
-              type="button"
-              className="cursor-pointer hover:underline hover:duration-300"
+          <div className="relative">
+            <Typography
+              variant={isMobile ? 'small' : 'paragraph'}
+              className="absolute right-0 w-fit hover:underline hover:underline-offset-4"
+              component="button"
               onClick={() => setMailAuthenticationModalOpen(true)}
             >
               인증 메일이 오지 않았나요?
-            </button>
+            </Typography>
             <MailAuthenticationModal
               open={mailAuthenticationModalOpen}
               onClose={() => setMailAuthenticationModalOpen(false)}
@@ -107,8 +110,8 @@ const SearchID = () => {
               onResendMailButtonClick={handleResendMailButtonClick}
             />
           </div>
-          <Link to="/login" className="mt-10 block text-center">
-            <OutlinedButton>로그인 페이지로</OutlinedButton>
+          <Link to="/login" className="mt-16 block text-center">
+            <OutlinedButton className="w-full sm:w-fit">로그인 페이지로</OutlinedButton>
           </Link>
         </>
       )}
