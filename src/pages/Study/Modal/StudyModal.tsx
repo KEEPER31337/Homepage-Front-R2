@@ -6,7 +6,12 @@ import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
 import { PeriodicInfo, StudyInfo } from '@api/dto';
-import { useAddStudyMutation, useEditStudyMutation, useGetStudyQuery } from '@api/studyApi';
+import {
+  useAddStudyMutation,
+  useEditStudyMutation,
+  useEditStudyThumbnailMutation,
+  useGetStudyQuery,
+} from '@api/studyApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -32,6 +37,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
   const { data: studyDetail } = useGetStudyQuery({ studyId: selectedStudyInfo?.studyId ?? -1, enabled: isEditMode });
   const { mutate: addStudy } = useAddStudyMutation();
   const { mutate: editStudy } = useEditStudyMutation();
+  const { mutate: editStudyThumbnail } = useEditStudyThumbnailMutation();
   const queryClient = useQueryClient();
 
   const handleAddActionButtonClick = () => {
@@ -55,7 +61,18 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['studies'] });
+            if (thumbnail) {
+              editStudyThumbnail(
+                { studyId: selectedStudyInfo.studyId, thumbnail },
+                {
+                  onSuccess: () => {
+                    queryClient.invalidateQueries({ queryKey: ['studies'] });
+                  },
+                },
+              );
+            } else {
+              queryClient.invalidateQueries({ queryKey: ['studies'] });
+            }
             setOpen(false);
           },
         },

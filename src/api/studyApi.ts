@@ -43,8 +43,17 @@ const useGetStudyQuery = ({ studyId, enabled }: { studyId: number; enabled?: boo
   return useQuery<StudyDetail>(['studies', studyId], fetcher, { enabled });
 };
 
-const useEditStudyThumbnailMutation = ({ studyId }: { studyId: number }) => {
-  const fetcher = () => axios.patch(`/studies/${studyId}/thumbnail`);
+const useEditStudyThumbnailMutation = () => {
+  const fetcher = ({ studyId, thumbnail }: { studyId: number; thumbnail: Blob | null }) => {
+    const formData = new FormData();
+    if (thumbnail) formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/studies/${studyId}/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
 
   return useMutation(fetcher);
 };
