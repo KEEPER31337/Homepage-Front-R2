@@ -31,7 +31,9 @@ const DeleteSeminarModal = ({ open, setOpen }: DeleteSeminarModalProps) => {
   };
 
   useEffect(() => {
-    setSeminarId(Number(seminarList?.at(0)?.id));
+    if (seminarList && seminarList.length > 0) {
+      setSeminarId(Number(seminarList[0].id));
+    }
   }, [seminarList]);
 
   return (
