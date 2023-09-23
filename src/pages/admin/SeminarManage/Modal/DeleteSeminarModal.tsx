@@ -11,7 +11,7 @@ interface DeleteSeminarModalProps {
 
 const DeleteSeminarModal = ({ open, setOpen }: DeleteSeminarModalProps) => {
   const { data: seminarList } = useGetSeminarListQuery();
-  const { mutate: deleteSeminar, data: aaa } = useDeleteSeminarMutation();
+  const { mutate: deleteSeminar } = useDeleteSeminarMutation();
   const [seminarId, setSeminarId] = useState(0);
 
   const handleClose = () => {
@@ -21,7 +21,6 @@ const DeleteSeminarModal = ({ open, setOpen }: DeleteSeminarModalProps) => {
   const handleDeleteSeminarButtonClick = () => {
     deleteSeminar(seminarId, {
       onSuccess: () => {
-        console.log(aaa);
         handleClose();
       },
     });
