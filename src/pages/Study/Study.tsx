@@ -66,8 +66,9 @@ const Study = () => {
           <Selector
             className="w-28"
             name="season"
-            options={seasonList}
-            value={currentPeriod.season}
+            disabled={!isAfterOldYearBound}
+            options={isAfterOldYearBound ? seasonList : [{ id: '전체', content: '전체' }]}
+            value={isAfterOldYearBound ? currentPeriod.season : '전체'}
             onChange={handlePeriodChange}
           />
         </div>
