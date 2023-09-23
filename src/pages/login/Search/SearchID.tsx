@@ -61,11 +61,11 @@ const SearchID = () => {
             <p className="text-xs sm:text-paragraph">아이디 조회를 위한 인증코드가 입력한 이메일로 발송됩니다.</p>
           </div>
           <Divider className="bg-pointBlue" />
-          <div className="mx-2 my-16 flex justify-between gap-2 sm:mx-20">
-            <p className="mt-4 text-paragraph leading-4 sm:text-base">이메일</p>
+          <div className="mx-2 my-14 flex flex-col gap-2 text-left sm:mx-20 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-paragraph leading-4 sm:text-base">이메일</p>
             <StandardInput
               hasBackground
-              className="w-[80%] sm:w-[70%]"
+              className="w-full sm:w-[70%]"
               required
               name="email"
               value={email}
