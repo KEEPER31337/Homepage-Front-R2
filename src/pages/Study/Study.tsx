@@ -97,7 +97,7 @@ const Study = () => {
           )}
         </div>
       ) : (
-        <OldStudy list={[]} memberId={-1} toggleOpen={toggleStudyAccoridionOpen} setModalInfo={setModalInfo} />
+        <OldStudy />
       )}
       <StudyModal
         open={studyModalOpen}
