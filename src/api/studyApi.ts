@@ -49,8 +49,9 @@ const useEditStudyThumbnailMutation = ({ studyId }: { studyId: number }) => {
   return useMutation(fetcher);
 };
 
-const useEditStudyMutation = ({ studyId, studyInfo }: { studyId: number; studyInfo: StudyCore }) => {
-  const fetcher = () => axios.put(`/studies/${studyId}`, studyInfo);
+const useEditStudyMutation = () => {
+  const fetcher = ({ studyId, studyInfo }: { studyId: number; studyInfo: StudyCore }) =>
+    axios.put(`/studies/${studyId}`, studyInfo);
 
   return useMutation(fetcher);
 };

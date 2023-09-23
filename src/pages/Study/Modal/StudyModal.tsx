@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import { InputLabel, Stack, Typography } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
 import { PeriodicInfo, StudyInfo } from '@api/dto';
-import { useAddStudyMutation, useGetStudyQuery } from '@api/studyApi';
+import { useAddStudyMutation, useEditStudyMutation, useGetStudyQuery } from '@api/studyApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -30,21 +31,40 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
   const { control, getValues } = useForm({ mode: 'onBlur' });
   const { data: studyDetail } = useGetStudyQuery({ studyId: selectedStudyInfo?.studyId ?? -1, enabled: isEditMode });
   const { mutate: addStudy } = useAddStudyMutation();
+  const { mutate: editStudy } = useEditStudyMutation();
+  const queryClient = useQueryClient();
 
   const handleAddActionButtonClick = () => {
+    const newStudyInfo = {
+      title: getValues('studyTitle'),
+      information: getValues('studyInformation'),
+      gitLink: getValues('gitLink'),
+      notionLink: getValues('notionLink'),
+      etcTitle: getValues('etcTitle'),
+      etcLink: getValues('etcLink'),
+      year: currentPeriod.year,
+      season: currentPeriod.season,
+      memberIds,
+    };
+
+    if (isEditMode && selectedStudyInfo) {
+      editStudy(
+        {
+          studyId: selectedStudyInfo.studyId,
+          studyInfo: newStudyInfo,
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['studies'] });
+            setOpen(false);
+          },
+        },
+      );
+      return;
+    }
     addStudy(
       {
-        request: {
-          title: getValues('studyTitle'),
-          information: getValues('studyInformation'),
-          gitLink: getValues('gitLink'),
-          notionLink: getValues('notionLink'),
-          etcTitle: getValues('etcTitle'),
-          etcLink: getValues('etcLink'),
-          year: currentPeriod.year,
-          season: currentPeriod.season,
-          memberIds,
-        },
+        request: newStudyInfo,
         thumbnail,
       },
       {
