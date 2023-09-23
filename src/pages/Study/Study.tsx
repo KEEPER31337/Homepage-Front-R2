@@ -37,6 +37,7 @@ const Study = () => {
   const [studyAccoridionOpen, toggleStudyAccoridionOpen] = useReducer((prev) => !prev, false);
   const [studyModalOpen, setStudyModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ModalInfo>({ mode: 'Add' });
+  const isAfterOldYearBound = Number(currentPeriod.year) >= OLD_YEAR_BOUND;
 
   const { data: studyList } = useGetStudyListQuery({ year: currentPeriod.year, season: currentPeriod.season });
 
@@ -70,15 +71,13 @@ const Study = () => {
             onChange={handlePeriodChange}
           />
         </div>
-        {Number(currentPeriod.year) >= OLD_YEAR_BOUND && (
+        {isAfterOldYearBound && (
           <ActionButton mode="add" onClick={handleStudyCreateButtonClick}>
             추가
           </ActionButton>
         )}
       </div>
-      {Number(currentPeriod.year) < OLD_YEAR_BOUND ? (
-        <OldStudy list={[]} memberId={-1} toggleOpen={toggleStudyAccoridionOpen} setModalInfo={setModalInfo} />
-      ) : (
+      {isAfterOldYearBound ? (
         <div>
           {studyList && studyList.length > 0 ? (
             studyList.map((study) => (
@@ -96,6 +95,8 @@ const Study = () => {
             </Typography>
           )}
         </div>
+      ) : (
+        <OldStudy list={[]} memberId={-1} toggleOpen={toggleStudyAccoridionOpen} setModalInfo={setModalInfo} />
       )}
       <StudyModal
         open={studyModalOpen}
