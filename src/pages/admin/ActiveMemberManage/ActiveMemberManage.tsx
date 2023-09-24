@@ -12,32 +12,23 @@ type SortInfo = {
   generation: string;
   realName: string;
 };
-type MeritInfo = {
-  awarders: MultiAutoCompleteValue;
-  meritTypeId: number;
-};
 
 const ActiveMemberManage = () => {
-  const [meritInfo, setMeritInfo] = useState<MeritInfo>({
-    awarders: [],
-    meritTypeId: 0,
-  });
-
+  const [selectedMemberList, setSelectedMemberList] = useState<MultiAutoCompleteValue>([]);
   const [sortInfo, setSortInfo] = useState<SortInfo>({
     generation: '내림차순',
     realName: '가나다순',
   });
-  const memberTypeId = [
-    { type: '활동회원', id: 2, color: 'pointBlue' },
-    { type: '휴면', id: 3, color: 'amber-300' },
-    { type: '졸업', id: 4, color: 'black' },
-    { type: '비회원', id: 1, color: 'white' },
-    { type: '탈퇴', id: 5, color: '' },
-  ];
   const [memberList, setMemberList] = useState<MemberDetailInfo[]>([]);
-  const [selectedMemberList, setSelectedMemberList] = useState<MemberDetailInfo[]>([]);
 
-  console.log('meritInfo', meritInfo);
+  const memberTypeList = [
+    { type: '활동회원', typeId: 2, color: 'pointBlue' },
+    { type: '휴면', typeId: 3, color: 'amber-300' },
+    { type: '졸업', typeId: 4, color: 'black' },
+    { type: '비회원', typeId: 1, color: 'white' },
+    { type: '탈퇴', typeId: 5, color: '' },
+  ];
+
   const generationSearchList = [
     {
       id: '내림차순',
@@ -81,12 +72,15 @@ const ActiveMemberManage = () => {
     setMemberList(sortedList);
   };
 
-  const toggleMemberSelection = (memberId: number) => {
+  const toggleMemberSelection = (memberInfo: MemberDetailInfo) => {
     setSelectedMemberList((prevSelectedMembers: any) => {
-      const isMemberSelected = prevSelectedMembers.some((member: MemberDetailInfo) => member.memberId === memberId);
+      const isMemberSelected = prevSelectedMembers.some((member: any) => member.value === memberInfo.memberId);
       return isMemberSelected
-        ? prevSelectedMembers.filter((member: MemberDetailInfo) => member.memberId !== memberId)
-        : [...prevSelectedMembers, memberList.find((member) => member.memberId === memberId)];
+        ? prevSelectedMembers.filter((member: any) => member.value !== memberInfo.memberId)
+        : [
+            ...prevSelectedMembers,
+            { value: memberInfo.memberId, label: `${memberInfo.realName} (${memberInfo.generation})` },
+          ];
     });
   };
 
@@ -131,13 +125,13 @@ const ActiveMemberManage = () => {
               <MemberCard
                 key={memberInfo.memberId}
                 memberInfo={memberInfo}
-                onClick={() => toggleMemberSelection(memberInfo.memberId)}
-                isSelected={selectedMemberList.some((member) => member.memberId === memberInfo.memberId)}
+                onClick={() => toggleMemberSelection(memberInfo)}
+                isSelected={selectedMemberList.some((member) => member.value === memberInfo.memberId)}
               />
             ))}
           </div>
         </div>
-        <div className="col-span-2 space-y-2">
+        {/* <div className="col-span-2 space-y-2">
           <div className="flex items-center space-x-2 p-1">
             <div className="h-4 w-4 rounded-full bg-amber-300" />
             <Typography>휴면</Typography>
@@ -149,7 +143,7 @@ const ActiveMemberManage = () => {
                 key={memberInfo.memberId}
                 memberInfo={memberInfo}
                 onClick={() => toggleMemberSelection(memberInfo.memberId)}
-                isSelected={selectedMemberList.some((member) => member.memberId === memberInfo.memberId)}
+                isSelected={selectedMemberList.some((member) => member.value === memberInfo.memberId)}
               />
             ))}
           </div>
@@ -165,7 +159,7 @@ const ActiveMemberManage = () => {
                 key={memberInfo.memberId}
                 memberInfo={memberInfo}
                 onClick={() => toggleMemberSelection(memberInfo.memberId)}
-                isSelected={selectedMemberList.some((member) => member.memberId === memberInfo.memberId)}
+                isSelected={selectedMemberList.some((member) => member.value === memberInfo.memberId)}
               />
             ))}
           </div>
@@ -182,35 +176,31 @@ const ActiveMemberManage = () => {
                 key={memberInfo.memberId}
                 memberInfo={memberInfo}
                 onClick={() => toggleMemberSelection(memberInfo.memberId)}
-                isSelected={selectedMemberList.some((member) => member.memberId === memberInfo.memberId)}
+                isSelected={selectedMemberList.some((member) => member.value === memberInfo.memberId)}
               />
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex justify-between">
-        {console.log('===meritInfo.awarders===', meritInfo.awarders)}
-        {meritInfo.awarders && (
+        {selectedMemberList && (
           <AutoComplete
             className="w-96"
-            value={meritInfo.awarders}
+            value={selectedMemberList}
             multiple
-            onChange={(v) => {
-              setMeritInfo((prev) => ({ ...prev, awarders: v }));
-            }}
+            onChange={setSelectedMemberList}
             items={originMemberList?.map((member) => ({
               value: member.memberId,
               label: `${member.realName} (${member.generation})`,
-              group: `s`,
             }))}
           />
         )}
         <div className="flex space-x-2">
-          {memberTypeId.map((member) => (
+          {memberTypeList.map((member) => (
             <OutlinedButton
-              key={member.id}
+              key={member.typeId}
               onClick={() => {
-                console.log(member.id, '선택한 인원 : ', selectedMemberList);
+                console.log(member.typeId, '선택한 인원 : ', selectedMemberList);
               }}
             >
               {member.color && <div className={`bg-${member.color}  mr-2 h-4 w-4 rounded-full`} />}

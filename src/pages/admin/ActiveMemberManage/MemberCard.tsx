@@ -14,7 +14,6 @@ const MemberCard = ({ memberInfo, onClick, isSelected }: MemberCardProps) => {
     onClick();
   };
 
-  console.log(isSelected);
   return (
     <button
       type="button"
@@ -28,10 +27,10 @@ const MemberCard = ({ memberInfo, onClick, isSelected }: MemberCardProps) => {
         className="mr-1 !h-7 !w-7 !bg-subBlack !text-white "
         src={memberInfo?.thumbnailPath ? getServerImgUrl(memberInfo?.thumbnailPath) : ''}
       />
-      <Typography variant="small" className="!mr-1 w-8 text-right">
-        {memberInfo.generation}기
+      <Typography className="!text-[14px]">{memberInfo.realName}</Typography>{' '}
+      <Typography variant="small" className="!ml-1">
+        ({memberInfo.generation})
       </Typography>
-      <Typography className="!text-[14px]">{memberInfo.realName}</Typography>
     </button>
   );
 };
