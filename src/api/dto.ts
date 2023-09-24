@@ -185,24 +185,15 @@ export interface SignUpDuplication {
 }
 
 export interface SeminarInfo {
-  seminarId: number;
-  seminarName: string;
+  id: number;
+  name: string;
   openTime: DateTime;
   attendanceCloseTime: DateTime;
   latenessCloseTime: DateTime;
+  attendanceCode: string;
+  registerTime: DateTime;
+  updateTime: DateTime;
   statusType: ActivityStatus;
-  attendanceCode: string;
-}
-
-export interface AvailableSeminarInfo {
-  id: number;
-  openTime: string;
-  attendanceCloseTime: string;
-  latenessCloseTime: string;
-  attendanceCode: string;
-  name: string;
-  registerTime: string;
-  updateTime: string;
 }
 
 export interface AttendResponseData {
@@ -482,12 +473,6 @@ export interface JobList {
   jobName: string;
 }
 
-export interface memberInfo {
-  memberId: number;
-  memberName: string;
-  generation: string;
-}
-
 export interface MemberPostInfo {
   id: number;
   title: string;
@@ -567,6 +552,7 @@ export interface FollowInfo {
 
 export interface ProfileInfo {
   id: number;
+  studentId?: number;
   realName: string;
   generation: string;
   birthday: string;

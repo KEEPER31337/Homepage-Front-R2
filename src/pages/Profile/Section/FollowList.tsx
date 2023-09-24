@@ -12,7 +12,7 @@ const FollowList = ({ followlist }: FollowListProps) => {
   const navigate = useNavigate();
 
   return (
-    <List className="flex flex-col !p-0">
+    <List className="flex !h-[120px] flex-col !overflow-auto !bg-pointBlue/10 !p-0">
       <ListItem className="flex flex-col" disablePadding>
         {followlist.map((followInfo) => (
           <ListItemButton
@@ -25,11 +25,10 @@ const FollowList = ({ followlist }: FollowListProps) => {
             <ListItemIcon>
               <Avatar
                 className="m-1 !h-8 !w-8 !bg-subBlack !text-white"
-                alt="profile thumbnail"
                 src={followInfo?.thumbnailPath ? getServerImgUrl(followInfo?.thumbnailPath) : ''}
               />
             </ListItemIcon>
-            <ListItemText primary={`${followInfo.generation.replace('.0', '')}기 ${followInfo.name}`} />
+            <ListItemText primary={`${followInfo.generation}기 ${followInfo.name}`} />
           </ListItemButton>
         ))}
       </ListItem>

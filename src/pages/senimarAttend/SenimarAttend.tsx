@@ -42,25 +42,23 @@ const SeminarAttend = () => {
 
   return (
     <div className="mt-[180px] flex justify-between text-center [&>*:nth-child(2)]:mt-[-50px]">
-      {cardIdOrder.map((seminarId) => {
-        return (
-          <SeminarCard key={seminarId}>
-            {seminarId !== undefined ? (
-              <div>
-                {isStarterMember() ? (
-                  <BossCardContent seminarId={seminarId} />
-                ) : (
-                  <MemberCardContent seminarId={seminarId} />
-                )}
-              </div>
-            ) : (
-              <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">
-                예정된 세미나가 없습니다.
-              </Typography>
-            )}
-          </SeminarCard>
-        );
-      })}
+      {Array.from({ length: 3 }, (v, i) => i).map((index) => (
+        <SeminarCard key={index}>
+          {cardIdOrder[index] !== undefined ? (
+            <div>
+              {isStarterMember() ? (
+                <BossCardContent seminarId={Number(cardIdOrder[index])} />
+              ) : (
+                <MemberCardContent seminarId={Number(cardIdOrder[index])} />
+              )}
+            </div>
+          ) : (
+            <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">
+              예정된 세미나가 없습니다.
+            </Typography>
+          )}
+        </SeminarCard>
+      ))}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
-import MyBoardTable from './BoardTable/MyBoardTable';
-import TempBoardTable from './BoardTable/TempBoardTable';
+import MyBoardTable from './Table/MyBoardTable';
+import TempBoardTable from './Table/TempBoardTable';
 
 const BoardTab = () => {
   return (

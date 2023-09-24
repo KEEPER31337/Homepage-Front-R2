@@ -101,7 +101,7 @@ const SearchID = () => {
                 className="cursor-pointer hover:underline hover:duration-300"
                 onClick={() => setMailAuthenticationModalOpen(true)}
               >
-                인증메일이 오지 않았나요?
+                인증 메일이 오지 않았나요?
               </button>
               <MailAuthenticationModal
                 open={mailAuthenticationModalOpen}

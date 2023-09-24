@@ -8,3 +8,4 @@ export const KEEPER_COLOR = {
 };
 
 export const SIDEBAR_WIDTH = 240;
+export const HEADER_HEIGHT = { xs: 56, sm: 66 };
