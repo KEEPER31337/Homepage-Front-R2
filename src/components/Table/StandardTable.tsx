@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { PaginationOption } from '@components/Pagination/StandardTablePagination.interface';
@@ -29,7 +29,7 @@ const StandardTable = <T extends Record<string, any>>({
   const isCheckboxColumn = (columnKey: Column<T>['key']) => columnKey === 'checkbox';
 
   return (
-    <div>
+    <Box sx={{ overflow: 'auto' }}>
       <Table size={size} sx={{ '.MuiTableCell-sizeSmall': { paddingY: '14px' } }}>
         <TableHead className="bg-middleBlack">
           <TableRow>
@@ -37,6 +37,7 @@ const StandardTable = <T extends Record<string, any>>({
               <TableCell
                 padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
                 className="!border-subBlack !text-white"
+                width={column.width}
                 key={column.key as string}
               >
                 {isCheckboxColumn(column.key) ? <Checkbox /> : column.headerName}
@@ -123,7 +124,7 @@ const StandardTable = <T extends Record<string, any>>({
         </TableBody>
       </Table>
       <StandardTablePagination {...paginationOption} />
-    </div>
+    </Box>
   );
 };
 

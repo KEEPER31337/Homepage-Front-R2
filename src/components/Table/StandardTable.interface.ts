@@ -1,6 +1,7 @@
 export interface Column<T> {
   key: keyof T | 'checkbox';
   headerName: string;
+  width?: string | number;
 }
 
 export type Row<T> = T & {
