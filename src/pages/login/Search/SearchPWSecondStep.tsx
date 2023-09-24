@@ -62,42 +62,48 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
 
   return (
     <>
-      <div className="pb-8 pt-10 text-center">
-        <p>신규 비밀번호를 입력해주세요.</p>
-        <p>입력한 비밀번호로 재설정됩니다.</p>
+      <div className="pb-6 pt-8 text-center text-xs sm:pb-8 sm:pt-10">
+        <p className="mb-4 text-paragraph sm:text-base">신규 비밀번호를 입력해주세요.</p>
+        <p className="text-xs sm:text-paragraph">입력한 비밀번호로 재설정됩니다.</p>
       </div>
       <Divider className="bg-pointBlue" />
-      <div className="mx-20 my-12 flex flex-col justify-center gap-10 text-right">
-        <div className="flex justify-between gap-10">
-          <p className="mt-4 leading-4">신규 비밀번호</p>
-          <div className="flex w-[70%] flex-col">
-            <StandardInput hasBackground required name="newPassword" value={form.newPassword} onChange={handleChange} />
-            {form.newPassword && !passwordRegex.test(form.newPassword) && (
-              <p className="mt-2 text-left text-red-500">8~20자 영문과 숫자를 사용하세요.</p>
-            )}
-          </div>
+      <div className="mx-2 my-14 flex flex-col justify-center gap-6 sm:mx-20 sm:gap-10">
+        <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-paragraph leading-4 sm:text-base">신규 비밀번호</p>
+          <StandardInput
+            hasBackground
+            className="w-full sm:w-[70%]"
+            required
+            name="newPassword"
+            value={form.newPassword}
+            onChange={handleChange}
+          />
+          {form.newPassword && !passwordRegex.test(form.newPassword) && (
+            <p className="mt-2 text-left text-red-500">8~20자 영문과 숫자를 사용하세요.</p>
+          )}
         </div>
-        <div className="flex justify-between gap-10">
-          <p className="mt-4 leading-4">비밀번호 확인</p>
-          <div className="flex w-[70%] flex-col">
-            <StandardInput
-              hasBackground
-              required
-              name="confirmPassword"
-              value={form.confirmPassword}
-              onChange={handleChange}
-            />
-            {form.confirmPassword !== '' && (
-              <p className={`${isSame ? 'text-pointBlue' : 'text-red-500'} text-left`}>
-                {isSame ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
-              </p>
-            )}
-          </div>
+        <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-paragraph leading-4 sm:text-base">비밀번호 확인</p>
+          <StandardInput
+            hasBackground
+            className="w-full sm:w-[70%]"
+            required
+            name="confirmPassword"
+            value={form.confirmPassword}
+            onChange={handleChange}
+            helperText={
+              form.confirmPassword !== '' && (
+                <p className={`${isSame ? 'text-pointBlue' : 'text-red-500'} text-left`}>
+                  {isSame ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+                </p>
+              )
+            }
+          />
         </div>
       </div>
       <Divider className="bg-pointBlue" />
       <div className="mt-10 text-center">
-        <OutlinedButton disabled={!isSamePassword} onClick={handleConfirmSecondStep}>
+        <OutlinedButton className="w-full sm:w-1/5" disabled={!isSamePassword} onClick={handleConfirmSecondStep}>
           확인
         </OutlinedButton>
       </div>
