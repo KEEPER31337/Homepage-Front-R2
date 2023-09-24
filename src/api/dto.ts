@@ -24,6 +24,7 @@ export interface MemberInfo {
   emailAddress: string;
   realName: string;
   thumbnailPath: string | null;
+  generation: string;
   memberJobs: Role[];
 }
 

@@ -62,7 +62,12 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
       renderInput={(params) => <TextField {...params} variant="standard" placeholder={placeholder} />}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
-          <Chip label={option.label} {...getTagProps({ index })} disabled={option?.fixed} className="!-z-10" />
+          <Chip
+            label={option.label}
+            {...getTagProps({ index })}
+            disabled={option?.fixed}
+            className="!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px] font-semibold"
+          />
         ))
       }
       renderOption={(props, option) => (

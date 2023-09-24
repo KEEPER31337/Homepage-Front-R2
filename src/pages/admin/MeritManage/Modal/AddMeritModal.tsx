@@ -69,7 +69,7 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
         <div>
           <Typography>회원</Typography>
           <AutoComplete
-            className="w-full"
+            className="!-z-10 w-full"
             value={meritInfo.awarders}
             multiple
             onChange={(v) => {

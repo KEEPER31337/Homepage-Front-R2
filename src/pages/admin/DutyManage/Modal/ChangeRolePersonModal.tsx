@@ -96,7 +96,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
       <div className="flex items-center">
         <img className="w-[150px]" alt={jobName} src={badgeImage} />
         <AutoComplete
-          className="mx-12 w-60"
+          className="!-z-10 mx-12 w-60"
           items={sortedOptions}
           value={value}
           grouped

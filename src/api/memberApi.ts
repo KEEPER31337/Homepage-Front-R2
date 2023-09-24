@@ -113,6 +113,13 @@ const useEditPasswordMutation = () => {
   return useMutation(fetcher);
 };
 
+const useWithdrawalMutation = () => {
+  const fetcher = ({ rawPassword }: { rawPassword: string }) =>
+    axios.patch('/members', { rawPassword }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
 export {
   useGetMembersQuery,
   useGetProfileQuery,
@@ -123,4 +130,5 @@ export {
   useNewEmailAuthMutation,
   useEditEmailMutation,
   useEditPasswordMutation,
+  useWithdrawalMutation,
 };
