@@ -49,7 +49,11 @@ const MemberTypeSection = ({
               <div className={`bg-${memberType.color} mr-2 h-4 w-4 rounded-full`} />
               <Typography>{memberType.renderType}</Typography>
             </div>
-            <div className="grid grid-cols-2 gap-1">
+            <div
+              className={`${
+                memberType.type === '정회원' || memberType.type === '휴면회원' ? 'grid-cols-2' : 'grid-cols-1'
+              } grid gap-1`}
+            >
               {memberList
                 .filter((v) => v.memberType === memberType.type)
                 .map((memberInfo) => (

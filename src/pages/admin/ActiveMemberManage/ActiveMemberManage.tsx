@@ -20,7 +20,7 @@ const ActiveMemberManage = () => {
   const [selectedMemberList, setSelectedMemberList] = useState<MultiAutoCompleteValue>([]);
   const [memberList, setMemberList] = useState<MemberDetailInfo[]>([]);
 
-  const { data: originMemberList } = useGetMembersQuery({
+  useGetMembersQuery({
     onSuccess: (data: MemberDetailInfo[]) => {
       setMemberList(data);
     },
@@ -42,7 +42,11 @@ const ActiveMemberManage = () => {
           selectedMemberList={selectedMemberList}
           setSelectedMemberList={setSelectedMemberList}
         />
-        <ChangeMemberTypeButton memberTypeList={memberTypeList} selectedMemberList={selectedMemberList} />
+        <ChangeMemberTypeButton
+          memberTypeList={memberTypeList}
+          selectedMemberList={selectedMemberList}
+          setSelectedMemberList={setSelectedMemberList}
+        />
       </div>
     </div>
   );

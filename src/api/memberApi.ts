@@ -126,6 +126,18 @@ const useWithdrawalMutation = () => {
   return useMutation(fetcher);
 };
 
+const useEditMemberTypeMutation = () => {
+  const queryClient = useQueryClient();
+  const fetcher = ({ typeId, memberIds }: { typeId: number; memberIds: number[] }) =>
+    axios.patch(`/members/types/${typeId}`, { memberIds });
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: memberKeys.memberList });
+    },
+  });
+};
+
 export {
   useGetMembersQuery,
   useGetProfileQuery,
@@ -137,4 +149,5 @@ export {
   useEditEmailMutation,
   useEditPasswordMutation,
   useWithdrawalMutation,
+  useEditMemberTypeMutation,
 };
