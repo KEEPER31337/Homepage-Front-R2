@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { IconButton, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
+import { IconButton, ImageList, ImageListItem, ImageListItemBar, useMediaQuery, useTheme } from '@mui/material';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 import ServerImg from '@components/Image/ServerImg';
 import { Row } from '@components/Table/StandardTable.interface';
 import { CardDetailInfo, CardMainInfo, InteractionScore, PostingCardProps } from './PostingCard';
-
-const NOTICE_VIEW_NUMBER = 3;
 
 const FixedPostingCard = <T,>({
   fixedRows,
@@ -15,6 +13,13 @@ const FixedPostingCard = <T,>({
   onClick?: ({ rowData }: { rowData: Row<T> }) => void;
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+
+  // eslint-disable-next-line no-nested-ternary
+  const NOTICE_VIEW_NUMBER = isMobile ? 1 : isTablet ? 2 : 3;
 
   const handlePrevButtonClick = () => {
     setCurrentIndex((prevIndex) => prevIndex - 1);

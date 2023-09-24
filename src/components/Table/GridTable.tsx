@@ -16,7 +16,7 @@ const GridTable = <T,>({ fixedRows, rows, onRowClick, paginationOption }: GridTa
   return (
     <div className="flex flex-col justify-center">
       {fixedRows && fixedRows.length > 0 && <FixedPostingCard<T> fixedRows={fixedRows} onClick={onRowClick} />}
-      <div className="mb-1 grid grid-cols-5 gap-2">
+      <div className="m-auto mb-1 grid w-full grid-cols-1 place-items-center gap-2 sm:w-fit sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
         {rows.map((row) => (
           <PostingCard<T> key={row.id} row={row} onClick={onRowClick} />
         ))}

@@ -73,7 +73,7 @@ const PostingCard = <T,>({
     <Card
       className={`${
         onClick ? 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none' : ''
-      } w-52 !rounded-none !bg-middleBlack !bg-none`}
+      } w-full !rounded-none !bg-middleBlack !bg-none sm:w-52`}
       onClick={onClick ? () => onClick({ rowData: row }) : undefined}
     >
       {row.isSecret && <AiFillLock size={50} className="m-auto h-[118px] fill-pointBlue/30" />}
