@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
 import { AttendSeminarInfo } from '@api/dto';
 import { useGetAttendSeminarListMutation, useGetSeminarListQuery } from '@api/seminarApi';
 import usePagination from '@hooks/usePagination';
 import ActionButton from '@components/Button/ActionButton';
 import StandardTable from '@components/Table/StandardTable';
-import { Column } from '@components/Table/StandardTable.interface';
+import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 import PageTitle from '@components/Typography/PageTitle';
 
 import AddSeminarModal from './Modal/AddSeminarModal';
@@ -34,12 +35,21 @@ const SeminarManage = () => {
   useEffect(() => {
     if (seminarList) {
       const newColumn = seminarList.map((seminar) => ({
-        key: `date${seminar.id}` as keyof SeminarManageRow,
+        key: `date${seminar.name}` as keyof SeminarManageRow /* TODO API 변경 후 id로 적용 `date${seminar.id}` */,
         headerName: seminar.name,
       }));
       setDynamicColumn(seminarManageColumn.concat(newColumn));
     }
   }, [seminarList]);
+
+  const childComponent = ({ key, value, rowData }: ChildComponent<SeminarManageRow>) => {
+    if (key.slice(0, 4) === 'date') {
+      return rowData.attendances.find((attendance) =>
+        DateTime.fromISO(attendance.attendDate).equals(DateTime.fromISO(key.slice(4).replaceAll('.', '-'))),
+      )?.attendanceStatus; /* TODO API 변경 후 id로 적용 `date${seminar.id}` */
+    }
+    return value;
+  };
 
   return (
     <div>
@@ -54,6 +64,7 @@ const SeminarManage = () => {
       </div>
       <StandardTable<SeminarManageRow>
         columns={dynamicColumn}
+        childComponent={childComponent}
         rows={
           attendSeminarList?.content.map((attendSeminar) => ({ id: attendSeminar.memberId, ...attendSeminar })) || []
         }
