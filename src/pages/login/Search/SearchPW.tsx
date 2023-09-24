@@ -16,11 +16,7 @@ const SearchPW = () => {
     2: <SearchPWSecondStep setCurrentStep={setCurrentStep} firstForm={form} />,
     3: <SearchPWThirdStep />,
   };
-  return (
-    <div className="h-full w-full items-center justify-center">
-      <div className="h-[480px] w-[700px] items-center justify-center">{stepInputSection[currentStep]}</div>
-    </div>
-  );
+  return <div className="px-6 sm:h-[492px] sm:w-[690px] sm:px-0">{stepInputSection[currentStep]}</div>;
 };
 
 export default SearchPW;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Divider } from '@mui/material';
+import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
 import { validateEmail } from '@utils/validateEmail';
@@ -36,6 +36,10 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
   const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
   const [isValidAuthCode, setIsValidAuthCode] = useState(true);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setForm({
@@ -86,20 +90,27 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
 
   return (
     <>
-      <div className="pb-8 pt-10 text-center">
-        <p>가입 시 등록한 이메일을 입력해주세요.</p>
-        <p>비밀번호 재설정을 위한 인증코드가 이메일로 발송됩니다.</p>
+      <div className="pb-6 pt-8 text-center text-xs sm:pb-8 sm:pt-10">
+        <p className="mb-4 text-paragraph sm:text-base">가입 시 등록한 이메일을 입력해주세요.</p>
+        <p className="text-xs sm:text-paragraph">아이디 조회를 위한 인증코드가 입력한 이메일로 발송됩니다.</p>
       </div>
       <Divider className="bg-pointBlue" />
-      <div className="mx-20 my-12 flex flex-col justify-center gap-10">
-        <div className="relative flex justify-between gap-10">
-          <p className="mt-4 leading-4">아이디</p>
-          <StandardInput hasBackground className="w-[70%]" required name="id" value={form.id} onChange={handleChange} />
+      <div className="mx-2 my-14 flex flex-col justify-center gap-6 sm:mx-20 sm:gap-10">
+        <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-paragraph leading-4 sm:text-base">아이디</p>
+          <StandardInput
+            hasBackground
+            className="w-full sm:w-[70%]"
+            required
+            name="id"
+            value={form.id}
+            onChange={handleChange}
+          />
         </div>
-        <div className="relative flex justify-between gap-10">
-          <p className="mt-4 leading-4">이메일</p>
+        <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-paragraph leading-4 sm:text-base">이메일</p>
           <EmailAuthInput
-            className="w-[70%]"
+            className="w-full sm:w-[70%]"
             inputDisabled={isSent}
             value={form.email}
             onChange={handleChange}
@@ -115,10 +126,10 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
         >
           해당 아이디 + 이메일로 가입된 정보가 없습니다.
         </WarningModal>
-        <div className="flex justify-between gap-10">
-          <p className="mt-4 leading-4">인증코드</p>
+        <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-paragraph leading-4 sm:text-base">인증코드</p>
           <TimerInput
-            className="w-[70%]"
+            className="w-full sm:w-[70%]"
             name="verificationCode"
             value={form.verificationCode}
             onChange={handleChange}
@@ -126,17 +137,16 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             expirationTime={DateTime.now().plus({ seconds: TIMER_DURATION_SECOND })}
           />
         </div>
-        <div className="responsive flex w-full justify-between">
-          {!isValidAuthCode && (
-            <p className="absolute left-20 text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>
-          )}
-          <button
-            type="button"
-            className="absolute right-20 cursor-pointer hover:underline hover:duration-300"
+        {!isValidAuthCode && <p className="text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>}
+        <div className="relative -mx-2 sm:-mx-20 ">
+          <Typography
+            variant={isMobile ? 'small' : 'paragraph'}
+            className="absolute right-0 w-fit hover:underline hover:underline-offset-4"
+            component="button"
             onClick={() => setMailAuthenticationModalOpen(true)}
           >
             인증 메일이 오지 않았나요?
-          </button>
+          </Typography>
           <MailAuthenticationModal
             open={mailAuthenticationModalOpen}
             onClose={() => setMailAuthenticationModalOpen(false)}
@@ -147,7 +157,11 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
       </div>
       <Divider className="bg-pointBlue" />
       <div className="mt-10 text-center">
-        <OutlinedButton disabled={!(form.verificationCode.length > 0)} onClick={handleConfirmFirstStep}>
+        <OutlinedButton
+          className="w-full sm:w-1/5"
+          disabled={!(form.verificationCode.length > 0)}
+          onClick={handleConfirmFirstStep}
+        >
           확인
         </OutlinedButton>
       </div>

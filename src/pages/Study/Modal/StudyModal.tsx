@@ -6,6 +6,7 @@ import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
 import { useRecoilValue } from 'recoil';
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
+import { PeriodicInfo } from '@api/dto';
 import { useAddStudyMutation } from '@api/studyApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import memberState from '@recoil/member.recoil';
@@ -22,9 +23,10 @@ interface StudyModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   modalInfo: ModalInfo;
+  currentPeriod: PeriodicInfo;
 }
 
-const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
+const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps) => {
   const userInfo = useRecoilValue(memberState);
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
 
@@ -48,8 +50,8 @@ const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
           notionLink: getValues('notionLink'),
           etcTitle: getValues('etcTitle'),
           etcLink: getValues('etcLink'),
-          year: 2023 /* TODO 년도 학기 정보 props로 받아오기 */,
-          season: 1,
+          year: currentPeriod.year,
+          season: currentPeriod.season,
           memberIds: memberIds?.map((v) => ({ id: v.value as number })),
         },
         thumbnail,

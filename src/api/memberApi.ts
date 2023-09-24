@@ -1,27 +1,56 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { formatGeneration } from '@utils/converter';
 import { ProfileInfo } from './dto';
 
 const profileKeys = {
-  profileInfo: ['profile', 'profileInfo'] as const,
+  profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
 };
 
 const useGetProfileQuery = (memberId: number) => {
-  const fetcher = () => axios.get(`/members/${memberId}/profile`).then(({ data }) => data);
+  const fetcher = () =>
+    axios.get(`/members/${memberId}/profile`).then(({ data }: { data: ProfileInfo }) => {
+      return {
+        ...data,
+        generation: formatGeneration(data.generation),
+        follower: data.follower.map((followerInfo) => {
+          return {
+            ...followerInfo,
+            generation: formatGeneration(followerInfo.generation),
+          };
+        }),
+        followee: data.followee.map((followeeInfo) => {
+          return {
+            ...followeeInfo,
+            generation: formatGeneration(followeeInfo.generation),
+          };
+        }),
+      };
+    });
 
-  return useQuery<ProfileInfo>(profileKeys.profileInfo, fetcher, { enabled: memberId !== 0 });
+  return useQuery<ProfileInfo>(profileKeys.profileInfo(memberId), fetcher, { enabled: memberId !== 0 });
 };
 
-const useFollowMutation = (memberId: number) => {
+const useFollowMemberMutation = (memberId: number) => {
+  const queryClient = useQueryClient();
   const fetcher = () => axios.post(`/members/${memberId}/follow`);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
+    },
+  });
 };
 
-const useUnFollowMutation = (memberId: number) => {
-  const fetcher = () => axios.post(`/members/${memberId}/unfollow`);
+const useUnFollowMemberMutation = (memberId: number) => {
+  const queryClient = useQueryClient();
+  const fetcher = () => axios.delete(`/members/${memberId}/unfollow`);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
+    },
+  });
 };
 
 const useEditProfileMutation = () => {
@@ -46,10 +75,41 @@ const useEditProfileThumbnailMutation = () => {
   return useMutation(fetcher);
 };
 
+const useNewEmailAuthMutation = () => {
+  const fetcher = (email: string) => axios.post('/members/email-auth', { email }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
+const useEditEmailMutation = () => {
+  const fetcher = ({ email, auth, password }: { email: string; auth: string; password: string }) =>
+    axios.patch('/members/email', { email, auth, password }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
+const useEditPasswordMutation = () => {
+  const fetcher = ({ newPassword }: { newPassword: string }) =>
+    axios.patch('/members/change-password', { newPassword }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
+const useWithdrawalMutation = () => {
+  const fetcher = ({ rawPassword }: { rawPassword: string }) =>
+    axios.patch('/members', { rawPassword }).then(({ data }) => data);
+
+  return useMutation(fetcher);
+};
+
 export {
   useGetProfileQuery,
-  useFollowMutation,
-  useUnFollowMutation,
+  useFollowMemberMutation,
+  useUnFollowMemberMutation,
   useEditProfileMutation,
   useEditProfileThumbnailMutation,
+  useNewEmailAuthMutation,
+  useEditEmailMutation,
+  useEditPasswordMutation,
+  useWithdrawalMutation,
 };

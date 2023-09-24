@@ -40,7 +40,7 @@ const PointLogChildComponent = ({ key, value, rowData }: ChildComponent<PointLog
 };
 
 const PointTab = () => {
-  const { page, getRowNumber } = usePagination();
+  const { page, getRowNumber } = usePagination('pointLogPage');
 
   const { data: pointLog } = useGetPointLogQuery({ page });
 
@@ -55,7 +55,7 @@ const PointTab = () => {
           ...item,
         }))}
         childComponent={PointLogChildComponent}
-        paginationOption={{ rowsPerPage: pointLog.size, totalItems: pointLog.totalElements }}
+        paginationOption={{ pageKey: 'pointLogPage', rowsPerPage: pointLog.size, totalItems: pointLog.totalElements }}
       />
     </div>
   );

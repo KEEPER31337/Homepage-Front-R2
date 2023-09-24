@@ -186,24 +186,15 @@ export interface SignUpDuplication {
 }
 
 export interface SeminarInfo {
-  seminarId: number;
-  seminarName: string;
+  id: number;
+  name: string;
   openTime: DateTime;
   attendanceCloseTime: DateTime;
   latenessCloseTime: DateTime;
+  attendanceCode: string;
+  registerTime: DateTime;
+  updateTime: DateTime;
   statusType: ActivityStatus;
-  attendanceCode: string;
-}
-
-export interface AvailableSeminarInfo {
-  id: number;
-  openTime: string;
-  attendanceCloseTime: string;
-  latenessCloseTime: string;
-  attendanceCode: string;
-  name: string;
-  registerTime: string;
-  updateTime: string;
 }
 
 export interface AttendResponseData {

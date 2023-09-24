@@ -30,7 +30,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   const isValidActivityStatus = (value: ActivityStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
-  const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.seminarId;
+  const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.id;
 
   useEffect(() => {
     setAttendStatus(seminarData?.statusType);
@@ -78,7 +78,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         <Typography>가능한 출석 횟수를 초과했습니다.</Typography>
         <Typography>출석 처리에 문제가 있는 경우 회장님에게 문의해주세요</Typography>
       </ConfirmModal>
-      <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarData?.seminarName} 세미나</Typography>
+      <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarData?.name} 세미나</Typography>
       <p className="mb-[14px] mt-[26px]">출석 코드</p>
       <div className="mb-[15px]">
         <SeminarInput
