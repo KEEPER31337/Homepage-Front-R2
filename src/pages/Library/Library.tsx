@@ -42,7 +42,7 @@ const Library = () => {
       <PageTitle>도서검색</PageTitle>
       <div className="mb-2 flex w-full flex-col items-start justify-between md:mb-5 md:flex-row md:items-center">
         <LibrarySearchSection />
-        <div className="mt-1 flex w-full justify-end md:mt-0">
+        <div className="mt-2 flex w-full justify-end md:mt-0">
           <BorrowStatus
             librarian={librarian}
             borrowedBookCount={borrowedBookListData?.totalElement || 0}
