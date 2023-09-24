@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DateTime } from 'luxon';
+import { useAddSeminarMutation } from '@api/seminarApi';
 import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
 import ActionModal from '@components/Modal/ActionModal';
 
@@ -9,31 +10,39 @@ interface AddSeminarModalProps {
 }
 
 const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
-  const [date, setDate] = useState<DateTime | null>(null);
+  const [seminarDate, setSeminarDate] = useState(DateTime.now());
+
+  const { mutate: addSeminar } = useAddSeminarMutation();
+
   const handleClose = () => {
     setOpen(false);
-    setDate(null);
+    setSeminarDate(DateTime.now());
   };
 
   const handleAddSeminarButtonClick = () => {
-    // TODO
-    setDate(null);
+    addSeminar(seminarDate, {
+      onSuccess: () => {
+        handleClose();
+      },
+    });
   };
 
   const handleDateChange = (newValue: DateTime | null) => {
-    setDate(newValue);
+    if (newValue) setSeminarDate(newValue);
   };
 
   return (
     <ActionModal
       open={open}
-      onClose={handleClose}
-      title="세미나 일정 추가"
+      onClose={() => {
+        handleClose();
+      }}
+      title="세미나 추가"
       actionButtonName="추가"
       onActionButonClick={handleAddSeminarButtonClick}
     >
       <div className="flex justify-center">
-        <StandardDatePicker value={date} onChange={handleDateChange} label="날짜" />
+        <StandardDatePicker value={seminarDate} onChange={handleDateChange} label="날짜" />
       </div>
     </ActionModal>
   );

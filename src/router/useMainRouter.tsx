@@ -17,7 +17,6 @@ import Login from '@pages/login/Login';
 import SearchAccount from '@pages/login/SearchAccount';
 import Rank from '@pages/rank/Rank';
 import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
-
 import FitContainer from '@components/Layout/Container/FitContainer';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import MainLayout from '@components/Layout/MainLayout';
@@ -48,7 +47,7 @@ const useMainRouter = () =>
               element: <SearchAccount />,
             },
             {
-              path: 'profile',
+              path: 'profile/:memberId',
               element: <Profile />,
             },
           ],

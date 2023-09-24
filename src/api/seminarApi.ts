@@ -1,9 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { ActivityStatus, AvailableSeminarInfo, SeminarInfo } from './dto';
+import { ActivityStatus, SeminarInfo } from './dto';
 
 const seminarKeys = {
+  getSeminarList: ['getSeminar', 'seminarList'] as const,
   getSeminar: ['getSeminar', 'id'] as const,
   getAvailableSeminar: ['getSeminar', 'available'] as const,
   getRecentlyDoneSeminar: ['getSeminar', 'recentlyDone'] as const,
@@ -11,12 +12,24 @@ const seminarKeys = {
   startSeminar: ['startSeminar'] as const,
 };
 
+const useGetSeminarListQuery = () => {
+  const fetcher = () =>
+    axios.get(`/seminars`).then(({ data }) => {
+      const transformedData = data.seminarList.map((seminarInfo: SeminarInfo) => {
+        return { ...seminarInfo, id: seminarInfo.id, name: seminarInfo.name.replaceAll('-', '.') };
+      });
+      return transformedData;
+    });
+
+  return useQuery<SeminarInfo[]>(seminarKeys.getSeminarList, fetcher);
+};
+
 const useGetSeminarInfoQuery = (id: number) => {
   const fetcher = () =>
     axios.get(`/seminars/${id}`).then(({ data }) => {
       const transformedData = {
         ...data,
-        seminarName: data.seminarName.replaceAll('-', '.'),
+        name: data.name.replaceAll('-', '.'),
         openTime: DateTime.fromISO(data.openTime),
         attendanceCloseTime: DateTime.fromISO(data.attendanceCloseTime),
         latenessCloseTime: DateTime.fromISO(data.latenessCloseTime),
@@ -30,7 +43,7 @@ const useGetSeminarInfoQuery = (id: number) => {
 const useGetAvailableSeminarInfoQuery = () => {
   const fetcher = () => axios.get('/seminars/available').then(({ data }) => data);
 
-  return useQuery<AvailableSeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
+  return useQuery<SeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
 };
 
 const useGetRecentlyDoneSeminarInfoQuery = () => {
@@ -83,7 +96,37 @@ const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
   });
 };
 
+const useAddSeminarMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (openDate: DateTime) =>
+    axios
+      .post(`/seminars`, null, {
+        params: { openDate: openDate.toISODate() },
+      })
+      .then(({ data }) => data);
+  return useMutation(fetcher, {
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminarList });
+      return response;
+    },
+  });
+};
+
+const useDeleteSeminarMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = (id: number) => axios.delete(`/seminars/${id}`);
+  return useMutation(fetcher, {
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminarList });
+      return response.data;
+    },
+  });
+};
+
 export {
+  useGetSeminarListQuery,
   useGetRecentlyDoneSeminarInfoQuery,
   useGetRecentlyUpcomingSeminarInfoQuery,
   useGetSeminarInfoQuery,
@@ -91,4 +134,6 @@ export {
   useStartSeminarMutation,
   useAttendSeminarMutation,
   useEditAttendStatusMutation,
+  useAddSeminarMutation,
+  useDeleteSeminarMutation,
 };

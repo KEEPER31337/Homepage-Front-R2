@@ -19,12 +19,12 @@ const SignUp = () => {
     setCurrentStep(newTab);
   };
   return (
-    <div className="grid h-screen place-content-center place-items-center">
-      <Stack className="relative h-full w-full">
+    <div className="mt-2 h-screen w-full place-content-center place-items-center sm:mt-0 sm:grid ">
+      <Stack textAlign="center">
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={currentStep} onChange={handleChange}>
             {searchList.map((item) => (
-              <Tab key={item.id} className="w-[50%] !text-base" label={item.label} />
+              <Tab key={item.id} className="w-1/2" label={item.label} />
             ))}
           </Tabs>
         </Box>

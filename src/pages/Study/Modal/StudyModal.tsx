@@ -4,6 +4,7 @@ import { InputLabel, Stack, Typography } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
+import { PeriodicInfo } from '@api/dto';
 import { useAddStudyMutation } from '@api/studyApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import StandardInput from '@components/Input/StandardInput';
@@ -19,9 +20,10 @@ interface StudyModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   modalInfo: ModalInfo;
+  currentPeriod: PeriodicInfo;
 }
 
-const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
+const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const memberIds: { id: number }[] = [];
 
@@ -40,8 +42,8 @@ const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
           notionLink: getValues('notionLink'),
           etcTitle: getValues('etcTitle'),
           etcLink: getValues('etcLink'),
-          year: 2023 /* TODO 년도 학기 정보 props로 받아오기 */,
-          season: 1,
+          year: currentPeriod.year,
+          season: currentPeriod.season,
           memberIds,
         },
         thumbnail,
