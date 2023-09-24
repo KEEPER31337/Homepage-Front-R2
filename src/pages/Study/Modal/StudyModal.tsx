@@ -63,21 +63,21 @@ const StudyModal = ({ open, setOpen, modalInfo }: StudyModalProps) => {
   };
 
   useEffect(() => {
-    if (open) {
+    if (open && userInfo) {
       setLeaderId({
-        value: userInfo?.memberId,
-        label: `${userInfo?.realName} (${userInfo?.generation})`,
+        value: userInfo.memberId,
+        label: `${userInfo.realName} (${userInfo.generation})`,
       });
       setMemberIds([
         {
-          value: userInfo?.memberId,
-          label: `${userInfo?.realName} (${userInfo?.generation})`,
-          group: userInfo?.generation,
+          value: userInfo.memberId,
+          label: `${userInfo.realName} (${userInfo.generation})`,
+          group: userInfo.generation,
           fixed: true,
         },
       ]);
     }
-  }, [open]);
+  }, [open, userInfo]);
 
   return (
     <ActionModal
