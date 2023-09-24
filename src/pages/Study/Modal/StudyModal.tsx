@@ -5,8 +5,8 @@ import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
 import { useRecoilValue } from 'recoil';
-import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import { PeriodicInfo } from '@api/dto';
+import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import { useAddStudyMutation } from '@api/studyApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import memberState from '@recoil/member.recoil';
@@ -154,7 +154,7 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
         <div className="w-[280px] space-y-2">
           <InputLabel className="!font-semibold">스터디장</InputLabel>
           <AutoComplete
-            className="flex space-x-2 pb-[6px]"
+            className="!-z-10 flex space-x-2 pb-[6px]"
             value={leaderId}
             items={members?.map((member) => ({
               value: member.memberId,
@@ -172,7 +172,7 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
         <div className="w-full space-y-2">
           <InputLabel className="!font-semibold">스터디원</InputLabel>
           <AutoComplete
-            className="flex space-x-2 pb-[6px]"
+            className="!-z-10 flex space-x-2 pb-[6px]"
             multiple
             grouped
             value={memberIds}
