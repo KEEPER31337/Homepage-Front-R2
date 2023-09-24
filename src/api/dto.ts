@@ -16,6 +16,8 @@ export type Role =
   | 'ROLE_회원'
   | 'ROLE_출제자';
 
+export type borrowStatus = '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
+
 export interface MemberInfo {
   memberId: number;
   loginId: number;
@@ -75,6 +77,12 @@ export interface BorrowInfoListSearch {
   page?: number;
   size?: number;
 }
+export interface BorrowLogListSearch {
+  searchType?: '전체' | '대출중' | '반납대기' | '반납완료' | '대출반려';
+  search?: string;
+  page?: number;
+  size?: number;
+}
 
 export interface BookListInfo {
   id: number;
@@ -99,7 +107,7 @@ export interface BorrowInfo {
   bookQuantity: string;
   currentQuantity: number;
   totalQuantity: number;
-  status: '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
+  status: borrowStatus;
 }
 
 export interface BookInfo {
@@ -129,7 +137,21 @@ export interface BorrowedBookInfo {
   overdue: boolean;
   borrowDateTime: string;
   expireDateTime: string;
-  status: '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
+  status: borrowStatus;
+}
+
+export interface BorrowLogInfo {
+  borrowInfoId: number;
+  bookId: number;
+  bookTitle: string;
+  author: string;
+  borrowerId: number;
+  borrowerRealName: string;
+  borrowDateTime: string;
+  expireDateTime: string;
+  returnDateTime: string;
+  rejectDateTime: string;
+  borrowStatus: borrowStatus;
 }
 
 export interface StudyLinks {
