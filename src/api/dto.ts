@@ -16,6 +16,8 @@ export type Role =
   | 'ROLE_회원'
   | 'ROLE_출제자';
 
+export type MemberType = '비회원' | '정회원' | '휴면회원' | '졸업' | '탈퇴';
+
 export interface MemberInfo {
   memberId: number;
   loginId: number;
@@ -32,7 +34,7 @@ export interface MemberDetailInfo extends MemberInfo {
   point: number;
   level: number;
   totalAttendance: number;
-  memberType: string;
+  memberType: MemberType;
   memberRank: string;
 }
 
@@ -559,7 +561,7 @@ export interface ProfileInfo {
   emailAddress: string;
   thumbnailPath: string | null;
   point: number;
-  memberType: string;
+  memberType: MemberType;
   memberJobs: Role[];
   follower: FollowInfo[];
   followee: FollowInfo[];
