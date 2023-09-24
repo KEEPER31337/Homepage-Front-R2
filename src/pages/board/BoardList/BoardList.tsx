@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DateTime } from 'luxon';
 import { AiFillLock } from 'react-icons/ai';
+import { VscEye, VscThumbsup } from 'react-icons/vsc';
 import { useRecoilValue } from 'recoil';
 import { BoardSearch } from '@api/dto';
 import { useGetNoticePostListQuery, useGetPostListQuery } from '@api/postApi';
@@ -84,20 +85,36 @@ const BoardList = () => {
         );
       case 'title':
         return (
-          <div className="flex items-center">
-            {rowData.isSecret ? (
-              <>
-                <AiFillLock className="mr-1 fill-pointBlue" />
-                <span>비밀글입니다.</span>
-              </>
-            ) : (
-              <span>{value}</span>
+          <>
+            <div className="flex items-center">
+              {rowData.isSecret ? (
+                <>
+                  <AiFillLock className="mr-1 fill-pointBlue" />
+                  <span>비밀글입니다.</span>
+                </>
+              ) : (
+                <span>{value}</span>
+              )}
+              {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
+              {DateTime.fromISO(rowData.registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
+                <span className="ml-1 rounded-sm bg-pointBlue px-1 text-center text-small text-mainBlack">N</span>
+              )}
+            </div>
+            {isMobile && (
+              <div className="flex items-end justify-between">
+                <Typography variant="small">
+                  {rowData.writerName} | {rowData.registerTime}
+                </Typography>
+                <div className="flex items-end">
+                  <VscEye className="mr-0.5 fill-pointBlue" size={12} />
+                  <Typography variant="small">{rowData.visitCount}</Typography>
+                  &nbsp;
+                  <VscThumbsup className="mr-0.5 fill-pointBlue" size={12} />
+                  <Typography variant="small">{rowData.likeCount}</Typography>
+                </div>
+              </div>
             )}
-            {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
-            {DateTime.fromISO(rowData.registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
-              <span className="ml-1 rounded-sm bg-pointBlue px-1 text-center text-small text-mainBlack">N</span>
-            )}
-          </div>
+          </>
         );
       default:
         return value;
