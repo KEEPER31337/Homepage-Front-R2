@@ -66,7 +66,7 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
             label={option.label}
             {...getTagProps({ index })}
             disabled={option?.fixed}
-            className="!-z-10 !flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px] font-semibold"
+            className="!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px] font-semibold"
           />
         ))
       }
