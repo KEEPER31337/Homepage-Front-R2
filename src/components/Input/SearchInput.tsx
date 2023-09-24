@@ -23,7 +23,7 @@ const SearchInput = ({ value, onChange, onSearchButtonClick, ...standardTextFiel
       onChange={onChange}
       onKeyDown={handleOnKeyEnterDown}
       endAdornment={
-        <IconButton onClick={onSearchButtonClick}>
+        <IconButton edge="end" onClick={onSearchButtonClick}>
           <MdOutlineSearch size={20} className="fill-pointBlue" />
         </IconButton>
       }
