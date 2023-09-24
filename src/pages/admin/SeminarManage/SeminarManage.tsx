@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AttendSeminarInfo } from '@api/dto';
-import { useGetAttendSeminarListMutation } from '@api/seminarApi';
+import { useGetAttendSeminarListMutation, useGetSeminarListQuery } from '@api/seminarApi';
 import usePagination from '@hooks/usePagination';
 import ActionButton from '@components/Button/ActionButton';
 import StandardTable from '@components/Table/StandardTable';
@@ -10,7 +10,11 @@ import PageTitle from '@components/Typography/PageTitle';
 import AddSeminarModal from './Modal/AddSeminarModal';
 import DeleteSeminarModal from './Modal/DeleteSeminarModal';
 
-type SeminarManageRow = AttendSeminarInfo;
+type SeminarId = number;
+
+interface SeminarManageRow extends AttendSeminarInfo {
+  [key: `date${SeminarId}`]: string;
+}
 
 const seminarManageColumn: Column<SeminarManageRow>[] = [
   { key: 'generation', headerName: '기수' },
@@ -21,9 +25,21 @@ const SeminarManage = () => {
   const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
   const [openAddSeminarModal, setOpenAddSeminarModal] = useState(false);
   const [openDeleteSeminarModal, setOpenDeleteSeminarModal] = useState(false);
+  const [dynamicColumn, setDynamicColumn] = useState(seminarManageColumn);
 
   const { page } = usePagination();
+  const { data: seminarList } = useGetSeminarListQuery();
   const { data: attendSeminarList } = useGetAttendSeminarListMutation({ page });
+
+  useEffect(() => {
+    if (seminarList) {
+      const newColumn = seminarList.map((seminar) => ({
+        key: `date${seminar.id}` as keyof SeminarManageRow,
+        headerName: seminar.name,
+      }));
+      setDynamicColumn(seminarManageColumn.concat(newColumn));
+    }
+  }, [seminarList]);
 
   return (
     <div>
@@ -37,7 +53,7 @@ const SeminarManage = () => {
         </ActionButton>
       </div>
       <StandardTable<SeminarManageRow>
-        columns={seminarManageColumn}
+        columns={dynamicColumn}
         rows={
           attendSeminarList?.content.map((attendSeminar) => ({ id: attendSeminar.memberId, ...attendSeminar })) || []
         }
