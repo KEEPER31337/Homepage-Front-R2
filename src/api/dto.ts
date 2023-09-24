@@ -228,20 +228,22 @@ export interface AttendResponseData {
   statusText: string;
 }
 
+export interface AttendSeminarInfo {
+  memberId: number;
+  memberName: string;
+  generation: number;
+  attendances: [
+    {
+      attendanceId: number;
+      attendanceStatus: SeminarAttendManageStatus;
+      excuse: string | null;
+      attendDate: string;
+    },
+  ];
+}
+
 export interface AttendSeminarListInfo extends Page {
-  content: {
-    memberId: number;
-    memberName: string;
-    generation: number;
-    attendances: [
-      {
-        attendanceId: number;
-        attendanceStatus: SeminarAttendManageStatus;
-        excuse: string | null;
-        attendDate: string;
-      },
-    ];
-  }[];
+  content: AttendSeminarInfo[];
 }
 
 export interface CommentInfo {

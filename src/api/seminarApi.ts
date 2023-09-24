@@ -98,7 +98,7 @@ const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
 };
 
 const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?: number }) => {
-  const fetcher = () => axios.get(`/seminars/attendances`, { params: { page, size } }).then(({ data }) => data.id);
+  const fetcher = () => axios.get(`/seminars/attendances`, { params: { page, size } }).then(({ data }) => data);
 
   return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList, fetcher);
 };
