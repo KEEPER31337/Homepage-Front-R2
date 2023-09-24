@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { ActivityStatus, SeminarInfo } from './dto';
+import { AttendSeminarListInfo, SeminarAttendManageStatus, SeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminarList: ['getSeminar', 'seminarList'] as const,
@@ -10,6 +10,7 @@ const seminarKeys = {
   getRecentlyDoneSeminar: ['getSeminar', 'recentlyDone'] as const,
   getRecentlyUpcomingSeminar: ['getSeminar', 'recentlyUpcoming'] as const,
   startSeminar: ['startSeminar'] as const,
+  attendSeminarList: ['attendSeminarList'] as const,
 };
 
 const useGetSeminarListQuery = () => {
@@ -87,13 +88,19 @@ const useAttendSeminarMutation = (id: number) => {
 };
 
 const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
-  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: ActivityStatus }) =>
+  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarAttendManageStatus }) =>
     axios.patch(`/seminars/${seminarId}/attendances/${memberId}`, { excuse, statusType });
   return useMutation(fetcher, {
     onSuccess: (response) => {
       return response.data;
     },
   });
+};
+
+const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?: number }) => {
+  const fetcher = () => axios.get(`/seminars/attendances`, { params: { page, size } }).then(({ data }) => data.id);
+
+  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList, fetcher);
 };
 
 const useAddSeminarMutation = () => {
@@ -134,6 +141,7 @@ export {
   useStartSeminarMutation,
   useAttendSeminarMutation,
   useEditAttendStatusMutation,
+  useGetAttendSeminarListMutation,
   useAddSeminarMutation,
   useDeleteSeminarMutation,
 };
