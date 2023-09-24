@@ -17,7 +17,7 @@ const useGetSeminarListQuery = () => {
   const fetcher = () =>
     axios.get(`/seminars`).then(({ data }) => {
       const transformedData = data.seminarList.map((seminarInfo: SeminarInfo) => {
-        return { ...seminarInfo, id: seminarInfo.id, name: seminarInfo.name.replaceAll('-', '.') };
+        return { ...seminarInfo, name: seminarInfo.name.replaceAll('-', '.') };
       });
       return transformedData;
     });
