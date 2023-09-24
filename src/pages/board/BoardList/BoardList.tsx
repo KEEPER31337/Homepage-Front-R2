@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Typography } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DateTime } from 'luxon';
 import { AiFillLock } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
@@ -55,6 +55,8 @@ const BoardList = () => {
   const { data: noticePosts } = useGetNoticePostListQuery({ categoryId });
   const { data: posts } = useGetPostListQuery({ categoryId, page, searchType, search });
   const tableView = useRecoilValue(tableViewState);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (!posts || !noticePosts) {
     return null;
@@ -114,7 +116,14 @@ const BoardList = () => {
       </div>
       {tableView === 'List' && (
         <StandardTable
-          columns={boardColumn}
+          columns={
+            isMobile
+              ? boardColumn.reduce((acc, cur) => {
+                  if (cur.key === 'no' || cur.key === 'title') return [...acc, cur];
+                  return acc;
+                }, [] as Column<BoardRow>[])
+              : boardColumn
+          }
           childComponent={childComponent}
           fixedRows={noticePosts.map((noticePost) => ({
             no: '공지',
