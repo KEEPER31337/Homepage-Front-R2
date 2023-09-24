@@ -30,12 +30,12 @@ interface BoardRow {
 }
 
 const boardColumn: Column<BoardRow>[] = [
-  { key: 'no', headerName: '번호' },
-  { key: 'title', headerName: '제목' },
-  { key: 'writerName', headerName: '작성자' },
-  { key: 'registerTime', headerName: '작성일' },
-  { key: 'visitCount', headerName: '조회수' },
-  { key: 'likeCount', headerName: '추천수' },
+  { key: 'no', headerName: '번호', width: '10%' },
+  { key: 'title', headerName: '제목', width: '45%' },
+  { key: 'writerName', headerName: '작성자', width: '10%' },
+  { key: 'registerTime', headerName: '작성일', width: '15%' },
+  { key: 'visitCount', headerName: '조회수', width: '10%' },
+  { key: 'likeCount', headerName: '추천수', width: '10%' },
 ];
 
 const BoardList = () => {
