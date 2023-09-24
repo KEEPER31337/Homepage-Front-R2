@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { AttendSeminarListInfo, SeminarAttendManageStatus, SeminarInfo } from './dto';
+import { AttendSeminarListInfo, SeminarStatus, SeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminarList: ['getSeminar', 'seminarList'] as const,
@@ -88,7 +88,7 @@ const useAttendSeminarMutation = (id: number) => {
 };
 
 const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
-  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarAttendManageStatus }) =>
+  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarStatus }) =>
     axios.patch(`/seminars/${seminarId}/attendances/${memberId}`, { excuse, statusType });
   return useMutation(fetcher, {
     onSuccess: (response) => {

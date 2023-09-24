@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from '@mui/material';
 import { AxiosError } from 'axios';
-import { SeminarAttendManageStatus } from '@api/dto';
+import { SeminarStatus } from '@api/dto';
 import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import FilledButton from '@components/Button/FilledButton';
 import ConfirmModal from '@components/Modal/ConfirmModal';
@@ -24,10 +24,10 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   const validCode = seminarData?.attendanceCode;
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState('');
-  const [attendStatus, setAttendStatus] = useState<undefined | SeminarAttendManageStatus>(undefined);
+  const [attendStatus, setAttendStatus] = useState<undefined | SeminarStatus>(undefined);
   const [excessModalOpen, setExcessModalOpen] = useState(false);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
-  const isValidActivityStatus = (value: SeminarAttendManageStatus) => {
+  const isValidActivityStatus = (value: SeminarStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
   const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.id;

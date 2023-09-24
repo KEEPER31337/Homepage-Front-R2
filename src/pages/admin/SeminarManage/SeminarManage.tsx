@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 import { AttendSeminarInfo } from '@api/dto';
 import { useGetAttendSeminarListMutation, useGetSeminarListQuery } from '@api/seminarApi';
 import usePagination from '@hooks/usePagination';
+import SeminarAttendStatus from '@pages/senimarAttend/Status/SeminarAttendStatus';
 import ActionButton from '@components/Button/ActionButton';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
@@ -44,9 +45,11 @@ const SeminarManage = () => {
 
   const childComponent = ({ key, value, rowData }: ChildComponent<SeminarManageRow>) => {
     if (key.slice(0, 4) === 'date') {
-      return rowData.attendances.find((attendance) =>
+      const attendStatus = rowData.attendances.find((attendance) =>
         DateTime.fromISO(attendance.attendDate).equals(DateTime.fromISO(key.slice(4).replaceAll('.', '-'))),
       )?.attendanceStatus; /* TODO API 변경 후 id로 적용 `date${seminar.id}` */
+
+      return attendStatus ? <SeminarAttendStatus status={attendStatus} hasIcon={false} /> : '-';
     }
     return value;
   };

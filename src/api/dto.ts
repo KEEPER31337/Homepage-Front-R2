@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export type SeminarAttendManageStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
+export type SeminarStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
 
 export type Role =
   | 'ROLE_회장'
@@ -220,7 +220,7 @@ export interface SeminarInfo {
   attendanceCode: string;
   registerTime: DateTime;
   updateTime: DateTime;
-  statusType: SeminarAttendManageStatus;
+  statusType: SeminarStatus;
 }
 
 export interface AttendResponseData {
@@ -235,7 +235,7 @@ export interface AttendSeminarInfo {
   attendances: [
     {
       attendanceId: number;
-      attendanceStatus: SeminarAttendManageStatus;
+      attendanceStatus: SeminarStatus;
       excuse: string | null;
       attendDate: string;
     },
