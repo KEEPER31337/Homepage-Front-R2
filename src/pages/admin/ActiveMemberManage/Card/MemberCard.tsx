@@ -27,7 +27,7 @@ const MemberCard = ({ memberInfo, onClick, isSelected }: MemberCardProps) => {
         className="mr-1 !h-7 !w-7 !bg-subBlack !text-white "
         src={memberInfo?.thumbnailPath ? getServerImgUrl(memberInfo?.thumbnailPath) : ''}
       />
-      <Typography className="!text-[14px]">{memberInfo.realName}</Typography>{' '}
+      <Typography className="!text-[14px]">{memberInfo.realName}</Typography>
       <Typography variant="small" className="!ml-1">
         ({memberInfo.generation})
       </Typography>

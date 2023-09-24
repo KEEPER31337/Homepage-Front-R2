@@ -10,7 +10,13 @@ const profileKeys = {
   profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
 };
 
-const useGetMembersQuery = ({ searchName, onSuccess }: { searchName?: string; onSuccess?: any }) => {
+const useGetMembersQuery = ({
+  searchName,
+  onSuccess,
+}: {
+  searchName?: string;
+  onSuccess?: (data: MemberDetailInfo[]) => void;
+}) => {
   const fetcher = () =>
     axios.get('/members/real-name', { params: { searchName } }).then(({ data }) => {
       return data.map((memberInfo: MemberDetailInfo) => {
