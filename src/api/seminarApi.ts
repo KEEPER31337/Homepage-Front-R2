@@ -100,7 +100,27 @@ const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
 const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?: number }) => {
   const fetcher = () => axios.get(`/seminars/attendances`, { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList, fetcher);
+  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList, fetcher, {
+    select: (data) => {
+      const transformedContent = data.content.map((membersSeminarAttendInfo) => {
+        const seminarDateInfo = membersSeminarAttendInfo.attendances.reduce((prev, curr) => {
+          const seminarDate = curr.attendDate.replaceAll('-', '.') || '';
+
+          return { ...prev, [`date${seminarDate}`]: curr };
+        }, {});
+
+        return {
+          ...membersSeminarAttendInfo,
+          ...seminarDateInfo,
+        };
+      });
+
+      return {
+        ...data,
+        content: transformedContent,
+      };
+    },
+  });
 };
 
 const useAddSeminarMutation = () => {
