@@ -229,18 +229,19 @@ export interface AttendResponseData {
   statusText: string;
 }
 
+export interface MemberSeminarAttendance {
+  attendanceId: number;
+  attendanceStatus: SeminarStatus;
+  excuse: string | null;
+  attendDate: string;
+}
+
 export interface AttendSeminarInfo {
   memberId: number;
   memberName: string;
   generation: number;
-  attendances: [
-    {
-      attendanceId: number;
-      attendanceStatus: SeminarStatus;
-      excuse: string | null;
-      attendDate: string;
-    },
-  ];
+  attendances: MemberSeminarAttendance[];
+  [key: `date${number}`]: MemberSeminarAttendance;
 }
 
 export interface AttendSeminarListInfo extends Page {
