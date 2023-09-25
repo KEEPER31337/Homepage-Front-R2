@@ -179,7 +179,7 @@ export interface BorrowLogInfo {
   expireDateTime: string;
   returnDateTime: string;
   rejectDateTime: string;
-  borrowStatus: borrowStatus;
+  status: borrowStatus;
 }
 
 export interface StudyLinks {

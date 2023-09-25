@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { BorrowLogListSearch, BorrowLogInfo } from '@api/dto';
+import { BorrowLogListSearch } from '@api/dto';
 import { useGetBorrowLogListQuery } from '@api/libraryManageApi';
 import usePagination from '@hooks/usePagination';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -18,7 +18,7 @@ interface BorrowLogRow {
   expireDateTime: string;
   returnDateTime: string | null;
   rejectDateTime: string | null;
-  borrowStatus: string;
+  status: string;
 }
 
 const BorrowLogColumn: Column<BorrowLogRow>[] = [
@@ -30,7 +30,7 @@ const BorrowLogColumn: Column<BorrowLogRow>[] = [
   { key: 'expireDateTime', headerName: '반납 예정일' },
   { key: 'returnDateTime', headerName: '반납 일자' },
   { key: 'rejectDateTime', headerName: '대출 반려 일자' },
-  { key: 'borrowStatus', headerName: '유형' },
+  { key: 'status', headerName: '유형' },
 ];
 
 const BorrowingStatusTab = () => {
