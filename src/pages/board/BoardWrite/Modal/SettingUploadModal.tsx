@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, useMediaQuery, useTheme } from '@mui/material';
 import { UploadPostSettings, PostInfo } from '@api/dto';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import StandardInput from '@components/Input/StandardInput';
@@ -39,6 +39,9 @@ const SettingUploadModal = ({
   } = useForm({ mode: 'onBlur' });
   const password = watch('password');
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
 
@@ -65,6 +68,7 @@ const SettingUploadModal = ({
 
   return (
     <ActionModal
+      modalWidth={isMobile ? 'sm' : undefined}
       open={open}
       onClose={onClose}
       title={`설정 확인 및 ${postSettingInfo.isTemp ? '임시저장' : '업로드'}`}
