@@ -7,6 +7,7 @@ import useCheckAuth from '@hooks/useCheckAuth';
 import { getServerImgUrl } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
+import BadgeSection from './BadgeSection';
 import FollowList from './FollowList';
 import EditAccountModal from '../Modal/EditAccountModal';
 import EditProfileModal from '../Modal/EditProfileModal';
@@ -55,7 +56,7 @@ const ProfileSection = () => {
         <Typography variant="h1" className="!font-semibold">
           {profileInfo?.realName}
         </Typography>
-        <div>뱃지</div>
+        <BadgeSection memberType={profileInfo?.memberType || ''} memberJobs={profileInfo?.memberJobs || []} />
       </div>
 
       <div className="flex flex-col space-y-4">
