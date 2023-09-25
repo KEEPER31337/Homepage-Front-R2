@@ -596,6 +596,7 @@ export interface TodayAttendPoint {
 }
 
 export interface TodayAttendInfo {
+  totalAttendance: number;
   continuousDay: number;
   todayRank: number;
   todayPoint: number;
