@@ -21,11 +21,11 @@ const AdjacentPostNavSection = ({ previousPost, nextPost }: AdjacentPostNavSecti
   };
 
   return (
-    <section className="flex justify-between">
-      <div>
+    <section className="flex flex-wrap justify-between gap-1">
+      <div className="w-full sm:w-1/2">
         {previousPost && (
           <Button
-            className="h-24 w-96 !justify-start !px-10"
+            className="w-full !justify-start !bg-mainBlack/30 hover:!bg-mainBlack/70 sm:h-24 sm:w-96 sm:!px-10"
             startIcon={<VscChevronLeft />}
             onClick={handlePreviousPostClick}
           >
@@ -40,9 +40,13 @@ const AdjacentPostNavSection = ({ previousPost, nextPost }: AdjacentPostNavSecti
           </Button>
         )}
       </div>
-      <div>
+      <div className="w-full sm:w-auto">
         {nextPost && (
-          <Button className="h-24 w-96 !justify-end !px-10" endIcon={<VscChevronRight />} onClick={handleNextPostClick}>
+          <Button
+            className="w-full !justify-end !bg-mainBlack/30 hover:!bg-mainBlack/70 sm:h-24 sm:w-96 sm:!px-10"
+            endIcon={<VscChevronRight />}
+            onClick={handleNextPostClick}
+          >
             <Stack textAlign="right">
               <Typography variant="small" fontWeight="semibold">
                 다음글
