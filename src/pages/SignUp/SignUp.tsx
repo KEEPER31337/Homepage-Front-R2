@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import StepProgress from '@components/Progress/StepProgress';
 import SignUpFirstInputSection from './Section/SignUpFirstInputSection';
@@ -24,16 +24,16 @@ const SignUp = () => {
   };
 
   return (
-    <div className="grid h-screen place-content-center place-items-center">
+    <Container maxWidth="xs" className="-mt-10 !flex h-screen flex-col items-center justify-center sm:mt-auto">
       <Logo className="mb-9 w-48" />
-      <Box className="h-[492px] w-[690px] border border-pointBlue px-24 py-14">
+      <Box className="h-[560px] w-full border border-pointBlue px-10 py-14 sm:h-[492px] sm:w-[690px] sm:px-24">
         <Stack className="relative h-full w-full">
           <StepProgress className="mb-2 w-32" currentStep={currentStep} totalStep={TOTAL_STEPS} />
           <Typography className="!mb-8 whitespace-pre !font-semibold">{stepInfoMsg[currentStep]}</Typography>
           {stepInputSection[currentStep]}
         </Stack>
       </Box>
-    </div>
+    </Container>
   );
 };
 

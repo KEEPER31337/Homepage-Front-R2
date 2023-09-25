@@ -19,7 +19,6 @@ const TimerInput = forwardRef(
     return (
       <StandardInput
         ref={ref}
-        required
         hasBackground
         className={className}
         disabled={disabled}

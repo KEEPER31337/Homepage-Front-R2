@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
+export type SeminarStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
 
 export type Role =
   | 'ROLE_회장'
@@ -24,6 +24,7 @@ export interface MemberInfo {
   emailAddress: string;
   realName: string;
   thumbnailPath: string | null;
+  generation: string;
   memberJobs: Role[];
 }
 
@@ -43,6 +44,33 @@ export interface PeriodicInfo {
   season: number;
 }
 
+export interface PageSortInfo {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export interface PageableInfo {
+  sort: PageSortInfo;
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface Page {
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
 export interface StaticWriteContentsInfo {
   id: number;
   content: string;
@@ -215,13 +243,33 @@ export interface SeminarInfo {
   attendanceCode: string;
   registerTime: DateTime;
   updateTime: DateTime;
-  statusType: ActivityStatus;
+  statusType: SeminarStatus;
 }
 
 export interface AttendResponseData {
   id: number;
   statusText: string;
 }
+
+export interface MemberSeminarAttendance {
+  attendanceId: number;
+  attendanceStatus: SeminarStatus;
+  excuse: string | null;
+  attendDate: string;
+}
+
+export interface AttendSeminarInfo {
+  memberId: number;
+  memberName: string;
+  generation: number;
+  attendances: MemberSeminarAttendance[];
+  [key: `date${number}`]: MemberSeminarAttendance;
+}
+
+export interface AttendSeminarListInfo extends Page {
+  content: AttendSeminarInfo[];
+}
+
 export interface CommentInfo {
   commentId: number;
   writerId: number;
@@ -311,21 +359,6 @@ export interface PostSummaryInfo {
   registerTime: string;
 }
 
-export interface PageSortInfo {
-  empty: boolean;
-  sorted: boolean;
-  unsorted: boolean;
-}
-
-export interface PageableInfo {
-  sort: PageSortInfo;
-  offset: number;
-  pageNumber: number;
-  pageSize: number;
-  paged: boolean;
-  unpaged: boolean;
-}
-
 export interface BoardSearch {
   categoryId: number;
   searchType?: 'title' | 'content' | 'writer' | 'title+content' | null;
@@ -334,18 +367,8 @@ export interface BoardSearch {
   size?: number;
 }
 
-export interface BoardPosts {
+export interface BoardPosts extends Page {
   content: PostSummaryInfo[];
-  pageable: PageableInfo;
-  first: boolean;
-  last: boolean;
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-  sort: PageSortInfo;
-  numberOfElements: number;
-  empty: boolean;
 }
 
 export interface TrendingPostInfo {
@@ -595,6 +618,7 @@ export interface TodayAttendPoint {
 }
 
 export interface TodayAttendInfo {
+  totalAttendance: number;
   continuousDay: number;
   todayRank: number;
   todayPoint: number;

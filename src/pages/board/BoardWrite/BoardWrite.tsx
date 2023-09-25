@@ -159,7 +159,7 @@ const BoardWrite = () => {
         )}
       </div>
       <div className="mb-5 flex w-full items-center">
-        <Stack flexDirection="row" marginRight={4}>
+        <Stack className="w-full" flexDirection={{ sm: 'row' }}>
           <Typography fontWeight="semibold" className="!mr-2 pt-1">
             제목
           </Typography>
@@ -177,7 +177,7 @@ const BoardWrite = () => {
             render={({ field, fieldState: { error } }) => {
               return (
                 <StandardInput
-                  className="w-[498px]"
+                  className="w-full sm:w-[498px]"
                   {...field}
                   error={Boolean(error)}
                   helperText={error?.message}

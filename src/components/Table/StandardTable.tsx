@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { PaginationOption } from '@components/Pagination/StandardTablePagination.interface';
-import { ChildComponent, Column, Row } from './StandardTable.interface';
+import { Cell, ChildComponent, Column, Row } from './StandardTable.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface StandardTableProps<T extends Record<string, any>> {
@@ -12,6 +12,7 @@ interface StandardTableProps<T extends Record<string, any>> {
   fixedRows?: Row<T>[];
   rows: Row<T>[];
   onRowClick?: ({ rowData }: { rowData: Row<T> }) => void;
+  onCellClick?: ({ cellData }: { cellData: Cell<T> }) => void;
   childComponent?: ({ key, value, rowData }: ChildComponent<T>) => ReactNode;
   paginationOption?: PaginationOption;
 }
@@ -23,13 +24,14 @@ const StandardTable = <T extends Record<string, any>>({
   fixedRows,
   rows,
   onRowClick,
+  onCellClick,
   childComponent,
   paginationOption,
 }: StandardTableProps<T>) => {
   const isCheckboxColumn = (columnKey: Column<T>['key']) => columnKey === 'checkbox';
 
   return (
-    <div>
+    <Box sx={{ overflow: 'auto' }}>
       <Table size={size} sx={{ '.MuiTableCell-sizeSmall': { paddingY: '14px' } }}>
         <TableHead className="bg-middleBlack">
           <TableRow>
@@ -37,6 +39,7 @@ const StandardTable = <T extends Record<string, any>>({
               <TableCell
                 padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
                 className="!border-subBlack !text-white"
+                width={column.width}
                 key={column.key as string}
               >
                 {isCheckboxColumn(column.key) ? <Checkbox /> : column.headerName}
@@ -65,8 +68,11 @@ const StandardTable = <T extends Record<string, any>>({
                     {columns.map((column) => {
                       return (
                         <TableCell
+                          onClick={onCellClick ? () => onCellClick({ cellData: row[column.key] }) : undefined}
                           padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
-                          className="!border-subBlack bg-mainBlack !text-white"
+                          className={`${
+                            onCellClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'
+                          } !border-subBlack bg-mainBlack !text-white`}
                           key={column.key as string}
                         >
                           {isCheckboxColumn(column.key) ? (
@@ -96,8 +102,11 @@ const StandardTable = <T extends Record<string, any>>({
                   {columns.map((column) => {
                     return (
                       <TableCell
+                        onClick={onCellClick ? () => onCellClick({ cellData: row[column.key] }) : undefined}
                         padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
-                        className="!border-subBlack bg-mainBlack !text-white"
+                        className={`${
+                          onCellClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'
+                        } !border-subBlack bg-mainBlack !text-white`}
                         key={column.key as string}
                       >
                         {isCheckboxColumn(column.key) ? (
@@ -123,7 +132,7 @@ const StandardTable = <T extends Record<string, any>>({
         </TableBody>
       </Table>
       <StandardTablePagination {...paginationOption} />
-    </div>
+    </Box>
   );
 };
 

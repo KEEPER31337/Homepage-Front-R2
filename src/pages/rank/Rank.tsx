@@ -34,7 +34,7 @@ const attendColumns: Column<AttendRankRow>[] = [
   { key: 'rank', headerName: '랭킹' },
   { key: 'realName', headerName: '이름' },
   { key: 'generation', headerName: '기수' },
-  { key: 'continuousDay', headerName: '출석' },
+  { key: 'continuousDay', headerName: '총 출석일' },
   { key: 'time', headerName: '출석 시간' },
 ];
 
@@ -59,7 +59,7 @@ const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankRow>)
     case 'generation':
       return `${value}기`;
     case 'continuousDay':
-      return `${value}일째 출석 중`;
+      return `${value}일`;
     default:
       return value;
   }
@@ -132,7 +132,7 @@ const Rank = () => {
             />
           )}
         </div>
-        <div className="flex min-h-[45rem] w-full flex-col px-10 lg:ml-5 lg:w-1/3 lg:px-0">
+        <div className="mb-48 flex w-full flex-col px-10 lg:mb-0 lg:ml-5 lg:min-h-[45rem] lg:w-1/3 lg:px-0">
           <Typography marginBottom={2.5} variant="h3" fontWeight="semibold" className="text-center">
             {tab === 0 && '개근왕'}
             {tab === 1 && '오늘의 게임왕'}
