@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { List, ListItemIcon, ListItem, ListItemButton, ListItemText, Avatar, Typography } from '@mui/material';
+import { List, ListItemIcon, ListItem, ListItemButton, Avatar, Typography } from '@mui/material';
 import { FollowInfo } from '@api/dto';
 import { getServerImgUrl } from '@utils/converter';
 

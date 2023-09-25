@@ -601,3 +601,8 @@ export interface TodayAttendInfo {
   todayRank: number;
   todayPoint: number;
 }
+
+export interface RoleInfo {
+  name: string;
+  img: string;
+}
