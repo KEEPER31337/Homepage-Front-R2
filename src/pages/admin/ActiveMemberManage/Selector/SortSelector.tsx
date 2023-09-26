@@ -62,8 +62,8 @@ const SortSelector = ({ memberList, setMemberList }: SortSelectorProps) => {
         value={sortInfo.generation}
         onChange={(e) => {
           const generationSortInfo = e.target.value as string;
-          setSortInfo((prev) => ({ ...prev, generation: generationSortInfo }));
           sortMemberList({ generation: generationSortInfo, realName: sortInfo.realName });
+          setSortInfo((prev) => ({ ...prev, generation: generationSortInfo }));
         }}
         options={generationSearchList}
       />
@@ -73,8 +73,8 @@ const SortSelector = ({ memberList, setMemberList }: SortSelectorProps) => {
         value={sortInfo.realName}
         onChange={(e) => {
           const realNameSortInfo = e.target.value as string;
-          setSortInfo((prev) => ({ ...prev, realName: realNameSortInfo }));
           sortMemberList({ generation: sortInfo.generation, realName: realNameSortInfo });
+          setSortInfo((prev) => ({ ...prev, realName: realNameSortInfo }));
         }}
         options={realNameSearchList}
       />
