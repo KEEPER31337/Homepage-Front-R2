@@ -28,11 +28,11 @@ const BadgeSection = ({ memberType, memberJobs }: FollowListProps) => {
     <div className="flex items-center space-x-2">
       {MemberJobInfo.map((job: RoleInfo) => (
         <Tooltip key={job.name} title={job.name.replace('ROLE_', '')} placement="top">
-          <img src={job.img} alt="" className="h-10 w-10" />
+          <img src={job.img} alt="" className="h-8 w-8 md:h-10 md:w-10" />
         </Tooltip>
       ))}
       <Tooltip title={memberType} placement="top">
-        <img src={types[memberType]} alt="" className="h-10 w-10" />
+        <img src={types[memberType]} alt="" className="h-8 w-8 md:h-10 md:w-10" />
       </Tooltip>
     </div>
   );
