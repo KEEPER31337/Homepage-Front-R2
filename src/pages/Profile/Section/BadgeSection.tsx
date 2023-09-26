@@ -1,0 +1,41 @@
+import React, { useEffect, useState } from 'react';
+import { Tooltip } from '@mui/material';
+import { Role, RoleInfo } from '@api/dto';
+import { roles, types } from '@constants/badge';
+
+interface FollowListProps {
+  memberType: string;
+  memberJobs: Role[];
+}
+
+const BadgeSection = ({ memberType, memberJobs }: FollowListProps) => {
+  const [MemberJobInfo, setMemberJobInfo] = useState<RoleInfo[]>([]);
+
+  useEffect(() => {
+    const updatedMemberJobInfo = memberJobs
+      .filter((job) => job !== 'ROLE_회원')
+      .map((job) => {
+        const filteredRole = roles.find((role) => role.name === job);
+        return {
+          name: filteredRole?.name,
+          img: filteredRole?.img,
+        };
+      });
+    setMemberJobInfo(updatedMemberJobInfo as RoleInfo[]);
+  }, [memberType, memberJobs]);
+
+  return (
+    <div className="flex items-center space-x-2">
+      {MemberJobInfo.map((job: RoleInfo) => (
+        <Tooltip key={job.name} title={job.name.replace('ROLE_', '')} placement="top">
+          <img src={job.img} alt="" className="h-10 w-10" />
+        </Tooltip>
+      ))}
+      <Tooltip title={memberType} placement="top">
+        <img src={types[memberType]} alt="" className="h-10 w-10" />
+      </Tooltip>
+    </div>
+  );
+};
+
+export default BadgeSection;
