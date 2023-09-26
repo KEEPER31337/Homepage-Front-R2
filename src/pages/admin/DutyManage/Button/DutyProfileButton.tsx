@@ -64,9 +64,11 @@ const DutyProfileButton = ({ jobName, badgeImage, setTooltipOpen, toggleModalOpe
       </Typography>
       <img className="h-[100px] w-[100px]" alt={jobName} src={badgeImage} />
       <div className="flex h-12 flex-col justify-center">
-        <Typography sx={{ fontWeight: 600, color: 'white', display: 'flex', gap: '4px' }}>
-          {executiveInfo?.generation}기 {executiveInfo?.realName}
-        </Typography>
+        {executiveInfo && (
+          <Typography sx={{ fontWeight: 600, color: 'white', display: 'flex', gap: '4px' }}>
+            {executiveInfo.generation}기 {executiveInfo.realName}
+          </Typography>
+        )}
       </div>
     </Button>
   );
