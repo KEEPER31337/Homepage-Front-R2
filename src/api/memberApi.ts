@@ -1,10 +1,34 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { formatGeneration } from '@utils/converter';
-import { ProfileInfo } from './dto';
+import { ProfileInfo, MemberDetailInfo } from './dto';
 
+const memberKeys = {
+  memberList: ['member', 'memberList'] as const,
+};
 const profileKeys = {
   profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
+};
+
+const useGetMembersQuery = ({
+  searchName,
+  onSuccess,
+}: {
+  searchName?: string;
+  onSuccess?: (data: MemberDetailInfo[]) => void;
+}) => {
+  const fetcher = () =>
+    axios.get('/members/real-name', { params: { searchName } }).then(({ data }) => {
+      return data.map((memberInfo: MemberDetailInfo) => {
+        return {
+          ...memberInfo,
+          generation: formatGeneration(memberInfo.generation),
+        };
+      });
+    });
+  return useQuery<MemberDetailInfo[]>(memberKeys.memberList, fetcher, {
+    onSuccess,
+  });
 };
 
 const useGetProfileQuery = (memberId: number) => {
@@ -102,7 +126,20 @@ const useWithdrawalMutation = () => {
   return useMutation(fetcher);
 };
 
+const useEditMemberTypeMutation = () => {
+  const queryClient = useQueryClient();
+  const fetcher = ({ typeId, memberIds }: { typeId: number; memberIds: number[] }) =>
+    axios.patch(`/members/types/${typeId}`, { memberIds });
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: memberKeys.memberList });
+    },
+  });
+};
+
 export {
+  useGetMembersQuery,
   useGetProfileQuery,
   useFollowMemberMutation,
   useUnFollowMemberMutation,
@@ -112,4 +149,5 @@ export {
   useEditEmailMutation,
   useEditPasswordMutation,
   useWithdrawalMutation,
+  useEditMemberTypeMutation,
 };
