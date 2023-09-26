@@ -35,7 +35,7 @@ const MeritTypeTab = () => {
   const [scoreType, setScoreType] = useState<ScoreType>('all');
 
   const [addMeritTypeOpen, setAddMeritTypeOpen] = useState(false);
-  const [editMeritType, setEditMeritType] = useState<MeritTypeModalInfo | null>(null);
+  const [editMeritType, setEditMeritType] = useState<MeritTypeModalInfo | undefined>();
 
   const { data: meritType } = useGetMeritTypeQuery({ page });
 
@@ -89,8 +89,13 @@ const MeritTypeTab = () => {
         }
         paginationOption={{ rowsPerPage: meritType.size, totalItems: meritType.totalElements }}
       />
-      <SettingMeritTypeModal<'add'> status={addMeritTypeOpen} onClose={() => setAddMeritTypeOpen(false)} />
-      <SettingMeritTypeModal<'edit'> status={editMeritType} onClose={() => setEditMeritType(null)} />
+      <SettingMeritTypeModal open={addMeritTypeOpen} onClose={() => setAddMeritTypeOpen(false)} />
+      <SettingMeritTypeModal
+        edit
+        open={editMeritType !== undefined}
+        status={editMeritType}
+        onClose={() => setEditMeritType(undefined)}
+      />
     </div>
   );
 };
