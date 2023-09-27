@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
 import { InputLabel, Stack, Typography } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
+import { useRecoilValue } from 'recoil';
 import { PeriodicInfo, StudyInfo } from '@api/dto';
+import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import {
   useAddStudyMutation,
   useEditStudyMutation,
@@ -13,10 +15,11 @@ import {
   useGetStudyQuery,
 } from '@api/studyApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import memberState from '@recoil/member.recoil';
+import AutoComplete, { MultiAutoCompleteValue, SingleAutoCompleteValue } from '@components/Input/AutoComplete';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
-import { StudyChip } from '../share/StudyChip';
 
 const STUDY_TITLE_MAX_LENGTH = 45;
 const STUDY_CONTENT_MAX_LENGTH = 100;
@@ -30,7 +33,7 @@ interface StudyModalProps {
 
 const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyModalProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
-  const memberIds: { id: number }[] = [];
+  const userInfo = useRecoilValue(memberState);
   const isEditMode = Boolean(selectedStudyInfo);
 
   const { control, getValues } = useForm({ mode: 'onBlur' });
@@ -39,6 +42,11 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
   const { mutate: editStudy } = useEditStudyMutation();
   const { mutate: editStudyThumbnail } = useEditStudyThumbnailMutation();
   const queryClient = useQueryClient();
+
+  const { data: members } = useGetMemberInfoQuery();
+
+  const [leaderId, setLeaderId] = useState<SingleAutoCompleteValue>(null);
+  const [memberIds, setMemberIds] = useState<MultiAutoCompleteValue>([]);
 
   const handleAddActionButtonClick = () => {
     const newStudyInfo = {
@@ -50,7 +58,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
       etcLink: getValues('etcLink'),
       year: currentPeriod.year,
       season: currentPeriod.season,
-      memberIds,
+      memberIds: memberIds?.map((v) => ({ id: v.value as number })),
     };
 
     if (isEditMode && selectedStudyInfo) {
@@ -91,6 +99,23 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
       },
     );
   };
+
+  useEffect(() => {
+    if (open && userInfo) {
+      setLeaderId({
+        value: userInfo.memberId,
+        label: `${userInfo.realName} (${userInfo.generation})`,
+      });
+      setMemberIds([
+        {
+          value: userInfo.memberId,
+          label: `${userInfo.realName} (${userInfo.generation})`,
+          group: userInfo.generation,
+          fixed: true,
+        },
+      ]);
+    }
+  }, [open, userInfo]);
 
   return (
     <ActionModal
@@ -162,18 +187,39 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
         </div>
       </div>
       <div className="mb-10 flex space-x-2">
-        <div className="w-[108px] space-y-2">
+        <div className="w-[280px] space-y-2">
           <InputLabel className="!font-semibold">스터디장</InputLabel>
-          <div className="flex border-b-2 border-pointBlue pb-[6px]">
-            <StudyChip value="박재열" />
-          </div>
+          <AutoComplete
+            className="!-z-10 flex space-x-2 pb-[6px]"
+            value={leaderId}
+            items={members?.map((member) => ({
+              value: member.memberId,
+              label: `${member.realName} (${member.generation})`,
+              group: member.generation,
+            }))}
+            onChange={(v) => {
+              setLeaderId(v);
+              if (v) {
+                setMemberIds([{ ...v, fixed: true }]);
+              }
+            }}
+          />
         </div>
         <div className="w-full space-y-2">
           <InputLabel className="!font-semibold">스터디원</InputLabel>
-          <div className="flex space-x-2 border-b-2 border-pointBlue pb-[6px]">
-            <StudyChip value="박재열" />
-            {/* TODO autocomplete */}
-          </div>
+          <AutoComplete
+            className="!-z-10 flex space-x-2 pb-[6px]"
+            multiple
+            grouped
+            value={memberIds}
+            items={members?.map((member) => ({
+              value: member.memberId,
+              label: `${member.realName} (${member.generation})`,
+              group: member.generation,
+              fixed: member.memberId === leaderId?.value,
+            }))}
+            onChange={setMemberIds}
+          />
         </div>
       </div>
       <div className="space-y-4">

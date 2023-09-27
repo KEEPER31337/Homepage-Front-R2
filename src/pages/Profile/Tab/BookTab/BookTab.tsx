@@ -7,8 +7,8 @@ import {
   useCancleReturnBookMutation,
   useCancleBorrowBookMutation,
 } from '@api/libraryApi';
-import BookCard from './BookTab/BookCard';
-import BookGuide from './BookTab/BookGuide';
+import BookCard from './Card/BookCard';
+import BookGuide from './Guide/BookGuide';
 
 const MAX_BORROWABLE_BOOKS = 5;
 
@@ -37,7 +37,7 @@ const BookTab = () => {
           {Array.from(status === '대출중' ? { length: 5 } : { length: booksToRender.length }, (v, i) => i).map(
             (index) => (
               <BookCard
-                key={booksToRender[index]?.borrowInfoId}
+                key={index}
                 bookInfo={booksToRender[index]}
                 onClick={() => mutationCallback(booksToRender[index]?.borrowInfoId)}
               />
@@ -61,7 +61,7 @@ const BookTab = () => {
           도서 관련 문의는 사서(<span className="text-pointBlue">{librarian}</span>)에게 문의 가능합니다.
         </BookGuide>
       </div>
-      <div className="flex flex-col space-y-4 overflow-y-scroll">
+      <div className="flex flex-col space-y-4 overflow-y-auto">
         {renderBookCard('대출중', requestReturnBookMutation)}
         <div className="flex flex-row flex-wrap">
           {renderBookCard('대출대기', cancleBorrowBookMutation)}

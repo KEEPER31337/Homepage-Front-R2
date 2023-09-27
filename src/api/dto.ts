@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export type ActivityStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
+export type SeminarStatus = 'ATTENDANCE' | 'LATENESS' | 'ABSENCE' | 'PERSONAL' | 'BEFORE_ATTENDANCE';
 
 export type Role =
   | 'ROLE_회장'
@@ -16,12 +16,15 @@ export type Role =
   | 'ROLE_회원'
   | 'ROLE_출제자';
 
+export type MemberType = '비회원' | '정회원' | '휴면회원' | '졸업' | '탈퇴';
+
 export interface MemberInfo {
   memberId: number;
   loginId: number;
   emailAddress: string;
   realName: string;
   thumbnailPath: string | null;
+  generation: string;
   memberJobs: Role[];
 }
 
@@ -32,7 +35,7 @@ export interface MemberDetailInfo extends MemberInfo {
   point: number;
   level: number;
   totalAttendance: number;
-  memberType: string;
+  memberType: MemberType;
   memberRank: string;
 }
 
@@ -41,6 +44,33 @@ export interface PeriodicInfo {
   season: number;
 }
 
+export interface PageSortInfo {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export interface PageableInfo {
+  sort: PageSortInfo;
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface Page {
+  pageable: PageableInfo;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: PageSortInfo;
+  numberOfElements: number;
+  empty: boolean;
+}
 export interface StaticWriteContentsInfo {
   id: number;
   content: string;
@@ -185,30 +215,41 @@ export interface SignUpDuplication {
 }
 
 export interface SeminarInfo {
-  seminarId: number;
-  seminarName: string;
+  id: number;
+  name: string;
   openTime: DateTime;
   attendanceCloseTime: DateTime;
   latenessCloseTime: DateTime;
-  statusType: ActivityStatus;
   attendanceCode: string;
-}
-
-export interface AvailableSeminarInfo {
-  id: number;
-  openTime: string;
-  attendanceCloseTime: string;
-  latenessCloseTime: string;
-  attendanceCode: string;
-  name: string;
-  registerTime: string;
-  updateTime: string;
+  registerTime: DateTime;
+  updateTime: DateTime;
+  statusType: SeminarStatus;
 }
 
 export interface AttendResponseData {
   id: number;
   statusText: string;
 }
+
+export interface MemberSeminarAttendance {
+  attendanceId: number;
+  attendanceStatus: SeminarStatus;
+  excuse: string | null;
+  attendDate: string;
+}
+
+export interface AttendSeminarInfo {
+  memberId: number;
+  memberName: string;
+  generation: number;
+  attendances: MemberSeminarAttendance[];
+  [key: `date${number}`]: MemberSeminarAttendance;
+}
+
+export interface AttendSeminarListInfo extends Page {
+  content: AttendSeminarInfo[];
+}
+
 export interface CommentInfo {
   commentId: number;
   writerId: number;
@@ -298,21 +339,6 @@ export interface PostSummaryInfo {
   registerTime: string;
 }
 
-export interface PageSortInfo {
-  empty: boolean;
-  sorted: boolean;
-  unsorted: boolean;
-}
-
-export interface PageableInfo {
-  sort: PageSortInfo;
-  offset: number;
-  pageNumber: number;
-  pageSize: number;
-  paged: boolean;
-  unpaged: boolean;
-}
-
 export interface BoardSearch {
   categoryId: number;
   searchType?: 'title' | 'content' | 'writer' | 'title+content' | null;
@@ -321,18 +347,8 @@ export interface BoardSearch {
   size?: number;
 }
 
-export interface BoardPosts {
+export interface BoardPosts extends Page {
   content: PostSummaryInfo[];
-  pageable: PageableInfo;
-  first: boolean;
-  last: boolean;
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-  sort: PageSortInfo;
-  numberOfElements: number;
-  empty: boolean;
 }
 
 export interface TrendingPostInfo {
@@ -568,7 +584,7 @@ export interface ProfileInfo {
   emailAddress: string;
   thumbnailPath: string | null;
   point: number;
-  memberType: string;
+  memberType: MemberType;
   memberJobs: Role[];
   follower: FollowInfo[];
   followee: FollowInfo[];
@@ -582,7 +598,13 @@ export interface TodayAttendPoint {
 }
 
 export interface TodayAttendInfo {
+  totalAttendance: number;
   continuousDay: number;
   todayRank: number;
   todayPoint: number;
+}
+
+export interface RoleInfo {
+  name: string;
+  img: string;
 }

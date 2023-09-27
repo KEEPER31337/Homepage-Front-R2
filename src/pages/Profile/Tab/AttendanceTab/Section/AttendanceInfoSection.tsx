@@ -19,7 +19,7 @@ const AttendanceInfoSection = ({ memberId }: AttendanceInfoSectionProps) => {
       <ButtonGroup>
         <TextButton disabled small>
           <Typography variant="small" className="text-white">
-            🗓️ 총 출석일 {/* TODO API 추가되면 받아오기 */}일
+            🗓️ 총 출석일 {todayAttendInfo?.totalAttendance}일
           </Typography>
         </TextButton>
         <TextButton onClick={() => setSelectedCard('continuousDay')} small>

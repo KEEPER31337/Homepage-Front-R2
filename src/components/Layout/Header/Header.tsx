@@ -32,7 +32,7 @@ const Header = ({ setMobileSidebarOpen }: HeaderProps) => {
   return (
     <AppBar
       position="fixed"
-      className="h-14 border-b border-pointBlue !bg-mainBlack !bg-none sm:h-header"
+      className="h-14 !bg-mainBlack !bg-none sm:h-header sm:border-b sm:border-pointBlue"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, height: HEADER_HEIGHT }}
     >
       <Toolbar className="flex items-center justify-between">

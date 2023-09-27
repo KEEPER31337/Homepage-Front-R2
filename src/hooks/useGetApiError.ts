@@ -2,6 +2,8 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import { useSetRecoilState } from 'recoil';
+import memberState from '@recoil/member.recoil';
 
 type ErrorHandler = (error?: AxiosError) => void;
 
@@ -34,6 +36,7 @@ interface DefaultHttpStatusHandlers extends DefaultHandler {
 
 const useApiError = (handlers?: HttpStatusHandlers) => {
   const navigate = useNavigate();
+  const setMemberState = useSetRecoilState(memberState);
 
   const defaultHandlers: DefaultHttpStatusHandlers = {
     default: () => {
@@ -46,6 +49,7 @@ const useApiError = (handlers?: HttpStatusHandlers) => {
     },
     401: {
       default: () => {
+        setMemberState(null);
         navigate('/login');
       },
     },
