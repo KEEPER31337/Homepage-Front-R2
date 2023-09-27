@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Checkbox, Container, FormControlLabel, Stack } from '@mui/material';
+import { Box, Container, Divider, Stack } from '@mui/material';
 import useLoginMutation from '@api/logInApi';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -20,7 +20,6 @@ const HorizonLine = () => {
 };
 
 const Login = () => {
-  const [isKeepLogin, setIsKeepLogin] = useState<boolean>(false);
   const [form, setForm] = useState({
     id: '',
     password: '',
@@ -36,10 +35,6 @@ const Login = () => {
     });
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsKeepLogin(e.target.checked);
-  };
-
   const handleLoginClick = () => {
     if (form.id && form.password) {
       login({ loginId: form.id, password: form.password });
@@ -47,9 +42,9 @@ const Login = () => {
   };
 
   return (
-    <Container maxWidth="xs" className="-mt-10 !flex h-screen flex-col items-center justify-center sm:mt-auto">
+    <Container maxWidth="xs" className="-mt-14 !flex h-screen flex-col items-center justify-center sm:mt-auto">
       <Logo className="mb-9 w-48" />
-      <Stack component="form" spacing={4} onSubmit={handleLoginClick} width={{ xs: '90%', sm: '100%' }}>
+      <Stack component="form" spacing={6} onSubmit={handleLoginClick} width={{ xs: '90%', sm: '100%' }}>
         <Stack spacing={1}>
           <StandardInput
             hasBackground
@@ -73,19 +68,15 @@ const Login = () => {
           />
         </Stack>
         <OutlinedButton onClick={handleLoginClick}>로그인</OutlinedButton>
-        <FormControlLabel
-          control={<Checkbox checked={isKeepLogin} color="primary" onChange={handleCheckboxChange} />}
-          label="로그인 상태 유지"
-        />
       </Stack>
-      <HorizonLine />
+      <Divider className="!mb-8 !mt-12 w-11/12 sm:w-full" />
       <Stack direction="row" spacing={2}>
         <Link to="/searchAccount">
-          <p className="hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
+          <p className="text-gray-300 hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
         </Link>
         <p>|</p>
         <Link to="/signUp">
-          <p className="hover:underline hover:duration-300">회원가입</p>
+          <p className="text-gray-300 hover:underline hover:duration-300">회원가입</p>
         </Link>
       </Stack>
     </Container>
