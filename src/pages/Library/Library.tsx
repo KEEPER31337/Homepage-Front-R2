@@ -7,6 +7,7 @@ import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQue
 import usePagination from '@hooks/usePagination';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import PageTitle from '@components/Typography/PageTitle';
+import NavigateProfileButton from './Button/NavigateProfileButton';
 import BookCard from './Card/BookCard';
 import RequestBookModal from './Modal/RequestBookModal';
 import LibrarySearchSection from './SearchSection/LibrarySearchSection';
@@ -42,12 +43,13 @@ const Library = () => {
       <PageTitle>도서검색</PageTitle>
       <div className="mb-2 flex w-full flex-col items-start justify-between md:mb-5 md:flex-row md:items-center">
         <LibrarySearchSection />
-        <div className="mt-2 flex w-full justify-end md:mt-0">
+        <div className="mt-2 flex w-full items-center justify-end space-x-4 md:mt-0">
           <BorrowStatus
             librarian={librarian}
             borrowedBookCount={borrowedBookListData?.totalElement || 0}
             maxBorrowableBooks={MAX_BORROWABLE_BOOKS}
           />
+          <NavigateProfileButton />
         </div>
       </div>
       <div className="h-[804px] bg-middleBlack md:h-[402px]">
