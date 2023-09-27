@@ -68,6 +68,7 @@ const Login = () => {
             fullWidth
             placeholder="PW"
             name="password"
+            type="password"
             value={password}
             onChange={handleChange}
           />
