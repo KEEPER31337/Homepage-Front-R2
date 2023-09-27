@@ -4,6 +4,7 @@ import { Typography } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { useGetStudyQuery } from '@api/studyApi';
+import { StudyChip } from '../share/StudyChip';
 
 interface StudyAccordionBodyProps {
   studyId: number;
@@ -28,9 +29,9 @@ const StudyAccordionBody = ({ studyId }: StudyAccordionBodyProps) => {
       <div className="space-y-2">
         <Typography className="font-semibold">스터디원</Typography>
         <div className="flex space-x-2">
-          {/* {memberList?.map(({ id, realName }: any) => (
-            <StudyChip key={id} value={realName} />
-          ))} */}
+          {studyInfo.members.map(({ memberId, realName }) => (
+            <StudyChip key={memberId} value={realName} />
+          ))}
         </div>
       </div>
       <div className="space-y-2">

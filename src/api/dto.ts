@@ -197,7 +197,7 @@ export interface StudyLinkInfo {
 export interface StudyDetail {
   information: string;
   links: StudyLinkInfo[];
-  members: MemberInfo[];
+  members: Pick<MemberDetailInfo, 'memberId' | 'generation' | 'realName'>[];
 }
 
 export interface SignUpInfo {
