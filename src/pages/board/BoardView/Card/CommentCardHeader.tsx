@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Button, CardHeader } from '@mui/material';
+import { Avatar, Button, CardHeader, useMediaQuery, useTheme } from '@mui/material';
 import { MdThumbDown, MdThumbUp } from 'react-icons/md';
 import { VscTrash } from 'react-icons/vsc';
 import { useControlCommentLikesMutation, useControlCommentDislikesMutation } from '@api/commentApi';
@@ -15,6 +15,8 @@ const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
   const { mutate: controlLikes } = useControlCommentLikesMutation();
   const { mutate: controlDislikes } = useControlCommentDislikesMutation();
   const { checkIsMyId } = useCheckAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const isReplyComment = Boolean(commentInfo.parentId);
 
@@ -32,15 +34,27 @@ const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
       action={
         <div className="mr-1 space-x-2">
           <Button
+            className={`${isMobile ? '!min-w-[50px] !text-small' : ''}`}
             variant="outlined"
-            startIcon={<MdThumbUp className={commentInfo.isLike ? 'fill-pointBlue' : 'fill-pointBlue/30'} />}
+            startIcon={
+              <MdThumbUp
+                size={isMobile ? 16 : 20}
+                className={commentInfo.isLike ? 'fill-pointBlue' : 'fill-pointBlue/30'}
+              />
+            }
             onClick={handleLikeButtonClick}
           >
             {commentInfo.likeCount}
           </Button>
           <Button
+            className={`${isMobile ? '!min-w-[50px] !text-small' : ''}`}
             variant="outlined"
-            startIcon={<MdThumbDown className={commentInfo.isDislike ? 'fill-pointBlue' : 'fill-pointBlue/30'} />}
+            startIcon={
+              <MdThumbDown
+                size={isMobile ? 16 : 20}
+                className={commentInfo.isDislike ? 'fill-pointBlue' : 'fill-pointBlue/30'}
+              />
+            }
             onClick={handleDisikeButtonClick}
           >
             {commentInfo.dislikeCount}

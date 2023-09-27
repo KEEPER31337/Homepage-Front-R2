@@ -1,5 +1,5 @@
 import React from 'react';
-import { StandardTextFieldProps, TextField } from '@mui/material';
+import { StandardTextFieldProps, TextField, useMediaQuery, useTheme } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 
 interface CommentWriteCardActionProps {
@@ -13,11 +13,16 @@ const CommentWriteCardAction = ({
   writeButtonName,
   onWriteButtonClick,
 }: CommentWriteCardActionProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <div className="w-full space-y-4 p-1">
-      <TextField className="bg-mainBlack" fullWidth multiline rows={4} {...textFieldProps} />
+      <TextField className="bg-mainBlack" fullWidth multiline rows={isMobile ? 2 : 4} {...textFieldProps} />
       <div className="flex justify-end">
-        <OutlinedButton onClick={onWriteButtonClick}>{writeButtonName}</OutlinedButton>
+        <OutlinedButton small={isMobile} onClick={onWriteButtonClick}>
+          {writeButtonName}
+        </OutlinedButton>
       </div>
     </div>
   );

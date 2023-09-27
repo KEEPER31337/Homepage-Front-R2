@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import { CommentInfo } from '@api/dto';
 import CommentCardHeader from './CommentCardHeader';
 
@@ -12,9 +12,9 @@ const ReplyCard = ({ commentInfo }: ReplyCardProps) => {
     <Card className="border border-subBlack !bg-middleBlack !bg-none">
       <CommentCardHeader commentInfo={commentInfo} />
       {!commentInfo.isDeleted && (
-        <Typography paddingX={8} marginBottom={5}>
-          {commentInfo.content}
-        </Typography>
+        <CardContent className="mb-5 sm:!px-16">
+          <Typography>{commentInfo.content}</Typography>
+        </CardContent>
       )}
     </Card>
   );
