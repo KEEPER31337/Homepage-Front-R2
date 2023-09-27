@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItemIcon, ListItem, ListItemButton, Typography } from '@mui/material';
-import { useEditMemberTypeMutation } from '@api/memberApi';
+import { useEditMemberTypeMutation, useDeleteMemberMutation } from '@api/memberApi';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
 import memberTypes from '../memberTypes';
@@ -21,25 +21,41 @@ const ChangeMemberTypeModal = ({
   setSelectedMemberList,
 }: ChangeMemberTypeButtonProps) => {
   const { mutate: editMemberTypeMutation } = useEditMemberTypeMutation();
-
-  const handleButtonClick = () => {
-    const memberIds = selectedMemberList.map((item) => item.value as number);
-    editMemberTypeMutation(
-      {
-        memberIds,
-        typeId,
-      },
-      {
-        onSuccess: () => {
-          onClose();
-          setSelectedMemberList([]);
-        },
-      },
-    );
-  };
+  const { mutate: deleteMemberMutation } = useDeleteMemberMutation();
 
   const renderTypeName = () => {
     return memberTypes.find((memberType) => memberType.typeId === typeId)?.renderType;
+  };
+
+  const handleButtonClick = () => {
+    const memberIds = selectedMemberList.map((item) => item.value as number);
+
+    if (renderTypeName() === '탈퇴') {
+      deleteMemberMutation(
+        {
+          memberIds,
+        },
+        {
+          onSuccess: () => {
+            onClose();
+            setSelectedMemberList([]);
+          },
+        },
+      );
+    } else {
+      editMemberTypeMutation(
+        {
+          memberIds,
+          typeId,
+        },
+        {
+          onSuccess: () => {
+            onClose();
+            setSelectedMemberList([]);
+          },
+        },
+      );
+    }
   };
 
   return (

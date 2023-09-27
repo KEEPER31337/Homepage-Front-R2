@@ -138,6 +138,17 @@ const useEditMemberTypeMutation = () => {
   });
 };
 
+const useDeleteMemberMutation = () => {
+  const queryClient = useQueryClient();
+  const fetcher = ({ memberIds }: { memberIds: number[] }) => axios.delete(`/members/admin`, { data: { memberIds } });
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: memberKeys.memberList });
+    },
+  });
+};
+
 export {
   useGetMembersQuery,
   useGetProfileQuery,
@@ -150,4 +161,5 @@ export {
   useEditPasswordMutation,
   useWithdrawalMutation,
   useEditMemberTypeMutation,
+  useDeleteMemberMutation,
 };
