@@ -58,7 +58,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
       etcLink: getValues('etcLink'),
       year: currentPeriod.year,
       season: currentPeriod.season,
-      memberIds: memberIds?.map((v) => ({ id: v.value as number })),
+      memberIds: memberIds?.map((v) => v.value as number),
     };
 
     if (isEditMode && selectedStudyInfo) {

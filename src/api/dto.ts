@@ -172,7 +172,7 @@ export interface StudyLinks {
 export interface StudyCore extends StudyLinks, PeriodicInfo {
   title: string;
   information: string;
-  memberIds: { id: number }[];
+  memberIds: number[];
 }
 
 export interface UploadStudy {
