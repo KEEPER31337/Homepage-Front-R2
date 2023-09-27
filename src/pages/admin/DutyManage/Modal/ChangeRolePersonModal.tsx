@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { ExecutiveInfo } from '@api/dto';
 import {
   useGetExecutiveInfoQuery,
   useGetMemberInfoQuery,
@@ -16,7 +15,13 @@ interface ChangeRolePersonModalProps {
   badgeImage?: string;
 }
 
-const convertJobName = [
+type JobInfoType = {
+  key: number;
+  JobName: string;
+  roleName: string;
+};
+
+const convertJobName: Array<JobInfoType> = [
   { key: 1, JobName: 'ROLE_회장', roleName: '회장' },
   { key: 2, JobName: 'ROLE_부회장', roleName: '부회장' },
   { key: 3, JobName: 'ROLE_대외부장', roleName: '대외부장' },
@@ -49,7 +54,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     label: '',
     group: '',
   });
-  const [jobInfo, setJobInfo] = useState<ExecutiveInfo>();
+  const [jobInfo, setJobInfo] = useState<JobInfoType>();
 
   useEffect(() => {
     const executiveInfo = executiveInfos?.find((data) => data.jobName === jobName);
@@ -61,7 +66,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     };
 
     setPrevInfo(currentInfo);
-    setJobInfo(executiveInfo);
+    setJobInfo(convertJobName.find((data) => data.JobName === jobName));
     setValue(currentInfo);
   }, [executiveInfos]);
 
@@ -69,14 +74,14 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     if (value !== null && !Array.isArray(value) && prevInfo.value !== value.value) {
       const deleteThing = {
         memberId: prevInfo.value,
-        jobId: jobInfo ? jobInfo.jobId : -1,
+        jobId: jobInfo ? jobInfo.key : -1,
       };
-      deleteJob(deleteThing);
+      if (deleteThing.memberId !== -1) deleteJob(deleteThing);
 
       const createMember = memberList?.find((data) => data.memberId === value.value);
       const createThing = {
         memberId: createMember?.memberId ? createMember?.memberId : -1,
-        jobId: jobInfo ? jobInfo.jobId : -1,
+        jobId: jobInfo ? jobInfo.key : -1,
       };
       createJob(createThing);
     }
@@ -96,7 +101,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
       <div className="flex items-center">
         <img className="w-[150px]" alt={jobName} src={badgeImage} />
         <AutoComplete
-          className="!-z-10 mx-12 w-60"
+          className="mx-12 w-60"
           items={sortedOptions}
           value={value}
           grouped
