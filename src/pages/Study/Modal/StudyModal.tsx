@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import { InputLabel, Stack, Typography } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
 import { useRecoilValue } from 'recoil';
-import { PeriodicInfo } from '@api/dto';
+import { PeriodicInfo, StudyInfo } from '@api/dto';
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
-import { useAddStudyMutation } from '@api/studyApi';
+import {
+  useAddStudyMutation,
+  useEditStudyMutation,
+  useEditStudyThumbnailMutation,
+  useGetStudyQuery,
+} from '@api/studyApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import memberState from '@recoil/member.recoil';
 import AutoComplete, { MultiAutoCompleteValue, SingleAutoCompleteValue } from '@components/Input/AutoComplete';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
-import { ModalInfo } from '../Study.interface';
 
 const STUDY_TITLE_MAX_LENGTH = 45;
 const STUDY_CONTENT_MAX_LENGTH = 100;
@@ -22,18 +27,21 @@ const STUDY_CONTENT_MAX_LENGTH = 100;
 interface StudyModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  modalInfo: ModalInfo;
+  selectedStudyInfo?: StudyInfo;
   currentPeriod: PeriodicInfo;
 }
 
-const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps) => {
-  const userInfo = useRecoilValue(memberState);
+const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyModalProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+  const userInfo = useRecoilValue(memberState);
+  const isEditMode = Boolean(selectedStudyInfo);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { mode, selectedStudy } = modalInfo;
   const { control, getValues } = useForm({ mode: 'onBlur' });
+  const { data: studyDetail } = useGetStudyQuery({ studyId: selectedStudyInfo?.studyId ?? -1, enabled: isEditMode });
   const { mutate: addStudy } = useAddStudyMutation();
+  const { mutate: editStudy } = useEditStudyMutation();
+  const { mutate: editStudyThumbnail } = useEditStudyThumbnailMutation();
+  const queryClient = useQueryClient();
 
   const { data: members } = useGetMemberInfoQuery();
 
@@ -41,19 +49,47 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
   const [memberIds, setMemberIds] = useState<MultiAutoCompleteValue>([]);
 
   const handleAddActionButtonClick = () => {
+    const newStudyInfo = {
+      title: getValues('studyTitle'),
+      information: getValues('studyInformation'),
+      gitLink: getValues('gitLink'),
+      notionLink: getValues('notionLink'),
+      etcTitle: getValues('etcTitle'),
+      etcLink: getValues('etcLink'),
+      year: currentPeriod.year,
+      season: currentPeriod.season,
+      memberIds: memberIds?.map((v) => ({ id: v.value as number })),
+    };
+
+    if (isEditMode && selectedStudyInfo) {
+      editStudy(
+        {
+          studyId: selectedStudyInfo.studyId,
+          studyInfo: newStudyInfo,
+        },
+        {
+          onSuccess: () => {
+            if (thumbnail) {
+              editStudyThumbnail(
+                { studyId: selectedStudyInfo.studyId, thumbnail },
+                {
+                  onSuccess: () => {
+                    queryClient.invalidateQueries({ queryKey: ['studies'] });
+                  },
+                },
+              );
+            } else {
+              queryClient.invalidateQueries({ queryKey: ['studies'] });
+            }
+            setOpen(false);
+          },
+        },
+      );
+      return;
+    }
     addStudy(
       {
-        request: {
-          title: getValues('studyTitle'),
-          information: getValues('studyInformation'),
-          gitLink: getValues('gitLink'),
-          notionLink: getValues('notionLink'),
-          etcTitle: getValues('etcTitle'),
-          etcLink: getValues('etcLink'),
-          year: currentPeriod.year,
-          season: currentPeriod.season,
-          memberIds: memberIds?.map((v) => ({ id: v.value as number })),
-        },
+        request: newStudyInfo,
         thumbnail,
       },
       {
@@ -85,8 +121,8 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
     <ActionModal
       open={open}
       onClose={() => setOpen(false)}
-      title={mode === 'Edit' ? '스터디 수정' : '스터디 추가'}
-      actionButtonName={mode === 'Edit' ? '수정' : '추가'}
+      title={isEditMode ? '스터디 수정' : '스터디 추가'}
+      actionButtonName={isEditMode ? '수정' : '추가'}
       onActionButonClick={handleAddActionButtonClick}
     >
       <div className="mb-10 flex justify-between">
@@ -95,7 +131,7 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
             <InputLabel className="!font-semibold">스터디명</InputLabel>
             <Controller
               name="studyTitle"
-              defaultValue=""
+              defaultValue={selectedStudyInfo?.title ?? ''}
               control={control}
               rules={{
                 required: REQUIRE_ERROR_MSG,
@@ -121,7 +157,7 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
             <InputLabel className="!font-semibold">스터디 소개</InputLabel>
             <Controller
               name="studyInformation"
-              defaultValue=""
+              defaultValue={studyDetail?.information ?? ''}
               control={control}
               rules={{
                 required: REQUIRE_ERROR_MSG,
@@ -147,7 +183,7 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
           </div>
         </Stack>
         <div className="h-40 w-32">
-          <ImageUploader isEdit={false} setThumbnail={setThumbnail} />
+          <ImageUploader isEdit thumbnailPath={selectedStudyInfo?.thumbnailPath} setThumbnail={setThumbnail} />
         </div>
       </div>
       <div className="mb-10 flex space-x-2">
@@ -196,8 +232,8 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
             <VscGithubInverted size={25} className="fill-pointBlue" />
             <Typography className="w-24 text-center">Github</Typography>
             <Controller
-              name="githubLink"
-              defaultValue=""
+              name="gitLink"
+              defaultValue={studyDetail?.links.find((link) => link.title === 'Github')?.content ?? ''}
               control={control}
               rules={{
                 pattern: {
@@ -224,7 +260,7 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
             <Typography className="w-24 text-center">Notion</Typography>
             <Controller
               name="notionLink"
-              defaultValue=""
+              defaultValue={studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? ''}
               control={control}
               rules={{
                 pattern: {
@@ -250,7 +286,9 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
             <VscLink size={25} className="fill-pointBlue" />
             <Controller
               name="etcTitle"
-              defaultValue=""
+              defaultValue={
+                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.title ?? ''
+              }
               control={control}
               render={({ field, fieldState: { error } }) => {
                 return (
@@ -267,7 +305,9 @@ const StudyModal = ({ open, setOpen, modalInfo, currentPeriod }: StudyModalProps
             />
             <Controller
               name="etcLink"
-              defaultValue=""
+              defaultValue={
+                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.content ?? ''
+              }
               control={control}
               rules={{
                 pattern: {

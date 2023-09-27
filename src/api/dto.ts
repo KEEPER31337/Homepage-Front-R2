@@ -191,7 +191,7 @@ export interface StudyInfo {
 
 export interface StudyLinkInfo {
   title: string;
-  contents: string;
+  content: string;
 }
 
 export interface StudyDetail {

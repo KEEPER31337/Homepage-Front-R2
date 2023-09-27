@@ -8,10 +8,9 @@ interface OldStudyProps {
   list: StudyInfo[];
   memberId: number;
   toggleOpen: DispatchWithoutAction;
-  setModalInfo: Dispatch<SetStateAction<ModalInfo>>;
 }
 
-const OldStudy = ({ list, memberId, toggleOpen, setModalInfo }: OldStudyProps) => {
+const OldStudy = ({ list, memberId, toggleOpen }: OldStudyProps) => {
   return (
     <div>
       오래된 스터디 목록
