@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { SelectChangeEvent, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
-import { StudyInfo } from '@api/dto';
 import { useGetStudyListQuery } from '@api/studyApi';
 import ActionButton from '@components/Button/ActionButton';
 import Selector from '@components/Selector/Selector';
