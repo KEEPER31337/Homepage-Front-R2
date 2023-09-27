@@ -11,17 +11,15 @@ interface BookCardProps {
 const BookCard = ({ bookInfo, onRequestBook }: BookCardProps) => {
   return (
     <div className="flex h-fit bg-mainBlack p-2">
-      <div className="mr-2 flex h-[120px] w-[85px] bg-middleBlack">
+      <div className="mr-2 flex h-[120px] w-[85px] shrink-0 bg-middleBlack">
         <ServerImg src={bookInfo?.thumbnailPath} alt="library thumbnail" />
       </div>
-      <div className="relative grow p-2">
-        <div>
-          <Typography className="!mb-2 font-semibold">{bookInfo.title}</Typography>
-          <div className="flex space-x-2">
-            <Typography>저자 : {bookInfo.author}</Typography>
-            <span className="text-pointBlue"> | </span>
-            <Typography>권수 : {bookInfo.bookQuantity}</Typography>
-          </div>
+      <div className="relative grow truncate p-2">
+        <Typography className="!mb-2 truncate !font-semibold">{bookInfo.title}</Typography>
+        <div className="flex space-x-2">
+          <Typography className="truncate">저자 : {bookInfo.author}</Typography>
+          <span className="text-pointBlue"> | </span>
+          <Typography>권수 : {bookInfo.bookQuantity}</Typography>
         </div>
 
         <div className="absolute bottom-0 right-0">
