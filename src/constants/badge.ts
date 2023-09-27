@@ -13,12 +13,14 @@ import sleepBadge from '@assets/profileBadge/profile_badge_state_sleep.gif';
 const roles = [
   { name: 'ROLE_회장', img: chairmanBadge },
   { name: 'ROLE_부회장', img: viceChairmanBadge },
-  { name: 'ROLE_대외부장', img: externalManagerBadge },
-  { name: 'ROLE_학술부장', img: studyManagerBadge },
-  { name: 'ROLE_전산관리자', img: ITManagerBadge },
   { name: 'ROLE_서기', img: clerkBadge },
   { name: 'ROLE_총무', img: administratorBadge },
   { name: 'ROLE_사서', img: librarianBadge },
+  { name: 'ROLE_학술부장', img: studyManagerBadge },
+  { name: 'ROLE_대외부장', img: externalManagerBadge },
+  { name: 'ROLE_FRONT_전산관리자', img: ITManagerBadge },
+  { name: 'ROLE_BACK_전산관리자', img: ITManagerBadge },
+  { name: 'ROLE_INFRA_전산관리자', img: ITManagerBadge },
 ];
 
 const types: { [key: string]: string } = { 정회원: regularBadge, 졸업: graduateBadge, 휴면: sleepBadge };
