@@ -54,7 +54,11 @@ const ChangeMemberTypeModal = ({
     >
       <div className="space-y-5">
         <Typography>
-          총 <span className="text-pointBlue">{selectedMemberList.length}</span>명을{' '}
+          총{' '}
+          <span className={`${renderTypeName() === '탈퇴' ? 'text-subRed' : 'text-pointBlue'}`}>
+            {selectedMemberList.length}
+          </span>
+          명을{' '}
           <span className={`${renderTypeName() === '탈퇴' ? 'text-subRed' : 'text-pointBlue'}`}>
             {renderTypeName()}
           </span>{' '}
