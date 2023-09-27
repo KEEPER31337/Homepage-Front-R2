@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useState } from 'react';
 
 import { SelectChangeEvent, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
@@ -11,7 +10,6 @@ import PageTitle from '@components/Typography/PageTitle';
 import StudyAccordion from './Accordion/StudyAccordion';
 import StudyModal from './Modal/StudyModal';
 import OldStudy from './OldStudy';
-import { ModalInfo } from './Study.interface';
 
 const OLD_YEAR_BOUND = 2022;
 
@@ -32,9 +30,8 @@ const seasonList = [
 
 const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: DateTime.now().year, season: DateTime.now().quarter });
-
-  const [studyAccoridionOpen, toggleStudyAccoridionOpen] = useReducer((prev) => !prev, false);
   const [studyModalOpen, setStudyModalOpen] = useState(false);
+  const isAfterOldYearBound = Number(currentPeriod.year) >= OLD_YEAR_BOUND;
 
   const { data: studyList } = useGetStudyListQuery({ year: currentPeriod.year, season: currentPeriod.season });
 
@@ -62,30 +59,22 @@ const Study = () => {
           <Selector
             className="w-28"
             name="season"
-            options={seasonList}
-            value={currentPeriod.season}
+            disabled={!isAfterOldYearBound}
+            options={isAfterOldYearBound ? seasonList : [{ id: '전체', content: '전체' }]}
+            value={isAfterOldYearBound ? currentPeriod.season : '전체'}
             onChange={handlePeriodChange}
           />
         </div>
-        {Number(currentPeriod.year) >= OLD_YEAR_BOUND && (
+        {isAfterOldYearBound && (
           <ActionButton mode="add" onClick={handleStudyCreateButtonClick}>
             추가
           </ActionButton>
         )}
       </div>
-      {Number(currentPeriod.year) < OLD_YEAR_BOUND ? (
-        <OldStudy list={[]} memberId={-1} toggleOpen={toggleStudyAccoridionOpen} />
-      ) : (
+      {isAfterOldYearBound ? (
         <div>
           {studyList && studyList.length > 0 ? (
-            studyList.map((study) => (
-              <StudyAccordion
-                key={study.studyId}
-                study={study}
-                toggleOpen={toggleStudyAccoridionOpen}
-                currentPeriod={currentPeriod}
-              />
-            ))
+            studyList.map((study) => <StudyAccordion key={study.studyId} study={study} currentPeriod={currentPeriod} />)
           ) : (
             <Typography marginY={15} paddingY={8} textAlign="center" className="border-y border-pointBlue/70">
               현재 등록된 스터디가 없습니다. <span className="text-pointBlue">+ 추가</span> 버튼을 클릭하여 스터디를
@@ -93,6 +82,8 @@ const Study = () => {
             </Typography>
           )}
         </div>
+      ) : (
+        <OldStudy />
       )}
       <StudyModal open={studyModalOpen} setOpen={setStudyModalOpen} currentPeriod={currentPeriod} />
     </div>

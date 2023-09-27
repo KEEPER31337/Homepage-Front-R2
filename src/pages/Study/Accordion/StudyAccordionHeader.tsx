@@ -1,4 +1,4 @@
-import React, { DispatchWithoutAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Chip, Divider, Typography } from '@mui/material';
 import { PeriodicInfo, StudyInfo } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
@@ -8,17 +8,15 @@ import StudyModal from '../Modal/StudyModal';
 
 interface StudyAccordionHeaderProps {
   study: StudyInfo;
-  toggleOpen: DispatchWithoutAction;
   currentPeriod: PeriodicInfo;
 }
 
-const StudyAccordionHeader = ({ study, toggleOpen, currentPeriod }: StudyAccordionHeaderProps) => {
+const StudyAccordionHeader = ({ study, currentPeriod }: StudyAccordionHeaderProps) => {
   const [studyModalOpen, setStudyModalOpen] = useState(false);
 
   const { checkIsMyId } = useCheckAuth();
 
   const handleStudyEditButtonClick = () => {
-    toggleOpen();
     setStudyModalOpen(true);
   };
 
