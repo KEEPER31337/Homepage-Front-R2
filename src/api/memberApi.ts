@@ -121,7 +121,7 @@ const useEditPasswordMutation = () => {
 
 const useWithdrawalMutation = () => {
   const fetcher = ({ rawPassword }: { rawPassword: string }) =>
-    axios.patch('/members', { rawPassword }).then(({ data }) => data);
+    axios.delete('/members', { data: { rawPassword } }).then(({ data }) => data);
 
   return useMutation(fetcher);
 };
