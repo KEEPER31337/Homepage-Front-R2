@@ -5,6 +5,7 @@ import Library from '@pages/Library/Library';
 import Profile from '@pages/Profile/Profile';
 import SignUp from '@pages/SignUp/SignUp';
 import Study from '@pages/Study/Study';
+import ActiveMemberManage from '@pages/admin/ActiveMemberManage/ActiveMemberManage';
 import DutyManage from '@pages/admin/DutyManage/DutyManage';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
 import MeritManage from '@pages/admin/MeritManage/MeritManage';
@@ -17,7 +18,6 @@ import Login from '@pages/login/Login';
 import SearchAccount from '@pages/login/SearchAccount';
 import Rank from '@pages/rank/Rank';
 import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
-
 import FitContainer from '@components/Layout/Container/FitContainer';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import MainLayout from '@components/Layout/MainLayout';
@@ -48,7 +48,7 @@ const useMainRouter = () =>
               element: <SearchAccount />,
             },
             {
-              path: 'profile/:memberId',
+              path: 'profile/:memberId/*',
               element: <Profile />,
             },
           ],
@@ -77,7 +77,7 @@ const useMainRouter = () =>
                 },
                 {
                   path: 'activeMemberManage',
-                  element: <div />,
+                  element: <ActiveMemberManage />,
                 },
                 {
                   path: 'meritManage',

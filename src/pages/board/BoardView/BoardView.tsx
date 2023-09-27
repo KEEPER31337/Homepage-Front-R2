@@ -34,7 +34,7 @@ const BoardView = () => {
   }, [isSecret]);
 
   return (
-    <div className="-mt-16 space-y-12">
+    <div className="-mt-16 space-y-8 sm:space-y-12">
       {postInfo && (
         <>
           <div className="space-y-2">

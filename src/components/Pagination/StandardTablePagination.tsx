@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pagination, TablePagination } from '@mui/material';
+import { Pagination, TablePagination, useMediaQuery, useTheme } from '@mui/material';
 
 import './pagination.css';
 import usePagination from '@hooks/usePagination';
@@ -9,6 +9,9 @@ const StandardTablePagination = ({ pageKey, rowsPerPage = 10, totalItems = -1 }:
   const totalPages = Math.ceil(totalItems / rowsPerPage);
 
   const { page, setPage } = usePagination(pageKey);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const setoffPageDiff = (prevPage: number, reverse?: boolean) => {
     // TablePagination page의 인덱스와 Pagination page의 인덱스 간 차이(1) 상쇄를 위한 동작입니다.
@@ -20,7 +23,7 @@ const StandardTablePagination = ({ pageKey, rowsPerPage = 10, totalItems = -1 }:
   };
 
   return (
-    <div className="flex !w-full items-center justify-between bg-middleBlack">
+    <div className="flex !w-full flex-wrap items-center justify-between bg-middleBlack">
       <TablePagination
         component="div"
         className="!m-0 !-ml-2 !border-none !p-0 !text-subGray"
@@ -34,8 +37,9 @@ const StandardTablePagination = ({ pageKey, rowsPerPage = 10, totalItems = -1 }:
         labelDisplayedRows={({ from, to, count }) => `Showing ${from}-${to} of ${Math.max(count, 0)} items`}
       />
       <Pagination
+        size={isMobile ? 'small' : 'medium'}
         color="secondary"
-        className="mr-1 !text-pointBlue"
+        className="mr-1 flex h-12 items-center !text-pointBlue"
         count={totalPages}
         shape="rounded"
         page={setoffPageDiff(page)}

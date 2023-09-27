@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Stack } from '@mui/material';
+import { Box, Checkbox, Container, FormControlLabel, Stack } from '@mui/material';
 import useLoginMutation from '@api/logInApi';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
+import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
 
 const HorizonLine = () => {
@@ -46,60 +47,48 @@ const Login = () => {
   };
 
   return (
-    <CssBaseline>
-      <Container maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 30,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Logo className="mb-5 h-20" />
-
-          <Stack component="form" onSubmit={handleLoginClick} width="100%">
-            <StandardInput
-              hasBackground
-              label="아이디"
-              required
-              fullWidth
-              placeholder="ID"
-              name="id"
-              value={id}
-              onChange={handleChange}
-            />
-            <StandardInput
-              hasBackground
-              label="비밀번호"
-              required
-              fullWidth
-              placeholder="PW"
-              name="password"
-              value={password}
-              onChange={handleChange}
-            />
-            <Button variant="outlined" sx={{ height: 56, mt: 2 }} onClick={handleLoginClick}>
-              로그인
-            </Button>
-            <FormControlLabel
-              control={<Checkbox checked={isKeepLogin} color="primary" onChange={handleCheckboxChange} />}
-              label="로그인 상태 유지"
-            />
-          </Stack>
-          <HorizonLine />
-          <Stack direction="row" spacing={2}>
-            <Link to="/searchAccount">
-              <p className="hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
-            </Link>
-            <p>|</p>
-            <Link to="/signUp">
-              <p className="hover:underline hover:duration-300">회원가입</p>
-            </Link>
-          </Stack>
-        </Box>
-      </Container>
-    </CssBaseline>
+    <Container maxWidth="xs" className="-mt-10 !flex h-screen flex-col items-center justify-center sm:mt-auto">
+      <Logo className="mb-9 w-48" />
+      <Stack component="form" spacing={4} onSubmit={handleLoginClick} width={{ xs: '90%', sm: '100%' }}>
+        <Stack spacing={1}>
+          <StandardInput
+            hasBackground
+            label="아이디"
+            required
+            fullWidth
+            placeholder="ID"
+            name="id"
+            value={id}
+            onChange={handleChange}
+          />
+          <StandardInput
+            hasBackground
+            label="비밀번호"
+            required
+            fullWidth
+            placeholder="PW"
+            name="password"
+            value={password}
+            onChange={handleChange}
+          />
+        </Stack>
+        <OutlinedButton onClick={handleLoginClick}>로그인</OutlinedButton>
+        <FormControlLabel
+          control={<Checkbox checked={isKeepLogin} color="primary" onChange={handleCheckboxChange} />}
+          label="로그인 상태 유지"
+        />
+      </Stack>
+      <HorizonLine />
+      <Stack direction="row" spacing={2}>
+        <Link to="/searchAccount">
+          <p className="hover:underline hover:duration-300">아이디·비밀번호 찾기</p>
+        </Link>
+        <p>|</p>
+        <Link to="/signUp">
+          <p className="hover:underline hover:duration-300">회원가입</p>
+        </Link>
+      </Stack>
+    </Container>
   );
 };
 

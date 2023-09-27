@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { ActivityStatus, SeminarInfo } from './dto';
+import { AttendSeminarListInfo, SeminarStatus, SeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminarList: ['getSeminar', 'seminarList'] as const,
@@ -10,13 +10,14 @@ const seminarKeys = {
   getRecentlyDoneSeminar: ['getSeminar', 'recentlyDone'] as const,
   getRecentlyUpcomingSeminar: ['getSeminar', 'recentlyUpcoming'] as const,
   startSeminar: ['startSeminar'] as const,
+  attendSeminarList: ['attendSeminarList'] as const,
 };
 
 const useGetSeminarListQuery = () => {
   const fetcher = () =>
     axios.get(`/seminars`).then(({ data }) => {
       const transformedData = data.seminarList.map((seminarInfo: SeminarInfo) => {
-        return { ...seminarInfo, id: seminarInfo.id, name: seminarInfo.name.replaceAll('-', '.') };
+        return { ...seminarInfo, name: seminarInfo.name.replaceAll('-', '.') };
       });
       return transformedData;
     });
@@ -87,11 +88,37 @@ const useAttendSeminarMutation = (id: number) => {
 };
 
 const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
-  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: ActivityStatus }) =>
+  const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarStatus }) =>
     axios.patch(`/seminars/${seminarId}/attendances/${memberId}`, { excuse, statusType });
   return useMutation(fetcher, {
     onSuccess: (response) => {
       return response.data;
+    },
+  });
+};
+
+const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?: number }) => {
+  const fetcher = () => axios.get(`/seminars/attendances`, { params: { page, size } }).then(({ data }) => data);
+
+  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList, fetcher, {
+    select: (data) => {
+      const transformedContent = data.content.map((membersSeminarAttendInfo) => {
+        const seminarDateInfo = membersSeminarAttendInfo.attendances.reduce((prev, curr) => {
+          const seminarDate = curr.attendDate.replaceAll('-', '.') || '';
+
+          return { ...prev, [`date${seminarDate}`]: curr };
+        }, {});
+
+        return {
+          ...membersSeminarAttendInfo,
+          ...seminarDateInfo,
+        };
+      });
+
+      return {
+        ...data,
+        content: transformedContent,
+      };
     },
   });
 };
@@ -134,6 +161,7 @@ export {
   useStartSeminarMutation,
   useAttendSeminarMutation,
   useEditAttendStatusMutation,
+  useGetAttendSeminarListMutation,
   useAddSeminarMutation,
   useDeleteSeminarMutation,
 };

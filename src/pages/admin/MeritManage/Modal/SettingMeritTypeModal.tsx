@@ -27,22 +27,19 @@ export const meritTypeChangeEnable = (meritTypeId: number) => {
   return !disabledMeritTypeId.includes(meritTypeId);
 };
 
-interface EditMeritTypeModalProps {
-  status: MeritTypeModalInfo | null;
+interface SettingMeritTypeModalProps<Edit> {
+  open: boolean;
+  edit?: Edit;
+  status?: Edit extends true ? MeritTypeModalInfo : null;
   onClose: () => void;
 }
 
-interface AddMeritTypeModalProps {
-  status: boolean;
-  onClose: () => void;
-}
-
-const SettingMeritTypeModal = <T extends 'add' | 'edit'>({
+const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
+  open,
+  edit,
   status,
   onClose,
-}: T extends 'add' ? AddMeritTypeModalProps : EditMeritTypeModalProps) => {
-  const isAdd = typeof status === 'boolean';
-
+}: SettingMeritTypeModalProps<Edit>) => {
   const [meritTypeInfo, setMeritTypeInfo] = useState<MeritTypeModalInfo>({ ...baseMeritTypeInfo });
 
   const { mutate: addMeritTypeMutation } = useAddMeritTypeMutation();
@@ -54,7 +51,7 @@ const SettingMeritTypeModal = <T extends 'add' | 'edit'>({
 
   const validate = () => {
     if (meritTypeInfo.score === 0 || meritTypeInfo.reason === '') return false;
-    if (isAdd) {
+    if (!edit) {
       return meritTypeInfo.id === 0;
     }
     return meritTypeChangeEnable(meritTypeInfo.id);
@@ -68,7 +65,7 @@ const SettingMeritTypeModal = <T extends 'add' | 'edit'>({
         reset();
       };
 
-      if (isAdd) {
+      if (!edit) {
         addMeritTypeMutation(
           {
             score: meritTypeInfo.score,
@@ -94,18 +91,18 @@ const SettingMeritTypeModal = <T extends 'add' | 'edit'>({
   };
 
   useEffect(() => {
-    if (!isAdd && status) {
+    if (edit && status) {
       setMeritTypeInfo(status);
     }
   }, [status]);
 
   return (
     <ActionModal
-      open={isAdd ? status : status !== null}
+      open={open}
       onClose={onClose}
-      title={isAdd ? '사유 추가' : '사유 수정'}
+      title={!edit ? '사유 추가' : '사유 수정'}
       modalWidth="xs"
-      actionButtonName={isAdd ? '추가' : '수정'}
+      actionButtonName={!edit ? '추가' : '수정'}
       onActionButonClick={handleSetMeritTypeButtonClick}
       actionButtonDisabled={!validate()}
     >

@@ -21,10 +21,14 @@ const MailAuthenticationModal = ({
 
   return (
     <ConfirmModal open={open} onClose={onClose} title="인증 메일이 오지 않았나요?">
-      <Typography className="h-24 w-[440px] whitespace-pre">{modalContents}</Typography>
-      <Stack className="flex justify-end space-x-2" direction="row">
-        <OutlinedButton onClick={onOtherEmailButtonClick}>다른 이메일로 인증</OutlinedButton>
-        <OutlinedButton onClick={onResendMailButtonClick}>인증 메일 재발송</OutlinedButton>
+      <Typography className="whitespace-pre-line">{modalContents}</Typography>
+      <Stack spacing={1} marginTop={4} direction="row" justifyContent="end">
+        <OutlinedButton small onClick={onOtherEmailButtonClick}>
+          다른 이메일로 인증
+        </OutlinedButton>
+        <OutlinedButton small onClick={onResendMailButtonClick}>
+          인증 메일 재발송
+        </OutlinedButton>
       </Stack>
     </ConfirmModal>
   );

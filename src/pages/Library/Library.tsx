@@ -40,21 +40,23 @@ const Library = () => {
   return (
     <div>
       <PageTitle>도서검색</PageTitle>
-      <div className="mb-5 flex w-full items-center justify-between">
+      <div className="mb-2 flex w-full flex-col items-start justify-between md:mb-5 md:flex-row md:items-center">
         <LibrarySearchSection />
-        <BorrowStatus
-          librarian={librarian}
-          borrowedBookCount={borrowedBookListData?.totalElement || 0}
-          maxBorrowableBooks={MAX_BORROWABLE_BOOKS}
-        />
+        <div className="mt-2 flex w-full justify-end md:mt-0">
+          <BorrowStatus
+            librarian={librarian}
+            borrowedBookCount={borrowedBookListData?.totalElement || 0}
+            maxBorrowableBooks={MAX_BORROWABLE_BOOKS}
+          />
+        </div>
       </div>
-      <div className="h-[402px] bg-middleBlack">
+      <div className="h-[804px] bg-middleBlack md:h-[402px]">
         {bookListData?.content?.length === 0 ? (
           <div className="flex h-full items-center justify-center">
             <Typography>데이터가 없습니다.</Typography>
           </div>
         ) : (
-          <div className="grid grid-cols-2 content-start">
+          <div className="grid grid-cols-1 content-start md:grid-cols-2">
             {bookListData?.content?.map((bookInfo) => (
               <BookCard key={bookInfo.bookId} bookInfo={bookInfo} onRequestBook={handleRequestBook} />
             ))}

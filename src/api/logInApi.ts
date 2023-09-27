@@ -13,9 +13,17 @@ const useLoginMutation = () => {
   const setMemberState = useSetRecoilState(memberState);
 
   return useMutation(fetcher, {
-    onSuccess: ({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs }: MemberDetailInfo) => {
+    onSuccess: ({
+      memberId,
+      loginId,
+      emailAddress,
+      realName,
+      thumbnailPath,
+      memberJobs,
+      generation,
+    }: MemberDetailInfo) => {
       navigate('/');
-      setMemberState({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs });
+      setMemberState({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs, generation });
     },
   });
 };

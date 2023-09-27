@@ -28,9 +28,9 @@ const SearchSection = ({
   };
   return (
     <div className="flex items-end space-x-2">
-      <Selector className="w-32" options={options} value={selectorValue} onChange={handleSelectorChange} />
+      <Selector className="w-fit" options={options} value={selectorValue} onChange={handleSelectorChange} />
       <SearchInput
-        className="w-80"
+        className="w-52 sm:w-80"
         placeholder="검색어를 입력하세요."
         value={inputValue}
         onChange={handleInputChange}

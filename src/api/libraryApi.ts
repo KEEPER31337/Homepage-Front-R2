@@ -24,9 +24,15 @@ const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSea
 };
 
 const useRequestBorrowBookMutation = () => {
+  const queryClient = useQueryClient();
   const fetcher = (selectedBookId: number) => axios.post(`/books/${selectedBookId}/request-borrow`);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryKeys.bookList({}) });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+    },
+  });
 };
 
 const useGetBookBorrowsQuery = ({ page, size }: { page: number; size: number }) => {

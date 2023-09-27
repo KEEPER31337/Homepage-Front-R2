@@ -56,8 +56,8 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
   };
 
   return (
-    <div className="min-h-[520px] bg-middleBlack px-14 py-10">
-      <StandardViewer className="mb-4 min-h-[330px]" content={post.content} />
+    <div className="min-h-[500px] bg-middleBlack px-6 pb-8 pt-3 sm:px-14 sm:py-10">
+      <StandardViewer className="mb-4 min-h-[380px]" content={post.content} />
       {post.fileCount > 0 && (
         <>
           <Button

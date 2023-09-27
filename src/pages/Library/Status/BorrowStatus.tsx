@@ -24,7 +24,7 @@ const BorrowStatus = ({ librarian, borrowedBookCount, maxBorrowableBooks }: Borr
           },
         },
       }}
-      placement="top"
+      placement="bottom"
     >
       <Typography className="text-subRed">신청 가능 권 수({maxBorrowableBooks}권)을 초과했습니다.</Typography>
     </Tooltip>

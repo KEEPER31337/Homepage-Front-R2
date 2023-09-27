@@ -1,22 +1,25 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { Chip, Divider, Typography } from '@mui/material';
-import { StudyInfo } from '@api/dto';
+import { PeriodicInfo, StudyInfo } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
 import ActionButton from '@components/Button/ActionButton';
 import ServerImg from '@components/Image/ServerImg';
-import { ModalInfo } from '../Study.interface';
+import StudyModal from '../Modal/StudyModal';
 
 interface StudyAccordionHeaderProps {
   study: StudyInfo;
-  setModalInfo: Dispatch<SetStateAction<ModalInfo>>;
+  currentPeriod: PeriodicInfo;
 }
 
-const StudyAccordionHeader = ({ study, setModalInfo }: StudyAccordionHeaderProps) => {
+const StudyAccordionHeader = ({ study, currentPeriod }: StudyAccordionHeaderProps) => {
+  const [studyModalOpen, setStudyModalOpen] = useState(false);
+
   const { checkIsMyId } = useCheckAuth();
 
   const handleStudyEditButtonClick = () => {
-    setModalInfo({ mode: 'Edit', selectedStudy: study });
+    setStudyModalOpen(true);
   };
+
   const handleStudyDeleteButtonClick = () => {
     // TODO 스터디 제거 API 호출 후 새로고침(기능 구현 후 console 삭제 예정)
   };
@@ -54,6 +57,12 @@ const StudyAccordionHeader = ({ study, setModalInfo }: StudyAccordionHeaderProps
           현재 인원 <span className="font-semibold">{study.memberCount}명</span>
         </Typography>
       </div>
+      <StudyModal
+        open={studyModalOpen}
+        setOpen={setStudyModalOpen}
+        selectedStudyInfo={study}
+        currentPeriod={currentPeriod}
+      />
     </div>
   );
 };
