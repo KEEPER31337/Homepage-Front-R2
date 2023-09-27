@@ -52,10 +52,10 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
     const newStudyInfo = {
       title: getValues('studyTitle'),
       information: getValues('studyInformation'),
-      gitLink: getValues('gitLink'),
-      notionLink: getValues('notionLink'),
-      etcTitle: getValues('etcTitle'),
-      etcLink: getValues('etcLink'),
+      gitLink: getValues('gitLink') || null,
+      notionLink: getValues('notionLink') || null,
+      etcTitle: getValues('etcTitle') || null,
+      etcLink: getValues('etcLink') || null,
       year: currentPeriod.year,
       season: currentPeriod.season,
       memberIds: memberIds?.map((v) => v.value as number),
@@ -233,7 +233,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             <Typography className="w-24 text-center">Github</Typography>
             <Controller
               name="gitLink"
-              defaultValue={studyDetail?.links.find((link) => link.title === 'Github')?.content ?? ''}
+              defaultValue={studyDetail?.links.find((link) => link.title === 'Github')?.content ?? null}
               control={control}
               rules={{
                 pattern: {
@@ -260,7 +260,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             <Typography className="w-24 text-center">Notion</Typography>
             <Controller
               name="notionLink"
-              defaultValue={studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? ''}
+              defaultValue={studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? null}
               control={control}
               rules={{
                 pattern: {
@@ -287,7 +287,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             <Controller
               name="etcTitle"
               defaultValue={
-                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.title ?? ''
+                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.title ?? null
               }
               control={control}
               render={({ field, fieldState: { error } }) => {
@@ -306,7 +306,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             <Controller
               name="etcLink"
               defaultValue={
-                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.content ?? ''
+                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.content ?? null
               }
               control={control}
               rules={{
