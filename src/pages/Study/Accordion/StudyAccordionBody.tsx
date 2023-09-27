@@ -36,8 +36,8 @@ const StudyAccordionBody = ({ studyId }: StudyAccordionBodyProps) => {
       <div className="space-y-2">
         <Typography className="font-semibold">링크</Typography>
         <div className="flex space-x-4 text-pointBlue">
-          {studyInfo.links.map(({ title, contents }) => (
-            <Link key={title} to={contents} target="_blank" className="flex items-center space-x-2">
+          {studyInfo.links.map(({ title, content }) => (
+            <Link key={title} to={content} target="_blank" className="flex items-center space-x-2">
               <span>{LinkIconData[title as keyof typeof LinkIconData] ?? LinkIconData.etc}</span>
               <span className="underline decoration-pointBlue underline-offset-4">{title ?? 'ETC'}</span>
             </Link>

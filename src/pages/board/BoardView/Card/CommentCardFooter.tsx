@@ -39,7 +39,7 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
           onWriteButtonClick={handleWriteReplyClick}
         />
       ) : (
-        <>
+        <div className="flex w-full items-center justify-between gap-2">
           {/* TODO 현재 계정 프로필 썸네일 가져오기 */}
           <Avatar className="!h-7 !w-7" alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />
           <button
@@ -51,7 +51,7 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
               대댓글...
             </Typography>
           </button>
-        </>
+        </div>
       )}
     </CardActions>
   );

@@ -42,7 +42,7 @@ const CommentSection = ({ categoryName, allowComment, postId }: CommentSectionPr
         </Typography>
         <CustomBadge>{commentList.length}</CustomBadge>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-2 sm:space-y-4">
         {getParentComment(commentList).map((comment) => (
           <CommentCard
             key={comment.commentId}
@@ -51,7 +51,7 @@ const CommentSection = ({ categoryName, allowComment, postId }: CommentSectionPr
           />
         ))}
       </div>
-      <Card className={commentList.length > 0 ? 'mt-11' : ''}>
+      <Card className={commentList.length > 0 ? 'mt-5 sm:mt-11' : ''}>
         <CardActions className="border-t border-subBlack bg-middleBlack">
           <CommentWriteCardAction
             textFieldProps={{

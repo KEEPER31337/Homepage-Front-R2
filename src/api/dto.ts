@@ -18,6 +18,8 @@ export type Role =
 
 export type borrowStatus = '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
 
+export type MemberType = '비회원' | '정회원' | '휴면회원' | '졸업' | '탈퇴';
+
 export interface MemberInfo {
   memberId: number;
   loginId: number;
@@ -35,7 +37,7 @@ export interface MemberDetailInfo extends MemberInfo {
   point: number;
   level: number;
   totalAttendance: number;
-  memberType: string;
+  memberType: MemberType;
   memberRank: string;
 }
 
@@ -211,7 +213,7 @@ export interface StudyInfo {
 
 export interface StudyLinkInfo {
   title: string;
-  contents: string;
+  content: string;
 }
 
 export interface StudyDetail {
@@ -604,7 +606,7 @@ export interface ProfileInfo {
   emailAddress: string;
   thumbnailPath: string | null;
   point: number;
-  memberType: string;
+  memberType: MemberType;
   memberJobs: Role[];
   follower: FollowInfo[];
   followee: FollowInfo[];
@@ -622,4 +624,9 @@ export interface TodayAttendInfo {
   continuousDay: number;
   todayRank: number;
   todayPoint: number;
+}
+
+export interface RoleInfo {
+  name: string;
+  img: string;
 }

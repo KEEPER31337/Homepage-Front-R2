@@ -5,6 +5,7 @@ import Library from '@pages/Library/Library';
 import Profile from '@pages/Profile/Profile';
 import SignUp from '@pages/SignUp/SignUp';
 import Study from '@pages/Study/Study';
+import ActiveMemberManage from '@pages/admin/ActiveMemberManage/ActiveMemberManage';
 import DutyManage from '@pages/admin/DutyManage/DutyManage';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
 import MeritManage from '@pages/admin/MeritManage/MeritManage';
@@ -47,7 +48,7 @@ const useMainRouter = () =>
               element: <SearchAccount />,
             },
             {
-              path: 'profile/:memberId',
+              path: 'profile/:memberId/*',
               element: <Profile />,
             },
           ],
@@ -76,7 +77,7 @@ const useMainRouter = () =>
                 },
                 {
                   path: 'activeMemberManage',
-                  element: <div />,
+                  element: <ActiveMemberManage />,
                 },
                 {
                   path: 'meritManage',
