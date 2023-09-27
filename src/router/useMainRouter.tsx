@@ -48,7 +48,7 @@ const useMainRouter = () =>
               element: <SearchAccount />,
             },
             {
-              path: 'profile/:memberId',
+              path: 'profile/:memberId/*',
               element: <Profile />,
             },
           ],

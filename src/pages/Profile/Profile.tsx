@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate, useRoutes } from 'react-router-dom';
 import StandardTab from '@components/Tab/StandardTab';
 import ProfileSection from './Section/ProfileSection';
 import AttendanceTab from './Tab/AttendanceTab/AttendanceTab';
@@ -8,11 +9,20 @@ import PointTab from './Tab/PointTab/PointTab';
 
 const Profile = () => {
   const tabList = [
-    { id: 0, label: '출석부' },
-    { id: 1, label: '작성글' },
-    { id: 2, label: '도서' },
-    { id: 3, label: '포인트 내역' },
+    { id: 0, label: '출석부', url: 'attendance' },
+    { id: 1, label: '작성글', url: 'board' },
+    { id: 2, label: '도서', url: 'book' },
+    { id: 3, label: '포인트 내역', url: 'point' },
   ];
+
+  const panels = useRoutes([
+    { path: 'attendance', element: <AttendanceTab /> },
+    { path: 'board', element: <BoardTab /> },
+    { path: 'book', element: <BookTab /> },
+    { path: 'point', element: <PointTab /> },
+    { path: '*', element: <Navigate to="attendance" /> },
+  ]);
+
   const [tab, setTab] = useState(0);
 
   return (
@@ -22,12 +32,7 @@ const Profile = () => {
       </div>
       <div className="flex w-full max-w-container flex-col xl:h-full">
         <StandardTab options={tabList} tab={tab} setTab={setTab} />
-        <div className="mt-4 flex h-full border border-subGray p-4">
-          {tab === 0 && <AttendanceTab />}
-          {tab === 1 && <BoardTab />}
-          {tab === 2 && <BookTab />}
-          {tab === 3 && <PointTab />}
-        </div>
+        <div className="mt-4 flex h-full border border-subGray p-4">{panels}</div>
       </div>
     </div>
   );
