@@ -1,13 +1,22 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { ManageBookInfo, BookListSearch, BookCoreData, BorrowInfoListSearch, BorrowInfo } from './dto';
+import {
+  ManageBookInfo,
+  BookListSearch,
+  BookCoreData,
+  BorrowInfoListSearch,
+  BorrowInfo,
+  BorrowLogInfo,
+  BorrowLogListSearch,
+} from './dto';
 
 const libraryManageKeys = {
   bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
   bookDetail: (param: number) => ['library', 'bookDetail', param] as const,
   borrowInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'borrowInfoList', param] as const,
   overdueInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'overdueInfoList', param] as const,
+  borrowLogList: (param: BorrowLogListSearch) => ['libraryManage', 'borrowLogList', param] as const,
 };
 
 const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: BookListSearch) => {
@@ -186,6 +195,34 @@ const useDenyReturnMutation = () => {
   });
 };
 
+const useGetBorrowLogListQuery = ({ page, size = 10, searchType, search }: BorrowLogListSearch) => {
+  const fetcher = () =>
+    axios.get('/manage/borrow-infos/logs', { params: { page, size, searchType, search } }).then(({ data }) => {
+      const content = data.content.map((borrowLogInfo: BorrowLogInfo) => {
+        return {
+          ...borrowLogInfo,
+          returnDateTime: borrowLogInfo?.returnDateTime
+            ? DateTime.fromISO(borrowLogInfo.returnDateTime).toFormat('yyyy.MM.dd')
+            : '',
+          expireDateTime: borrowLogInfo?.expireDateTime
+            ? DateTime.fromISO(borrowLogInfo.expireDateTime).toFormat('yyyy.MM.dd')
+            : '',
+          borrowDateTime: borrowLogInfo?.borrowDateTime
+            ? DateTime.fromISO(borrowLogInfo.borrowDateTime).toFormat('yyyy.MM.dd')
+            : '',
+          rejectDateTime: borrowLogInfo?.rejectDateTime
+            ? DateTime.fromISO(borrowLogInfo.rejectDateTime).toFormat('yyyy.MM.dd')
+            : '',
+        };
+      });
+      return { content, totalElement: data.totalElements, size: data.size };
+    });
+
+  return useQuery<{ content: BorrowLogInfo[]; totalElement: number; size: number }>(
+    libraryManageKeys.borrowLogList({ page, size, searchType, search }),
+    fetcher,
+  );
+};
 export {
   useGetBookManageListQuery,
   useAddBookMutation,
@@ -199,4 +236,5 @@ export {
   useGetBookDetailQuery,
   useEditBookInfoMutation,
   useEditBookThumbnailMutation,
+  useGetBorrowLogListQuery,
 };
