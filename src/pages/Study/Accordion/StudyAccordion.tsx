@@ -29,7 +29,7 @@ const StudyAccordion = ({ study, currentPeriod }: StudyAccordionProps) => {
   return (
     <Accordion className="!shadow-none">
       <AccordionSummary
-        className="!h-20 !border-b !border-white/[20%] !bg-subBlack !px-4 !text-white hover:!bg-subGray hover:!text-white focus:!outline-0"
+        className="!border-b !border-white/[20%] !bg-subBlack !px-4 !text-white hover:!bg-subGray hover:!text-white focus:!outline-0"
         expandIcon={<VscChevronDown />}
       >
         <StudyAccordionHeader study={study} />
