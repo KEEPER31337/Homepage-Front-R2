@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { SelectChangeEvent, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
+import { StudyInfo } from '@api/dto';
 import { useGetStudyListQuery } from '@api/studyApi';
 import ActionButton from '@components/Button/ActionButton';
 import Selector from '@components/Selector/Selector';
@@ -30,6 +31,7 @@ const seasonList = [
 const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: DateTime.now().year, season: DateTime.now().quarter });
   const [studyModalOpen, setStudyModalOpen] = useState(false);
+  const [selectedStudyInfo, setSelectedStudyInfo] = useState<StudyInfo | null>(null);
   const isAfterOldYearBound = Number(currentPeriod.year) >= OLD_YEAR_BOUND;
 
   const { data: studyList } = useGetStudyListQuery({ year: currentPeriod.year, season: currentPeriod.season });
@@ -73,7 +75,14 @@ const Study = () => {
       {isAfterOldYearBound ? (
         <div>
           {studyList && studyList.length > 0 ? (
-            studyList.map((study) => <StudyAccordion key={study.studyId} study={study} currentPeriod={currentPeriod} />)
+            studyList.map((study) => (
+              <StudyAccordion
+                key={study.studyId}
+                study={study}
+                setStudyModalOpen={setStudyModalOpen}
+                setSelectedStudyInfo={setSelectedStudyInfo}
+              />
+            ))
           ) : (
             <Typography marginY={15} paddingY={8} textAlign="center" className="border-y border-pointBlue/70">
               현재 등록된 스터디가 없습니다. <span className="text-pointBlue">+ 추가</span> 버튼을 클릭하여 스터디를
@@ -84,7 +93,12 @@ const Study = () => {
       ) : (
         <OldStudy />
       )}
-      <StudyModal open={studyModalOpen} setOpen={setStudyModalOpen} currentPeriod={currentPeriod} />
+      <StudyModal
+        open={studyModalOpen}
+        setOpen={setStudyModalOpen}
+        selectedStudyInfo={selectedStudyInfo}
+        currentPeriod={currentPeriod}
+      />
     </div>
   );
 };

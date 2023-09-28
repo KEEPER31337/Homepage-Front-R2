@@ -27,7 +27,7 @@ const STUDY_CONTENT_MAX_LENGTH = 100;
 interface StudyModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedStudyInfo?: StudyInfo;
+  selectedStudyInfo: StudyInfo | null;
   currentPeriod: PeriodicInfo;
 }
 
