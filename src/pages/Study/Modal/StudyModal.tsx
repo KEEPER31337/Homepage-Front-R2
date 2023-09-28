@@ -49,6 +49,12 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
   const [leaderId, setLeaderId] = useState<SingleAutoCompleteValue>(null);
   const [memberIds, setMemberIds] = useState<MultiAutoCompleteValue>([]);
 
+  const handleClose = () => {
+    setOpen(false);
+    reset();
+    setSelectedStudyInfo(null);
+  };
+
   const handleAddActionButtonClick = () => {
     const newStudyInfo = {
       title: getValues('studyTitle'),
@@ -82,7 +88,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
             } else {
               queryClient.invalidateQueries({ queryKey: ['studies'] });
             }
-            setOpen(false);
+            handleClose();
           },
         },
       );
@@ -99,12 +105,6 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
         },
       },
     );
-  };
-
-  const handleClose = () => {
-    reset();
-    setSelectedStudyInfo(null);
-    setOpen(false);
   };
 
   useEffect(() => {
