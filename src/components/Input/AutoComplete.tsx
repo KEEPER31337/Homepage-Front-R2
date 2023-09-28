@@ -42,12 +42,6 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
     (onChange as MultiOnChangeFuncType)([...fixed, ...nonFixed]);
   };
 
-  useEffect(() => {
-    if (multiple) {
-      multiSuperOnChange([]);
-    }
-  }, []);
-
   return (
     <Autocomplete
       className={className}

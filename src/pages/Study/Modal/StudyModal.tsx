@@ -231,7 +231,9 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               group: member.generation,
               fixed: member.memberId === leaderId?.value,
             }))}
-            onChange={() => setMemberIds}
+            onChange={(v) => {
+              setMemberIds(v);
+            }}
           />
         </div>
       </div>
