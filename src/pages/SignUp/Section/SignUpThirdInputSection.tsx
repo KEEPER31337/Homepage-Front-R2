@@ -103,8 +103,8 @@ const SignUpThirdInputSection = () => {
             <EmailAuthInput
               label="이메일"
               {...field}
-              isLoading={isEmailSendLoading}
-              isSuccess={isEmailSendSuccess}
+              isLoading={isEmailSent && isEmailSendLoading}
+              isSuccess={isEmailSent && isEmailSendSuccess}
               error={Boolean(error)}
               helperText={error?.message}
               inputDisabled={isEmailSent && checkEmailDuplicationSuccess}
