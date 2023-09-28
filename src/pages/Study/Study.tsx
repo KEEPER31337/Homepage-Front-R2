@@ -97,6 +97,7 @@ const Study = () => {
         open={studyModalOpen}
         setOpen={setStudyModalOpen}
         selectedStudyInfo={selectedStudyInfo}
+        setSelectedStudyInfo={setSelectedStudyInfo}
         currentPeriod={currentPeriod}
       />
     </div>

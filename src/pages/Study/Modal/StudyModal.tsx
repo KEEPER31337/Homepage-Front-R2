@@ -28,15 +28,16 @@ interface StudyModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   selectedStudyInfo: StudyInfo | null;
+  setSelectedStudyInfo: React.Dispatch<React.SetStateAction<StudyInfo | null>>;
   currentPeriod: PeriodicInfo;
 }
 
-const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyModalProps) => {
+const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, currentPeriod }: StudyModalProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const userInfo = useRecoilValue(memberState);
   const isEditMode = Boolean(selectedStudyInfo);
 
-  const { control, getValues } = useForm({ mode: 'onBlur' });
+  const { control, getValues, reset } = useForm({ mode: 'onBlur' });
   const { data: studyDetail } = useGetStudyQuery({ studyId: selectedStudyInfo?.studyId ?? -1, enabled: isEditMode });
   const { mutate: addStudy } = useAddStudyMutation();
   const { mutate: editStudy } = useEditStudyMutation();
@@ -100,7 +101,14 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
     );
   };
 
+  const handleClose = () => {
+    reset();
+    setSelectedStudyInfo(null);
+    setOpen(false);
+  };
+
   useEffect(() => {
+    reset();
     if (open && userInfo) {
       setLeaderId({
         value: userInfo.memberId,
@@ -120,7 +128,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
   return (
     <ActionModal
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={handleClose}
       title={isEditMode ? '스터디 수정' : '스터디 추가'}
       actionButtonName={isEditMode ? '수정' : '추가'}
       onActionButonClick={handleAddActionButtonClick}
@@ -233,7 +241,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             <Typography className="w-24 text-center">Github</Typography>
             <Controller
               name="gitLink"
-              defaultValue={studyDetail?.links.find((link) => link.title === 'Github')?.content ?? null}
+              defaultValue={studyDetail?.links.find((link) => link.title === 'Github')?.content ?? ''}
               control={control}
               rules={{
                 pattern: {
@@ -260,7 +268,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             <Typography className="w-24 text-center">Notion</Typography>
             <Controller
               name="notionLink"
-              defaultValue={studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? null}
+              defaultValue={studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? ''}
               control={control}
               rules={{
                 pattern: {
@@ -287,7 +295,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             <Controller
               name="etcTitle"
               defaultValue={
-                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.title ?? null
+                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.title ?? ''
               }
               control={control}
               render={({ field, fieldState: { error } }) => {
@@ -306,7 +314,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             <Controller
               name="etcLink"
               defaultValue={
-                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.content ?? null
+                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.content ?? ''
               }
               control={control}
               rules={{
