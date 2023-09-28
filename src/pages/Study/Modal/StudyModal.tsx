@@ -121,6 +121,11 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
           group: userInfo.generation,
           fixed: true,
         },
+        ...(studyDetail?.members.map((member) => ({
+          value: member.memberId,
+          label: `${member.realName} (${member.generation})`,
+          group: member.generation,
+        })) || []),
       ]);
     }
   }, [open, userInfo]);
@@ -226,7 +231,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               group: member.generation,
               fixed: member.memberId === leaderId?.value,
             }))}
-            onChange={setMemberIds}
+            onChange={() => setMemberIds}
           />
         </div>
       </div>
