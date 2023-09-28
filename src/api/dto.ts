@@ -194,7 +194,7 @@ export interface StudyLinks {
 export interface StudyCore extends StudyLinks, PeriodicInfo {
   title: string;
   information: string;
-  memberIds: { id: number }[];
+  memberIds: number[];
 }
 
 export interface UploadStudy {
@@ -219,7 +219,7 @@ export interface StudyLinkInfo {
 export interface StudyDetail {
   information: string;
   links: StudyLinkInfo[];
-  members: MemberInfo[];
+  members: Pick<MemberDetailInfo, 'memberId' | 'generation' | 'realName'>[];
 }
 
 export interface SignUpInfo {
