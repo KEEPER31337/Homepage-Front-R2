@@ -29,6 +29,7 @@ const StudyAccordionBody = ({ studyId }: StudyAccordionBodyProps) => {
       <div className="space-y-2">
         <Typography className="font-semibold">스터디원</Typography>
         <div className="flex space-x-2">
+          <StudyChip key={studyInfo.headMember.memberId} value={studyInfo.headMember.realName} />
           {studyInfo.members.map(({ memberId, realName }) => (
             <StudyChip key={memberId} value={realName} />
           ))}
