@@ -74,13 +74,15 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
             hasBackground
             className="w-full sm:w-[70%]"
             required
+            type="password"
             name="newPassword"
             value={form.newPassword}
             onChange={handleChange}
+            helperText={
+              form.newPassword &&
+              !passwordRegex.test(form.newPassword) && <p className="text-red-500">8~20자 영문과 숫자를 사용하세요.</p>
+            }
           />
-          {form.newPassword && !passwordRegex.test(form.newPassword) && (
-            <p className="mt-2 text-left text-red-500">8~20자 영문과 숫자를 사용하세요.</p>
-          )}
         </div>
         <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
           <p className="text-paragraph leading-4 sm:text-base">비밀번호 확인</p>
@@ -88,6 +90,7 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
             hasBackground
             className="w-full sm:w-[70%]"
             required
+            type="password"
             name="confirmPassword"
             value={form.confirmPassword}
             onChange={handleChange}
