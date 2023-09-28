@@ -24,7 +24,11 @@ interface SearchPWFirstStepProps {
 }
 
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
-  const { mutate: requestAuthcode } = useRequestAuthCodeMutation();
+  const {
+    mutate: requestAuthcode,
+    isLoading: isEmailSendLoading,
+    isSuccess: isEmailSendSuccess,
+  } = useRequestAuthCodeMutation();
   const { data: checkAuthcodeData } = useCheckAuthCodeQuery({
     loginId: form.id,
     email: form.email,
@@ -112,6 +116,8 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
           <EmailAuthInput
             className="w-full sm:w-[70%]"
             inputDisabled={isSent}
+            isLoading={isEmailSendLoading}
+            isSuccess={isEmailSendSuccess}
             value={form.email}
             onChange={handleChange}
             buttonDisabled={!isValidEmail || isSent}
