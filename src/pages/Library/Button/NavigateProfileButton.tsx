@@ -15,7 +15,7 @@ const NavigateProfileButton = () => {
         navigate(`/profile/${userInfo?.memberId}/book`);
       }}
     >
-      프로필페이지로 이동
+      내 서재 가기
     </OutlinedButton>
   );
 };
