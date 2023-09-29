@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { formatMemberGeneration } from '@utils/converter';
 import { StudyCore, StudyDetail, StudyInfo, UploadStudy } from './dto';
 
 const useAddStudyMutation = () => {
@@ -40,7 +41,14 @@ const useGetStudyListQuery = ({ year, season }: { year: number; season: number }
 const useGetStudyQuery = ({ studyId, enabled }: { studyId: number; enabled?: boolean }) => {
   const fetcher = () => axios.get(`/studies/${studyId}`).then(({ data }) => data);
 
-  return useQuery<StudyDetail>(['studies', studyId], fetcher, { enabled });
+  return useQuery<StudyDetail>(['studies', studyId], fetcher, {
+    enabled,
+    select: (data) => ({
+      ...data,
+      headMember: formatMemberGeneration(data.headMember),
+      members: data.members.map(formatMemberGeneration),
+    }),
+  });
 };
 
 const useEditStudyThumbnailMutation = () => {
