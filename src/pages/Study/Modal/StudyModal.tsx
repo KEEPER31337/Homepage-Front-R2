@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
-import { InputLabel, Stack, Typography } from '@mui/material';
+import { InputLabel, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
@@ -33,19 +33,21 @@ interface StudyModalProps {
 
 const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyModalProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+  const [memberInfos, setMemberInfos] = useState<MultiAutoCompleteValue>([]);
   const headMemberInfo = useRecoilValue(memberState);
   const isEditMode = Boolean(selectedStudyInfo);
 
   const { control, getValues } = useForm({ mode: 'onBlur' });
+
   const { data: studyDetail } = useGetStudyQuery({ studyId: selectedStudyInfo?.studyId ?? -1, enabled: isEditMode });
   const { mutate: addStudy } = useAddStudyMutation();
   const { mutate: editStudy } = useEditStudyMutation();
   const { mutate: editStudyThumbnail } = useEditStudyThumbnailMutation();
+  const { data: members } = useGetMemberInfoQuery();
   const queryClient = useQueryClient();
 
-  const { data: members } = useGetMemberInfoQuery();
-
-  const [memberInfos, setMemberInfos] = useState<MultiAutoCompleteValue>([]);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleAddActionButtonClick = () => {
     const newStudyInfo = {
@@ -116,12 +118,13 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
     <ActionModal
       open={open}
       onClose={() => setOpen(false)}
+      modalWidth={isMobile ? 'xs' : undefined}
       title={isEditMode ? '스터디 수정' : '스터디 추가'}
       actionButtonName={isEditMode ? '수정' : '추가'}
       onActionButonClick={handleAddActionButtonClick}
     >
-      <div className="mb-10 flex justify-between">
-        <Stack flexGrow={1} marginRight={3} spacing={3}>
+      <div className="mb-10 flex flex-col-reverse justify-between gap-6 sm:flex-row sm:items-start">
+        <Stack spacing={3}>
           <div>
             <InputLabel className="!font-semibold">스터디명</InputLabel>
             <Controller
@@ -138,7 +141,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
               render={({ field, fieldState: { error } }) => {
                 return (
                   <StandardInput
-                    className="w-64"
+                    className="w-full sm:w-64"
                     {...field}
                     error={Boolean(error)}
                     helperText={error?.message}
@@ -177,11 +180,11 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             />
           </div>
         </Stack>
-        <div className="h-40 w-32">
+        <div className="h-40 w-32 self-center sm:self-start">
           <ImageUploader isEdit thumbnailPath={selectedStudyInfo?.thumbnailPath} setThumbnail={setThumbnail} />
         </div>
       </div>
-      <div className="mb-10 flex space-x-2">
+      <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:gap-2">
         <div className="w-36 space-y-2">
           <InputLabel className="!font-semibold">스터디장</InputLabel>
           <StandardInput value={headMemberInfo?.realName || ''} readOnly />
@@ -208,8 +211,8 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
           <span className="mr-1">링크</span>
           <span className="text-small text-subGray">(1개 이상 링크 필수)</span>
         </InputLabel>
-        <Stack spacing={2}>
-          <div className="flex items-center space-x-2">
+        <Stack spacing={{ xs: 3, sm: 2 }}>
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
             <VscGithubInverted size={25} className="fill-pointBlue" />
             <Typography className="w-24 text-center">Github</Typography>
             <Controller
@@ -236,7 +239,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
               }}
             />
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
             <SiNotion size={25} className="fill-pointBlue" />
             <Typography className="w-24 text-center">Notion</Typography>
             <Controller
@@ -263,7 +266,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
               }}
             />
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
             <VscLink size={25} className="fill-pointBlue" />
             <Controller
               name="etcTitle"
