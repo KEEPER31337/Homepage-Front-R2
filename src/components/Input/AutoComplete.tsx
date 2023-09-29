@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Autocomplete, Chip, TextField } from '@mui/material';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
 
@@ -42,12 +42,6 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
     const nonFixed = v.filter((item) => !item?.fixed);
     (onChange as MultiOnChangeFuncType)([...fixed, ...nonFixed]);
   };
-
-  useEffect(() => {
-    if (multiple) {
-      multiSuperOnChange([]);
-    }
-  }, []);
 
   return (
     <Autocomplete
