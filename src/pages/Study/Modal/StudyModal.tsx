@@ -16,7 +16,7 @@ import {
 } from '@api/studyApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import memberState from '@recoil/member.recoil';
-import AutoComplete, { MultiAutoCompleteValue, SingleAutoCompleteValue } from '@components/Input/AutoComplete';
+import AutoComplete, { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
@@ -33,7 +33,7 @@ interface StudyModalProps {
 
 const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyModalProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
-  const userInfo = useRecoilValue(memberState);
+  const headMemberInfo = useRecoilValue(memberState);
   const isEditMode = Boolean(selectedStudyInfo);
 
   const { control, getValues } = useForm({ mode: 'onBlur' });
@@ -45,8 +45,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
 
   const { data: members } = useGetMemberInfoQuery();
 
-  const [leaderId, setLeaderId] = useState<SingleAutoCompleteValue>(null);
-  const [memberIds, setMemberIds] = useState<MultiAutoCompleteValue>([]);
+  const [memberInfos, setMemberInfos] = useState<MultiAutoCompleteValue>([]);
 
   const handleAddActionButtonClick = () => {
     const newStudyInfo = {
@@ -58,7 +57,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
       etcLink: getValues('etcLink') || null,
       year: currentPeriod.year,
       season: currentPeriod.season,
-      memberIds: memberIds?.map((v) => v.value as number),
+      memberIds: memberInfos?.map((v) => v.value as number),
     };
 
     if (isEditMode && selectedStudyInfo) {
@@ -101,21 +100,17 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
   };
 
   useEffect(() => {
-    if (open && userInfo) {
-      setLeaderId({
-        value: userInfo.memberId,
-        label: `${userInfo.realName} (${userInfo.generation})`,
-      });
-      setMemberIds([
+    if (open && headMemberInfo) {
+      setMemberInfos([
         {
-          value: userInfo.memberId,
-          label: `${userInfo.realName} (${userInfo.generation})`,
-          group: userInfo.generation,
+          value: headMemberInfo.memberId,
+          label: `${headMemberInfo.realName} (${headMemberInfo.generation})`,
+          group: headMemberInfo.generation,
           fixed: true,
         },
       ]);
     }
-  }, [open, userInfo]);
+  }, [open, headMemberInfo]);
 
   return (
     <ActionModal
@@ -187,23 +182,9 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
         </div>
       </div>
       <div className="mb-10 flex space-x-2">
-        <div className="w-[280px] space-y-2">
+        <div className="w-36 space-y-2">
           <InputLabel className="!font-semibold">스터디장</InputLabel>
-          <AutoComplete
-            className="!-z-10 flex space-x-2 pb-[6px]"
-            value={leaderId}
-            items={members?.map((member) => ({
-              value: member.memberId,
-              label: `${member.realName} (${member.generation})`,
-              group: member.generation,
-            }))}
-            onChange={(v) => {
-              setLeaderId(v);
-              if (v) {
-                setMemberIds([{ ...v, fixed: true }]);
-              }
-            }}
-          />
+          <StandardInput value={headMemberInfo?.realName || ''} readOnly />
         </div>
         <div className="w-full space-y-2">
           <InputLabel className="!font-semibold">스터디원</InputLabel>
@@ -211,14 +192,14 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, currentPeriod }: StudyMo
             className="!-z-10 flex space-x-2 pb-[6px]"
             multiple
             grouped
-            value={memberIds}
+            value={memberInfos}
             items={members?.map((member) => ({
               value: member.memberId,
               label: `${member.realName} (${member.generation})`,
               group: member.generation,
-              fixed: member.memberId === leaderId?.value,
+              fixed: member.memberId === headMemberInfo?.memberId,
             }))}
-            onChange={setMemberIds}
+            onChange={setMemberInfos}
           />
         </div>
       </div>
