@@ -135,200 +135,202 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
       actionButtonName={isEditMode ? '수정' : '추가'}
       onActionButonClick={handleAddActionButtonClick}
     >
-      <div className="mb-10 flex flex-col-reverse justify-between gap-6 sm:flex-row sm:items-start">
-        <Stack spacing={3}>
-          <div>
-            <InputLabel className="!font-semibold">스터디명</InputLabel>
-            <Controller
-              name="studyTitle"
-              defaultValue={selectedStudyInfo?.title ?? ''}
-              control={control}
-              rules={{
-                required: REQUIRE_ERROR_MSG,
-                maxLength: {
-                  value: STUDY_TITLE_MAX_LENGTH,
-                  message: `최대 ${STUDY_TITLE_MAX_LENGTH}글자 입력이 가능합니다.`,
-                },
-              }}
-              render={({ field, fieldState: { error } }) => {
-                return (
-                  <StandardInput
-                    className="w-full sm:w-64"
-                    {...field}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    autoFocus
-                  />
-                );
-              }}
-            />
+      <Stack width={{ sm: 430 }}>
+        <div className="mb-10 flex flex-col-reverse justify-between gap-6 sm:flex-row sm:items-start">
+          <Stack spacing={3}>
+            <div>
+              <InputLabel className="!font-semibold">스터디명</InputLabel>
+              <Controller
+                name="studyTitle"
+                defaultValue={selectedStudyInfo?.title ?? ''}
+                control={control}
+                rules={{
+                  required: REQUIRE_ERROR_MSG,
+                  maxLength: {
+                    value: STUDY_TITLE_MAX_LENGTH,
+                    message: `최대 ${STUDY_TITLE_MAX_LENGTH}글자 입력이 가능합니다.`,
+                  },
+                }}
+                render={({ field, fieldState: { error } }) => {
+                  return (
+                    <StandardInput
+                      className="w-full sm:w-64"
+                      {...field}
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                      autoFocus
+                    />
+                  );
+                }}
+              />
+            </div>
+            <div>
+              <InputLabel className="!font-semibold">스터디 소개</InputLabel>
+              <Controller
+                name="studyInformation"
+                defaultValue={studyDetail?.information ?? ''}
+                control={control}
+                rules={{
+                  required: REQUIRE_ERROR_MSG,
+                  maxLength: {
+                    value: STUDY_CONTENT_MAX_LENGTH,
+                    message: `최대 ${STUDY_CONTENT_MAX_LENGTH}글자 입력이 가능합니다.`,
+                  },
+                }}
+                render={({ field, fieldState: { error } }) => {
+                  return (
+                    <StandardInput
+                      className="w-full"
+                      multiline
+                      rows={2}
+                      {...field}
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                      autoFocus
+                    />
+                  );
+                }}
+              />
+            </div>
+          </Stack>
+          <div className="h-40 w-32 self-center sm:self-start">
+            <ImageUploader isEdit thumbnailPath={selectedStudyInfo?.thumbnailPath} setThumbnail={setThumbnail} />
           </div>
-          <div>
-            <InputLabel className="!font-semibold">스터디 소개</InputLabel>
-            <Controller
-              name="studyInformation"
-              defaultValue={studyDetail?.information ?? ''}
-              control={control}
-              rules={{
-                required: REQUIRE_ERROR_MSG,
-                maxLength: {
-                  value: STUDY_CONTENT_MAX_LENGTH,
-                  message: `최대 ${STUDY_CONTENT_MAX_LENGTH}글자 입력이 가능합니다.`,
-                },
-              }}
-              render={({ field, fieldState: { error } }) => {
-                return (
-                  <StandardInput
-                    className="w-full"
-                    multiline
-                    rows={2}
-                    {...field}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    autoFocus
-                  />
-                );
-              }}
-            />
-          </div>
-        </Stack>
-        <div className="h-40 w-32 self-center sm:self-start">
-          <ImageUploader isEdit thumbnailPath={selectedStudyInfo?.thumbnailPath} setThumbnail={setThumbnail} />
         </div>
-      </div>
-      <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:gap-2">
-        <div className="w-36 space-y-2">
-          <InputLabel className="!font-semibold">스터디장</InputLabel>
-          <StandardInput value={headMemberInfo?.realName || ''} readOnly />
+        <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:gap-2">
+          <div className="w-36 space-y-2">
+            <InputLabel className="!font-semibold">스터디장</InputLabel>
+            <StandardInput value={headMemberInfo?.realName || ''} readOnly />
+          </div>
+          <div className="w-full space-y-2">
+            <InputLabel className="!font-semibold">스터디원</InputLabel>
+            <AutoComplete
+              className="!-z-10 flex space-x-2 pb-[6px]"
+              multiple
+              grouped
+              value={memberInfos}
+              items={members?.map((member) => ({
+                value: member.memberId,
+                label: `${member.realName} (${member.generation})`,
+                group: member.generation,
+                fixed: member.memberId === headMemberInfo?.memberId,
+              }))}
+              onChange={(v) => {
+                setMemberInfos(v);
+              }}
+            />
+          </div>
         </div>
-        <div className="w-full space-y-2">
-          <InputLabel className="!font-semibold">스터디원</InputLabel>
-          <AutoComplete
-            className="!-z-10 flex space-x-2 pb-[6px]"
-            multiple
-            grouped
-            value={memberInfos}
-            items={members?.map((member) => ({
-              value: member.memberId,
-              label: `${member.realName} (${member.generation})`,
-              group: member.generation,
-              fixed: member.memberId === headMemberInfo?.memberId,
-            }))}
-            onChange={(v) => {
-              setMemberInfos(v);
-            }}
-          />
+        <div className="space-y-4">
+          <InputLabel className="!font-semibold">
+            <span className="mr-1">링크</span>
+            <span className="text-small text-subGray">(1개 이상 링크 필수)</span>
+          </InputLabel>
+          <Stack spacing={{ xs: 3, sm: 2 }}>
+            <div className="flex flex-col items-center gap-2 sm:flex-row">
+              <VscGithubInverted size={25} className="fill-pointBlue" />
+              <Typography className="w-24 text-center">Github</Typography>
+              <Controller
+                name="gitLink"
+                defaultValue={studyDetail?.links.find((link) => link.title === 'Github')?.content ?? ''}
+                control={control}
+                rules={{
+                  pattern: {
+                    value: /^(https:\/\/github.com)/,
+                    message: `깃헙 링크만 입력이 가능합니다.`,
+                  },
+                }}
+                render={({ field, fieldState: { error } }) => {
+                  return (
+                    <StandardInput
+                      className="w-full"
+                      placeholder="https://"
+                      {...field}
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                      autoFocus
+                    />
+                  );
+                }}
+              />
+            </div>
+            <div className="flex flex-col items-center gap-2 sm:flex-row">
+              <SiNotion size={25} className="fill-pointBlue" />
+              <Typography className="w-24 text-center">Notion</Typography>
+              <Controller
+                name="notionLink"
+                defaultValue={studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? ''}
+                control={control}
+                rules={{
+                  pattern: {
+                    value: /^(https:\/\/)/,
+                    message: `https:// 로 시작해야 합니다.`,
+                  },
+                }}
+                render={({ field, fieldState: { error } }) => {
+                  return (
+                    <StandardInput
+                      className="w-full"
+                      placeholder="https://"
+                      {...field}
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                      autoFocus
+                    />
+                  );
+                }}
+              />
+            </div>
+            <div className="flex flex-col items-center gap-2 sm:flex-row">
+              <VscLink size={25} className="fill-pointBlue" />
+              <Controller
+                name="etcTitle"
+                defaultValue={
+                  studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.title ?? ''
+                }
+                control={control}
+                render={({ field, fieldState: { error } }) => {
+                  return (
+                    <StandardInput
+                      className="w-24"
+                      placeholder="ex. Plato"
+                      {...field}
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                      autoFocus
+                    />
+                  );
+                }}
+              />
+              <Controller
+                name="etcLink"
+                defaultValue={
+                  studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.content ?? ''
+                }
+                control={control}
+                rules={{
+                  pattern: {
+                    value: /^(https:\/\/)/,
+                    message: `https:// 로 시작해야 합니다.`,
+                  },
+                }}
+                render={({ field, fieldState: { error } }) => {
+                  return (
+                    <StandardInput
+                      className="w-full"
+                      placeholder="https://"
+                      {...field}
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                      autoFocus
+                    />
+                  );
+                }}
+              />
+            </div>
+          </Stack>
         </div>
-      </div>
-      <div className="space-y-4">
-        <InputLabel className="!font-semibold">
-          <span className="mr-1">링크</span>
-          <span className="text-small text-subGray">(1개 이상 링크 필수)</span>
-        </InputLabel>
-        <Stack spacing={{ xs: 3, sm: 2 }}>
-          <div className="flex flex-col items-center gap-2 sm:flex-row">
-            <VscGithubInverted size={25} className="fill-pointBlue" />
-            <Typography className="w-24 text-center">Github</Typography>
-            <Controller
-              name="gitLink"
-              defaultValue={studyDetail?.links.find((link) => link.title === 'Github')?.content ?? ''}
-              control={control}
-              rules={{
-                pattern: {
-                  value: /^(https:\/\/github.com)/,
-                  message: `깃헙 링크만 입력이 가능합니다.`,
-                },
-              }}
-              render={({ field, fieldState: { error } }) => {
-                return (
-                  <StandardInput
-                    className="w-full"
-                    placeholder="https://"
-                    {...field}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    autoFocus
-                  />
-                );
-              }}
-            />
-          </div>
-          <div className="flex flex-col items-center gap-2 sm:flex-row">
-            <SiNotion size={25} className="fill-pointBlue" />
-            <Typography className="w-24 text-center">Notion</Typography>
-            <Controller
-              name="notionLink"
-              defaultValue={studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? ''}
-              control={control}
-              rules={{
-                pattern: {
-                  value: /^(https:\/\/)/,
-                  message: `https:// 로 시작해야 합니다.`,
-                },
-              }}
-              render={({ field, fieldState: { error } }) => {
-                return (
-                  <StandardInput
-                    className="w-full"
-                    placeholder="https://"
-                    {...field}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    autoFocus
-                  />
-                );
-              }}
-            />
-          </div>
-          <div className="flex flex-col items-center gap-2 sm:flex-row">
-            <VscLink size={25} className="fill-pointBlue" />
-            <Controller
-              name="etcTitle"
-              defaultValue={
-                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.title ?? ''
-              }
-              control={control}
-              render={({ field, fieldState: { error } }) => {
-                return (
-                  <StandardInput
-                    className="w-24"
-                    placeholder="ex. Plato"
-                    {...field}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    autoFocus
-                  />
-                );
-              }}
-            />
-            <Controller
-              name="etcLink"
-              defaultValue={
-                studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.content ?? ''
-              }
-              control={control}
-              rules={{
-                pattern: {
-                  value: /^(https:\/\/)/,
-                  message: `https:// 로 시작해야 합니다.`,
-                },
-              }}
-              render={({ field, fieldState: { error } }) => {
-                return (
-                  <StandardInput
-                    className="w-full"
-                    placeholder="https://"
-                    {...field}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    autoFocus
-                  />
-                );
-              }}
-            />
-          </div>
-        </Stack>
-      </div>
+      </Stack>
     </ActionModal>
   );
 };
