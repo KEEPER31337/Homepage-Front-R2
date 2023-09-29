@@ -1,6 +1,6 @@
 import React from 'react';
-import { Autocomplete, Chip, TextField } from '@mui/material';
-import { KEEPER_COLOR } from '@constants/keeperTheme';
+import { Autocomplete, TextField } from '@mui/material';
+import MemberChip from '@components/Chip/MemberChip';
 
 interface AutoCompleteItem {
   value: unknown;
@@ -67,13 +67,7 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
       )}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
-          <Chip
-            sx={{ bgcolor: `${KEEPER_COLOR.pointBlue}30`, color: 'white', fontWeight: 500 }}
-            size="small"
-            label={option.label}
-            {...getTagProps({ index })}
-            disabled={option?.fixed}
-          />
+          <MemberChip label={option.label} {...getTagProps({ index })} disabled={option?.fixed} />
         ))
       }
       renderOption={(props, option) => (
