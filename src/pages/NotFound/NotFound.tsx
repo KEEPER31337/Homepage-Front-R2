@@ -13,7 +13,7 @@ const NotFound = () => {
       }}
     >
       <Container maxWidth="lg" className="space-y-40 text-pointBlue">
-        <Stack spacing={4}>
+        <Stack className={torchTrigger === true ? 'animate-typing' : ''} spacing={4}>
           <Typography className="overflow-hidden whitespace-nowrap !font-orbitron" variant="h1" fontWeight="bold">
             Page Not Found
           </Typography>
