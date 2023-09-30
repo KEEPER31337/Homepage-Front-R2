@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Container, Stack, Typography } from '@mui/material';
-import { ReactComponent as NotFoundImg } from '@assets/notFound/404.svg';
+import Svg404Component from './SvgComponent/Svg404Component';
 
 const NotFound = () => {
-  const [point, setPoint] = useState<{ top: number | string; left: number | string }>({ top: '40%', left: '30%' });
+  const [point, setPoint] = useState({ top: window.innerHeight / 2.5, left: window.innerWidth / 3 });
+  const [torchTrigger, torchTriggerReducer] = useReducer((prev) => !prev, true);
+
+  const handleKeyClick = () => {
+    torchTriggerReducer();
+  };
 
   return (
     <div
@@ -32,8 +37,8 @@ const NotFound = () => {
           </Stack>
         </Stack>
         <Stack alignItems="end">
-          <NotFoundImg />
-          <div className="torch" style={point} />
+          <Svg404Component point={point} handleKeyClick={handleKeyClick} />
+          {torchTrigger && <div className="torch pointer-events-none" style={point} />}
         </Stack>
       </Container>
     </div>
