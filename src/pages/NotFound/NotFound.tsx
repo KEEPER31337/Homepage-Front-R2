@@ -1,10 +1,13 @@
 import React, { useReducer, useState } from 'react';
-import { Container, Stack, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Container, Link, Stack, Typography } from '@mui/material';
 import Svg404Component from './SvgComponent/Svg404Component';
 
 const NotFound = () => {
   const [point, setPoint] = useState({ top: window.innerHeight / 2.5, left: window.innerWidth / 3 });
   const [torchTrigger, torchTriggerReducer] = useReducer((prev) => !prev, true);
+
+  const navigate = useNavigate();
 
   const handleKeyClick = () => {
     torchTriggerReducer();
@@ -28,9 +31,14 @@ const NotFound = () => {
             </Typography>
             <Typography className="flex flex-wrap overflow-hidden whitespace-pre !font-orbitron">
               {`> PLEASE TRY TO `}
-              <span className="text-white">[GO BACK]</span>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <Link underline="hover" component="button" color="#fff" onClick={() => navigate(-1)}>
+                [GO BACK]
+              </Link>
               {` OR `}
-              <span className="text-white">[RETURN TO THE HOMEPAGE]</span>
+              <Link underline="hover" color="#fff" href="/">
+                [RETURN TO THE HOMEPAGE]
+              </Link>
               {` .`}
             </Typography>
             <Typography className="overflow-hidden !font-orbitron">{`> GOOD LUCK.`}</Typography>
