@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Stack, Typography } from '@mui/material';
 import { ReactComponent as NotFoundImg } from '@assets/notFound/404.svg';
 
 const NotFound = () => {
+  const [point, setPoint] = useState<{ top: number | string; left: number | string }>({ top: '40%', left: '30%' });
+
   return (
-    <div className="-mt-10 flex h-screen w-full items-center sm:mt-auto">
+    <div
+      className="-mt-10 flex h-screen w-full items-center sm:mt-auto"
+      onMouseMove={(e) => {
+        setPoint({ top: e.pageY, left: e.pageX });
+      }}
+    >
       <Container maxWidth="lg" className="space-y-40 text-pointBlue">
         <Stack spacing={4}>
           <Typography className="overflow-hidden whitespace-nowrap !font-orbitron" variant="h1" fontWeight="bold">
@@ -26,6 +33,7 @@ const NotFound = () => {
         </Stack>
         <Stack alignItems="end">
           <NotFoundImg />
+          <div className="torch" style={point} />
         </Stack>
       </Container>
     </div>
