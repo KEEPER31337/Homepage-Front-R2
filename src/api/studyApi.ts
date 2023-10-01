@@ -28,7 +28,12 @@ const useDeleteStudyMutation = () => {
     return axios.delete(`/studies/${studyId}`);
   };
 
-  return useMutation(fetcher);
+  const queryClient = useQueryClient();
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['studies'] });
+    },
+  });
 };
 
 const useGetStudyListQuery = ({ year, season }: { year: number; season: number }) => {
