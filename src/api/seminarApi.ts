@@ -87,9 +87,9 @@ const useAttendSeminarMutation = (id: number) => {
   });
 };
 
-const useEditAttendStatusMutation = (seminarId: number, memberId: number) => {
+const useEditAttendStatusMutation = (attendanceId: number) => {
   const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarStatus }) =>
-    axios.patch(`/seminars/${seminarId}/attendances/${memberId}`, { excuse, statusType });
+    axios.patch(`/seminars/attendances/${attendanceId}`, { excuse, statusType });
   return useMutation(fetcher, {
     onSuccess: (response) => {
       return response.data;
@@ -106,7 +106,14 @@ const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?:
         const seminarDateInfo = membersSeminarAttendInfo.attendances.reduce((prev, curr) => {
           const seminarDate = curr.attendDate.replaceAll('-', '.') || '';
 
-          return { ...prev, [`date${seminarDate}`]: curr };
+          return {
+            ...prev,
+            [`date${seminarDate}`]: {
+              ...curr,
+              memberName: membersSeminarAttendInfo.memberName,
+              memberId: membersSeminarAttendInfo.memberId,
+            },
+          };
         }, {});
 
         return {

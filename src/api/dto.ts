@@ -236,6 +236,11 @@ export interface MemberSeminarAttendance {
   attendDate: string;
 }
 
+export interface AttendanceStatus extends MemberSeminarAttendance {
+  memberId: number;
+  memberName: string;
+}
+
 export interface AttendSeminarInfo {
   memberId: number;
   memberName: string;
