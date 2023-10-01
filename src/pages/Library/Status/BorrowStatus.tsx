@@ -10,7 +10,7 @@ interface BorrowStatusProps {
 
 const BorrowStatus = ({ librarian, borrowedBookCount, maxBorrowableBooks }: BorrowStatusProps) => {
   return borrowedBookCount !== maxBorrowableBooks ? (
-    <Typography className="text-pointBlue">
+    <Typography className="!flex !items-end text-pointBlue">
       신청 가능 권수 : {maxBorrowableBooks - borrowedBookCount}/{maxBorrowableBooks}
     </Typography>
   ) : (
@@ -26,7 +26,9 @@ const BorrowStatus = ({ librarian, borrowedBookCount, maxBorrowableBooks }: Borr
       }}
       placement="bottom"
     >
-      <Typography className="text-subRed">신청 가능 권 수({maxBorrowableBooks}권)을 초과했습니다.</Typography>
+      <Typography className="!flex !items-end !text-small text-subRed md:!text-paragraph">
+        신청 가능 권 수({maxBorrowableBooks}권)을 초과했습니다.
+      </Typography>
     </Tooltip>
   );
 };
