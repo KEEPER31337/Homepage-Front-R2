@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '@mui/material';
 import { VscChevronDown } from 'react-icons/vsc';
 
@@ -6,6 +6,7 @@ import useCheckAuth from '@hooks/useCheckAuth';
 import ActionButton from '@components/Button/ActionButton';
 import StudyAccordionBody from './StudyAccordionBody';
 import StudyAccordionHeader from './StudyAccordionHeader';
+import StudyDeleteModal from '../Modal/StudyDeleteModal';
 import type { StudyInfo } from '@api/dto';
 
 interface StudyAccordionProps {
@@ -16,6 +17,7 @@ interface StudyAccordionProps {
 
 const StudyAccordion = ({ study, setStudyModalOpen, setSelectedStudyInfo }: StudyAccordionProps) => {
   const { checkIsMyId } = useCheckAuth();
+  const [studyDeleteModalOpen, setStudyDeleteModalOpen] = useState(false);
 
   const handleStudyEditButtonClick = () => {
     setStudyModalOpen(true);
@@ -23,7 +25,7 @@ const StudyAccordion = ({ study, setStudyModalOpen, setSelectedStudyInfo }: Stud
   };
 
   const handleStudyDeleteButtonClick = () => {
-    // TODO 스터디 제거 API 호출 후 새로고침(기능 구현 후 console 삭제 예정)
+    setStudyDeleteModalOpen(true);
   };
 
   return (
@@ -47,6 +49,7 @@ const StudyAccordion = ({ study, setStudyModalOpen, setSelectedStudyInfo }: Stud
           </ActionButton>
         </AccordionActions>
       )}
+      {study && <StudyDeleteModal study={study} open={studyDeleteModalOpen} setOpen={setStudyDeleteModalOpen} />}
     </Accordion>
   );
 };
