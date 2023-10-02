@@ -38,7 +38,7 @@ const useMainRouter = () =>
             },
             {
               path: '*',
-              element: <NotFound />,
+              element: <NotFound from="Page" />,
             },
             {
               path: 'signUp',
