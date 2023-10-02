@@ -11,9 +11,9 @@ interface StatusTypeSelectorProps {
 const StatusTypeSelector = ({ value, setValue }: StatusTypeSelectorProps) => {
   const seminarStatusList = [
     { id: 'ATTENDANCE', content: '출석' },
+    { id: 'ABSENCE', content: '결석' },
     { id: 'LATENESS', content: '지각' },
-    { id: 'ABSENCE', content: '개인사정' },
-    { id: 'PERSONAL', content: '결석' },
+    { id: 'PERSONAL', content: '개인사정' },
     { id: 'BEFORE_ATTENDANCE', content: '출석 전' },
   ];
 

@@ -88,10 +88,13 @@ const useAttendSeminarMutation = (id: number) => {
 };
 
 const useEditAttendStatusMutation = (attendanceId: number) => {
+  const queryClient = useQueryClient();
+
   const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarStatus }) =>
     axios.patch(`/seminars/attendances/${attendanceId}`, { excuse, statusType });
   return useMutation(fetcher, {
     onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: seminarKeys.attendSeminarList });
       return response.data;
     },
   });

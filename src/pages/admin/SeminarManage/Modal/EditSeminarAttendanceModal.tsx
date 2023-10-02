@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AttendanceStatus } from '@api/dto';
 import { useEditAttendStatusMutation } from '@api/seminarApi';
 import StatusTypeSelector from '@pages/admin/SeminarManage/Selector/StatusTypeSelector';
@@ -13,26 +13,35 @@ interface AddSeminarModalProps {
 
 const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSeminarModalProps) => {
   const [statusType, setStatusType] = useState(attendanceStatus.attendanceStatus);
-  const [excuse, setExcuse] = useState('');
+  const [excuse, setExcuse] = useState(attendanceStatus.excuse || '');
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
 
   const { mutate: editAttendStatus } = useEditAttendStatusMutation(attendanceStatus.attendanceId);
 
-  const validate = () => {
-    const isValid = excuse.trim() !== '';
-    setIsInvalidTitle(!isValid);
-    return isValid;
+  const IsExcuseRequired = () => {
+    return statusType === 'PERSONAL' || statusType === 'LATENESS';
   };
 
-  const IsExcuseRequired = () => {
-    return statusType === 'ABSENCE' || statusType === 'LATENESS';
+  const validate = () => {
+    let isValid = true;
+
+    if (IsExcuseRequired()) {
+      isValid = excuse.trim() !== '';
+    }
+
+    setIsInvalidTitle(!isValid);
+    return isValid;
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleAddSeminarButtonClick = () => {
+  const handleBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setExcuse(e.target.value);
+  };
+
+  const handleEditSeminarButtonClick = () => {
     if (validate()) {
       editAttendStatus(
         { statusType, excuse: excuse.trim() },
@@ -46,9 +55,12 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
     }
   };
 
-  const handleBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExcuse(e.target.value);
-  };
+  useEffect(() => {
+    if (attendanceStatus) {
+      setStatusType(attendanceStatus.attendanceStatus);
+      setExcuse(attendanceStatus.excuse || '');
+    }
+  }, [attendanceStatus]);
 
   return (
     <ActionModal
@@ -60,7 +72,7 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
         attendanceStatus.memberName
       } 출석 상태 변경`}
       actionButtonName="변경"
-      onActionButonClick={handleAddSeminarButtonClick}
+      onActionButonClick={handleEditSeminarButtonClick}
     >
       <div className="flex flex-col items-center space-y-5">
         <StatusTypeSelector value={statusType} setValue={setStatusType} />
