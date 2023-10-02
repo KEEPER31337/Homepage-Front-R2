@@ -71,7 +71,7 @@ const Svg404Component = ({ point, handleKeyClick }: Svg404Component) => {
         <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
           <use xlinkHref="#image0_299_382" transform="matrix(0.00322581 0 0 0.00327975 0 -0.00836059)" />
         </pattern>
-        <image id="image0_299_382" width="310" height="310" xlinkHref="favicon/favicon-96x96.png" />
+        <image id="image0_299_382" width="310" height="310" xlinkHref="/favicon/favicon-96x96.png" />
       </defs>
     </svg>
   );
