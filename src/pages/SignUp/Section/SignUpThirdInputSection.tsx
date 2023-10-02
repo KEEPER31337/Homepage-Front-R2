@@ -35,7 +35,7 @@ const SignUpThirdInputSection = () => {
     enabled: isEmailSent,
   });
 
-  const { mutate: emailAuth } = useEmailAuthMutation();
+  const { mutate: emailAuth, isLoading: isEmailSendLoading, isSuccess: isEmailSendSuccess } = useEmailAuthMutation();
   const { mutate: signUp } = useSignUpMutation();
 
   const handleRequestVerificationCode = () => {
@@ -103,6 +103,8 @@ const SignUpThirdInputSection = () => {
             <EmailAuthInput
               label="이메일"
               {...field}
+              isLoading={isEmailSent && isEmailSendLoading}
+              isSuccess={isEmailSent && isEmailSendSuccess}
               error={Boolean(error)}
               helperText={error?.message}
               inputDisabled={isEmailSent && checkEmailDuplicationSuccess}
