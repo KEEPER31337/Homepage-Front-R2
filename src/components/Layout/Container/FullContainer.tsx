@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 const FullContainer = () => {
   return (
-    <div className="mt-14 flex h-full w-full justify-center bg-middleBlack sm:mt-header">
+    <div className="flex min-h-screen w-full justify-center bg-middleBlack pt-14 sm:pt-header">
       <Outlet />
     </div>
   );

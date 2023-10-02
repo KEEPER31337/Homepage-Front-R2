@@ -26,7 +26,7 @@ const Profile = () => {
   const [tab, setTab] = useState(0);
 
   return (
-    <div className="mb-40 mt-header flex w-full flex-col justify-start xl:flex-row xl:justify-center">
+    <div className="flex w-full flex-col justify-start sm:mb-40 sm:mt-header xl:flex-row xl:justify-center">
       <div className="flex w-full border border-subGray xl:h-full xl:w-80">
         <ProfileSection />
       </div>

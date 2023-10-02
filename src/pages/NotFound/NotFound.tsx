@@ -19,7 +19,7 @@ const NotFound = ({ from }: NotFoundProps) => {
 
   return (
     <div
-      className="-mt-10 flex h-screen w-full items-center sm:mt-auto"
+      className="flex h-full w-full items-center"
       onMouseMove={(e) => {
         setPoint({ top: e.pageY, left: e.pageX });
       }}
