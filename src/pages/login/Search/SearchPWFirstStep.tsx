@@ -32,6 +32,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   } = useRequestAuthCodeMutation();
   const { mutate: checkAuth } = useCheckAuthCodeMutation();
 
+  const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
   const [isSent, setIsSent] = useState(false);
   const [idErrorMsg, setIdErrorMsg] = useState('');
   const [emailErrorMsg, setEmailErrorMsg] = useState('');
@@ -77,6 +78,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
       { loginId: form.id, email: form.email },
       {
         onSuccess: () => {
+          setExpirationTime(DateTime.now().plus({ seconds: TIMER_DURATION_SECOND }));
           setMatchInfoModalOpen(false);
         },
         onError: () => {
@@ -107,12 +109,20 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
 
   const handleOtherEmailButtonClick = () => {
     setIsSent(false);
+    setExpirationTime(null);
     setForm({ ...form, email: '', verificationCode: '' });
     setMailAuthenticationModalOpen(false);
   };
 
   const handleResendMailButtonClick = () => {
-    requestAuthcode({ loginId: form.id, email: form.email });
+    requestAuthcode(
+      { loginId: form.id, email: form.email },
+      {
+        onSuccess: () => {
+          setExpirationTime(DateTime.now().plus({ seconds: TIMER_DURATION_SECOND }));
+        },
+      },
+    );
     setMailAuthenticationModalOpen(false);
   };
 
@@ -169,7 +179,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             value={form.verificationCode}
             onChange={handleChange}
             disabled={!(isSent && isEmailSendSuccess)}
-            expirationTime={DateTime.now().plus({ seconds: TIMER_DURATION_SECOND })}
+            expirationTime={expirationTime}
           />
         </div>
         {!isValidAuthCode && <p className="text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>}
