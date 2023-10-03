@@ -1,23 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Container, Divider, Stack } from '@mui/material';
+import { Container, Divider, Stack } from '@mui/material';
 import useLoginMutation from '@api/logInApi';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
-
-const HorizonLine = () => {
-  return (
-    <Box
-      sx={{
-        width: '100%',
-        borderBottom: '1px solid #56CFE1',
-        opacity: '30%',
-        margin: '10px 0 10px',
-      }}
-    />
-  );
-};
 
 const Login = () => {
   const [form, setForm] = useState({

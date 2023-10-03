@@ -24,7 +24,11 @@ interface SearchPWFirstStepProps {
 }
 
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
-  const { mutate: requestAuthcode } = useRequestAuthCodeMutation();
+  const {
+    mutate: requestAuthcode,
+    isLoading: isEmailSendLoading,
+    isSuccess: isEmailSendSuccess,
+  } = useRequestAuthCodeMutation();
   const { data: checkAuthcodeData } = useCheckAuthCodeQuery({
     loginId: form.id,
     email: form.email,
@@ -53,12 +57,12 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   };
 
   const handleRequestVerificationCode = () => {
+    setIsSent(true);
     if (form.id && form.email) {
       requestAuthcode(
         { loginId: form.id, email: form.email },
         {
           onSuccess: () => {
-            setIsSent(true);
             setMatchInfoModalOpen(false);
           },
           onError: () => {
@@ -112,6 +116,8 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
           <EmailAuthInput
             className="w-full sm:w-[70%]"
             inputDisabled={isSent}
+            isLoading={isSent && isEmailSendLoading}
+            isSuccess={isSent && isEmailSendSuccess}
             value={form.email}
             onChange={handleChange}
             buttonDisabled={!isValidEmail || isSent}
@@ -133,7 +139,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             name="verificationCode"
             value={form.verificationCode}
             onChange={handleChange}
-            disabled={!isSent}
+            disabled={!(isSent && isEmailSendSuccess)}
             expirationTime={DateTime.now().plus({ seconds: TIMER_DURATION_SECOND })}
           />
         </div>

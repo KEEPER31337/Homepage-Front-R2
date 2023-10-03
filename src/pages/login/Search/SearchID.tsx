@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { CircularProgress, Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useSearchIdMutation } from '@api/SearchAccountApi';
 import { validateEmail } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -15,7 +15,7 @@ const SearchID = () => {
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
   const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
 
-  const { mutate: searchId } = useSearchIdMutation();
+  const { mutate: searchId, isLoading: isEmailSendLoading } = useSearchIdMutation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -75,7 +75,7 @@ const SearchID = () => {
           <Divider className="bg-pointBlue" />
           <div className="mt-10 text-center">
             <OutlinedButton className="w-full sm:w-1/5" onClick={handleConfirmClick} disabled={!isValidEmail}>
-              확인
+              {isEmailSendLoading ? <CircularProgress className="my-1" size={24} /> : <>확인</>}
             </OutlinedButton>
           </div>
           <WarningModal
