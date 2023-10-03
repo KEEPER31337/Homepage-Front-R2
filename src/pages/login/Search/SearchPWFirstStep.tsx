@@ -173,22 +173,24 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
           />
         </div>
         {!isValidAuthCode && <p className="text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>}
-        <div className="relative -mx-2 sm:-mx-20 ">
-          <Typography
-            variant={isMobile ? 'small' : 'paragraph'}
-            className="absolute right-0 w-fit hover:underline hover:underline-offset-4"
-            component="button"
-            onClick={() => setMailAuthenticationModalOpen(true)}
-          >
-            인증 메일이 오지 않았나요?
-          </Typography>
-          <MailAuthenticationModal
-            open={mailAuthenticationModalOpen}
-            onClose={() => setMailAuthenticationModalOpen(false)}
-            onOtherEmailButtonClick={handleOtherEmailButtonClick}
-            onResendMailButtonClick={handleResendMailButtonClick}
-          />
-        </div>
+        {isSent && (
+          <div className="relative -mx-2 sm:-mx-20 ">
+            <Typography
+              variant={isMobile ? 'small' : 'paragraph'}
+              className="absolute right-0 w-fit hover:underline hover:underline-offset-4"
+              component="button"
+              onClick={() => setMailAuthenticationModalOpen(true)}
+            >
+              인증 메일이 오지 않았나요?
+            </Typography>
+            <MailAuthenticationModal
+              open={mailAuthenticationModalOpen}
+              onClose={() => setMailAuthenticationModalOpen(false)}
+              onOtherEmailButtonClick={handleOtherEmailButtonClick}
+              onResendMailButtonClick={handleResendMailButtonClick}
+            />
+          </div>
+        )}
       </div>
       <Divider className="bg-pointBlue" />
       <div className="mt-10 text-center">
