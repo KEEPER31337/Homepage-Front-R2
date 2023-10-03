@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DateTime } from 'luxon';
-import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
+import { useCheckAuthCodeMutation, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
 import { validateEmail } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
@@ -29,11 +29,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     isLoading: isEmailSendLoading,
     isSuccess: isEmailSendSuccess,
   } = useRequestAuthCodeMutation();
-  const { data: checkAuthcodeData } = useCheckAuthCodeQuery({
-    loginId: form.id,
-    email: form.email,
-    authCode: form.verificationCode,
-  });
+  const { mutate: checkAuth } = useCheckAuthCodeMutation();
 
   const [isSent, setIsSent] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
@@ -74,11 +70,22 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   };
 
   const handleConfirmFirstStep = () => {
-    if (checkAuthcodeData?.auth === true) {
-      setCurrentStep(2);
-    } else {
-      setIsValidAuthCode(false);
-    }
+    checkAuth(
+      {
+        loginId: form.id,
+        email: form.email,
+        authCode: form.verificationCode,
+      },
+      {
+        onSuccess: (data) => {
+          if (data?.auth === true) {
+            setCurrentStep(2);
+          } else {
+            setIsValidAuthCode(false);
+          }
+        },
+      },
+    );
   };
 
   const handleOtherEmailButtonClick = () => {
