@@ -36,17 +36,19 @@ const ActiveMemberManage = () => {
         selectedMemberList={selectedMemberList}
         setSelectedMemberList={setSelectedMemberList}
       />
-      <div className="flex justify-between">
+      <div className="mb-2 flex w-full flex-col items-start justify-between md:mb-5 md:flex-row md:items-center">
         <ChangeMemberTypeInput
           memberList={memberList}
           selectedMemberList={selectedMemberList}
           setSelectedMemberList={setSelectedMemberList}
         />
-        <ChangeMemberTypeButton
-          memberTypeList={memberTypeList}
-          selectedMemberList={selectedMemberList}
-          setSelectedMemberList={setSelectedMemberList}
-        />
+        <div className="items-ends mt-2 flex w-full justify-end space-x-4 md:mt-0">
+          <ChangeMemberTypeButton
+            memberTypeList={memberTypeList}
+            selectedMemberList={selectedMemberList}
+            setSelectedMemberList={setSelectedMemberList}
+          />
+        </div>
       </div>
     </div>
   );
