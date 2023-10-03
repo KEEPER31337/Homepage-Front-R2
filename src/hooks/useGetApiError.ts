@@ -73,7 +73,7 @@ const useApiError = (handlers?: HttpStatusHandlers) => {
   const handleError = useCallback(
     (error, serviceCode?) => {
       const httpStatus: number = error.response.status;
-      if (handlers && handlers[httpStatus][serviceCode]) {
+      if (handlers && handlers[httpStatus]?.[serviceCode]) {
         // 우선순위 1. 컴포넌트에서 (HTTP Status, 서비스 표준 에러 Code) Key 조합으로 재정의한 핸들러
         handlers[httpStatus][serviceCode]();
       } else if (handlers && handlers[httpStatus]) {
