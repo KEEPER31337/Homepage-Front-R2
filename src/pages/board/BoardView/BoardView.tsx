@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useGetEachPostQuery } from '@api/postApi';
+import NotFound from '@pages/NotFound/NotFound';
 import SecretPostModal from './Modal/SecretPostModal';
 import AdjacentPostNavSection from './Section/AdjacentPostNavSection';
 import BannerSection from './Section/BannerSection';
@@ -19,7 +20,7 @@ const BoardView = () => {
   const [secretPostModalOpen, setSecretPostModalOpen] = useState(false);
   const [password, setPassword] = useState<string>();
 
-  const { data: postInfo, isSuccess } = useGetEachPostQuery(postId, isSecret, password);
+  const { data: postInfo, isSuccess, isError } = useGetEachPostQuery(postId, isSecret, password);
 
   useEffect(() => {
     if (!isSuccess) return;
@@ -32,6 +33,10 @@ const BoardView = () => {
 
     setSecretPostModalOpen(true);
   }, [isSecret]);
+
+  if (isError) {
+    return <NotFound from="Post" />;
+  }
 
   return (
     <div className="-mt-16 space-y-8 sm:space-y-12">
