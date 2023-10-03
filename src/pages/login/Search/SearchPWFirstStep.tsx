@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useCheckAuthCodeMutation, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
+import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { validateEmail } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
@@ -32,6 +33,8 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   const { mutate: checkAuth } = useCheckAuthCodeMutation();
 
   const [isSent, setIsSent] = useState(false);
+  const [idErrorMsg, setIdErrorMsg] = useState('');
+  const [emailErrorMsg, setEmailErrorMsg] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
   const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
@@ -54,19 +57,27 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
 
   const handleRequestVerificationCode = () => {
     setIsSent(true);
-    if (form.id && form.email) {
-      requestAuthcode(
-        { loginId: form.id, email: form.email },
-        {
-          onSuccess: () => {
-            setMatchInfoModalOpen(false);
-          },
-          onError: () => {
-            setMatchInfoModalOpen(true);
-          },
-        },
-      );
+
+    if (!form.id) {
+      setIdErrorMsg(REQUIRE_ERROR_MSG);
+      return;
     }
+    if (!form.email) {
+      setEmailErrorMsg(REQUIRE_ERROR_MSG);
+      return;
+    }
+
+    requestAuthcode(
+      { loginId: form.id, email: form.email },
+      {
+        onSuccess: () => {
+          setMatchInfoModalOpen(false);
+        },
+        onError: () => {
+          setMatchInfoModalOpen(true);
+        },
+      },
+    );
   };
 
   const handleConfirmFirstStep = () => {
@@ -116,6 +127,8 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             name="id"
             value={form.id}
             onChange={handleChange}
+            error={Boolean(idErrorMsg)}
+            helperText={idErrorMsg}
           />
         </div>
         <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
@@ -129,6 +142,8 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             onChange={handleChange}
             buttonDisabled={!isValidEmail || isSent}
             onAuthButtonClick={handleRequestVerificationCode}
+            error={Boolean(emailErrorMsg)}
+            helperText={emailErrorMsg}
           />
         </div>
         <WarningModal
