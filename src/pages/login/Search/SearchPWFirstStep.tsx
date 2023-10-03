@@ -55,6 +55,12 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     }
   };
 
+  const handleEmailBlur = () => {
+    if (!validateEmail(form.email)) {
+      setEmailErrorMsg('이메일 형식을 확인해주세요.');
+    }
+  };
+
   const handleRequestVerificationCode = () => {
     setIsSent(true);
 
@@ -140,6 +146,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             isSuccess={isSent && isEmailSendSuccess}
             value={form.email}
             onChange={handleChange}
+            onBlur={handleEmailBlur}
             buttonDisabled={!isValidEmail || isSent}
             onAuthButtonClick={handleRequestVerificationCode}
             error={Boolean(emailErrorMsg)}
