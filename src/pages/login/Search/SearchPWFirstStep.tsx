@@ -33,7 +33,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   const { mutate: checkAuth } = useCheckAuthCodeMutation();
 
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
-  const [isSent, setIsSent] = useState(false);
+  const [isAuthCodeRequireClick, setIsAuthCodeRequireClick] = useState(false);
   const [idErrorMsg, setIdErrorMsg] = useState('');
   const [emailErrorMsg, setEmailErrorMsg] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
@@ -53,6 +53,13 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     if (name === 'email') {
       const isValid = validateEmail(value);
       setIsValidEmail(isValid);
+      if (isValid) setEmailErrorMsg('');
+    }
+    if (name === 'id') {
+      if (value.length > 0) setIdErrorMsg('');
+    }
+    if (name === 'verificationCode') {
+      setIsValidAuthCode(true);
     }
   };
 
@@ -63,8 +70,6 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   };
 
   const handleRequestVerificationCode = () => {
-    setIsSent(true);
-
     if (!form.id) {
       setIdErrorMsg(REQUIRE_ERROR_MSG);
       return;
@@ -78,11 +83,13 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
       { loginId: form.id, email: form.email },
       {
         onSuccess: () => {
+          setIsAuthCodeRequireClick(true);
           setExpirationTime(DateTime.now().plus({ seconds: TIMER_DURATION_SECOND }));
           setMatchInfoModalOpen(false);
         },
         onError: () => {
           setMatchInfoModalOpen(true);
+          setIsAuthCodeRequireClick(false);
         },
       },
     );
@@ -108,7 +115,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
   };
 
   const handleOtherEmailButtonClick = () => {
-    setIsSent(false);
+    setIsAuthCodeRequireClick(false);
     setExpirationTime(null);
     setForm({ ...form, email: '', verificationCode: '' });
     setMailAuthenticationModalOpen(false);
@@ -151,13 +158,13 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
           <p className="text-paragraph leading-4 sm:text-base">이메일</p>
           <EmailAuthInput
             className="w-full sm:w-[70%]"
-            inputDisabled={isSent}
-            isLoading={isSent && isEmailSendLoading}
-            isSuccess={isSent && isEmailSendSuccess}
+            inputDisabled={isAuthCodeRequireClick}
+            isLoading={isAuthCodeRequireClick && isEmailSendLoading}
+            isSuccess={isAuthCodeRequireClick && isEmailSendSuccess}
             value={form.email}
             onChange={handleChange}
             onBlur={handleEmailBlur}
-            buttonDisabled={!isValidEmail || isSent}
+            buttonDisabled={!isValidEmail || isAuthCodeRequireClick}
             onAuthButtonClick={handleRequestVerificationCode}
             error={Boolean(emailErrorMsg)}
             helperText={emailErrorMsg}
@@ -178,12 +185,12 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             name="verificationCode"
             value={form.verificationCode}
             onChange={handleChange}
-            disabled={!(isSent && isEmailSendSuccess)}
+            disabled={!(isAuthCodeRequireClick && isEmailSendSuccess)}
             expirationTime={expirationTime}
           />
         </div>
         {!isValidAuthCode && <p className="text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>}
-        {isSent && (
+        {isAuthCodeRequireClick && (
           <div className="relative -mx-2 sm:-mx-20 ">
             <Typography
               variant={isMobile ? 'small' : 'paragraph'}
