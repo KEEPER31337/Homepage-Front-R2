@@ -3,25 +3,15 @@ import { Typography } from '@mui/material';
 import { MemberDetailInfo } from '@api/dto';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import MemberCard from '../Card/MemberCard';
+import memberTypes from '../memberTypes';
 
 interface MemberCardProps {
-  memberTypeList: Array<{
-    type: string;
-    renderType: string;
-    typeId: number;
-    color?: string;
-  }>;
   memberList: MemberDetailInfo[];
   selectedMemberList: MultiAutoCompleteValue;
   setSelectedMemberList: React.Dispatch<React.SetStateAction<MultiAutoCompleteValue>>;
 }
 
-const MemberTypeSection = ({
-  memberTypeList,
-  memberList,
-  selectedMemberList,
-  setSelectedMemberList,
-}: MemberCardProps) => {
+const MemberTypeSection = ({ memberList, selectedMemberList, setSelectedMemberList }: MemberCardProps) => {
   const toggleMemberSelection = (memberInfo: MemberDetailInfo) => {
     setSelectedMemberList((prevSelectedMember: MultiAutoCompleteValue) => {
       const isSelected = prevSelectedMember.some((member) => member.value === memberInfo.memberId);
@@ -36,7 +26,7 @@ const MemberTypeSection = ({
 
   return (
     <div className="mb-5 grid grid-cols-2 content-start gap-3 sm:grid-cols-6">
-      {memberTypeList
+      {memberTypes
         .filter((memberType) => memberType.renderType !== '탈퇴')
         .map((memberType) => (
           <div
