@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import axios from 'axios';
 
 const useSearchIdMutation = () => {
@@ -14,12 +14,13 @@ const useRequestAuthCodeMutation = () => {
   return useMutation(fetcher);
 };
 
-const useCheckAuthCodeQuery = ({ loginId, email, authCode }: { loginId: string; email: string; authCode: string }) => {
-  const fetcher = () =>
+const useCheckAuthCodeMutation = () => {
+  const fetcher = ({ loginId, email, authCode }: { loginId: string; email: string; authCode: string }) =>
     axios.get('/sign-in/check-auth-code', { params: { loginId, email, authCode } }).then(({ data }) => data);
 
-  return useQuery(['checkAuthCode'], fetcher);
+  return useMutation(fetcher);
 };
+
 const useChangePasswordMutation = () => {
   const fetcher = ({
     email,
@@ -36,4 +37,4 @@ const useChangePasswordMutation = () => {
   return useMutation(fetcher);
 };
 
-export { useSearchIdMutation, useRequestAuthCodeMutation, useCheckAuthCodeQuery, useChangePasswordMutation };
+export { useSearchIdMutation, useRequestAuthCodeMutation, useCheckAuthCodeMutation, useChangePasswordMutation };
