@@ -10,6 +10,7 @@ import { useGetNoticePostListQuery, useGetPostListQuery } from '@api/postApi';
 import usePagination from '@hooks/usePagination';
 import tableViewState from '@recoil/view.recoil';
 import { categoryNameToId } from '@utils/converter';
+import NotFound from '@pages/NotFound/NotFound';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TableViewSwitchButton from '@components/Table/Button/TableViewSwitchButton';
 import GridTable from '@components/Table/GridTable';
@@ -49,7 +50,7 @@ const BoardList = () => {
   const categoryId = categoryName ? categoryNameToId(categoryName) : null;
 
   if (!categoryId) {
-    return null;
+    return <NotFound from="Board" />;
   }
 
   const navigate = useNavigate();
