@@ -72,9 +72,9 @@ const BookManageTab = () => {
 
   return (
     <>
-      <div className="mb-2 flex w-full flex-col items-start justify-between md:mb-5 md:flex-row md:items-center">
+      <div className="mb-2 flex w-full flex-col items-start justify-between sm:mb-5 sm:flex-row sm:items-center">
         <LibrarySearchSection />
-        <div className="items-ends mt-2 flex w-full justify-end space-x-4 md:mt-0">
+        <div className="items-ends mt-2 flex w-full justify-end space-x-4 sm:mt-0">
           <ActionButton className="w-fit" small={isMobile} mode="add" onClick={() => setAddBookModalOpen(true)}>
             추가
           </ActionButton>
