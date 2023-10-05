@@ -125,7 +125,7 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
             onChange={(e) => {
               setMeritTypeInfo((prev) => ({ ...prev, score: Number(e.target.value) }));
             }}
-            options={Array.from(Array(11).keys()).map((i) => ({
+            options={Array.from(Array(10).keys()).map((i) => ({
               id: i + 1,
               content: i + 1,
             }))}
