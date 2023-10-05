@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, ListItemIcon, ListItem, ListItemText, Typography } from '@mui/material';
+import { List, ListItem, ListItemText, Typography } from '@mui/material';
 import { useEditMemberTypeMutation, useDeleteMemberMutation } from '@api/memberApi';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
