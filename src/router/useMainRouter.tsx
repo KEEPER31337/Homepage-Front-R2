@@ -73,7 +73,7 @@ const useMainRouter = () =>
                   element: <div />,
                 },
                 {
-                  path: 'libraryManage',
+                  path: 'libraryManage/*',
                   element: <LibraryManage />,
                 },
                 {
