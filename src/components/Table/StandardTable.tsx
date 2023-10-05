@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
+import { KEEPER_COLOR } from '@constants/keeperTheme';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import { PaginationOption } from '@components/Pagination/StandardTablePagination.interface';
 import { Cell, ChildComponent, Column, Row } from './StandardTable.interface';
@@ -36,12 +37,17 @@ const StandardTable = <T extends Record<string, any>>({
         <Table size={size} sx={{ '.MuiTableCell-sizeSmall': { paddingY: '14px' } }}>
           <TableHead className="bg-middleBlack">
             <TableRow>
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <TableCell
                   padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
                   className="!truncate !border-subBlack !text-white"
                   width={column.width}
-                  sx={{ minWidth: column.width }}
+                  sx={{
+                    minWidth: column.width,
+                    position: column.fixed && 'sticky',
+                    left: column.fixed === 'left' ? index * 100 : undefined,
+                    backgroundColor: KEEPER_COLOR.middleBlack,
+                  }}
                   key={column.key as string}
                 >
                   {isCheckboxColumn(column.key) ? <Checkbox /> : column.headerName}
@@ -67,14 +73,25 @@ const StandardTable = <T extends Record<string, any>>({
                       key={row.id}
                       onClick={onRowClick ? () => onRowClick({ rowData: row }) : undefined}
                     >
-                      {columns.map((column) => {
+                      {columns.map((column, index) => {
                         return (
                           <TableCell
-                            onClick={onCellClick ? () => onCellClick({ cellData: row[column.key] }) : undefined}
+                            onClick={
+                              onCellClick && !column.fixed
+                                ? () => onCellClick({ cellData: row[column.key] })
+                                : undefined
+                            }
                             padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
                             className={`${
-                              onCellClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'
+                              onCellClick &&
+                              !column.fixed &&
+                              'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'
                             } !border-subBlack bg-mainBlack !text-white`}
+                            sx={{
+                              position: column.fixed && 'sticky',
+                              left: column.fixed === 'left' ? index * 100 : undefined,
+                              backgroundColor: column.fixed && KEEPER_COLOR.middleBlack,
+                            }}
                             key={column.key as string}
                           >
                             {isCheckboxColumn(column.key) ? (
@@ -101,14 +118,23 @@ const StandardTable = <T extends Record<string, any>>({
                     key={row.id}
                     onClick={onRowClick ? () => onRowClick({ rowData: row }) : undefined}
                   >
-                    {columns.map((column) => {
+                    {columns.map((column, index) => {
                       return (
                         <TableCell
-                          onClick={onCellClick ? () => onCellClick({ cellData: row[column.key] }) : undefined}
+                          onClick={
+                            onCellClick && !column.fixed ? () => onCellClick({ cellData: row[column.key] }) : undefined
+                          }
                           padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
                           className={`${
-                            onCellClick && 'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'
-                          } !border-subBlack bg-mainBlack !text-white`}
+                            onCellClick &&
+                            !column.fixed &&
+                            'hover:cursor-pointer hover:brightness-[.8] hover:drop-shadow-none'
+                          } overflow-hidden !border-subBlack bg-mainBlack !text-white`}
+                          sx={{
+                            position: column.fixed && 'sticky',
+                            left: column.fixed === 'left' ? index * 100 : undefined,
+                            backgroundColor: column.fixed && KEEPER_COLOR.middleBlack,
+                          }}
                           key={column.key as string}
                         >
                           {isCheckboxColumn(column.key) ? (

@@ -2,6 +2,7 @@ export interface Column<T> {
   key: keyof T | 'checkbox';
   headerName: string;
   width?: string | number;
+  fixed?: 'left' | 'right';
 }
 
 export type Row<T> = T & {
