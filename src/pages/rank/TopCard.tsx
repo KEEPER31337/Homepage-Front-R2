@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar, Typography } from '@mui/material';
+import { formatGeneration } from '@utils/converter';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface TopCardProps<T extends Record<string, any>> {
@@ -23,7 +24,7 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
                 {item.realName}
               </Typography>
               <Typography variant="small" marginY="auto" marginLeft={1}>
-                {item.generation}기
+                {formatGeneration(item.generation as string)}기
               </Typography>
             </div>
             <Typography color="primary" fontWeight="semibold">
