@@ -7,7 +7,7 @@ import Trendings from './Trendings';
 
 const Home = () => {
   return (
-    <div className="flex w-full flex-col bg-galaxy bg-contain bg-repeat">
+    <div className="-mt-14 bg-galaxy bg-contain bg-repeat sm:-mt-header">
       <Intro />
       <Activity />
       <Excellence />
