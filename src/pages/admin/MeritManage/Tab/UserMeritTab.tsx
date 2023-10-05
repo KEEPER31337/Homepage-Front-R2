@@ -31,7 +31,7 @@ const MembersMeritChildComponent = ({ key, value }: ChildComponent<MembersMeritR
     case 'merit':
       return <Typography className={`${(value as number) > 0 && 'text-pointBlue'}`}>{value}</Typography>;
     case 'demerit':
-      return <Typography className={`${(value as number) < 0 && 'text-subRed'}`}>{value}</Typography>;
+      return <Typography className={`${(value as number) > 0 && 'text-subRed'}`}>{value}</Typography>;
     default:
       return value;
   }

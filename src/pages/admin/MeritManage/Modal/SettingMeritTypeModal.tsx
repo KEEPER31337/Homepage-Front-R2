@@ -6,20 +6,18 @@ import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import Selector from '@components/Selector/Selector';
 
-type RewordOrPenalty = 'reword' | 'penalty';
-
 export type MeritTypeModalInfo = {
   id: number;
-  type: RewordOrPenalty;
   score: number;
   reason: string;
+  isMerit: boolean;
 };
 
 const baseMeritTypeInfo: MeritTypeModalInfo = {
   id: 0,
-  type: 'reword',
   score: 0,
   reason: '',
+  isMerit: true,
 };
 
 export const meritTypeChangeEnable = (meritTypeId: number) => {
@@ -81,6 +79,7 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
             meritTypeId: meritTypeInfo.id,
             score: meritTypeInfo.score,
             reason: meritTypeInfo.reason,
+            isMerit: meritTypeInfo.isMerit,
           },
           {
             onSuccess,
@@ -108,10 +107,10 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
     >
       <div className="grow space-y-5">
         <RadioButton
-          value={meritTypeInfo.type}
+          value={meritTypeInfo.isMerit ? 'reword' : 'penalty'}
           horizontal
           onChange={(e) => {
-            setMeritTypeInfo((prev) => ({ ...prev, type: e.target.value as RewordOrPenalty, score: 0 }));
+            setMeritTypeInfo((prev) => ({ ...prev, isMerit: e.target.value === 'reword' }));
           }}
           options={[
             { id: 'reword', content: '상점' },
@@ -127,8 +126,8 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
               setMeritTypeInfo((prev) => ({ ...prev, score: Number(e.target.value) }));
             }}
             options={Array.from(Array(11).keys()).map((i) => ({
-              id: (i + 1) * (meritTypeInfo.type === 'reword' ? 1 : -1),
-              content: (i + 1) * (meritTypeInfo.type === 'reword' ? 1 : -1),
+              id: i + 1,
+              content: i + 1,
             }))}
           />
         </div>

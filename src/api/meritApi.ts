@@ -90,12 +90,34 @@ const useAddMeritTypeMutation = () => {
 const useEditMeritTypeMutation = () => {
   const queryClient = useQueryClient();
 
-  const fetcher = ({ score, reason, meritTypeId }: { score: number; reason: string; meritTypeId: number }) =>
-    axios.put(`/merits/types/${meritTypeId}`, { score, reason }).then(({ data }) => data);
+  const fetcher = ({
+    score,
+    reason,
+    meritTypeId,
+    isMerit,
+  }: {
+    score: number;
+    reason: string;
+    meritTypeId: number;
+    isMerit: boolean;
+  }) => axios.put(`/merits/types/${meritTypeId}`, { score, reason, isMerit }).then(({ data }) => data);
 
   return useMutation(fetcher, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: meritKeys.meritType({ page: 0 }) });
+    },
+  });
+};
+
+const useDeleteMeritLogMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ meritLogId }: { meritLogId: number }) =>
+    axios.delete(`/merits/${meritLogId}`).then(({ data }) => data);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: meritKeys.meritLog({ page: 0 }) });
     },
   });
 };
@@ -108,4 +130,5 @@ export {
   useAddMeritLogMutation,
   useAddMeritTypeMutation,
   useEditMeritTypeMutation,
+  useDeleteMeritLogMutation,
 };
