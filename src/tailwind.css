@@ -19,3 +19,8 @@
     color: #fff;
   }
 }
+
+.torch {
+  @apply fixed mb-0 ml-[-250px] mr-0 mt-[-250px] h-[500px] w-[500px] rounded-[50%] opacity-100 shadow-[0_0_0_9999em_#000000f7] after:block after:h-full after:w-full after:rounded-[50%] after:shadow-[inset_0_0_40px_2px_#000,0_0_20px_4px_rgba(13,13,10,0.2)] after:content-[''];
+  background: rgba(0, 0, 0, 0.3);
+}

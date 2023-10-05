@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { formatMemberGeneration } from '@utils/converter';
 import { StudyCore, StudyDetail, StudyInfo, UploadStudy } from './dto';
 
 const useAddStudyMutation = () => {
@@ -28,7 +29,12 @@ const useDeleteStudyMutation = () => {
     return axios.delete(`/studies/${studyId}`);
   };
 
-  return useMutation(fetcher);
+  const queryClient = useQueryClient();
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['studies'] });
+    },
+  });
 };
 
 const useGetStudyListQuery = ({ year, season }: { year: number; season: number }) => {
@@ -37,20 +43,37 @@ const useGetStudyListQuery = ({ year, season }: { year: number; season: number }
   return useQuery<StudyInfo[]>(['studies', year, season], fetcher);
 };
 
-const useGetStudyQuery = ({ studyId }: { studyId: number }) => {
+const useGetStudyQuery = ({ studyId, enabled }: { studyId: number; enabled?: boolean }) => {
   const fetcher = () => axios.get(`/studies/${studyId}`).then(({ data }) => data);
 
-  return useQuery<StudyDetail>(['studies', studyId], fetcher);
+  return useQuery<StudyDetail>(['studies', studyId], fetcher, {
+    enabled,
+    select: (data) => ({
+      ...data,
+      headMember: formatMemberGeneration(data.headMember),
+      members: data.members.map(formatMemberGeneration),
+    }),
+  });
 };
 
-const useEditStudyThumbnailMutation = ({ studyId }: { studyId: number }) => {
-  const fetcher = () => axios.patch(`/studies/${studyId}/thumbnail`);
+const useEditStudyThumbnailMutation = () => {
+  const fetcher = ({ studyId, thumbnail }: { studyId: number; thumbnail: Blob | null }) => {
+    const formData = new FormData();
+    if (thumbnail) formData.append('thumbnail', thumbnail);
+
+    return axios.patch(`/studies/${studyId}/thumbnail`, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  };
 
   return useMutation(fetcher);
 };
 
-const useEditStudyMutation = ({ studyId, studyInfo }: { studyId: number; studyInfo: StudyCore }) => {
-  const fetcher = () => axios.put(`/studies/${studyId}`, studyInfo);
+const useEditStudyMutation = () => {
+  const fetcher = ({ studyId, studyInfo }: { studyId: number; studyInfo: StudyCore }) =>
+    axios.put(`/studies/${studyId}`, studyInfo);
 
   return useMutation(fetcher);
 };

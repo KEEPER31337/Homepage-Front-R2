@@ -2,9 +2,11 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Game from '@pages/Game/Game';
 import Library from '@pages/Library/Library';
+import NotFound from '@pages/NotFound/NotFound';
 import Profile from '@pages/Profile/Profile';
 import SignUp from '@pages/SignUp/SignUp';
 import Study from '@pages/Study/Study';
+import ActiveMemberManage from '@pages/admin/ActiveMemberManage/ActiveMemberManage';
 import DutyManage from '@pages/admin/DutyManage/DutyManage';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
 import MeritManage from '@pages/admin/MeritManage/MeritManage';
@@ -35,6 +37,10 @@ const useMainRouter = () =>
               element: <Home />,
             },
             {
+              path: '*',
+              element: <NotFound from="Page" />,
+            },
+            {
               path: 'signUp',
               element: <SignUp />,
             },
@@ -47,7 +53,7 @@ const useMainRouter = () =>
               element: <SearchAccount />,
             },
             {
-              path: 'profile/:memberId',
+              path: 'profile/:memberId/*',
               element: <Profile />,
             },
           ],
@@ -76,7 +82,7 @@ const useMainRouter = () =>
                 },
                 {
                   path: 'activeMemberManage',
-                  element: <div />,
+                  element: <ActiveMemberManage />,
                 },
                 {
                   path: 'meritManage',

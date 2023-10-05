@@ -41,7 +41,11 @@ const EditEmailSection = () => {
     email: getValues('email'),
     enabled: isEmailSent,
   });
-  const { mutate: newEmailAuth } = useNewEmailAuthMutation();
+  const {
+    mutate: newEmailAuth,
+    isLoading: isEmailSendLoading,
+    isSuccess: isEmailSendSuccess,
+  } = useNewEmailAuthMutation();
   const { mutate: editEmail } = useEditEmailMutation();
 
   const handleRequestVerificationCode = () => {
@@ -123,6 +127,8 @@ const EditEmailSection = () => {
               <EmailAuthInput
                 label="새 이메일"
                 {...field}
+                isLoading={isEmailSendLoading}
+                isSuccess={isEmailSendSuccess}
                 error={Boolean(error)}
                 helperText={error?.message}
                 inputDisabled={isEmailSent && checkEmailDuplicationSuccess}

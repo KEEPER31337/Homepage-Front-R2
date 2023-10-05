@@ -16,6 +16,10 @@ export type Role =
   | 'ROLE_회원'
   | 'ROLE_출제자';
 
+export type borrowStatus = '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
+
+export type MemberType = '비회원' | '정회원' | '휴면회원' | '졸업' | '탈퇴';
+
 export interface MemberInfo {
   memberId: number;
   loginId: number;
@@ -33,7 +37,7 @@ export interface MemberDetailInfo extends MemberInfo {
   point: number;
   level: number;
   totalAttendance: number;
-  memberType: string;
+  memberType: MemberType;
   memberRank: string;
 }
 
@@ -103,6 +107,12 @@ export interface BorrowInfoListSearch {
   page?: number;
   size?: number;
 }
+export interface BorrowLogListSearch {
+  searchType?: '전체' | '대출중' | '반납대기' | '반납완료' | '대출반려';
+  search?: string;
+  page?: number;
+  size?: number;
+}
 
 export interface BookListInfo {
   id: number;
@@ -127,7 +137,7 @@ export interface BorrowInfo {
   bookQuantity: string;
   currentQuantity: number;
   totalQuantity: number;
-  status: '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
+  status: borrowStatus;
 }
 
 export interface BookInfo {
@@ -157,7 +167,21 @@ export interface BorrowedBookInfo {
   overdue: boolean;
   borrowDateTime: string;
   expireDateTime: string;
-  status: '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
+  status: borrowStatus;
+}
+
+export interface BorrowLogInfo {
+  borrowInfoId: number;
+  bookId: number;
+  bookTitle: string;
+  author: string;
+  borrowerId: number;
+  borrowerRealName: string;
+  borrowDateTime: string;
+  expireDateTime: string;
+  returnDateTime: string;
+  rejectDateTime: string;
+  status: borrowStatus;
 }
 
 export interface StudyLinks {
@@ -170,7 +194,7 @@ export interface StudyLinks {
 export interface StudyCore extends StudyLinks, PeriodicInfo {
   title: string;
   information: string;
-  memberIds: { id: number }[];
+  memberIds: number[];
 }
 
 export interface UploadStudy {
@@ -189,13 +213,14 @@ export interface StudyInfo {
 
 export interface StudyLinkInfo {
   title: string;
-  contents: string;
+  content: string;
 }
 
 export interface StudyDetail {
   information: string;
   links: StudyLinkInfo[];
-  members: MemberInfo[];
+  headMember: Pick<MemberDetailInfo, 'memberId' | 'generation' | 'realName'>;
+  members: Pick<MemberDetailInfo, 'memberId' | 'generation' | 'realName'>[];
 }
 
 export interface SignUpInfo {
@@ -587,7 +612,7 @@ export interface ProfileInfo {
   emailAddress: string;
   thumbnailPath: string | null;
   point: number;
-  memberType: string;
+  memberType: MemberType;
   memberJobs: Role[];
   follower: FollowInfo[];
   followee: FollowInfo[];
@@ -605,4 +630,9 @@ export interface TodayAttendInfo {
   continuousDay: number;
   todayRank: number;
   todayPoint: number;
+}
+
+export interface RoleInfo {
+  name: string;
+  img: string;
 }

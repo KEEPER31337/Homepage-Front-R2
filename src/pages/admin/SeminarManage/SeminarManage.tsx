@@ -40,7 +40,7 @@ const SeminarManage = () => {
   }, [seminarList]);
 
   const childComponent = ({ key, value }: ChildComponent<AttendSeminarInfo>) => {
-    if (value && key.slice(0, 4) === 'date') {
+    if (key.slice(0, 4) === 'date' && value) {
       return <SeminarAttendStatus status={(value as MemberSeminarAttendance).attendanceStatus} hasIcon={false} />;
     }
     return value;

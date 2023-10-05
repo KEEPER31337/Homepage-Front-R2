@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { IconButton } from '@mui/material';
+import { IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { VscTrash } from 'react-icons/vsc';
 import { BookListSearch } from '@api/dto';
 import { useGetBookManageListQuery, useDeleteBookMutation, useGetBookDetailQuery } from '@api/libraryManageApi';
@@ -22,16 +22,17 @@ interface libraryManageRow {
 }
 
 const libraryManageColumn: Column<libraryManageRow>[] = [
-  { key: 'no', headerName: '번호' },
-  { key: 'title', headerName: '도서명' },
-  { key: 'author', headerName: '저자' },
-  { key: 'bookQuantity', headerName: '대출현황' },
-  { key: 'borrowers', headerName: '대출자' },
+  { key: 'no', headerName: '번호', width: '5%' },
+  { key: 'title', headerName: '도서명', width: '35%' },
+  { key: 'author', headerName: '저자', width: '30%' },
+  { key: 'bookQuantity', headerName: '대출현황', width: '5%' },
+  { key: 'borrowers', headerName: '대출자', width: '15%' },
   {
     key: 'canBorrow',
     headerName: '대출상태',
+    width: '5%',
   },
-  { key: 'delete', headerName: '삭제' },
+  { key: 'delete', headerName: '삭제', width: '5%' },
 ];
 
 const BookManageTab = () => {
@@ -43,6 +44,9 @@ const BookManageTab = () => {
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
   const [editBookModalOpen, setEditBookModalOpen] = useState(false);
   const [editBookId, setEditBookId] = useState(0);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { data: bookManageListData } = useGetBookManageListQuery({ page, searchType, search });
   const { mutate: deleteBookMutation } = useDeleteBookMutation();
@@ -68,11 +72,13 @@ const BookManageTab = () => {
 
   return (
     <>
-      <div className="mb-5 flex justify-between space-x-2">
+      <div className="mb-2 flex w-full flex-col items-start justify-between sm:mb-5 sm:flex-row sm:items-center">
         <LibrarySearchSection />
-        <ActionButton mode="add" onClick={() => setAddBookModalOpen(true)}>
-          추가
-        </ActionButton>
+        <div className="items-ends mt-2 flex w-full justify-end space-x-4 sm:mt-0">
+          <ActionButton className="w-fit" small={isMobile} mode="add" onClick={() => setAddBookModalOpen(true)}>
+            추가
+          </ActionButton>
+        </div>
         <UploadBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
       </div>
       <StandardTable

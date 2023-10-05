@@ -19,7 +19,7 @@ const SignUp = () => {
     setCurrentStep(newTab);
   };
   return (
-    <div className="mt-2 h-screen w-full place-content-center place-items-center sm:mt-0 sm:grid ">
+    <div className="mt-2 w-full place-content-center place-items-center sm:mt-0 sm:grid ">
       <Stack textAlign="center">
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={currentStep} onChange={handleChange}>
