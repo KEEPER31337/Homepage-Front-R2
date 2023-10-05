@@ -3,14 +3,23 @@ import { StandardTextFieldProps, TextField, InputAdornment } from '@mui/material
 
 interface StandardInputProps extends StandardTextFieldProps {
   value: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   endAdornment?: React.ReactNode;
+  readOnly?: boolean;
   hasBackground?: boolean;
 }
 
 const StandardInput = forwardRef(
   (
-    { value, onChange, error, endAdornment, hasBackground = false, ...standardTextFieldProps }: StandardInputProps,
+    {
+      value,
+      onChange,
+      error,
+      endAdornment,
+      readOnly,
+      hasBackground = false,
+      ...standardTextFieldProps
+    }: StandardInputProps,
     ref?: React.ForwardedRef<HTMLDivElement>,
   ) => {
     return (
@@ -23,6 +32,7 @@ const StandardInput = forwardRef(
               {endAdornment}
             </InputAdornment>
           ),
+          readOnly,
         }}
         value={value}
         onChange={onChange}

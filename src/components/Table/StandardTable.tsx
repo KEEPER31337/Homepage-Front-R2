@@ -39,7 +39,7 @@ const StandardTable = <T extends Record<string, any>>({
               {columns.map((column) => (
                 <TableCell
                   padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
-                  className="!border-subBlack !text-white"
+                  className="!truncate !border-subBlack !text-white"
                   width={column.width}
                   sx={{ minWidth: column.width }}
                   key={column.key as string}

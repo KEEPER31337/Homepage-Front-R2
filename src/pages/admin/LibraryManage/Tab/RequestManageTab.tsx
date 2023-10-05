@@ -27,16 +27,17 @@ interface requestManageRow {
 }
 
 const requestManageColumn: Column<requestManageRow>[] = [
-  { key: 'no', headerName: '번호' },
-  { key: 'status', headerName: '유형' },
-  { key: 'requestDatetime', headerName: '신청일자' },
-  { key: 'bookTitle', headerName: '도서명' },
-  { key: 'author', headerName: '저자' },
-  { key: 'bookQuantity', headerName: '대출현황' },
-  { key: 'borrowerRealName', headerName: '신청자' },
+  { key: 'no', headerName: '번호', width: '5%' },
+  { key: 'status', headerName: '유형', width: '10%' },
+  { key: 'requestDatetime', headerName: '신청일자', width: '10%' },
+  { key: 'bookTitle', headerName: '도서명', width: '30%' },
+  { key: 'author', headerName: '저자', width: '20%' },
+  { key: 'bookQuantity', headerName: '대출현황', width: '5%' },
+  { key: 'borrowerRealName', headerName: '신청자', width: '10%' },
   {
     key: 'requestManageButton',
     headerName: '승인',
+    width: '10%',
   },
 ];
 
