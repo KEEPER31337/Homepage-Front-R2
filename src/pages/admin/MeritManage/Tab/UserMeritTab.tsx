@@ -17,11 +17,11 @@ interface MembersMeritRow {
 }
 
 const MembersMeritColumn: Column<MembersMeritRow>[] = [
-  { key: 'id', headerName: '번호' },
-  { key: 'generation', headerName: '기수' },
-  { key: 'memberName', headerName: '이름' },
-  { key: 'merit', headerName: '상점' },
-  { key: 'demerit', headerName: '벌점' },
+  { key: 'id', headerName: '번호', width: 100 },
+  { key: 'generation', headerName: '기수', width: 200 },
+  { key: 'memberName', headerName: '이름', width: 200 },
+  { key: 'merit', headerName: '상점', width: 100 },
+  { key: 'demerit', headerName: '벌점', width: 100 },
 ];
 
 const MembersMeritChildComponent = ({ key, value }: ChildComponent<MembersMeritRow>) => {

@@ -21,11 +21,11 @@ interface MeritLogRow {
 }
 
 const MeritLogColumn: Column<MeritLogRow>[] = [
-  { key: 'index', headerName: '번호' },
-  { key: 'giveTime', headerName: '일시' },
-  { key: 'awarder', headerName: '이름 (기수)' },
-  { key: 'score', headerName: '점수' },
-  { key: 'reason', headerName: '사유' },
+  { key: 'index', headerName: '번호', width: 100 },
+  { key: 'giveTime', headerName: '일시', width: 200 },
+  { key: 'awarder', headerName: '이름 (기수)', width: 200 },
+  { key: 'score', headerName: '점수', width: 100 },
+  { key: 'reason', headerName: '사유', width: 300 },
 ];
 
 const MeritLogChildComponent = ({ key, value, rowData }: ChildComponent<MeritLogRow>) => {
@@ -60,7 +60,7 @@ const MeritLogTab = () => {
   };
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex flex-col">
       <div className="my-5 flex h-12 w-full justify-between">
         <Selector
           className="w-40"

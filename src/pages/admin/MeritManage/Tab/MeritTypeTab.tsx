@@ -15,9 +15,9 @@ interface MeritTypeRow {
 }
 
 const MeritTypeColumn: Column<MeritTypeRow>[] = [
-  { key: 'id', headerName: '번호' },
-  { key: 'detail', headerName: '사유' },
-  { key: 'score', headerName: '점수' },
+  { key: 'id', headerName: '번호', width: 100 },
+  { key: 'detail', headerName: '사유', width: 300 },
+  { key: 'score', headerName: '점수', width: 100 },
 ];
 
 const MeritTypeChildComponent = ({ value, rowData }: ChildComponent<MeritTypeRow>) => {
