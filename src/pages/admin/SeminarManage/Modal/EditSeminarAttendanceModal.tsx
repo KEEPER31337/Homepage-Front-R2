@@ -13,24 +13,19 @@ interface AddSeminarModalProps {
 
 const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSeminarModalProps) => {
   const [statusType, setStatusType] = useState(attendanceStatus.attendanceStatus);
-  const [excuse, setExcuse] = useState(attendanceStatus.excuse || '');
-  const [isInvalidTitle, setIsInvalidTitle] = useState(false);
+  const [excuse, setExcuse] = useState('');
+  const [isInvalidExcuse, setIsInvalidExcuse] = useState(false);
 
   const { mutate: editAttendStatus } = useEditAttendStatusMutation(attendanceStatus.attendanceId);
 
-  const IsExcuseRequired = () => {
-    return statusType === 'PERSONAL' || statusType === 'LATENESS';
+  const validate = () => {
+    const isValid = excuse.trim() !== '';
+    setIsInvalidExcuse(!isValid);
+    return isValid;
   };
 
-  const validate = () => {
-    let isValid = true;
-
-    if (IsExcuseRequired()) {
-      isValid = excuse.trim() !== '';
-    }
-
-    setIsInvalidTitle(!isValid);
-    return isValid;
+  const isExcuseRequired = () => {
+    return statusType === 'ABSENCE' || statusType === 'LATENESS';
   };
 
   const handleClose = () => {
@@ -76,11 +71,11 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
     >
       <div className="flex flex-col items-center space-y-5">
         <StatusTypeSelector value={statusType} setValue={setStatusType} />
-        {IsExcuseRequired() && (
+        {isExcuseRequired() && (
           <StandardInput
             className="w-52"
-            error={isInvalidTitle}
-            helperText={isInvalidTitle && '사유을 입력해주세요'}
+            error={isInvalidExcuse}
+            helperText={isInvalidExcuse && '사유을 입력해주세요.'}
             label="사유"
             value={excuse}
             onChange={handleBookInfoChange}
