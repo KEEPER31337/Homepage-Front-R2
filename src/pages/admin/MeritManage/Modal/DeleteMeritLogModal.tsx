@@ -2,11 +2,11 @@ import React from 'react';
 import { useDeleteMeritLogMutation } from '@api/meritApi';
 import ActionModal from '@components/Modal/ActionModal';
 
-type DeleteMeritLogModalProps = {
+interface DeleteMeritLogModalProps {
   open: boolean;
   onClose: () => void;
   meritLogId: number;
-};
+}
 
 const DeleteMeritLogModal = ({ open, onClose, meritLogId }: DeleteMeritLogModalProps) => {
   const { mutate: deleteMeritLog } = useDeleteMeritLogMutation();

@@ -6,6 +6,12 @@ import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import Selector from '@components/Selector/Selector';
 
+// -10 ~ 10
+const SCORE_MIN = -10;
+const SCORE_RANGE = 21;
+
+const SCORE_LIST = Array.from({ length: SCORE_RANGE }, (_, i) => i + SCORE_MIN);
+
 export type MeritTypeModalInfo = {
   id: number;
   score: number;
@@ -126,9 +132,9 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
             onChange={(e) => {
               setMeritTypeInfo((prev) => ({ ...prev, score: Number(e.target.value) }));
             }}
-            options={Array.from(Array(21).keys()).map((i) => ({
-              id: i - 10,
-              content: i - 10,
+            options={SCORE_LIST.map((i) => ({
+              id: i,
+              content: i,
             }))}
           />
         </div>
