@@ -23,12 +23,12 @@ const MeritManage = () => {
   const [tab, setTab] = useState(0);
 
   return (
-    <>
+    <div className="px-3">
       <StandardTab options={meritTabs} tab={tab} setTab={setTab} />
       {tab === 0 && <MeritLogTab />}
       {tab === 1 && <UserMeritTab />}
       {tab === 2 && <MeritTypeTab />}
-    </>
+    </div>
   );
 };
 

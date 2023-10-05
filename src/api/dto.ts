@@ -451,6 +451,7 @@ export interface MeritLogInfo {
   score: number;
   meritTypeId: number;
   reason: string;
+  isMerit: boolean;
 }
 
 export interface MeritLog {
@@ -471,6 +472,7 @@ export interface MeritTypeInfo {
   id: number;
   score: number;
   detail: string;
+  isMerit: boolean;
 }
 
 export interface MeritType {
