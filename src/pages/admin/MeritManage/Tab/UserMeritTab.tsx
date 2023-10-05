@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import { useGetMembersMeritQuery } from '@api/meritApi';
 import usePagination from '@hooks/usePagination';
-// import Selector from '@components/Selector/Selector';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 import MemberMeritModal, { MemberMeritModalState } from '../Modal/MemberMeritModal';
@@ -37,11 +36,8 @@ const MembersMeritChildComponent = ({ key, value }: ChildComponent<MembersMeritR
   }
 };
 
-// type SortType = 'highestReword' | 'highestPenalty';
-
 const UserMeritTab = () => {
   const { page, getRowNumber } = usePagination();
-  // const [sortType, setSortType] = useState<SortType>('highestReword');
   const [memberMeritOpen, setMemberMeritOpen] = useState<MemberMeritModalState>({
     memberId: 0,
     title: '',
@@ -52,21 +48,7 @@ const UserMeritTab = () => {
   if (!membersMerit) return null;
 
   return (
-    <div className="flex w-full flex-col">
-      <div className="my-5 flex h-12 w-full justify-between">
-        {/* <Selector
-          className="w-40"
-          label="정렬"
-          value={sortType}
-          onChange={(e) => {
-            setSortType(e.target.value as SortType);
-          }}
-          options={[
-            { id: 'highestReword', content: '상점 높은 순' },
-            { id: 'highestPenalty', content: '벌점 높은 순' },
-          ]}
-        /> */}
-      </div>
+    <div className="flex w-full flex-col pt-[5.5rem]">
       <StandardTable<MembersMeritRow>
         columns={MembersMeritColumn}
         rows={membersMerit.content.map((member, index) => ({
