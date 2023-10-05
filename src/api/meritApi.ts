@@ -77,8 +77,8 @@ const useAddMeritLogMutation = () => {
 const useAddMeritTypeMutation = () => {
   const queryClient = useQueryClient();
 
-  const fetcher = ({ score, reason }: { score: number; reason: string }) =>
-    axios.post(`/merits/types`, { score, reason }).then(({ data }) => data);
+  const fetcher = ({ score, reason, isMerit }: { score: number; reason: string; isMerit: boolean }) =>
+    axios.post(`/merits/types`, { score, reason, isMerit }).then(({ data }) => data);
 
   return useMutation(fetcher, {
     onSuccess: () => {

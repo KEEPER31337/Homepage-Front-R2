@@ -68,6 +68,7 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
           {
             score: meritTypeInfo.score,
             reason: meritTypeInfo.reason,
+            isMerit: meritTypeInfo.isMerit,
           },
           {
             onSuccess,
