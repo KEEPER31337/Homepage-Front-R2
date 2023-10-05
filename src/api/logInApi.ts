@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 import memberState from '@recoil/member.recoil';
+import { formatGeneration } from '@utils/converter';
 import { MemberDetailInfo } from './dto';
 
 const useLoginMutation = () => {
@@ -23,7 +24,15 @@ const useLoginMutation = () => {
       generation,
     }: MemberDetailInfo) => {
       navigate('/');
-      setMemberState({ memberId, loginId, emailAddress, realName, thumbnailPath, memberJobs, generation });
+      setMemberState({
+        memberId,
+        loginId,
+        emailAddress,
+        realName,
+        thumbnailPath,
+        memberJobs,
+        generation: formatGeneration(generation),
+      });
     },
   });
 };

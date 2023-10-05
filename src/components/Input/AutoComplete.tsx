@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Autocomplete, Chip, TextField } from '@mui/material';
+import React from 'react';
+import { Autocomplete, TextField } from '@mui/material';
+import MemberChip from '@components/Chip/MemberChip';
 
 interface AutoCompleteItem {
   value: unknown;
@@ -53,15 +54,20 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
       isOptionEqualToValue={(option, v) => option.value === v.value}
       multiple={multiple}
       groupBy={(option) => (grouped ? option.group || 'etc' : '')}
-      renderInput={(params) => <TextField {...params} variant="standard" placeholder={placeholder} />}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="standard"
+          InputProps={{
+            ...params.InputProps,
+            className: `before:!border-pointBlue pr-1 ${params.InputProps.className}`,
+          }}
+          placeholder={placeholder}
+        />
+      )}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
-          <Chip
-            label={option.label}
-            {...getTagProps({ index })}
-            disabled={option?.fixed}
-            className="!flex !h-[22px] !w-fit !items-center !rounded-[4px] !bg-pointBlue !bg-opacity-30 !px-1 !py-[2px] !text-[12px] font-semibold"
-          />
+          <MemberChip label={option.label} {...getTagProps({ index })} disabled={option?.fixed} />
         ))
       }
       renderOption={(props, option) => (
