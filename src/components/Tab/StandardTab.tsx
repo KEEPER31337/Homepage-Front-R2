@@ -1,8 +1,9 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Tab, Tabs } from '@mui/material';
 
 interface StandardTabProps {
-  options: { id: number; label: string }[];
+  options: { id: number; label: string; url?: string }[];
   tab: number;
   setTab: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -15,7 +16,14 @@ const StandardTab = ({ options, tab, setTab }: StandardTabProps) => {
   return (
     <Tabs value={tab} onChange={handleChange}>
       {options.map((option) => (
-        <Tab key={option.id} className="w-[120px] !text-base" label={option.label} />
+        <Tab
+          LinkComponent={NavLink}
+          component={NavLink}
+          key={option.id}
+          className="w-[120px] !text-base"
+          label={option.label}
+          to={option.url || ''}
+        />
       ))}
     </Tabs>
   );

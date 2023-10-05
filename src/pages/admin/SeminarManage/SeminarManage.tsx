@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AttendSeminarInfo, MemberSeminarAttendance } from '@api/dto';
+import { AttendSeminarInfo, MemberSeminarAttendance, AttendanceStatus } from '@api/dto';
 import { useGetAttendSeminarListMutation, useGetSeminarListQuery } from '@api/seminarApi';
 import usePagination from '@hooks/usePagination';
 import SeminarAttendStatus from '@pages/senimarAttend/Status/SeminarAttendStatus';
@@ -10,6 +10,7 @@ import PageTitle from '@components/Typography/PageTitle';
 
 import AddSeminarModal from './Modal/AddSeminarModal';
 import DeleteSeminarModal from './Modal/DeleteSeminarModal';
+import EditSeminarAttendanceModal from './Modal/EditSeminarAttendanceModal';
 
 const seminarManageColumn: Column<AttendSeminarInfo>[] = [
   { key: 'generation', headerName: '기수' },
@@ -20,7 +21,9 @@ const SeminarManage = () => {
   const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
   const [openAddSeminarModal, setOpenAddSeminarModal] = useState(false);
   const [openDeleteSeminarModal, setOpenDeleteSeminarModal] = useState(false);
+  const [openEditAttendanceStatusModal, setOpenEditAttendanceStatusModal] = useState(false);
   const [dynamicColumn, setDynamicColumn] = useState<Column<AttendSeminarInfo>[]>([]);
+  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceStatus>(); // TODO - 임시데이터
 
   const { page } = usePagination();
   const { data: seminarList } = useGetSeminarListQuery();
@@ -37,15 +40,15 @@ const SeminarManage = () => {
   }, [seminarList]);
 
   const childComponent = ({ key, value }: ChildComponent<AttendSeminarInfo>) => {
-    if (key.slice(0, 4) === 'date') {
+    if (key.slice(0, 4) === 'date' && value) {
       return <SeminarAttendStatus status={(value as MemberSeminarAttendance).attendanceStatus} hasIcon={false} />;
     }
     return value;
   };
 
   const onCellClick = ({ cellData }: { cellData: Cell<AttendSeminarInfo> }) => {
-    // eslint-disable-next-line no-console
-    console.log(cellData);
+    setAttendanceStatus(cellData as AttendanceStatus);
+    setOpenEditAttendanceStatusModal(true);
   };
 
   return (
@@ -73,6 +76,13 @@ const SeminarManage = () => {
       />
       <AddSeminarModal open={openAddSeminarModal} setOpen={setOpenAddSeminarModal} />
       <DeleteSeminarModal open={openDeleteSeminarModal} setOpen={setOpenDeleteSeminarModal} />
+      {attendanceStatus && (
+        <EditSeminarAttendanceModal
+          open={openEditAttendanceStatusModal}
+          setOpen={setOpenEditAttendanceStatusModal}
+          attendanceStatus={attendanceStatus}
+        />
+      )}
     </div>
   );
 };

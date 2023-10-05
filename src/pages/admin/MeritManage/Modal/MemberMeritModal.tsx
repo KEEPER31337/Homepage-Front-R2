@@ -16,10 +16,10 @@ interface MeritLogRow {
 }
 
 const MeritLogColumn: Column<MeritLogRow>[] = [
-  { key: 'num', headerName: '번호' },
-  { key: 'giveTime', headerName: '일시' },
-  { key: 'score', headerName: '점수' },
-  { key: 'reason', headerName: '사유' },
+  { key: 'num', headerName: '번호', width: 100 },
+  { key: 'giveTime', headerName: '일시', width: 200 },
+  { key: 'score', headerName: '점수', width: 100 },
+  { key: 'reason', headerName: '사유', width: 300 },
 ];
 
 const MeritLogChildComponent = ({ key, value, rowData }: ChildComponent<MeritLogRow>) => {

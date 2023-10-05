@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DateTime } from 'luxon';
-import { useCheckAuthCodeQuery, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
+import { useCheckAuthCodeMutation, useRequestAuthCodeMutation } from '@api/SearchAccountApi';
+import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { validateEmail } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
@@ -24,14 +25,17 @@ interface SearchPWFirstStepProps {
 }
 
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
-  const { mutate: requestAuthcode } = useRequestAuthCodeMutation();
-  const { data: checkAuthcodeData } = useCheckAuthCodeQuery({
-    loginId: form.id,
-    email: form.email,
-    authCode: form.verificationCode,
-  });
+  const {
+    mutate: requestAuthcode,
+    isLoading: isEmailSendLoading,
+    isSuccess: isEmailSendSuccess,
+  } = useRequestAuthCodeMutation();
+  const { mutate: checkAuth } = useCheckAuthCodeMutation();
 
-  const [isSent, setIsSent] = useState(false);
+  const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
+  const [isAuthCodeRequireClick, setIsAuthCodeRequireClick] = useState(false);
+  const [idErrorMsg, setIdErrorMsg] = useState('');
+  const [emailErrorMsg, setEmailErrorMsg] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
   const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
@@ -49,42 +53,83 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     if (name === 'email') {
       const isValid = validateEmail(value);
       setIsValidEmail(isValid);
+      if (isValid) setEmailErrorMsg('');
+    }
+    if (name === 'id') {
+      if (value.length > 0) setIdErrorMsg('');
+    }
+    if (name === 'verificationCode') {
+      setIsValidAuthCode(true);
+    }
+  };
+
+  const handleEmailBlur = () => {
+    if (!validateEmail(form.email)) {
+      setEmailErrorMsg('이메일 형식을 확인해주세요.');
     }
   };
 
   const handleRequestVerificationCode = () => {
-    if (form.id && form.email) {
-      requestAuthcode(
-        { loginId: form.id, email: form.email },
-        {
-          onSuccess: () => {
-            setIsSent(true);
-            setMatchInfoModalOpen(false);
-          },
-          onError: () => {
-            setMatchInfoModalOpen(true);
-          },
-        },
-      );
+    if (!form.id) {
+      setIdErrorMsg(REQUIRE_ERROR_MSG);
+      return;
     }
+    if (!form.email) {
+      setEmailErrorMsg(REQUIRE_ERROR_MSG);
+      return;
+    }
+
+    requestAuthcode(
+      { loginId: form.id, email: form.email },
+      {
+        onSuccess: () => {
+          setIsAuthCodeRequireClick(true);
+          setExpirationTime(DateTime.now().plus({ seconds: TIMER_DURATION_SECOND }));
+          setMatchInfoModalOpen(false);
+        },
+        onError: () => {
+          setMatchInfoModalOpen(true);
+          setIsAuthCodeRequireClick(false);
+        },
+      },
+    );
   };
 
   const handleConfirmFirstStep = () => {
-    if (checkAuthcodeData?.auth === true) {
-      setCurrentStep(2);
-    } else {
-      setIsValidAuthCode(false);
-    }
+    checkAuth(
+      {
+        loginId: form.id,
+        email: form.email,
+        authCode: form.verificationCode,
+      },
+      {
+        onSuccess: (data) => {
+          if (data?.auth === true) {
+            setCurrentStep(2);
+          } else {
+            setIsValidAuthCode(false);
+          }
+        },
+      },
+    );
   };
 
   const handleOtherEmailButtonClick = () => {
-    setIsSent(false);
+    setIsAuthCodeRequireClick(false);
+    setExpirationTime(null);
     setForm({ ...form, email: '', verificationCode: '' });
     setMailAuthenticationModalOpen(false);
   };
 
   const handleResendMailButtonClick = () => {
-    requestAuthcode({ loginId: form.id, email: form.email });
+    requestAuthcode(
+      { loginId: form.id, email: form.email },
+      {
+        onSuccess: () => {
+          setExpirationTime(DateTime.now().plus({ seconds: TIMER_DURATION_SECOND }));
+        },
+      },
+    );
     setMailAuthenticationModalOpen(false);
   };
 
@@ -105,17 +150,24 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             name="id"
             value={form.id}
             onChange={handleChange}
+            error={Boolean(idErrorMsg)}
+            helperText={idErrorMsg}
           />
         </div>
         <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
           <p className="text-paragraph leading-4 sm:text-base">이메일</p>
           <EmailAuthInput
             className="w-full sm:w-[70%]"
-            inputDisabled={isSent}
+            inputDisabled={isAuthCodeRequireClick}
+            isLoading={isAuthCodeRequireClick && isEmailSendLoading}
+            isSuccess={isAuthCodeRequireClick && isEmailSendSuccess}
             value={form.email}
             onChange={handleChange}
-            buttonDisabled={!isValidEmail || isSent}
+            onBlur={handleEmailBlur}
+            buttonDisabled={!isValidEmail || isAuthCodeRequireClick}
             onAuthButtonClick={handleRequestVerificationCode}
+            error={Boolean(emailErrorMsg)}
+            helperText={emailErrorMsg}
           />
         </div>
         <WarningModal
@@ -133,27 +185,29 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
             name="verificationCode"
             value={form.verificationCode}
             onChange={handleChange}
-            disabled={!isSent}
-            expirationTime={DateTime.now().plus({ seconds: TIMER_DURATION_SECOND })}
+            disabled={!(isAuthCodeRequireClick && isEmailSendSuccess)}
+            expirationTime={expirationTime}
           />
         </div>
         {!isValidAuthCode && <p className="text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>}
-        <div className="relative -mx-2 sm:-mx-20 ">
-          <Typography
-            variant={isMobile ? 'small' : 'paragraph'}
-            className="absolute right-0 w-fit hover:underline hover:underline-offset-4"
-            component="button"
-            onClick={() => setMailAuthenticationModalOpen(true)}
-          >
-            인증 메일이 오지 않았나요?
-          </Typography>
-          <MailAuthenticationModal
-            open={mailAuthenticationModalOpen}
-            onClose={() => setMailAuthenticationModalOpen(false)}
-            onOtherEmailButtonClick={handleOtherEmailButtonClick}
-            onResendMailButtonClick={handleResendMailButtonClick}
-          />
-        </div>
+        {isAuthCodeRequireClick && (
+          <div className="relative -mx-2 sm:-mx-20 ">
+            <Typography
+              variant={isMobile ? 'small' : 'paragraph'}
+              className="absolute right-0 w-fit hover:underline hover:underline-offset-4"
+              component="button"
+              onClick={() => setMailAuthenticationModalOpen(true)}
+            >
+              인증 메일이 오지 않았나요?
+            </Typography>
+            <MailAuthenticationModal
+              open={mailAuthenticationModalOpen}
+              onClose={() => setMailAuthenticationModalOpen(false)}
+              onOtherEmailButtonClick={handleOtherEmailButtonClick}
+              onResendMailButtonClick={handleResendMailButtonClick}
+            />
+          </div>
+        )}
       </div>
       <Divider className="bg-pointBlue" />
       <div className="mt-10 text-center">

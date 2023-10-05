@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useApiError } from '@hooks/useGetApiError';
 import {
   BoardPosts,
@@ -164,10 +164,13 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
   return useQuery<PostInfo>(['post', postId, password], fetcher, {
     enabled: !isSecret || Boolean(isSecret && password),
     onError: (err) => {
-      if (isSecret === null) {
-        return handleError(err, 40302);
+      if ((err as AxiosError)?.response?.status === 403) {
+        if (isSecret === null) {
+          return handleError(err, 40302);
+        }
+        return handleError(err, 40301);
       }
-      return handleError(err, 40301);
+      return handleError(err);
     },
   });
 };

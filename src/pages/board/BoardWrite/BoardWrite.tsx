@@ -4,6 +4,7 @@ import { useQueryClient } from 'react-query';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
+import { useRecoilValue } from 'recoil';
 import { PostInfo, UploadPostSettings } from '@api/dto';
 import {
   useAddFilesMutation,
@@ -13,6 +14,7 @@ import {
   useUploadPostMutation,
 } from '@api/postApi';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import memberState from '@recoil/member.recoil';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardEditor from '@components/Editor/StandardEditor';
@@ -51,6 +53,7 @@ const BoardWrite = () => {
   const [hasContent, setHasContent] = useState(false);
   const [contentErrMsg, setContentErrMsg] = useState('');
 
+  const userInfo = useRecoilValue(memberState);
   const editorRef = useRef<Editor>();
   const navigate = useNavigate();
   const { mutate: uploadPostMutation } = useUploadPostMutation();
@@ -115,7 +118,7 @@ const BoardWrite = () => {
       {
         onSuccess: () => {
           if (postSettingInfo.isTemp) {
-            navigate(`/profile#board`);
+            navigate(`/profile/${userInfo?.memberId}/board`);
             return;
           }
           navigate(`/board/${categoryName}`);
