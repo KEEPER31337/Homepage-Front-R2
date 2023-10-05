@@ -28,11 +28,11 @@ const MeritTypeChildComponent = ({ value, rowData }: ChildComponent<MeritTypeRow
   return <Typography className={`text-${color}`}>{value}</Typography>;
 };
 
-type ScoreType = 'reword' | 'penalty' | 'all';
+type ScoreType = 'MERIT' | 'DEMERIT' | 'ALL';
 
 const MeritTypeTab = () => {
   const { page } = usePagination();
-  const [scoreType, setScoreType] = useState<ScoreType>('all');
+  const [scoreType, setScoreType] = useState<ScoreType>('ALL');
 
   const [addMeritTypeOpen, setAddMeritTypeOpen] = useState(false);
   const [editMeritType, setEditMeritType] = useState<MeritTypeModalInfo | undefined>();
@@ -43,11 +43,11 @@ const MeritTypeTab = () => {
 
   const meritTypeFilter = (item: MeritTypeInfo) => {
     switch (scoreType) {
-      case 'reword':
+      case 'MERIT':
         return item.score > 0;
-      case 'penalty':
+      case 'DEMERIT':
         return item.score < 0;
-      case 'all':
+      case 'ALL':
         return true;
       default:
         return false;
@@ -65,9 +65,9 @@ const MeritTypeTab = () => {
             setScoreType(e.target.value as ScoreType);
           }}
           options={[
-            { id: 'all', content: '전체' },
-            { id: 'reword', content: '상점' },
-            { id: 'penalty', content: '벌점' },
+            { id: 'ALL', content: '전체' },
+            { id: 'MERIT', content: '상점' },
+            { id: 'DEMERIT', content: '벌점' },
           ]}
         />
         <ActionButton mode="add" onClick={() => setAddMeritTypeOpen(true)}>

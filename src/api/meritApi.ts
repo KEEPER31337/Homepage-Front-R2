@@ -3,21 +3,21 @@ import axios from 'axios';
 import { PageAndSize, MeritLog, MeritType, MembersMerit } from './dto';
 
 const meritKeys = {
-  meritLog: (param: PageAndSize) => ['meritLog', param] as const,
+  meritLog: (param: PageAndSize & { meritType?: string }) => ['meritLog', param] as const,
   meritType: (param: PageAndSize) => ['meritType', param] as const,
   membersMerit: (param: PageAndSize) => ['membersMerit', param] as const,
   memberMerit: (param: PageAndSize & { memberId: number }) => ['memberMerit', param] as const,
 };
 
-const useGetMeritLogQuery = ({ page, size = 10 }: PageAndSize) => {
+const useGetMeritLogQuery = ({ page, size = 10, meritType = 'ALL' }: PageAndSize & { meritType?: string }) => {
   const fetcher = () =>
     axios
       .get('/merits', {
-        params: { page, size },
+        params: { page, size, meritType },
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritLog>(meritKeys.meritLog({ page, size }), fetcher, {
+  return useQuery<MeritLog>(meritKeys.meritLog({ page, size, meritType }), fetcher, {
     keepPreviousData: true,
   });
 };
