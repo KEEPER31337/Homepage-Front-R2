@@ -3,8 +3,8 @@ import { MemberDetailInfo } from '@api/dto';
 import { useGetMembersQuery } from '@api/memberApi';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import PageTitle from '@components/Typography/PageTitle';
-import ChangeMemberTypeButton from './Button/ChangeMemberTypeButton';
-import ChangeMemberTypeInput from './Input/ChangeMemberTypeInput';
+import MemberTypeChangeButton from './Button/MemberTypeChangeButton';
+import MemberTypeChangeInput from './Input/MemberTypeChangeInput';
 import MemberTypeSection from './Section/MemberTypeSection';
 import SortSelector from './Selector/SortSelector';
 
@@ -28,12 +28,12 @@ const ActiveMemberManage = () => {
         setSelectedMemberList={setSelectedMemberList}
       />
       <div className="flex justify-between">
-        <ChangeMemberTypeInput
+        <MemberTypeChangeInput
           memberList={memberList}
           selectedMemberList={selectedMemberList}
           setSelectedMemberList={setSelectedMemberList}
         />
-        <ChangeMemberTypeButton selectedMemberList={selectedMemberList} setSelectedMemberList={setSelectedMemberList} />
+        <MemberTypeChangeButton selectedMemberList={selectedMemberList} setSelectedMemberList={setSelectedMemberList} />
       </div>
     </div>
   );

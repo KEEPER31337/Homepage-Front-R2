@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
-import ChangeMemberTypeModal from '../Modal/ChangeMemberTypeModal';
+import MemberTypeChangeModal from '../Modal/MemberTypeChangeModal';
 import memberTypes from '../memberTypes';
 
-interface ChangeMemberTypeButtonProps {
+interface MemberTypeChangeButtonProps {
   selectedMemberList: MultiAutoCompleteValue;
   setSelectedMemberList: React.Dispatch<React.SetStateAction<MultiAutoCompleteValue>>;
 }
 
-const ChangeMemberTypeButton = ({ selectedMemberList, setSelectedMemberList }: ChangeMemberTypeButtonProps) => {
+const MemberTypeChangeButton = ({ selectedMemberList, setSelectedMemberList }: MemberTypeChangeButtonProps) => {
   const [selectedTypeId, setSelectedTypeId] = useState(1);
-  const [changeMemberTypeModalOpen, setChangeMemberTypeModalOpenOpen] = useState(false);
+  const [MemberTypeChangeModalOpen, setMemberTypeChangeModalOpenOpen] = useState(false);
 
   const handleButtonClick = (typeId: number) => {
     setSelectedTypeId(typeId);
-    if (selectedMemberList.length !== 0) setChangeMemberTypeModalOpenOpen(true);
+    if (selectedMemberList.length !== 0) setMemberTypeChangeModalOpenOpen(true);
   };
   return (
     <div className="flex space-x-2">
@@ -26,17 +26,17 @@ const ChangeMemberTypeButton = ({ selectedMemberList, setSelectedMemberList }: C
           <Typography>{member.renderType}</Typography>
         </OutlinedButton>
       ))}
-      {changeMemberTypeModalOpen && (
-        <ChangeMemberTypeModal
+      {MemberTypeChangeModalOpen && (
+        <MemberTypeChangeModal
           typeId={selectedTypeId}
           selectedMemberList={selectedMemberList}
           setSelectedMemberList={setSelectedMemberList}
-          open={changeMemberTypeModalOpen}
-          onClose={() => setChangeMemberTypeModalOpenOpen(false)}
+          open={MemberTypeChangeModalOpen}
+          onClose={() => setMemberTypeChangeModalOpenOpen(false)}
         />
       )}
     </div>
   );
 };
 
-export default ChangeMemberTypeButton;
+export default MemberTypeChangeButton;
