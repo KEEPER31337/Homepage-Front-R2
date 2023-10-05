@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import MemberTypeChangeModal from '../Modal/MemberTypeChangeModal';
@@ -22,7 +22,7 @@ const MemberTypeChangeButton = ({ selectedMemberList, setSelectedMemberList }: M
     if (selectedMemberList.length !== 0) setMemberTypeChangeModalOpenOpen(true);
   };
   return (
-    <div className="mt-2 flex w-full flex-wrap justify-end space-x-1 sm:mt-0 sm:space-x-2">
+    <div className="mt-2 flex w-full flex-wrap justify-end space-x-[2px] sm:mt-1 sm:space-x-2">
       {memberTypes.map((member) => (
         <OutlinedButton small={isMobile} key={member.typeId} onClick={() => handleButtonClick(member.typeId)}>
           {member.color && (

@@ -27,7 +27,7 @@ const ActiveMemberManage = () => {
         selectedMemberList={selectedMemberList}
         setSelectedMemberList={setSelectedMemberList}
       />
-      <div className="flex justify-between">
+      <div className="flex w-full flex-col sm:flex-row">
         <MemberTypeChangeInput
           memberList={memberList}
           selectedMemberList={selectedMemberList}
