@@ -1,3 +1,4 @@
+import { MemberDetailInfo } from '@api/dto';
 import CATEGORIES from '@constants/category';
 
 const formatFileSize = (bytes: number, decimals = 2) => {
@@ -29,8 +30,13 @@ const formatGeneration = (generation: string) => {
   return generation.replace('.0', '');
 };
 
+const formatMemberGeneration = (member: Pick<MemberDetailInfo, 'memberId' | 'generation' | 'realName'>) => ({
+  ...member,
+  generation: formatGeneration(member.generation),
+});
+
 const getServerImgUrl = (url: string) => {
   return `${process.env.REACT_APP_API_URL}/${url}`;
 };
 
-export { formatFileSize, categoryNameToId, getServerImgUrl, formatGeneration };
+export { formatFileSize, categoryNameToId, getServerImgUrl, formatGeneration, formatMemberGeneration };

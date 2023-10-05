@@ -1,5 +1,15 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { VscFile } from 'react-icons/vsc';
 import { FileInfo } from '@api/dto';
 import { formatFileSize } from '@utils/converter';
@@ -10,14 +20,17 @@ interface FileViewerProps {
 }
 
 const FileViewer = ({ files, onRowClick }: FileViewerProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <TableContainer className="bg-middleBlack">
       <Table stickyHeader size="small">
         <TableHead>
           <TableRow>
             <TableCell>파일명</TableCell>
-            <TableCell>파일 크기</TableCell>
-            <TableCell>업로드 시간</TableCell>
+            {!isMobile && <TableCell>파일 크기</TableCell>}
+            {!isMobile && <TableCell>업로드 시간</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -30,11 +43,12 @@ const FileViewer = ({ files, onRowClick }: FileViewerProps) => {
               <TableCell>
                 <div className="flex items-center text-pointBlue">
                   <VscFile className="mr-1" size={16} />
-                  {file.name}
+                  <Typography className="w-72 truncate sm:w-full">{file.name}</Typography>
                 </div>
+                {isMobile && <Typography variant="small">{formatFileSize(file.size)}</Typography>}
               </TableCell>
-              <TableCell>{formatFileSize(file.size)}</TableCell>
-              <TableCell>{file.uploadTime}</TableCell>
+              {!isMobile && <TableCell>{formatFileSize(file.size)}</TableCell>}
+              {!isMobile && <TableCell>{file.uploadTime}</TableCell>}
             </TableRow>
           ))}
         </TableBody>

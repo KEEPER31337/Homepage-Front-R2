@@ -24,7 +24,7 @@ const SignUp = () => {
   };
 
   return (
-    <Container maxWidth="xs" className="-mt-10 !flex h-screen flex-col items-center justify-center sm:mt-auto">
+    <Container maxWidth="xs" className="!flex flex-col items-center justify-center">
       <Logo className="mb-9 w-48" />
       <Box className="h-[560px] w-full border border-pointBlue px-10 py-14 sm:h-[492px] sm:w-[690px] sm:px-24">
         <Stack className="relative h-full w-full">

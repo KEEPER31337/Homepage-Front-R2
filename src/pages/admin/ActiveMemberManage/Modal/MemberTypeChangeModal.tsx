@@ -1,11 +1,11 @@
 import React from 'react';
-import { List, ListItemIcon, ListItem, ListItemButton, Typography } from '@mui/material';
+import { List, ListItemIcon, ListItem, ListItemText, Typography } from '@mui/material';
 import { useEditMemberTypeMutation, useDeleteMemberMutation } from '@api/memberApi';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
 import memberTypes from '../memberTypes';
 
-interface ChangeMemberTypeButtonProps {
+interface MemberTypeChangeModalProps {
   open: boolean;
   onClose: () => void;
   typeId: number;
@@ -13,13 +13,13 @@ interface ChangeMemberTypeButtonProps {
   setSelectedMemberList: React.Dispatch<React.SetStateAction<MultiAutoCompleteValue>>;
 }
 
-const ChangeMemberTypeModal = ({
+const MemberTypeChangeModal = ({
   open,
   onClose,
   typeId,
   selectedMemberList,
   setSelectedMemberList,
-}: ChangeMemberTypeButtonProps) => {
+}: MemberTypeChangeModalProps) => {
   const { mutate: editMemberTypeMutation } = useEditMemberTypeMutation();
   const { mutate: deleteMemberMutation } = useDeleteMemberMutation();
 
@@ -78,19 +78,15 @@ const ChangeMemberTypeModal = ({
           변경하시겠습니까?
         </Typography>
         <List className={`${selectedMemberList.length > 3 ? 'h-[185px]' : 'h-fit'} flex flex-col !overflow-auto !p-0`}>
-          <ListItem className="flex flex-col" disablePadding>
-            {selectedMemberList.map((member) => (
-              <ListItemButton key={member.value as number} className="w-full">
-                <ListItemIcon className="items-center">
-                  <Typography className="!text-small sm:!text-paragraph">{member.label}</Typography>
-                </ListItemIcon>
-              </ListItemButton>
-            ))}
-          </ListItem>
+          {selectedMemberList.map((member) => (
+            <ListItem key={member.value as number}>
+              <ListItemText primary={member.label} />
+            </ListItem>
+          ))}
         </List>
       </div>
     </ActionModal>
   );
 };
 
-export default ChangeMemberTypeModal;
+export default MemberTypeChangeModal;

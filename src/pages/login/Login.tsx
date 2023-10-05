@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <Container maxWidth="xs" className="-mt-14 !flex h-screen flex-col items-center justify-center sm:mt-auto">
+    <Container maxWidth="xs" className="!flex flex-col items-center justify-center">
       <Logo className="mb-9 w-48" />
       <Stack component="form" spacing={6} onSubmit={handleLoginClick} width={{ xs: '90%', sm: '100%' }}>
         <Stack spacing={1}>

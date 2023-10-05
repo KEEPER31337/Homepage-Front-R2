@@ -2,17 +2,17 @@ import React from 'react';
 import { MemberDetailInfo } from '@api/dto';
 import AutoComplete, { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 
-interface ChangeMemberTypeInputProps {
+interface MemberTypeChangeInputProps {
   memberList: MemberDetailInfo[];
   selectedMemberList: MultiAutoCompleteValue;
   setSelectedMemberList: React.Dispatch<React.SetStateAction<MultiAutoCompleteValue>>;
 }
 
-const ChangeMemberTypeButton = ({
+const MemberTypeChangeInput = ({
   memberList,
   selectedMemberList,
   setSelectedMemberList,
-}: ChangeMemberTypeInputProps) => {
+}: MemberTypeChangeInputProps) => {
   return (
     <AutoComplete
       className="w-96"
@@ -27,4 +27,4 @@ const ChangeMemberTypeButton = ({
   );
 };
 
-export default ChangeMemberTypeButton;
+export default MemberTypeChangeInput;

@@ -22,10 +22,10 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
     newPassword: '',
     confirmPassword: '',
   });
+  const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
+  const [confirmPasswordErrorMsg, setConfirmPasswordErrorMsg] = useState('');
 
-  const isSamePassword = () => {
-    setIsSame(form.newPassword === form.confirmPassword);
-  };
+  const isSamePassword = form.newPassword === form.confirmPassword;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -33,8 +33,24 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
       ...form,
       [name]: value,
     });
+    if (name === 'newPassword') {
+      setPasswordErrorMsg('');
+    }
     if (name === 'confirmPassword') {
-      isSamePassword();
+      setIsSame(isSamePassword);
+      setConfirmPasswordErrorMsg('');
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+    const { name, value } = e.currentTarget;
+    if (name === 'newPassword') {
+      if (value && !passwordRegex.test(value)) setPasswordErrorMsg('8~20자 영문과 숫자를 사용하세요.');
+    }
+    if (name === 'confirmPassword') {
+      if (!(value.length > 0 && isSame)) {
+        setConfirmPasswordErrorMsg('비밀번호가 일치하지 않습니다.');
+      }
     }
   };
 
@@ -57,7 +73,8 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
   };
 
   useEffect(() => {
-    isSamePassword();
+    if (!isSame && form.confirmPassword.length <= 0) return;
+    setIsSame(isSamePassword);
   }, [form.newPassword, form.confirmPassword]);
 
   return (
@@ -78,10 +95,9 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
             name="newPassword"
             value={form.newPassword}
             onChange={handleChange}
-            helperText={
-              form.newPassword &&
-              !passwordRegex.test(form.newPassword) && <p className="text-red-500">8~20자 영문과 숫자를 사용하세요.</p>
-            }
+            onBlur={handleBlur}
+            error={Boolean(passwordErrorMsg)}
+            helperText={passwordErrorMsg}
           />
         </div>
         <div className="flex flex-col gap-2 text-left sm:flex-row sm:items-center sm:justify-between">
@@ -94,13 +110,9 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
             name="confirmPassword"
             value={form.confirmPassword}
             onChange={handleChange}
-            helperText={
-              form.confirmPassword !== '' && (
-                <p className={`${isSame ? 'text-pointBlue' : 'text-red-500'} text-left`}>
-                  {isSame ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
-                </p>
-              )
-            }
+            onBlur={handleBlur}
+            error={Boolean(confirmPasswordErrorMsg)}
+            helperText={confirmPasswordErrorMsg || (isSame && '비밀번호가 일치합니다.')}
           />
         </div>
       </div>

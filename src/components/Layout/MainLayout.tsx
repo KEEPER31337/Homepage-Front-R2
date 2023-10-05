@@ -10,7 +10,7 @@ const MainLayout = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
       <CssBaseline />
       <Header setMobileSidebarOpen={setMobileSidebarOpen} />
       <Sidebar mobileSidebarOpen={mobileSidebarOpen} setMobileSidebarOpen={setMobileSidebarOpen} />
