@@ -1,4 +1,4 @@
-import React, { useReducer, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Collapse, Fab } from '@mui/material';
 import { VscAdd, VscDash } from 'react-icons/vsc';
 import { useRecoilValue } from 'recoil';
@@ -12,7 +12,7 @@ import Trendings from './Trendings';
 const Home = () => {
   const member = useRecoilValue(memberState);
 
-  const [isAboutExpended, toggleIsAboutExpended] = useReducer((prev) => !prev, !!member);
+  const [isAboutExpended, setIsAboutExpended] = useState(true);
 
   const aboutStartRef = useRef<HTMLDivElement>(null);
   const mainStartRef = useRef<HTMLDivElement>(null);
@@ -24,8 +24,16 @@ const Home = () => {
       aboutStartRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
 
-    toggleIsAboutExpended();
+    setIsAboutExpended((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (!member) {
+      setIsAboutExpended(true);
+      return;
+    }
+    setIsAboutExpended(false);
+  }, [member]);
 
   return (
     <div ref={mainStartRef} className="-mt-14 bg-galaxy bg-contain bg-repeat sm:-mt-header">
