@@ -3,21 +3,21 @@ import axios from 'axios';
 import { PageAndSize, MeritLog, MeritType, MembersMerit } from './dto';
 
 const meritKeys = {
-  meritLog: (param: PageAndSize) => ['meritLog', param] as const,
+  meritLog: (param: PageAndSize & { meritType?: string }) => ['meritLog', param] as const,
   meritType: (param: PageAndSize) => ['meritType', param] as const,
   membersMerit: (param: PageAndSize) => ['membersMerit', param] as const,
   memberMerit: (param: PageAndSize & { memberId: number }) => ['memberMerit', param] as const,
 };
 
-const useGetMeritLogQuery = ({ page, size = 10 }: PageAndSize) => {
+const useGetMeritLogQuery = ({ page, size = 10, meritType = 'ALL' }: PageAndSize & { meritType?: string }) => {
   const fetcher = () =>
     axios
       .get('/merits', {
-        params: { page, size },
+        params: { page, size, meritType },
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritLog>(meritKeys.meritLog({ page, size }), fetcher, {
+  return useQuery<MeritLog>(meritKeys.meritLog({ page, size, meritType }), fetcher, {
     keepPreviousData: true,
   });
 };
@@ -77,8 +77,8 @@ const useAddMeritLogMutation = () => {
 const useAddMeritTypeMutation = () => {
   const queryClient = useQueryClient();
 
-  const fetcher = ({ score, reason }: { score: number; reason: string }) =>
-    axios.post(`/merits/types`, { score, reason }).then(({ data }) => data);
+  const fetcher = ({ score, reason, isMerit }: { score: number; reason: string; isMerit: boolean }) =>
+    axios.post(`/merits/types`, { score, reason, isMerit }).then(({ data }) => data);
 
   return useMutation(fetcher, {
     onSuccess: () => {
@@ -90,12 +90,34 @@ const useAddMeritTypeMutation = () => {
 const useEditMeritTypeMutation = () => {
   const queryClient = useQueryClient();
 
-  const fetcher = ({ score, reason, meritTypeId }: { score: number; reason: string; meritTypeId: number }) =>
-    axios.put(`/merits/types/${meritTypeId}`, { score, reason }).then(({ data }) => data);
+  const fetcher = ({
+    score,
+    reason,
+    meritTypeId,
+    isMerit,
+  }: {
+    score: number;
+    reason: string;
+    meritTypeId: number;
+    isMerit: boolean;
+  }) => axios.put(`/merits/types/${meritTypeId}`, { score, reason, isMerit }).then(({ data }) => data);
 
   return useMutation(fetcher, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: meritKeys.meritType({ page: 0 }) });
+    },
+  });
+};
+
+const useDeleteMeritLogMutation = () => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ meritLogId }: { meritLogId: number }) =>
+    axios.delete(`/merits/${meritLogId}`).then(({ data }) => data);
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: meritKeys.meritLog({ page: 0 }) });
     },
   });
 };
@@ -108,4 +130,5 @@ export {
   useAddMeritLogMutation,
   useAddMeritTypeMutation,
   useEditMeritTypeMutation,
+  useDeleteMeritLogMutation,
 };
