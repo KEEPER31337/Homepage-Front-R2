@@ -28,7 +28,7 @@ const History = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full bg-gradient-to-b from-middleBlack via-middleBlack to-90% pl-40 pt-60">
+      <div className="w-full bg-gradient-to-b from-middleBlack via-middleBlack to-90% px-6 pt-10 sm:px-40 sm:pt-60">
         {subtitleImages?.map((subtitleImage) => (
           <HistoryItem subtitleImage={subtitleImage} key={subtitleImage.id} />
         ))}
