@@ -13,8 +13,8 @@ import DeleteSeminarModal from './Modal/DeleteSeminarModal';
 import EditSeminarAttendanceModal from './Modal/EditSeminarAttendanceModal';
 
 const seminarManageColumn: Column<AttendSeminarInfo>[] = [
-  { key: 'generation', headerName: '기수' },
-  { key: 'memberName', headerName: '이름' },
+  { key: 'generation', headerName: '기수', fixed: 'left', width: 100 },
+  { key: 'memberName', headerName: '이름', fixed: 'left', width: 100 },
 ];
 
 const SeminarManage = () => {
