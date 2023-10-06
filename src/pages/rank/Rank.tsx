@@ -135,7 +135,7 @@ const Rank = () => {
             />
           )}
         </div>
-        <div className="mb-16 flex w-full flex-col px-6 lg:mb-0 lg:ml-5 lg:min-h-[45rem] lg:w-1/3 lg:px-0">
+        <div className="mb-16 flex w-full flex-col lg:mb-0 lg:ml-5 lg:min-h-[45rem] lg:w-1/3">
           <Typography marginBottom={2.5} variant="h3" fontWeight="semibold" className="text-center">
             {tab === 0 && '개근왕'}
             {tab === 1 && '오늘의 게임왕'}
