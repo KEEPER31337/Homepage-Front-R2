@@ -12,7 +12,7 @@ interface MemberTypeChangeButtonProps {
 
 const MemberTypeChangeButton = ({ selectedMemberList, setSelectedMemberList }: MemberTypeChangeButtonProps) => {
   const [selectedTypeId, setSelectedTypeId] = useState(1);
-  const [MemberTypeChangeModalOpen, setMemberTypeChangeModalOpenOpen] = useState(false);
+  const [memberTypeChangeModalOpen, setMemberTypeChangeModalOpenOpen] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -31,12 +31,12 @@ const MemberTypeChangeButton = ({ selectedMemberList, setSelectedMemberList }: M
           {member.renderType}
         </OutlinedButton>
       ))}
-      {MemberTypeChangeModalOpen && (
+      {memberTypeChangeModalOpen && (
         <MemberTypeChangeModal
           typeId={selectedTypeId}
           selectedMemberList={selectedMemberList}
           setSelectedMemberList={setSelectedMemberList}
-          open={MemberTypeChangeModalOpen}
+          open={memberTypeChangeModalOpen}
           onClose={() => setMemberTypeChangeModalOpenOpen(false)}
         />
       )}

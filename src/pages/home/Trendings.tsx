@@ -8,11 +8,11 @@ import ServerImg from '@components/Image/ServerImg';
 
 const Card = ({ post }: { post: TrendingPostInfo }) => {
   return (
-    <Link to={`/board/view/${post.id}`} className="h-[350px] w-[300px] bg-black">
+    <Link to={`/board/view/${post.id}`} className="h-80 w-72 bg-black sm:h-[320px] sm:w-[300px]">
       <ServerImg
         alt="thumbnail"
-        className="h-[200px] w-full bg-[#212121]"
-        errorClassName="h-[200px] w-full p-10 bg-[#212121]"
+        className="h-44 w-full bg-[#212121]"
+        errorClassName="h-44 w-full p-14 bg-[#212121]"
         src={post.thumbnailPath}
       />
       <div className="px-5">
@@ -39,25 +39,27 @@ const Trendings = () => {
   const { data: recentPosts } = useGetRecentPostsQuery();
 
   return (
-    <div className="flex w-full flex-col bg-mainBlack px-20">
-      <div className="my-10 flex w-full flex-col">
-        <Typography variant="h3" className="!mb-3 px-2">
-          트렌딩
-        </Typography>
-        <div className="grid w-[calc(100vw-480px)] grid-flow-col justify-start gap-20 overflow-x-scroll px-2 pb-5">
-          {trendPosts?.map((post) => (
-            <Card key={post.id} post={post} />
-          ))}
+    <div className="flex h-screen w-screen flex-col items-center justify-center bg-mainBlack px-10 py-10 sm:w-full sm:px-20">
+      <div className="w-full space-y-8 sm:max-w-container">
+        <div className="w-full">
+          <Typography variant="h3" className="!mb-3 px-2">
+            트렌딩
+          </Typography>
+          <div className="grid w-full grid-flow-col justify-start gap-5 overflow-x-scroll px-2 pb-5">
+            {trendPosts?.map((post) => (
+              <Card key={post.id} post={post} />
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="my-10 w-full">
-        <Typography variant="h3" className="!mb-3 px-2">
-          최신글
-        </Typography>
-        <div className="grid w-[calc(100vw-480px)] grid-flow-col justify-start gap-20 overflow-x-scroll px-2 pb-5">
-          {recentPosts?.map((post) => (
-            <Card key={post.id} post={post} />
-          ))}
+        <div className="w-full">
+          <Typography variant="h3" className="!mb-3 px-2">
+            최신글
+          </Typography>
+          <div className="grid w-full grid-flow-col justify-start gap-5 overflow-x-scroll px-2 pb-5">
+            {recentPosts?.map((post) => (
+              <Card key={post.id} post={post} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
