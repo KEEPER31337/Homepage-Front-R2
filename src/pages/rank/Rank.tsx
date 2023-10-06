@@ -135,12 +135,12 @@ const Rank = () => {
             />
           )}
         </div>
-        <div className="mb-48 flex w-full flex-col px-10 lg:mb-0 lg:ml-5 lg:min-h-[45rem] lg:w-1/3 lg:px-0">
+        <div className="mb-16 flex w-full flex-col px-6 lg:mb-0 lg:ml-5 lg:min-h-[45rem] lg:w-1/3 lg:px-0">
           <Typography marginBottom={2.5} variant="h3" fontWeight="semibold" className="text-center">
             {tab === 0 && '개근왕'}
             {tab === 1 && '오늘의 게임왕'}
           </Typography>
-          <div className="flex h-full flex-col justify-between">
+          <div className="flex flex-col justify-start">
             {tab === 0 &&
               (continuousAttendRank.length > 0 ? (
                 continuousAttendRank.map((item, index) => (
