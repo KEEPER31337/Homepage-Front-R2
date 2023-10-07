@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import { useGetEachPostQuery } from '@api/postApi';
 import NotFound from '@pages/NotFound/NotFound';
 import SecretPostModal from './Modal/SecretPostModal';
@@ -20,7 +21,7 @@ const BoardView = () => {
   const [secretPostModalOpen, setSecretPostModalOpen] = useState(false);
   const [password, setPassword] = useState<string>();
 
-  const { data: postInfo, isSuccess, isError } = useGetEachPostQuery(postId, isSecret, password);
+  const { data: postInfo, isSuccess, error } = useGetEachPostQuery(postId, isSecret, password);
 
   useEffect(() => {
     if (!isSuccess) return;
@@ -34,8 +35,10 @@ const BoardView = () => {
     setSecretPostModalOpen(true);
   }, [isSecret]);
 
-  if (isError) {
-    return <NotFound from="Post" />;
+  if (error) {
+    if ((error as AxiosError)?.response?.status === 404) {
+      return <NotFound from="Post" />;
+    }
   }
 
   return (
