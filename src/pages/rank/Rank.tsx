@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Avatar, Typography } from '@mui/material';
 import { AttendRankInfo, GameRankInfo } from '@api/dto';
 import {
@@ -8,6 +9,8 @@ import {
   useGetTodayAttendanceRank,
 } from '@api/rankApi';
 import usePagination from '@hooks/usePagination';
+import { formatGeneration } from '@utils/converter';
+import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardTab from '@components/Tab/StandardTab';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
@@ -18,7 +21,7 @@ interface AttendRankRow {
   rank: number;
   realName: string;
   generation: string;
-  continuousDay: number;
+  totalAttendance: number;
   time: string;
 }
 
@@ -31,18 +34,18 @@ interface PointRankRow {
 }
 
 const attendColumns: Column<AttendRankRow>[] = [
-  { key: 'rank', headerName: '랭킹' },
-  { key: 'realName', headerName: '이름' },
-  { key: 'generation', headerName: '기수' },
-  { key: 'continuousDay', headerName: '총 출석일' },
-  { key: 'time', headerName: '출석 시간' },
+  { key: 'rank', headerName: '랭킹', width: 50 },
+  { key: 'realName', headerName: '이름', width: 100 },
+  { key: 'generation', headerName: '기수', width: 100 },
+  { key: 'totalAttendance', headerName: '총 출석일', width: 100 },
+  { key: 'time', headerName: '출석 시간', width: 150 },
 ];
 
 const pointColumns: Column<PointRankRow>[] = [
-  { key: 'rank', headerName: '랭킹' },
-  { key: 'realName', headerName: '이름' },
-  { key: 'generation', headerName: '기수' },
-  { key: 'point', headerName: '포인트' },
+  { key: 'rank', headerName: '랭킹', width: 50 },
+  { key: 'realName', headerName: '이름', width: 100 },
+  { key: 'generation', headerName: '기수', width: 100 },
+  { key: 'point', headerName: '포인트', width: 100 },
 ];
 
 const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankRow>) => {
@@ -57,8 +60,8 @@ const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankRow>)
         </div>
       );
     case 'generation':
-      return `${value}기`;
-    case 'continuousDay':
+      return `${formatGeneration(value as string)}기`;
+    case 'totalAttendance':
       return `${value}일`;
     default:
       return value;
@@ -77,7 +80,7 @@ const PointRankChildComponent = ({ key, value }: ChildComponent<PointRankRow>) =
         </div>
       );
     case 'generation':
-      return `${value}기`;
+      return `${formatGeneration(value as string)}기`;
     default:
       return value;
   }
@@ -132,29 +135,48 @@ const Rank = () => {
             />
           )}
         </div>
-        <div className="mb-48 flex w-full flex-col px-10 lg:mb-0 lg:ml-5 lg:min-h-[45rem] lg:w-1/3 lg:px-0">
+        <div className="mb-16 flex w-full flex-col lg:mb-0 lg:ml-5 lg:min-h-[45rem] lg:w-1/3">
           <Typography marginBottom={2.5} variant="h3" fontWeight="semibold" className="text-center">
             {tab === 0 && '개근왕'}
             {tab === 1 && '오늘의 게임왕'}
           </Typography>
-          <div className="flex h-full flex-col justify-between">
+          <div className="flex flex-col justify-start">
             {tab === 0 &&
-              continuousAttendRank.map((item, index) => (
-                <TopCard<AttendRankInfo>
-                  key={item.rank}
-                  item={item}
-                  message={`${item.continuousDay}일째 개근`}
-                  index={index}
-                />
+              (continuousAttendRank.length > 0 ? (
+                continuousAttendRank.map((item, index) => (
+                  <TopCard<AttendRankInfo>
+                    key={item.rank}
+                    item={item}
+                    message={`${item.continuousDay}일째 개근`}
+                    index={index}
+                  />
+                ))
+              ) : (
+                <div className="flex items-center justify-center">
+                  <Typography marginY={5} className="text-center">
+                    아직 개근왕이 없습니다.
+                  </Typography>
+                </div>
               ))}
             {tab === 1 &&
-              gameRank.map((item, index) => (
-                <TopCard<GameRankInfo>
-                  key={item.memberId}
-                  item={item}
-                  message={`${item.todayEarnedPoint}pt 획득`}
-                  index={index}
-                />
+              (gameRank.length > 0 ? (
+                gameRank.map((item, index) => (
+                  <TopCard<GameRankInfo>
+                    key={item.memberId}
+                    item={item}
+                    message={`${item.todayEarnedPoint}pt 획득`}
+                    index={index}
+                  />
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center">
+                  <Typography marginY={5} className="text-center">
+                    아직 게임왕이 없습니다.
+                  </Typography>
+                  <Link to="/game">
+                    <OutlinedButton>게임왕 되러 가기</OutlinedButton>
+                  </Link>
+                </div>
               ))}
           </div>
         </div>

@@ -402,6 +402,7 @@ export interface AttendRankInfo {
   thumbnailPath?: string | null;
   realName: string;
   generation: string;
+  totalAttendance: number;
   continuousDay: number;
   time: string;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar, Typography } from '@mui/material';
+import { formatGeneration } from '@utils/converter';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface TopCardProps<T extends Record<string, any>> {
@@ -11,7 +12,7 @@ interface TopCardProps<T extends Record<string, any>> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCardProps<T>) => {
   return (
-    <div className="relative h-full">
+    <div className="relative flex h-36 place-content-center">
       <div className="absolute z-10 h-28 w-80">
         <div className="flex h-full justify-between bg-mainBlack p-4">
           <div className="flex h-full flex-col justify-between">
@@ -23,7 +24,7 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
                 {item.realName}
               </Typography>
               <Typography variant="small" marginY="auto" marginLeft={1}>
-                {item.generation}기
+                {formatGeneration(item.generation as string)}기
               </Typography>
             </div>
             <Typography color="primary" fontWeight="semibold">
@@ -33,7 +34,7 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
           <Avatar alt="profile" className="my-auto !h-16 !w-16" />
         </div>
       </div>
-      <div className="absolute left-2 top-2 h-28 w-80 border-2 border-pointBlue" />
+      <div className="relative left-2 top-2 h-28 w-80 border-2 border-pointBlue" />
     </div>
   );
 };
