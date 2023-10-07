@@ -25,14 +25,14 @@ const MemberTypeSection = ({ memberList, selectedMemberList, setSelectedMemberLi
   };
 
   return (
-    <div className="mb-5 grid grid-cols-6 content-start gap-3">
+    <div className="mb-5 grid grid-cols-2 content-start gap-3 sm:grid-cols-6">
       {memberTypes
         .filter((memberType) => memberType.renderType !== '탈퇴')
         .map((memberType) => (
           <div
             key={memberType.typeId}
             className={`${
-              memberType.type === '정회원' || memberType.type === '휴면회원' ? 'col-span-2' : 'col-span-1'
+              memberType.type === '정회원' || memberType.type === '휴면회원' ? 'col-span-1 sm:col-span-2' : 'col-span-1'
             } space-y-2`}
           >
             <div className="flex items-center space-x-2 p-1">
@@ -41,7 +41,9 @@ const MemberTypeSection = ({ memberList, selectedMemberList, setSelectedMemberLi
             </div>
             <div
               className={`${
-                memberType.type === '정회원' || memberType.type === '휴면회원' ? 'grid-cols-2' : 'grid-cols-1'
+                memberType.type === '정회원' || memberType.type === '휴면회원'
+                  ? 'grid-cols-1 sm:grid-cols-2'
+                  : 'grid-cols-1'
               } grid gap-1`}
             >
               {memberList
