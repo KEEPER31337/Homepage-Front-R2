@@ -80,8 +80,8 @@ const useUnFollowMemberMutation = (memberId: number) => {
 const useEditProfileMutation = (memberId: number) => {
   const queryClient = useQueryClient();
 
-  const fetcher = ({ realName, birthday, studentId }: Pick<ProfileInfo, 'realName' | 'birthday' | 'studentId'>) =>
-    axios.patch(`/members/profile`, { realName, birthday, studentId });
+  const fetcher = ({ realName, birthday }: Pick<ProfileInfo, 'realName' | 'birthday'>) =>
+    axios.patch(`/members/profile`, { realName, birthday, studentId: 1000000 });
 
   return useMutation(fetcher, {
     onSuccess: () => {
