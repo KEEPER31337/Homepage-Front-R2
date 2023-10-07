@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
 import { Stack } from '@mui/material';
-import { DateTime } from 'luxon';
 import { VscCheck } from 'react-icons/vsc';
 import { ProfileInfo } from '@api/dto';
 import { useEditProfileMutation, useEditProfileThumbnailMutation } from '@api/memberApi';
