@@ -20,6 +20,7 @@ const CommentSection = ({ categoryName, allowComment, postId }: CommentSectionPr
 
   const handleWriteCommentClick = () => {
     createComment({ postId, content: commentContent });
+    setCommentContent('');
   };
 
   const getParentComment = (comments: CommentInfo[]) => {

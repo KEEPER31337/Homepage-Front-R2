@@ -24,6 +24,7 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
   const handleWriteReplyClick = () => {
     createReply({ postId, parentId: commentInfo.commentId, content: replyContent });
     setReplyOpen(false);
+    setReplyContent('');
   };
 
   return (

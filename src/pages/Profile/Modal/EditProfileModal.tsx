@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
 import { Stack } from '@mui/material';
-import { DateTime } from 'luxon';
 import { VscCheck } from 'react-icons/vsc';
 import { ProfileInfo } from '@api/dto';
 import { useEditProfileMutation, useEditProfileThumbnailMutation } from '@api/memberApi';
@@ -39,7 +38,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
 
   const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
     editProfile(
-      { realName, studentId, birthday: birthday?.toFormat('yyyy.MM.dd') },
+      { realName, studentId, birthday: birthday ? birthday.toFormat('yyyy.MM.dd') : null },
       {
         onSuccess: () => {
           if (thumbnail) {
@@ -159,7 +158,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
           />
           <Controller
             name="birthday"
-            defaultValue={DateTime.fromISO(profileInfo.birthday)}
+            defaultValue=""
             control={control}
             render={({ field, fieldState: { error } }) => {
               return (
