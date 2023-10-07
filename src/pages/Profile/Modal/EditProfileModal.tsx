@@ -39,7 +39,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
 
   const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
     editProfile(
-      { realName, studentId, birthday: birthday?.toFormat('yyyy.MM.dd') },
+      { realName, studentId, birthday: birthday ? birthday.toFormat('yyyy.MM.dd') : null },
       {
         onSuccess: () => {
           if (thumbnail) {
@@ -159,7 +159,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
           />
           <Controller
             name="birthday"
-            defaultValue={DateTime.fromISO(profileInfo.birthday)}
+            defaultValue=""
             control={control}
             render={({ field, fieldState: { error } }) => {
               return (
