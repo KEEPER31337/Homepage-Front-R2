@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { VscArrowDown, VscArrowUp, VscFolder, VscFolderOpened } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
 import {
@@ -69,7 +69,12 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
             첨부파일 ({post.fileCount})
           </Button>
           {fileOpen && (
-            <div className="mb-10 mt-2 flex justify-end gap-3 text-pointBlue">
+            <div className="mb-10 mt-2 space-y-2 text-pointBlue">
+              {post.categoryName === '시험게시판' && (
+                <Typography variant="small" className="block text-subOrange">
+                  *시험 게시판 파일 다운로드를 위해서는 댓글 작성이 필요합니다.
+                </Typography>
+              )}
               {files && <FileViewer files={files} onRowClick={handleDownloadFileClick} />}
             </div>
           )}

@@ -212,6 +212,11 @@ const useDownloadFileMutation = () => {
       link.click();
       link.remove();
     },
+    onError: (error) => {
+      if ((error as AxiosError)?.response?.status === 400) {
+        toast.error('댓글 작성이 필요합니다.');
+      }
+    },
   });
 };
 
