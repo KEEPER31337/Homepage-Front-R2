@@ -100,11 +100,11 @@ const CATEGORIES: Category[] = [
         name: '세미나 출석',
         path: 'seminar',
       },
-      {
+      /* {
         id: 402,
         name: '임원진 선거',
         path: 'election',
-      },
+      }, */
     ],
   },
   {
@@ -123,7 +123,7 @@ const CATEGORIES: Category[] = [
       },
     ],
   },
-  {
+  /* {
     id: 6,
     name: 'CTF',
     path: 'ctf',
@@ -167,7 +167,7 @@ const CATEGORIES: Category[] = [
         roles: ['ROLE_회장'],
       },
     ],
-  },
+  }, */
   {
     id: 7,
     name: '관리자페이지',
@@ -179,12 +179,12 @@ const CATEGORIES: Category[] = [
         path: 'dutyManage',
         roles: ['ROLE_회장'],
       },
-      {
+      /* {
         id: 702,
         name: '선거관리',
         path: 'electionManage',
         roles: ['ROLE_회장'],
-      },
+      }, */
       {
         id: 703,
         name: '도서관리',

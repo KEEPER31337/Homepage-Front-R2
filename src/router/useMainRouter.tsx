@@ -68,10 +68,10 @@ const useMainRouter = () =>
                   path: 'dutyManage',
                   element: <DutyManage />,
                 },
-                {
+                /* {
                   path: 'electionManage',
                   element: <div />,
-                },
+                }, */
                 {
                   path: 'libraryManage/*',
                   element: <LibraryManage />,
@@ -119,10 +119,10 @@ const useMainRouter = () =>
               path: 'seminar',
               element: <SeminarAttend />,
             },
-            {
+            /* {
               path: 'election',
               element: <div />,
-            },
+            }, */
             {
               path: 'rank',
               element: <Rank />,
@@ -131,7 +131,7 @@ const useMainRouter = () =>
               path: 'game',
               element: <Game />,
             },
-            {
+            /* {
               path: 'ctf',
               children: [
                 {
@@ -159,7 +159,7 @@ const useMainRouter = () =>
                   ],
                 },
               ],
-            },
+            }, */
           ],
         },
       ],
