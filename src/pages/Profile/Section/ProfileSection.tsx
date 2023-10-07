@@ -11,11 +11,13 @@ import BadgeSection from './BadgeSection';
 import FollowList from './FollowList';
 import EditAccountModal from '../Modal/EditAccountModal';
 import EditProfileModal from '../Modal/EditProfileModal';
+import SendPointModal from '../Modal/SendPointModal';
 
 const ProfileSection = () => {
   const [followState, setFollowState] = useState('none');
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const [editAccountModalOpen, setEditAccountModalOpen] = useState(false);
+  const [sendPointModalOpen, setSendPointModalOpen] = useState(false);
 
   const { memberId } = useParams();
   const { checkIsMyId } = useCheckAuth();
@@ -129,21 +131,30 @@ const ProfileSection = () => {
               <OutlinedButton small={isMobile} className="w-full" onClick={handleFollowButtonClick}>
                 {isFollowed() ? '언팔로우' : '팔로우'}
               </OutlinedButton>
-              <OutlinedButton small={isMobile} className="w-full">
+              <OutlinedButton onClick={() => setSendPointModalOpen(true)} small={isMobile} className="w-full">
                 포인트 선물
               </OutlinedButton>
             </>
           )}
         </div>
       </div>
-      {profileInfo && (
-        <EditProfileModal
-          profileInfo={profileInfo}
-          open={editProfileModalOpen}
-          onClose={() => setEditProfileModalOpen(false)}
+      {profileInfo && checkIsMyId(profileInfo.id) && (
+        <>
+          <EditProfileModal
+            profileInfo={profileInfo}
+            open={editProfileModalOpen}
+            onClose={() => setEditProfileModalOpen(false)}
+          />
+          <EditAccountModal open={editAccountModalOpen} onClose={() => setEditAccountModalOpen(false)} />
+        </>
+      )}
+      {profileInfo && !checkIsMyId(profileInfo.id) && (
+        <SendPointModal
+          open={sendPointModalOpen}
+          onClose={() => setSendPointModalOpen(false)}
+          sendTo={profileInfo.id}
         />
       )}
-      <EditAccountModal open={editAccountModalOpen} onClose={() => setEditAccountModalOpen(false)} />
     </div>
   );
 };

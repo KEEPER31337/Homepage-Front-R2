@@ -8,9 +8,10 @@ import TodayAttendPointCard from '../Card/TodayAttendPointCard';
 
 interface AttendanceInfoSectionProps {
   memberId: number;
+  summary?: boolean;
 }
 
-const AttendanceInfoSection = ({ memberId }: AttendanceInfoSectionProps) => {
+const AttendanceInfoSection = ({ memberId, summary = false }: AttendanceInfoSectionProps) => {
   const [selectedCard, setSelectedCard] = useState<'continuousDay' | 'todayRank' | 'todayPoint'>('todayPoint');
   const { data: todayAttendInfo } = useGetTodayAttendanceInfoQuery({ memberId });
 
@@ -22,19 +23,25 @@ const AttendanceInfoSection = ({ memberId }: AttendanceInfoSectionProps) => {
             🗓️ 총 출석일 {todayAttendInfo?.totalAttendance}일
           </Typography>
         </TextButton>
-        <TextButton onClick={() => setSelectedCard('continuousDay')} small>
-          🌱 개근 {todayAttendInfo?.continuousDay}일차
+        <TextButton disabled={summary} onClick={() => setSelectedCard('continuousDay')} small>
+          <Typography variant="small" className={`${summary && 'text-pointBlue'}`}>
+            🌱 개근 {todayAttendInfo?.continuousDay}일차
+          </Typography>
         </TextButton>
-        <TextButton onClick={() => setSelectedCard('todayRank')} small>
-          🏅 오늘 출석 {todayAttendInfo?.todayRank}등
+        <TextButton disabled={summary} onClick={() => setSelectedCard('todayRank')} small>
+          <Typography variant="small" className={`${summary && 'text-pointBlue'}`}>
+            🏅 오늘 출석 {todayAttendInfo?.todayRank}등
+          </Typography>
         </TextButton>
-        <TextButton onClick={() => setSelectedCard('todayPoint')} small>
-          ⭐️ {todayAttendInfo?.todayPoint}pt
+        <TextButton disabled={summary} onClick={() => setSelectedCard('todayPoint')} small>
+          <Typography variant="small" className={`${summary && 'text-pointBlue'}`}>
+            ⭐️ {todayAttendInfo?.todayPoint}pt
+          </Typography>
         </TextButton>
       </ButtonGroup>
-      {selectedCard === 'continuousDay' && <ContinuousDayPointCard />}
-      {selectedCard === 'todayRank' && <AttendRankPointCard />}
-      {selectedCard === 'todayPoint' && <TodayAttendPointCard />}
+      {!summary && selectedCard === 'continuousDay' && <ContinuousDayPointCard />}
+      {!summary && selectedCard === 'todayRank' && <AttendRankPointCard />}
+      {!summary && selectedCard === 'todayPoint' && <TodayAttendPointCard />}
     </div>
   );
 };
