@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Divider, Stack } from '@mui/material';
+import { Container, Divider, Stack, Typography } from '@mui/material';
 import useLoginMutation from '@api/logInApi';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -11,6 +11,7 @@ const Login = () => {
     id: '',
     password: '',
   });
+  const [loginError, setLoginError] = useState(false);
   const { id, password } = form;
   const { mutate: login } = useLoginMutation();
 
@@ -20,11 +21,19 @@ const Login = () => {
       ...form,
       [name]: value,
     });
+    setLoginError(false);
   };
 
   const handleLoginClick = () => {
     if (form.id && form.password) {
-      login({ loginId: form.id, password: form.password });
+      login(
+        { loginId: form.id, password: form.password },
+        {
+          onError: () => {
+            setLoginError(true);
+          },
+        },
+      );
     }
   };
 
@@ -54,6 +63,11 @@ const Login = () => {
             value={password}
             onChange={handleChange}
           />
+          {loginError && (
+            <Typography variant="small" className="!mt-4 text-center text-subRed brightness-125">
+              아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.
+            </Typography>
+          )}
         </Stack>
         <OutlinedButton onClick={handleLoginClick}>로그인</OutlinedButton>
       </Stack>
