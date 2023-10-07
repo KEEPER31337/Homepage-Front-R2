@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Navigate, useRoutes } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useRoutes, useParams } from 'react-router-dom';
 import StandardTab from '@components/Tab/StandardTab';
 import ProfileSection from './Section/ProfileSection';
 import AttendanceTab from './Tab/AttendanceTab/AttendanceTab';
@@ -20,10 +20,16 @@ const Profile = () => {
     { path: 'board', element: <BoardTab /> },
     { path: 'book', element: <BookTab /> },
     { path: 'point', element: <PointTab /> },
-    { path: '*', element: <Navigate to="attendance" /> },
   ]);
 
   const [tab, setTab] = useState(0);
+
+  const currentTab = useParams()['*'];
+
+  useEffect(() => {
+    const selectedTab = tabList.find((tabItem) => tabItem.url === currentTab)?.id || 0;
+    setTab(selectedTab);
+  }, [currentTab]);
 
   return (
     <div className="flex w-full flex-col justify-start sm:mb-40 sm:mt-header xl:flex-row xl:justify-center">
