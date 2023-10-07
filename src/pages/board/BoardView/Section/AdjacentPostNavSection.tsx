@@ -29,11 +29,11 @@ const AdjacentPostNavSection = ({ previousPost, nextPost }: AdjacentPostNavSecti
             startIcon={<VscChevronLeft />}
             onClick={handlePreviousPostClick}
           >
-            <Stack textAlign="left">
+            <Stack textAlign="left" className="w-72">
               <Typography variant="small" fontWeight="semibold">
                 이전글
               </Typography>
-              <Typography color="white" fontWeight="semibold">
+              <Typography color="white" fontWeight="semibold" className="truncate">
                 {previousPost.title}
               </Typography>
             </Stack>
@@ -47,11 +47,11 @@ const AdjacentPostNavSection = ({ previousPost, nextPost }: AdjacentPostNavSecti
             endIcon={<VscChevronRight />}
             onClick={handleNextPostClick}
           >
-            <Stack textAlign="right">
+            <Stack textAlign="right" className="w-72">
               <Typography variant="small" fontWeight="semibold">
                 다음글
               </Typography>
-              <Typography color="white" fontWeight="semibold">
+              <Typography color="white" fontWeight="semibold" className="truncate">
                 {nextPost.title}
               </Typography>
             </Stack>
