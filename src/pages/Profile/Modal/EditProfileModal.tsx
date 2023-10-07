@@ -33,8 +33,8 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
     studentId: studentIdState,
     enabled: checkStudentIdDuplicateEnabled,
   });
-  const { mutate: editProfile } = useEditProfileMutation();
-  const { mutate: editProfileThumbnail } = useEditProfileThumbnailMutation();
+  const { mutate: editProfile } = useEditProfileMutation(profileInfo.id);
+  const { mutate: editProfileThumbnail } = useEditProfileThumbnailMutation(profileInfo.id);
 
   const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
     editProfile(

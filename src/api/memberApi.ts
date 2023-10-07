@@ -77,14 +77,22 @@ const useUnFollowMemberMutation = (memberId: number) => {
   });
 };
 
-const useEditProfileMutation = () => {
+const useEditProfileMutation = (memberId: number) => {
+  const queryClient = useQueryClient();
+
   const fetcher = ({ realName, birthday, studentId }: Pick<ProfileInfo, 'realName' | 'birthday' | 'studentId'>) =>
     axios.patch(`/members/profile`, { realName, birthday, studentId });
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
+    },
+  });
 };
 
-const useEditProfileThumbnailMutation = () => {
+const useEditProfileThumbnailMutation = (memberId: number) => {
+  const queryClient = useQueryClient();
+
   const fetcher = ({ thumbnail }: { thumbnail: Blob }) => {
     const formData = new FormData();
     formData.append('thumbnail', thumbnail);
@@ -96,7 +104,11 @@ const useEditProfileThumbnailMutation = () => {
     });
   };
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
+    },
+  });
 };
 
 const useNewEmailAuthMutation = () => {
