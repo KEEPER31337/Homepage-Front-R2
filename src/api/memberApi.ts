@@ -1,5 +1,7 @@
+import toast from 'react-hot-toast';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { useApiError } from '@hooks/useGetApiError';
 import { formatGeneration } from '@utils/converter';
 import { ProfileInfo, MemberDetailInfo } from './dto';
 
@@ -118,24 +120,43 @@ const useNewEmailAuthMutation = () => {
 };
 
 const useEditEmailMutation = () => {
+  const { handleError } = useApiError({
+    400: {
+      default: () => {
+        toast.error('비밀번호가 일치하지 않습니다.');
+      },
+    },
+  });
+
   const fetcher = ({ email, auth, password }: { email: string; auth: string; password: string }) =>
     axios.patch('/members/email', { email, auth, password }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, { onError: (err) => handleError(err, 400) });
 };
 
 const useEditPasswordMutation = () => {
   const fetcher = ({ newPassword }: { newPassword: string }) =>
     axios.patch('/members/change-password', { newPassword }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      toast.success('비밀번호가 변경되었습니다.');
+    },
+  });
 };
 
 const useWithdrawalMutation = () => {
+  const { handleError } = useApiError({
+    400: {
+      default: () => {
+        toast.error('비밀번호가 일치하지 않습니다.');
+      },
+    },
+  });
   const fetcher = ({ rawPassword }: { rawPassword: string }) =>
     axios.delete('/members', { data: { rawPassword } }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, { onError: (err) => handleError(err, 400) });
 };
 
 const useEditMemberTypeMutation = () => {
