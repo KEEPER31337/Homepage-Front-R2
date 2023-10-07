@@ -33,7 +33,7 @@ const AdjacentPostNavSection = ({ previousPost, nextPost }: AdjacentPostNavSecti
               <Typography variant="small" fontWeight="semibold">
                 이전글
               </Typography>
-              <Typography color="white" fontWeight="semibold" className="truncate">
+              <Typography color="white" fontWeight="semibold" className="truncate normal-case">
                 {previousPost.title}
               </Typography>
             </Stack>
@@ -51,7 +51,7 @@ const AdjacentPostNavSection = ({ previousPost, nextPost }: AdjacentPostNavSecti
               <Typography variant="small" fontWeight="semibold">
                 다음글
               </Typography>
-              <Typography color="white" fontWeight="semibold" className="truncate">
+              <Typography color="white" fontWeight="semibold" className="truncate normal-case">
                 {nextPost.title}
               </Typography>
             </Stack>
