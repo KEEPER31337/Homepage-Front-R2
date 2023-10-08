@@ -5,7 +5,7 @@ import { AttendSeminarListInfo, SeminarStatus, SeminarInfo } from './dto';
 
 const seminarKeys = {
   getSeminarList: ['getSeminar', 'seminarList'] as const,
-  getSeminar: ['getSeminar', 'id'] as const,
+  getSeminar: ({ id }: { id: number }) => ['getSeminar', id] as const,
   getAvailableSeminar: ['getSeminar', 'available'] as const,
   getRecentlyDoneSeminar: ['getSeminar', 'recentlyDone'] as const,
   getRecentlyUpcomingSeminar: ['getSeminar', 'recentlyUpcoming'] as const,
@@ -38,7 +38,7 @@ const useGetSeminarInfoQuery = (id: number) => {
       return transformedData;
     });
 
-  return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
+  return useQuery<SeminarInfo>(seminarKeys.getSeminar({ id }), fetcher);
 };
 
 const useGetAvailableSeminarInfoQuery = () => {
