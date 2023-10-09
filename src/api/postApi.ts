@@ -139,7 +139,12 @@ const useDeleteFilesMutation = () => {
   return useMutation(fetcher);
 };
 
-const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?: string) => {
+const useGetEachPostQuery = (
+  postId: number,
+  isSecret: boolean | null,
+  setIsSecretPasswordSubmited: boolean,
+  password?: string,
+) => {
   const location = useLocation();
 
   const { handleError } = useApiError({
@@ -162,7 +167,7 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
   const fetcher = () => axios.get(`/posts/${postId}`, { params: { password } }).then(({ data }) => data);
 
   return useQuery<PostInfo>(['post', postId, password], fetcher, {
-    enabled: !isSecret || Boolean(isSecret && password),
+    enabled: !isSecret || Boolean(isSecret && setIsSecretPasswordSubmited),
     onError: (err) => {
       if ((err as AxiosError)?.response?.status === 403) {
         if (isSecret === null) {

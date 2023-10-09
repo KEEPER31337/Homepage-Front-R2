@@ -19,13 +19,19 @@ const BoardView = () => {
   } = useLocation();
 
   const [secretPostModalOpen, setSecretPostModalOpen] = useState(false);
+  const [isSecretPasswordSubmited, setIsSecretPasswordSubmited] = useState(false);
   const [password, setPassword] = useState<string>();
 
-  const { data: postInfo, isSuccess, error } = useGetEachPostQuery(postId, isSecret, password);
+  const {
+    data: postInfo,
+    isSuccess,
+    error,
+  } = useGetEachPostQuery(postId, isSecret, isSecretPasswordSubmited, password);
 
   useEffect(() => {
-    if (!isSuccess) return;
+    setIsSecretPasswordSubmited(false);
 
+    if (!isSuccess) return;
     setSecretPostModalOpen(false);
   }, [isSuccess]);
 
@@ -53,7 +59,12 @@ const BoardView = () => {
           <CommentSection categoryName={postInfo.categoryName} postId={postId} allowComment={postInfo.allowComment} />
         </>
       )}
-      <SecretPostModal setPassword={setPassword} open={secretPostModalOpen} setOpen={setSecretPostModalOpen} />
+      <SecretPostModal
+        setPassword={setPassword}
+        setIsSecretPasswordSubmited={setIsSecretPasswordSubmited}
+        open={secretPostModalOpen}
+        setOpen={setSecretPostModalOpen}
+      />
     </div>
   );
 };
