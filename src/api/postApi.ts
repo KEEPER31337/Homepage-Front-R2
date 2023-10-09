@@ -180,10 +180,17 @@ const useGetEachPostQuery = (
   });
 };
 
-const useGetPostFilesQuery = (postId: number, fileOpen: boolean) => {
+const useGetPostFilesQuery = (postId: number, fileOpen: boolean, password?: string) => {
+  const queryClient = useQueryClient();
+
   const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
 
-  return useQuery<FileInfo[]>(['files', postId], fetcher, { enabled: fileOpen });
+  return useQuery<FileInfo[]>(['files', postId], fetcher, {
+    enabled: fileOpen,
+    onSuccess: () => {
+      queryClient.setQueryData(['post', postId, password], (oldData) => oldData && { ...oldData, isRead: true });
+    },
+  });
 };
 
 const useGetRecentPostsQuery = () => {

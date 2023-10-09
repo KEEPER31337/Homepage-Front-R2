@@ -53,7 +53,7 @@ const BoardView = () => {
         <>
           <div className="space-y-2">
             <BannerSection postId={postId} post={postInfo} />
-            <PostSection postId={postId} post={postInfo} />
+            <PostSection postId={postId} post={postInfo} password={password} />
           </div>
           <AdjacentPostNavSection previousPost={postInfo.previousPost} nextPost={postInfo.nextPost} />
           <CommentSection categoryName={postInfo.categoryName} postId={postId} allowComment={postInfo.allowComment} />
