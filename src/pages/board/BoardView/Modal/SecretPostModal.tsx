@@ -24,6 +24,10 @@ const SecretPostModal = ({ setPassword, setIsSecretPasswordSubmited, open, setOp
     setIsSecretPasswordSubmited(true);
   };
 
+  const handleActionEnterKeyUp = () => {
+    handlePasswordConfirmClick();
+  };
+
   return (
     <ActionModal
       open={open}
@@ -34,6 +38,7 @@ const SecretPostModal = ({ setPassword, setIsSecretPasswordSubmited, open, setOp
       title="비밀글 보기"
       actionButtonName="확인"
       onActionButonClick={handlePasswordConfirmClick}
+      onActionEnterKeyUp={handleActionEnterKeyUp}
     >
       <Typography>비밀글을 보려면 비밀번호를 입력해주세요.</Typography>
       <Typography variant="small">(작성자는 확인 버튼만 누르면 됩니다.)</Typography>
