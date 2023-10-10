@@ -83,7 +83,7 @@ const useEditProfileMutation = (memberId: number) => {
   const queryClient = useQueryClient();
 
   const fetcher = ({ realName, birthday }: Pick<ProfileInfo, 'realName' | 'birthday'>) =>
-    axios.patch(`/members/profile`, { realName, birthday, studentId: 1000000 });
+    axios.patch(`/members/profile`, { realName, birthday });
 
   return useMutation(fetcher, {
     onSuccess: () => {
