@@ -24,17 +24,17 @@ const AttendanceInfoSection = ({ memberId, summary = false }: AttendanceInfoSect
           </Typography>
         </TextButton>
         <TextButton disabled={summary} onClick={() => setSelectedCard('continuousDay')} small>
-          <Typography variant="small" className={`${summary && 'text-pointBlue'}`}>
+          <Typography variant="small" className={`${summary && 'text-white'}`}>
             🌱 개근 {todayAttendInfo?.continuousDay}일차
           </Typography>
         </TextButton>
         <TextButton disabled={summary} onClick={() => setSelectedCard('todayRank')} small>
-          <Typography variant="small" className={`${summary && 'text-pointBlue'}`}>
+          <Typography variant="small" className={`${summary && 'text-white'}`}>
             🏅 오늘 출석 {todayAttendInfo?.todayRank}등
           </Typography>
         </TextButton>
         <TextButton disabled={summary} onClick={() => setSelectedCard('todayPoint')} small>
-          <Typography variant="small" className={`${summary && 'text-pointBlue'}`}>
+          <Typography variant="small" className={`${summary && 'text-white'}`}>
             ⭐️ {todayAttendInfo?.todayPoint}pt
           </Typography>
         </TextButton>

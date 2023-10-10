@@ -40,13 +40,12 @@ const Profile = () => {
         <ProfileSection />
       </div>
       <div className="flex w-full max-w-container flex-col xl:h-full">
-        {checkIsMyId(profileId) && (
+        {checkIsMyId(profileId) ? (
           <>
             <StandardTab options={tabList} tab={tab} setTab={setTab} />
             <div className="mt-4 flex h-full border border-subGray p-4">{panels}</div>
           </>
-        )}
-        {!checkIsMyId(profileId) && (
+        ) : (
           <div className="h-full w-full border border-subGray md:px-10 md:py-6 lg:px-12 lg:py-8">
             <AttendanceChartSection memberId={profileId} />
             <div className="mx-2 mb-10 flex flex-col gap-4 xl:flex-row">
