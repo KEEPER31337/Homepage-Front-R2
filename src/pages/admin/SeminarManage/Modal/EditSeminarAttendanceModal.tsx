@@ -13,19 +13,23 @@ interface AddSeminarModalProps {
 
 const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSeminarModalProps) => {
   const [statusType, setStatusType] = useState(attendanceStatus.attendanceStatus);
-  const [excuse, setExcuse] = useState('');
+  const [excuse, setExcuse] = useState(attendanceStatus.excuse || '');
   const [isInvalidExcuse, setIsInvalidExcuse] = useState(false);
 
   const { mutate: editAttendStatus } = useEditAttendStatusMutation(attendanceStatus.attendanceId);
 
-  const validate = () => {
-    const isValid = excuse.trim() !== '';
-    setIsInvalidExcuse(!isValid);
-    return isValid;
+  const isExcuseRequired = () => {
+    return statusType === 'PERSONAL' || statusType === 'LATENESS';
   };
 
-  const isExcuseRequired = () => {
-    return statusType === 'ABSENCE' || statusType === 'LATENESS';
+  const validate = () => {
+    let isValid = true;
+    if (isExcuseRequired()) {
+      isValid = excuse.trim() !== '';
+    }
+
+    setIsInvalidExcuse(!isValid);
+    return isValid;
   };
 
   const handleClose = () => {
@@ -38,12 +42,16 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
 
   const handleEditSeminarButtonClick = () => {
     if (validate()) {
+      let excuseTrim = excuse.trim();
+      if (!isExcuseRequired()) {
+        excuseTrim = '';
+      }
+
       editAttendStatus(
-        { statusType, excuse: excuse.trim() },
+        { statusType, excuse: excuseTrim },
         {
           onSuccess: () => {
             handleClose();
-            setExcuse('');
           },
         },
       );
