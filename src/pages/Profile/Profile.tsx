@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useRoutes, useParams } from 'react-router-dom';
+import { useParams, useRoutes } from 'react-router-dom';
+import useCheckAuth from '@hooks/useCheckAuth';
 import StandardTab from '@components/Tab/StandardTab';
 import ProfileSection from './Section/ProfileSection';
 import AttendanceTab from './Tab/AttendanceTab/AttendanceTab';
-import BoardTab from './Tab/BoardTab/BoardTab';
+import AttendanceChartSection from './Tab/AttendanceTab/Section/AttendanceChartSection';
+import AttendanceInfoSection from './Tab/AttendanceTab/Section/AttendanceInfoSection';
+import MyBoardTab from './Tab/BoardTab/MyBoardTab';
+import MemberBoardTable from './Tab/BoardTab/Table/MemberBoardTable';
 import BookTab from './Tab/BookTab/BookTab';
 import PointTab from './Tab/PointTab/PointTab';
 
 const Profile = () => {
+  const { memberId } = useParams();
+  const profileId = Number(memberId) || 0;
+
+  const { checkIsMyId } = useCheckAuth();
+
   const tabList = [
     { id: 0, label: '출석부', url: 'attendance' },
     { id: 1, label: '작성글', url: 'board' },
@@ -17,7 +26,7 @@ const Profile = () => {
 
   const panels = useRoutes([
     { path: 'attendance', element: <AttendanceTab /> },
-    { path: 'board', element: <BoardTab /> },
+    { path: 'board', element: <MyBoardTab /> },
     { path: 'book', element: <BookTab /> },
     { path: 'point', element: <PointTab /> },
   ]);
@@ -37,8 +46,20 @@ const Profile = () => {
         <ProfileSection />
       </div>
       <div className="flex w-full max-w-container flex-col xl:h-full">
-        <StandardTab options={tabList} tab={tab} setTab={setTab} />
-        <div className="mt-4 flex h-full border border-subGray p-4">{panels}</div>
+        {checkIsMyId(profileId) ? (
+          <>
+            <StandardTab options={tabList} tab={tab} setTab={setTab} />
+            <div className="mt-4 flex h-full border border-subGray p-4">{panels}</div>
+          </>
+        ) : (
+          <div className="h-full w-full border border-subGray md:px-10 md:py-6 lg:px-12 lg:py-8">
+            <AttendanceChartSection memberId={profileId} />
+            <div className="mx-2 mb-10 flex flex-col gap-4 xl:flex-row">
+              <AttendanceInfoSection summary memberId={profileId} />
+            </div>
+            <MemberBoardTable memberId={profileId} />
+          </div>
+        )}
       </div>
     </div>
   );

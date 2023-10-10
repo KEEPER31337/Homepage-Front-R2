@@ -2,14 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { DateTime } from 'luxon';
-import { useRecoilValue } from 'recoil';
 import { useGetMemberPostsQuery } from '@api/postApi';
 import usePagination from '@hooks/usePagination';
-import memberState from '@recoil/member.recoil';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
 
-interface MyBoardRow {
+interface MemberBoardRow {
   id: number;
   num: number;
   title: string;
@@ -20,7 +18,7 @@ interface MyBoardRow {
   registerTime: string;
 }
 
-const myBoardColumns: Column<MyBoardRow>[] = [
+const myBoardColumns: Column<MemberBoardRow>[] = [
   { key: 'num', headerName: '번호' },
   { key: 'categoryName', headerName: '카테고리' },
   { key: 'title', headerName: '제목' },
@@ -28,7 +26,7 @@ const myBoardColumns: Column<MyBoardRow>[] = [
   { key: 'visitCount', headerName: '조회수' },
 ];
 
-const MyBoardChildComponent = ({ key, value }: ChildComponent<MyBoardRow>) => {
+const MyBoardChildComponent = ({ key, value }: ChildComponent<MemberBoardRow>) => {
   switch (key) {
     case 'registerTime':
       return DateTime.fromSQL(value as string).toFormat('yy.MM.dd');
@@ -39,30 +37,37 @@ const MyBoardChildComponent = ({ key, value }: ChildComponent<MyBoardRow>) => {
 
 const rowCnt = 5;
 
-const MyBoardTable = () => {
-  const userInfo = useRecoilValue(memberState);
+interface MemberBoardTableProps {
+  memberId: number;
+}
+
+const MemberBoardTable = ({ memberId }: MemberBoardTableProps) => {
   const navigate = useNavigate();
   const { page, getRowNumber } = usePagination('myBoardPage');
 
-  const { data: myBoard } = useGetMemberPostsQuery({ page, size: rowCnt, memberId: userInfo?.memberId as number });
+  const { data: memberBoard } = useGetMemberPostsQuery({ page, size: rowCnt, memberId });
 
-  if (!myBoard) return null;
+  if (!memberBoard) return null;
 
   return (
     <div className="h-full w-full">
       <Typography>작성글</Typography>
-      <StandardTable<MyBoardRow>
+      <StandardTable<MemberBoardRow>
         columns={myBoardColumns}
-        rows={myBoard.content.map((item, index) => ({
-          num: getRowNumber({ size: myBoard.size, index }),
+        rows={memberBoard.content.map((item, index) => ({
+          num: getRowNumber({ size: memberBoard.size, index }),
           ...item,
         }))}
         childComponent={MyBoardChildComponent}
         onRowClick={({ rowData }) => navigate(`/board/view/${rowData.id}`)}
-        paginationOption={{ pageKey: 'myBoardPage', rowsPerPage: myBoard.size, totalItems: myBoard.totalElements }}
+        paginationOption={{
+          pageKey: `memberBoardPage_${memberId}`,
+          rowsPerPage: memberBoard.size,
+          totalItems: memberBoard.totalElements,
+        }}
       />
     </div>
   );
 };
 
-export default MyBoardTable;
+export default MemberBoardTable;
