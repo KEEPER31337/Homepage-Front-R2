@@ -44,7 +44,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
         disabled
         helperText="ㅤ"
         setInputCode={() => null}
-        inputCode={seminarStart && seminarData ? seminarData?.attendanceCode : ''}
+        inputCode={seminarStart && seminarData && seminarData?.attendanceCode ? seminarData?.attendanceCode : ''}
       />
       <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">

@@ -1,33 +1,31 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
-import { DateTime, Duration } from 'luxon';
+import { DateTime } from 'luxon';
+import TextTimer from '@components/Typography/TextTimer';
 
 interface countdownProps {
-  startTime: DateTime;
-  endTime: DateTime;
+  startTime: DateTime | null;
+  endTime: DateTime | null;
 }
 
 const Countdown = ({ startTime, endTime }: countdownProps) => {
-  const [nowTime, setNowTime] = useState(DateTime.now());
-  const id = useRef<NodeJS.Timeout>();
-  const [timeDiff, setTimeDiff] = useState<Duration>(endTime.diff(startTime));
-  const [leftTime, setLeftTime] = useState('');
+  const renderCountdownText = () => {
+    const now = DateTime.now();
 
-  const changeNowTime = () => {
-    setNowTime(DateTime.now());
+    if (!startTime || !endTime) {
+      return '--:--';
+    }
+    if (now < startTime) {
+      return endTime.diff(startTime).toFormat('mm:ss');
+    }
+    if (now > endTime) {
+      return '마감';
+    }
+
+    return <TextTimer expirationTime={endTime} />;
   };
 
-  useEffect(() => {
-    setTimeDiff(endTime.diff(nowTime));
-    id.current = setInterval(changeNowTime, 1000);
-    return () => clearInterval(id.current);
-  }, [nowTime]);
-
-  useEffect(() => {
-    if (id.current) setLeftTime(endTime > nowTime ? timeDiff.toFormat('mm:ss') : '마감');
-  }, [timeDiff]);
-
-  return <p className="text-white">{startTime > nowTime ? endTime.diff(startTime).toFormat('mm:ss') : leftTime}</p>;
+  return <div>{renderCountdownText()}</div>;
 };
 
 export default Countdown;
