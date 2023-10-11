@@ -41,6 +41,12 @@ const BoardView = () => {
     setSecretPostModalOpen(true);
   }, [isSecret]);
 
+  useEffect(() => {
+    return () => {
+      setPassword(undefined);
+    };
+  }, [postId]);
+
   if (error) {
     if ((error as AxiosError)?.response?.status === 404) {
       return <NotFound from="Post" />;
