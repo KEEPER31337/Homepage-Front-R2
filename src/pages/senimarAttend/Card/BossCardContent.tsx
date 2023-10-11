@@ -33,8 +33,12 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   };
 
   useEffect(() => {
-    if (seminarData && availableSeminarData?.id === seminarData.id) setSeminarStart(true);
-  }, [availableSeminarData]);
+    if (!seminarData || !availableSeminarData) return;
+
+    if (availableSeminarData.id === seminarData.id) {
+      setSeminarStart(true);
+    }
+  }, [seminarData, availableSeminarData]);
 
   return (
     <>
