@@ -65,7 +65,7 @@ const ViceChairman = () => {
             <div className="absolute bottom-1/2 right-1/2 h-4 w-4 translate-x-1/2 translate-y-1/2 rounded-full bg-pointBlue" />
           </div>
         </div>
-        <div className="absolute left-[40%]">
+        <div className="absolute left-[40%] translate-y-2">
           <DutyProfileTooltip jobName="ROLE_부회장" />
         </div>
       </div>

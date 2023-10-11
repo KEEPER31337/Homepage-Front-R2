@@ -2,6 +2,7 @@ import React, { useState, useReducer, useMemo } from 'react';
 import { Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import { VscSearch } from 'react-icons/vsc';
 import muiTheme from '@constants/muiTheme';
 import { roleDutyListInfo, roles } from '@mocks/DutyManageApi';
 
@@ -57,28 +58,26 @@ const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
   }
 
   return (
-    <DescriptionRoleDutyTooltip
-      title={jobName !== 'ROLE_전산관리자' ? tooltipContent(jobName) : null}
-      open={tooltipOpen}
-      onMouseEnter={() => setTooltipOpen(true)}
-      onMouseLeave={() => setTooltipOpen(false)}
-      arrow
-    >
-      <div>
-        <DutyProfileButton
-          jobName={jobName}
-          badgeImage={badgeImage}
-          setTooltipOpen={setTooltipOpen}
-          toggleModalOpen={toggleModalOpen}
-        />
-        <ChangeRolePersonModal
-          open={modalOpen}
-          toggleOpen={toggleModalOpen}
-          jobName={jobName}
-          badgeImage={badgeImage}
-        />
-      </div>
-    </DescriptionRoleDutyTooltip>
+    <div className="relative">
+      <DutyProfileButton
+        jobName={jobName}
+        badgeImage={badgeImage}
+        setTooltipOpen={setTooltipOpen}
+        toggleModalOpen={toggleModalOpen}
+      />
+      <DescriptionRoleDutyTooltip
+        title={jobName !== 'ROLE_전산관리자' ? tooltipContent(jobName) : null}
+        open={tooltipOpen}
+        onMouseEnter={() => setTooltipOpen(true)}
+        onMouseLeave={() => setTooltipOpen(false)}
+        arrow
+      >
+        <div className="absolute -right-2 top-0.5 rounded-full border border-white p-1">
+          <VscSearch size={12} className="w-full" />
+        </div>
+      </DescriptionRoleDutyTooltip>
+      <ChangeRolePersonModal open={modalOpen} toggleOpen={toggleModalOpen} jobName={jobName} badgeImage={badgeImage} />
+    </div>
   );
 };
 
