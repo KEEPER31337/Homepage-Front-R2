@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { KEEPER_COLOR } from './keeperTheme';
 
 const muiTheme = createTheme({
   palette: {
@@ -41,6 +42,16 @@ const muiTheme = createTheme({
             colorScheme: 'dark',
             WebkitBackgroundClip: 'text !important',
           },
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: KEEPER_COLOR.subBlack,
+        },
+        fallback: {
+          fill: 'white',
         },
       },
     },
