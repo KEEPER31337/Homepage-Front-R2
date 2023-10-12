@@ -16,12 +16,18 @@ import MemberCardContent from './Card/MemberCardContent';
 import SeminarCard from './Card/SeminarCard';
 
 const SeminarAttend = () => {
-  const { data: recentlyDoneSeminarId } = useGetRecentlyDoneSeminarInfoQuery();
-  const { data: twoUpcomingSeminarIds } = useGetRecentlyUpcomingSeminarInfoQuery();
+  const [visibleSeminars, setVisibleSeminars] = useState<{ order: number; id?: number }[]>([
+    { order: 1 },
+    { order: 2 },
+    { order: 3 },
+  ]);
+
+  const { data: recentlyDoneSeminarId, isSuccess: isGetRecentlyDoneSeminarIdSuccess } =
+    useGetRecentlyDoneSeminarInfoQuery();
+  const { data: twoUpcomingSeminarIds, isSuccess: isGetRecentlyUpcomingSeminarIdsSuccess } =
+    useGetRecentlyUpcomingSeminarInfoQuery();
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
-  const recentSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[0]?.id;
-  const futureSeminarId = twoUpcomingSeminarIds && twoUpcomingSeminarIds[1]?.id;
-  const cardIdOrder = [recentlyDoneSeminarId, recentSeminarId, futureSeminarId];
+
   const { checkIncludeOneOfAuths } = useCheckAuth();
   const authorizedMember = checkIncludeOneOfAuths(['ROLE_회장', 'ROLE_부회장', 'ROLE_서기']);
   const startMember: number | undefined = useRecoilValue(starterState);
@@ -51,19 +57,32 @@ const SeminarAttend = () => {
     if (!localStorage.getItem('출석시도횟수')) localStorage.setItem('출석시도횟수', '0');
   }, []);
 
+  useEffect(() => {
+    if (isGetRecentlyDoneSeminarIdSuccess && isGetRecentlyUpcomingSeminarIdsSuccess) {
+      setVisibleSeminars([
+        { order: 1, id: twoUpcomingSeminarIds.at(1)?.id },
+        { order: 2, id: twoUpcomingSeminarIds.at(0)?.id },
+        { order: 3, id: recentlyDoneSeminarId.id },
+      ]);
+    }
+  }, [isGetRecentlyDoneSeminarIdSuccess, isGetRecentlyUpcomingSeminarIdsSuccess]);
+
   return (
     <div className="flex flex-col items-center space-y-4">
       <div className="flex text-center md:mt-[180px] md:space-x-4 md:[&>*:nth-child(2)]:mt-[-50px]">
-        {cardIdOrder.map((seminarId, index) => {
+        {visibleSeminars.map((visibleSeminar) => {
           return (
-            <div className={`${index === currentCardIndex ? 'block md:flex' : 'hidden md:flex'}`}>
-              <SeminarCard key={seminarId}>
-                {seminarId !== undefined ? (
+            <div
+              key={visibleSeminar.order}
+              className={`${visibleSeminar.order - 1 === currentCardIndex ? 'block md:flex' : 'hidden md:flex'}`}
+            >
+              <SeminarCard>
+                {visibleSeminar.id !== undefined ? (
                   <div>
                     {isStarterMember() ? (
-                      <BossCardContent seminarId={seminarId} />
+                      <BossCardContent seminarId={visibleSeminar.id} />
                     ) : (
-                      <MemberCardContent seminarId={seminarId} />
+                      <MemberCardContent seminarId={visibleSeminar.id} />
                     )}
                   </div>
                 ) : (
@@ -80,7 +99,7 @@ const SeminarAttend = () => {
         <OutlinedButton onClick={handlePreviousButtonClick} disabled={currentCardIndex === 0}>
           이전
         </OutlinedButton>
-        <OutlinedButton onClick={handleNextButtonClick} disabled={currentCardIndex === cardIdOrder.length - 1}>
+        <OutlinedButton onClick={handleNextButtonClick} disabled={currentCardIndex === visibleSeminars.length - 1}>
           다음
         </OutlinedButton>
       </div>

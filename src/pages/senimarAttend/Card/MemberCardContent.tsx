@@ -97,7 +97,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         <div className="grid content-between text-right">
           {seminarData && (
             <>
-              <Countdown startTime={seminarData.openTime} endTime={seminarData.attendanceCloseTime} />
+              <Countdown startTime={seminarData.attendanceStartTime} endTime={seminarData.attendanceCloseTime} />
               <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
             </>
           )}

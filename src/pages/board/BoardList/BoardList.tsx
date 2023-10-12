@@ -88,14 +88,8 @@ const BoardList = () => {
         return (
           <>
             <div className="flex items-center">
-              {rowData.isSecret ? (
-                <>
-                  <AiFillLock className="mr-1 fill-pointBlue" />
-                  <span>비밀글입니다.</span>
-                </>
-              ) : (
-                <span>{value}</span>
-              )}
+              {rowData.isSecret && <AiFillLock className="mr-1 fill-pointBlue" />}
+              <span>{value}</span>
               {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
               {DateTime.fromISO(rowData.registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
                 <span className="ml-1 rounded-sm bg-pointBlue px-1 text-center text-small text-mainBlack">N</span>

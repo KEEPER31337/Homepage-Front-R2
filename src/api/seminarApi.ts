@@ -3,11 +3,11 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import { useApiError } from '@hooks/useGetApiError';
-import { AttendSeminarListInfo, SeminarStatus, SeminarInfo } from './dto';
+import { AttendSeminarListInfo, SeminarStatus, SeminarInfo, SeminarCardInfo } from './dto';
 
 const seminarKeys = {
   getSeminarList: ['getSeminar', 'seminarList'] as const,
-  getSeminar: ['getSeminar', 'id'] as const,
+  getSeminar: ({ id }: { id: number }) => ['getSeminar', id] as const,
   getAvailableSeminar: ['getSeminar', 'available'] as const,
   getRecentlyDoneSeminar: ['getSeminar', 'recentlyDone'] as const,
   getRecentlyUpcomingSeminar: ['getSeminar', 'recentlyUpcoming'] as const,
@@ -33,14 +33,15 @@ const useGetSeminarInfoQuery = (id: number) => {
       const transformedData = {
         ...data,
         name: data.name.replaceAll('-', '.'),
-        openTime: DateTime.fromISO(data.openTime),
-        attendanceCloseTime: DateTime.fromISO(data.attendanceCloseTime),
-        latenessCloseTime: DateTime.fromISO(data.latenessCloseTime),
+        openTime: data.openTime ? DateTime.fromISO(data.openTime) : null,
+        attendanceStartTime: data.attendanceStartTime ? DateTime.fromISO(data.attendanceStartTime) : null,
+        attendanceCloseTime: data.attendanceCloseTime ? DateTime.fromISO(data.attendanceCloseTime) : null,
+        latenessCloseTime: data.latenessCloseTime ? DateTime.fromISO(data.latenessCloseTime) : null,
       };
       return transformedData;
     });
 
-  return useQuery<SeminarInfo>(seminarKeys.getSeminar, fetcher);
+  return useQuery<SeminarCardInfo>(seminarKeys.getSeminar({ id }), fetcher);
 };
 
 const useGetAvailableSeminarInfoQuery = () => {
@@ -50,9 +51,9 @@ const useGetAvailableSeminarInfoQuery = () => {
 };
 
 const useGetRecentlyDoneSeminarInfoQuery = () => {
-  const fetcher = () => axios.get(`/seminars/recently-done`).then(({ data }) => data.id);
+  const fetcher = () => axios.get(`/seminars/recently-done`).then(({ data }) => data);
 
-  return useQuery<number>(seminarKeys.getRecentlyDoneSeminar, fetcher);
+  return useQuery<{ id: number }>(seminarKeys.getRecentlyDoneSeminar, fetcher);
 };
 
 const useGetRecentlyUpcomingSeminarInfoQuery = () => {

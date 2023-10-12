@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import { useGetEachPostQuery } from '@api/postApi';
 import NotFound from '@pages/NotFound/NotFound';
 import SecretPostModal from './Modal/SecretPostModal';
@@ -18,13 +19,19 @@ const BoardView = () => {
   } = useLocation();
 
   const [secretPostModalOpen, setSecretPostModalOpen] = useState(false);
+  const [isSecretPasswordSubmited, setIsSecretPasswordSubmited] = useState(false);
   const [password, setPassword] = useState<string>();
 
-  const { data: postInfo, isSuccess, isError } = useGetEachPostQuery(postId, isSecret, password);
+  const {
+    data: postInfo,
+    isSuccess,
+    error,
+  } = useGetEachPostQuery(postId, isSecret, isSecretPasswordSubmited, password);
 
   useEffect(() => {
-    if (!isSuccess) return;
+    setIsSecretPasswordSubmited(false);
 
+    if (!isSuccess) return;
     setSecretPostModalOpen(false);
   }, [isSuccess]);
 
@@ -34,8 +41,16 @@ const BoardView = () => {
     setSecretPostModalOpen(true);
   }, [isSecret]);
 
-  if (isError) {
-    return <NotFound from="Post" />;
+  useEffect(() => {
+    return () => {
+      setPassword(undefined);
+    };
+  }, [postId]);
+
+  if (error) {
+    if ((error as AxiosError)?.response?.status === 404) {
+      return <NotFound from="Post" />;
+    }
   }
 
   return (
@@ -44,13 +59,18 @@ const BoardView = () => {
         <>
           <div className="space-y-2">
             <BannerSection postId={postId} post={postInfo} />
-            <PostSection postId={postId} post={postInfo} />
+            <PostSection postId={postId} post={postInfo} password={password} />
           </div>
           <AdjacentPostNavSection previousPost={postInfo.previousPost} nextPost={postInfo.nextPost} />
           <CommentSection categoryName={postInfo.categoryName} postId={postId} allowComment={postInfo.allowComment} />
         </>
       )}
-      <SecretPostModal setPassword={setPassword} open={secretPostModalOpen} setOpen={setSecretPostModalOpen} />
+      <SecretPostModal
+        setPassword={setPassword}
+        setIsSecretPasswordSubmited={setIsSecretPasswordSubmited}
+        open={secretPostModalOpen}
+        setOpen={setSecretPostModalOpen}
+      />
     </div>
   );
 };

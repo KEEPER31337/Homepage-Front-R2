@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { VscArrowDown, VscArrowUp, VscFolder, VscFolderOpened } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
 import {
@@ -17,14 +17,15 @@ import WarningDeductPointModal from '../Modal/WarningDeductPointModal';
 interface PostSectionProps {
   postId: number;
   post: PostInfo;
+  password?: string;
 }
 
-const PostSection = ({ postId, post }: PostSectionProps) => {
+const PostSection = ({ postId, post, password }: PostSectionProps) => {
   const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
   const hasWarningModal = post.categoryName === '시험게시판' && post.isRead === false && !fileOpen;
 
-  const { data: files } = useGetPostFilesQuery(postId, fileOpen);
+  const { data: files } = useGetPostFilesQuery(postId, fileOpen, password);
   const { mutate: controlLikes } = useControlPostLikesMutation();
   const { mutate: controlDislikes } = useControlPostDislikesMutation();
   const { mutate: downloadFile } = useDownloadFileMutation();
@@ -69,7 +70,12 @@ const PostSection = ({ postId, post }: PostSectionProps) => {
             첨부파일 ({post.fileCount})
           </Button>
           {fileOpen && (
-            <div className="mb-10 mt-2 flex justify-end gap-3 text-pointBlue">
+            <div className="mb-10 mt-2 space-y-2 text-pointBlue">
+              {post.categoryName === '시험게시판' && (
+                <Typography variant="small" className="block text-subOrange">
+                  *시험 게시판 파일 다운로드를 위해서는 댓글 작성이 필요합니다.
+                </Typography>
+              )}
               {files && <FileViewer files={files} onRowClick={handleDownloadFileClick} />}
             </div>
           )}

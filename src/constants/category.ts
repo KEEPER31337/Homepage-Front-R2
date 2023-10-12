@@ -177,7 +177,7 @@ const CATEGORIES: Category[] = [
         id: 701,
         name: '직책관리',
         path: 'dutyManage',
-        roles: ['ROLE_회장'],
+        roles: ['ROLE_회장', 'ROLE_부회장'],
       },
       /* {
         id: 702,
@@ -189,7 +189,7 @@ const CATEGORIES: Category[] = [
         id: 703,
         name: '도서관리',
         path: 'libraryManage',
-        roles: ['ROLE_회장', 'ROLE_사서'],
+        roles: ['ROLE_회장', 'ROLE_부회장', 'ROLE_사서'],
       },
       {
         id: 704,
@@ -201,13 +201,13 @@ const CATEGORIES: Category[] = [
         id: 705,
         name: '활동인원관리',
         path: 'activeMemberManage',
-        roles: ['ROLE_회장', 'ROLE_서기'],
+        roles: ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'],
       },
       {
         id: 706,
         name: '상벌점관리',
         path: 'meritManage',
-        roles: ['ROLE_회장', 'ROLE_서기'],
+        roles: ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'],
       },
     ],
   },

@@ -139,7 +139,12 @@ const useDeleteFilesMutation = () => {
   return useMutation(fetcher);
 };
 
-const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?: string) => {
+const useGetEachPostQuery = (
+  postId: number,
+  isSecret: boolean | null,
+  setIsSecretPasswordSubmited: boolean,
+  password?: string,
+) => {
   const location = useLocation();
 
   const { handleError } = useApiError({
@@ -162,7 +167,7 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
   const fetcher = () => axios.get(`/posts/${postId}`, { params: { password } }).then(({ data }) => data);
 
   return useQuery<PostInfo>(['post', postId, password], fetcher, {
-    enabled: !isSecret || Boolean(isSecret && password),
+    enabled: !isSecret || Boolean(isSecret && setIsSecretPasswordSubmited),
     onError: (err) => {
       if ((err as AxiosError)?.response?.status === 403) {
         if (isSecret === null) {
@@ -175,10 +180,17 @@ const useGetEachPostQuery = (postId: number, isSecret: boolean | null, password?
   });
 };
 
-const useGetPostFilesQuery = (postId: number, fileOpen: boolean) => {
+const useGetPostFilesQuery = (postId: number, fileOpen: boolean, password?: string) => {
+  const queryClient = useQueryClient();
+
   const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
 
-  return useQuery<FileInfo[]>(['files', postId], fetcher, { enabled: fileOpen });
+  return useQuery<FileInfo[]>(['files', postId], fetcher, {
+    enabled: fileOpen,
+    onSuccess: () => {
+      queryClient.setQueryData(['post', postId, password], (oldData) => oldData && { ...oldData, isRead: true });
+    },
+  });
 };
 
 const useGetRecentPostsQuery = () => {
@@ -211,6 +223,11 @@ const useDownloadFileMutation = () => {
 
       link.click();
       link.remove();
+    },
+    onError: (error) => {
+      if ((error as AxiosError)?.response?.status === 400) {
+        toast.error('댓글 작성이 필요합니다.');
+      }
     },
   });
 };

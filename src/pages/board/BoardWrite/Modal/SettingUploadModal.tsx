@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Checkbox, FormControlLabel, FormGroup, useMediaQuery, useTheme } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { UploadPostSettings, PostInfo } from '@api/dto';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import StandardInput from '@components/Input/StandardInput';
@@ -135,6 +135,11 @@ const SettingUploadModal = ({
             />
           )}
         </span>
+        {postSettingInfo.isSecret && (
+          <Typography variant="small" className="text-subOrange">
+            *비밀글 제목은 목록에서 조회가 가능합니다.
+          </Typography>
+        )}
       </FormGroup>
     </ActionModal>
   );
