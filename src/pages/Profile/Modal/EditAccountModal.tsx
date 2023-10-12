@@ -187,8 +187,8 @@ const EditPasswordSection = () => {
 
   const { mutate: editPassword } = useEditPasswordMutation();
 
-  const handlePasswordFormSubmit: SubmitHandler<FieldValues> = ({ newPassword }) => {
-    editPassword({ newPassword });
+  const handlePasswordFormSubmit: SubmitHandler<FieldValues> = ({ password, newPassword }) => {
+    editPassword({ oldPassword: password, newPassword });
   };
 
   return (

@@ -135,8 +135,8 @@ const useEditEmailMutation = () => {
 };
 
 const useEditPasswordMutation = () => {
-  const fetcher = ({ newPassword }: { newPassword: string }) =>
-    axios.patch('/members/change-password', { newPassword }).then(({ data }) => data);
+  const fetcher = ({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }) =>
+    axios.patch('/members/change-password', { oldPassword, newPassword }).then(({ data }) => data);
 
   return useMutation(fetcher, {
     onSuccess: () => {
