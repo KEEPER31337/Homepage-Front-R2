@@ -14,6 +14,7 @@ interface ActionModalProps {
   actionButtonDisabled?: boolean;
   actionButtonName: string;
   onActionButonClick: () => void;
+  onActionEnterKeyUp?: () => void;
 }
 
 const ActionModal = ({
@@ -27,13 +28,23 @@ const ActionModal = ({
   actionButtonDisabled = false,
   actionButtonName,
   onActionButonClick,
+  onActionEnterKeyUp,
 }: ActionModalProps) => {
+  const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!onActionEnterKeyUp) return;
+
+    if (e.key === 'Enter') {
+      onActionEnterKeyUp();
+    }
+  };
+
   return (
     <Dialog
       open={open}
       PaperProps={{ className: '!bg-subBlack brightness-125 !bg-none px-2 py-1' }}
       fullWidth={Boolean(modalWidth)}
       maxWidth={modalWidth}
+      onKeyUp={onKeyUp}
     >
       <DialogTitle className="flex items-center gap-x-2 !font-bold text-pointBlue">
         {startAdornment}
