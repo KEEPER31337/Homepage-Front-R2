@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Chip, Typography } from '@mui/material';
+import { Chip, Typography } from '@mui/material';
 import { VscCalendar, VscEye } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
 import { useDeletePostMutation } from '@api/postApi';
 import useCheckAuth from '@hooks/useCheckAuth';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ServerImg from '@components/Image/ServerImg';
 import ActionModal from '@components/Modal/ActionModal';
@@ -47,7 +48,7 @@ const BannerSection = ({ postId, post }: BannerSectionProps) => {
           </Typography>
           <div className="flex items-center justify-center gap-2 text-small leading-8 text-gray-300">
             <div className="flex items-center justify-center">
-              <Avatar className="mr-1 !h-4 !w-4" src={post.writerThumbnailPath ?? undefined} />
+              <ServerAvatar className="mr-1 !h-4 !w-4" thumbnailPath={post.writerThumbnailPath} />
               {post.writerName}
             </div>
             <div className="flex items-center justify-center">
