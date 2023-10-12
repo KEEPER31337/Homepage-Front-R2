@@ -453,7 +453,7 @@ export interface GameRankInfo {
   realName: string;
   generation: string;
   todayEarnedPoint: number;
-  profileImageUrl?: string | null;
+  thumbnailPath?: string | null;
   memberId: number;
 }
 
