@@ -40,7 +40,12 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
   const headMemberInfo = useRecoilValue(memberState);
   const isEditMode = Boolean(selectedStudyInfo);
 
-  const { control, getValues, reset } = useForm({ mode: 'onBlur' });
+  const {
+    control,
+    getValues,
+    reset,
+    formState: { isValid },
+  } = useForm({ mode: 'onBlur' });
   const { data: studyDetail } = useGetStudyQuery({ studyId: selectedStudyInfo?.studyId ?? -1, enabled: isEditMode });
   const { mutate: addStudy } = useAddStudyMutation();
   const { mutate: editStudy } = useEditStudyMutation();
@@ -61,6 +66,9 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
     if (!(getValues('gitLink') || getValues('notionLink') || getValues('etcLink'))) {
       setLinkError(true);
     }
+
+    if (!isValid) {
+      return;
     }
 
     const newStudyInfo = {
