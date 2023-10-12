@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useRoutes } from 'react-router-dom';
+import { Navigate, useParams, useRoutes } from 'react-router-dom';
 import useCheckAuth from '@hooks/useCheckAuth';
 import StandardTab from '@components/Tab/StandardTab';
 import ProfileSection from './Section/ProfileSection';
@@ -29,6 +29,7 @@ const Profile = () => {
     { path: 'board', element: <MyBoardTab /> },
     { path: 'book', element: <BookTab /> },
     { path: 'point', element: <PointTab /> },
+    { path: '*', element: <Navigate to="attendance" /> },
   ]);
 
   const [tab, setTab] = useState(0);

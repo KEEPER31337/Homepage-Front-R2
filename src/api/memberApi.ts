@@ -123,7 +123,7 @@ const useEditEmailMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error('비밀번호가 일치하지 않습니다.');
+        toast.error('현재 비밀번호가 일치하지 않습니다.');
       },
     },
   });
@@ -135,6 +135,13 @@ const useEditEmailMutation = () => {
 };
 
 const useEditPasswordMutation = () => {
+  const { handleError } = useApiError({
+    400: {
+      default: () => {
+        toast.error('현재 비밀번호가 일치하지 않습니다.');
+      },
+    },
+  });
   const fetcher = ({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }) =>
     axios.patch('/members/change-password', { oldPassword, newPassword }).then(({ data }) => data);
 
@@ -142,6 +149,7 @@ const useEditPasswordMutation = () => {
     onSuccess: () => {
       toast.success('비밀번호가 변경되었습니다.');
     },
+    onError: (err) => handleError(err, 400),
   });
 };
 
