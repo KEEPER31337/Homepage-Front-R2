@@ -1,7 +1,7 @@
 import React from 'react';
-import { Typography, Avatar } from '@mui/material';
+import { Typography } from '@mui/material';
 import { MemberDetailInfo } from '@api/dto';
-import { getServerImgUrl } from '@utils/converter';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 
 interface MemberCardProps {
   memberInfo: MemberDetailInfo;
@@ -23,10 +23,7 @@ const MemberCard = ({ memberInfo, onClick, isSelected }: MemberCardProps) => {
       } flex h-fit items-center border border-transparent bg-middleBlack/50 p-1
       `}
     >
-      <Avatar
-        className="mr-1 !h-7 !w-7 !bg-subBlack !text-white "
-        src={memberInfo?.thumbnailPath ? getServerImgUrl(memberInfo?.thumbnailPath) : ''}
-      />
+      <ServerAvatar className="mr-1 !h-7 !w-7" thumbnailPath={memberInfo?.thumbnailPath} />
       <Typography className="!text-[14px]">{memberInfo.realName}</Typography>
       <Typography variant="small" className="!ml-1">
         ({memberInfo.generation})

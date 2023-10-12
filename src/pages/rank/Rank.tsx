@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { AttendRankInfo, GameRankInfo } from '@api/dto';
 import {
   useGetContinuousAttendanceRank,
@@ -10,6 +10,7 @@ import {
 } from '@api/rankApi';
 import usePagination from '@hooks/usePagination';
 import { formatGeneration } from '@utils/converter';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardTab from '@components/Tab/StandardTab';
 import StandardTable from '@components/Table/StandardTable';
@@ -19,7 +20,10 @@ import TopCard from './TopCard';
 interface AttendRankRow {
   id: number;
   rank: number;
-  realName: string;
+  name: {
+    realName: string;
+    thumbnailPath?: string | null;
+  };
   generation: string;
   totalAttendance: number;
   time: string;
@@ -28,14 +32,17 @@ interface AttendRankRow {
 interface PointRankRow {
   id: number;
   rank: number;
-  realName: string;
+  name: {
+    realName: string;
+    thumbnailPath?: string | null;
+  };
   generation: string;
   point: number;
 }
 
 const attendColumns: Column<AttendRankRow>[] = [
   { key: 'rank', headerName: '랭킹', width: 50 },
-  { key: 'realName', headerName: '이름', width: 100 },
+  { key: 'name', headerName: '이름', width: 100 },
   { key: 'generation', headerName: '기수', width: 100 },
   { key: 'totalAttendance', headerName: '총 출석일', width: 100 },
   { key: 'time', headerName: '출석 시간', width: 150 },
@@ -43,7 +50,7 @@ const attendColumns: Column<AttendRankRow>[] = [
 
 const pointColumns: Column<PointRankRow>[] = [
   { key: 'rank', headerName: '랭킹', width: 50 },
-  { key: 'realName', headerName: '이름', width: 100 },
+  { key: 'name', headerName: '이름', width: 100 },
   { key: 'generation', headerName: '기수', width: 100 },
   { key: 'point', headerName: '포인트', width: 100 },
 ];
@@ -52,11 +59,11 @@ const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankRow>)
   switch (key) {
     case 'rank':
       return `${value}등`;
-    case 'realName':
+    case 'name':
       return (
         <div className="flex place-items-center">
-          <Avatar alt="profile" className="mr-2 !h-6 !w-6" />
-          {value}
+          <ServerAvatar className="mr-2 !h-6 !w-6" thumbnailPath={(value as AttendRankRow['name']).thumbnailPath} />
+          {(value as AttendRankRow['name']).realName}
         </div>
       );
     case 'generation':
@@ -72,11 +79,11 @@ const PointRankChildComponent = ({ key, value }: ChildComponent<PointRankRow>) =
   switch (key) {
     case 'rank':
       return `${value}등`;
-    case 'realName':
+    case 'name':
       return (
         <div className="flex place-items-center">
-          <Avatar alt="profile" className="mr-2 !h-6 !w-6" />
-          {value}
+          <ServerAvatar className="mr-2 !h-6 !w-6" thumbnailPath={(value as AttendRankRow['name']).thumbnailPath} />
+          {(value as AttendRankRow['name']).realName}
         </div>
       );
     case 'generation':
@@ -116,6 +123,10 @@ const Rank = () => {
               columns={attendColumns}
               rows={attendRank.content.map((item) => ({
                 id: item.rank,
+                name: {
+                  realName: item.realName,
+                  thumbnailPath: item.thumbnailPath,
+                },
                 ...item,
               }))}
               childComponent={AttendRankChildComponent}
@@ -128,6 +139,10 @@ const Rank = () => {
               rows={pointRank.content.map((item, index) => ({
                 id: getRowNumber({ size: pointRank.size, index }),
                 rank: getRowNumber({ size: pointRank.size, index }),
+                name: {
+                  realName: item.realName,
+                  thumbnailPath: item.thumbnailPath,
+                },
                 ...item,
               }))}
               childComponent={PointRankChildComponent}

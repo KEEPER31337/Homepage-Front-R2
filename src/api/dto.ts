@@ -429,6 +429,7 @@ export interface TodayAttendRank {
 }
 
 export interface PointRankInfo {
+  thumbnailPath?: string | null;
   realName: string;
   generation: string;
   point: number;

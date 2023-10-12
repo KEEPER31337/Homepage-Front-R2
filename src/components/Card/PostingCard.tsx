@@ -1,10 +1,11 @@
 import React from 'react';
-import { Avatar, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { AiFillLock } from 'react-icons/ai';
 import { VscComment, VscEye, VscThumbsup } from 'react-icons/vsc';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { getServerImgUrl } from '@utils/converter';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 import { Row } from '@components/Table/StandardTable.interface';
 import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
 
@@ -30,7 +31,7 @@ export const CardMainInfo = ({ registerTime }: CardMainInfoProps) => {
 export const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardDetailInfoProps) => {
   return (
     <div className="flex">
-      <Avatar className="mr-2 !h-6 !w-6" src={writerThumbnailPath ?? undefined} />
+      <ServerAvatar className="mr-2 !h-6 !w-6" thumbnailPath={writerThumbnailPath} />
       <Stack>
         <Typography className="font-medium" variant="small">
           {writerName}

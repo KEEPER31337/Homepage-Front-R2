@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Avatar, CardActions, Typography } from '@mui/material';
+import { CardActions, Typography } from '@mui/material';
+import { useRecoilValue } from 'recoil';
 import { useCreateCommentMutation } from '@api/commentApi';
 import { CommentInfo } from '@api/dto';
+import memberState from '@recoil/member.recoil';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 import CommentWriteCardAction from './CommentWriteCardAction';
 
 interface CommentCardFooterProps {
@@ -15,6 +18,8 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
 
   const [replyOpen, setReplyOpen] = useState(false);
   const [replyContent, setReplyContent] = useState('');
+
+  const member = useRecoilValue(memberState);
   const { mutate: createReply } = useCreateCommentMutation();
 
   const handleReplyClick = () => {
@@ -41,8 +46,7 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
         />
       ) : (
         <div className="flex w-full items-center justify-between gap-2">
-          {/* TODO 현재 계정 프로필 썸네일 가져오기 */}
-          <Avatar className="!h-7 !w-7" alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />
+          <ServerAvatar className="!h-7 !w-7" thumbnailPath={member?.thumbnailPath} />
           <button
             type="button"
             className="flex h-9 w-full items-center border border-subBlack bg-mainBlack pl-3"

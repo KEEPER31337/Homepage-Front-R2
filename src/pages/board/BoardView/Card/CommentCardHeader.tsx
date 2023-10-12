@@ -1,10 +1,11 @@
 import React from 'react';
-import { Avatar, Button, CardHeader, useMediaQuery, useTheme } from '@mui/material';
+import { Button, CardHeader, useMediaQuery, useTheme } from '@mui/material';
 import { MdThumbDown, MdThumbUp } from 'react-icons/md';
 import { VscTrash } from 'react-icons/vsc';
 import { useControlCommentLikesMutation, useControlCommentDislikesMutation } from '@api/commentApi';
 import { CommentInfo } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 import CommentMenu from '../Menu/CommentMenu';
 
 interface CommentCardHeaderProps {
@@ -30,7 +31,7 @@ const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
 
   return !commentInfo.isDeleted ? (
     <CardHeader
-      avatar={<Avatar className="!h-7 !w-7" alt="프로필 이미지" src={commentInfo.writerThumbnailPath ?? undefined} />}
+      avatar={<ServerAvatar className="!h-7 !w-7" thumbnailPath={commentInfo.writerThumbnailPath} />}
       action={
         <div className="mr-1 space-x-2">
           <Button
