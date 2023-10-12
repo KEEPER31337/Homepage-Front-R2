@@ -11,7 +11,7 @@ const seminarKeys = {
   getRecentlyDoneSeminar: ['getSeminar', 'recentlyDone'] as const,
   getRecentlyUpcomingSeminar: ['getSeminar', 'recentlyUpcoming'] as const,
   startSeminar: ['startSeminar'] as const,
-  attendSeminarList: ['attendSeminarList'] as const,
+  attendSeminarList: ({ page }: { page?: number }) => ['attendSeminarList', page] as const,
 };
 
 const useGetSeminarListQuery = () => {
@@ -89,14 +89,14 @@ const useAttendSeminarMutation = (id: number) => {
   });
 };
 
-const useEditAttendStatusMutation = (attendanceId: number) => {
+const useEditAttendStatusMutation = ({ attendanceId, page }: { attendanceId: number; page?: number }) => {
   const queryClient = useQueryClient();
 
   const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarStatus }) =>
     axios.patch(`/seminars/attendances/${attendanceId}`, { excuse, statusType });
   return useMutation(fetcher, {
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: seminarKeys.attendSeminarList });
+      queryClient.invalidateQueries({ queryKey: seminarKeys.attendSeminarList({ page }) });
       return response.data;
     },
   });
@@ -105,7 +105,7 @@ const useEditAttendStatusMutation = (attendanceId: number) => {
 const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?: number }) => {
   const fetcher = () => axios.get(`/seminars/attendances`, { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList, fetcher, {
+  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList({ page }), fetcher, {
     select: (data) => {
       const transformedContent = data.content.map((membersSeminarAttendInfo) => {
         const seminarDateInfo = membersSeminarAttendInfo.attendances.reduce((prev, curr) => {
