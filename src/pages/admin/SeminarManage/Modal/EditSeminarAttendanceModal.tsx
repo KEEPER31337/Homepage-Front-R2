@@ -14,7 +14,7 @@ interface AddSeminarModalProps {
 const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSeminarModalProps) => {
   const [statusType, setStatusType] = useState(attendanceStatus.attendanceStatus);
   const [excuse, setExcuse] = useState(attendanceStatus.excuse || '');
-  const [isInvalidExcuse, setIsInvalidExcuse] = useState(false);
+  const [isValidExcuse, setIsValidExcuse] = useState(false);
 
   const { mutate: editAttendStatus } = useEditAttendStatusMutation(attendanceStatus.attendanceId);
 
@@ -28,7 +28,7 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
       isValid = excuse.trim() !== '';
     }
 
-    setIsInvalidExcuse(!isValid);
+    setIsValidExcuse(isValid);
     return isValid;
   };
 
@@ -81,8 +81,8 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
         {isExcuseRequired() && (
           <StandardInput
             className="w-52"
-            error={isInvalidExcuse}
-            helperText={isInvalidExcuse && '사유을 입력해주세요.'}
+            error={!isValidExcuse}
+            helperText={!isValidExcuse && '사유을 입력해주세요.'}
             label="사유"
             value={excuse}
             onChange={handleBookInfoChange}
