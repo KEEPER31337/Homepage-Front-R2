@@ -56,24 +56,27 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          {seminarStart && seminarData ? (
-            <>
-              <Countdown startTime={seminarData.openTime} endTime={seminarData.attendanceCloseTime} />
-              <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
-            </>
-          ) : (
+          {seminarData && !seminarData.attendanceStartTime ? (
             <>
               <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue} />
               <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue} />
+            </>
+          ) : (
+            <>
+              <Countdown startTime={seminarData?.openTime ?? null} endTime={seminarData?.attendanceCloseTime ?? null} />
+              <Countdown
+                startTime={seminarData?.attendanceCloseTime ?? null}
+                endTime={seminarData?.latenessCloseTime ?? null}
+              />
             </>
           )}
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        {seminarStart ? (
-          <SeminarAttendStatus status="ATTENDANCE" />
-        ) : (
+        {seminarData && !seminarData.attendanceStartTime ? (
           <FilledButton onClick={handleOnStartSeminar}>시작</FilledButton>
+        ) : (
+          seminarData && <SeminarAttendStatus status={seminarData?.statusType} />
         )}
       </div>
     </>
