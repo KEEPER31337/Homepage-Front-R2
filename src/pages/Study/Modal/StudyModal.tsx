@@ -36,6 +36,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [memberInfos, setMemberInfos] = useState<MultiAutoCompleteValue>([]);
   const [linkError, setLinkError] = useState(false);
+  const [etcLinkError, setEtcLinkError] = useState(false);
 
   const headMemberInfo = useRecoilValue(memberState);
   const isEditMode = Boolean(selectedStudyInfo);
@@ -65,6 +66,12 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
   const handleAddActionButtonClick = () => {
     if (!(getValues('gitLink') || getValues('notionLink') || getValues('etcLink'))) {
       setLinkError(true);
+      return;
+    }
+
+    if (!((getValues('etcTitle') && getValues('etcLink')) || (!getValues('etcTitle') && !getValues('etcLink')))) {
+      setEtcLinkError(true);
+      return;
     }
 
     if (!isValid) {
@@ -300,7 +307,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                 }}
               />
             </div>
-            <div className="flex flex-col items-center gap-2 sm:flex-row">
+            <div className="flex flex-col items-start gap-2 sm:flex-row">
               <VscLink size={25} className="fill-pointBlue" />
               <Controller
                 name="etcTitle"
@@ -315,6 +322,10 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                       placeholder="ex. Plato"
                       {...field}
                       error={Boolean(error)}
+                      onChange={(e) => {
+                        setEtcLinkError(false);
+                        field.onChange(e);
+                      }}
                       helperText={error?.message}
                       autoFocus
                     />
@@ -340,6 +351,10 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                       placeholder="https://"
                       {...field}
                       error={Boolean(error)}
+                      onChange={(e) => {
+                        setEtcLinkError(false);
+                        field.onChange(e);
+                      }}
                       helperText={error?.message}
                       autoFocus
                     />
@@ -347,6 +362,11 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                 }}
               />
             </div>
+            {etcLinkError && (
+              <Typography variant="small" className="text-center text-subRed">
+                기타 링크를 사용하려면 링크명과 링크 둘 다 입력해야 합니다.
+              </Typography>
+            )}
           </Stack>
         </div>
       </Stack>
