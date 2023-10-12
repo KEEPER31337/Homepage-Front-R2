@@ -49,7 +49,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
       actionButtonName="수정"
       onActionButonClick={handleSubmit(handleSecondStepFormSubmit)}
     >
-      <Stack direction={{ sm: 'column', md: 'row' }} spacing={4} justifyContent="space-between" alignItems="start">
+      <Stack direction={{ sm: 'column', md: 'row' }} spacing={4} justifyContent="space-between" alignItems="center">
         <div className="mx-auto my-6 h-52 w-52 rounded-full md:mb-0">
           <ProfileImageUploader
             isEdit
@@ -57,7 +57,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
             setThumbnail={setThumbnail}
           />
         </div>
-        <Stack width={{ sm: '100%', md: '55%' }} component="form" spacing={2}>
+        <Stack width={{ sm: '100%', md: '55%' }} component="form" spacing={3}>
           <Controller
             name="realName"
             defaultValue={profileInfo.realName}
