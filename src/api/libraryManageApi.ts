@@ -137,6 +137,7 @@ const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: Bor
     axios.get('/manage/borrow-infos', { params: { page, size, status } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
         return {
+          borrowInfoId: borrowInfo.borrowInfoId,
           bookTitle: borrowInfo.bookTitle,
           author: borrowInfo.author,
           borrowerRealName: borrowInfo.borrowerRealName,
