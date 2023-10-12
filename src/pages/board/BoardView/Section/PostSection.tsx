@@ -17,14 +17,15 @@ import WarningDeductPointModal from '../Modal/WarningDeductPointModal';
 interface PostSectionProps {
   postId: number;
   post: PostInfo;
+  password?: string;
 }
 
-const PostSection = ({ postId, post }: PostSectionProps) => {
+const PostSection = ({ postId, post, password }: PostSectionProps) => {
   const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
   const hasWarningModal = post.categoryName === '시험게시판' && post.isRead === false && !fileOpen;
 
-  const { data: files } = useGetPostFilesQuery(postId, fileOpen);
+  const { data: files } = useGetPostFilesQuery(postId, fileOpen, password);
   const { mutate: controlLikes } = useControlPostLikesMutation();
   const { mutate: controlDislikes } = useControlPostDislikesMutation();
   const { mutate: downloadFile } = useDownloadFileMutation();

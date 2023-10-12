@@ -1,10 +1,11 @@
 import React from 'react';
-import { Avatar, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { AiFillLock } from 'react-icons/ai';
 import { VscComment, VscEye, VscThumbsup } from 'react-icons/vsc';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { getServerImgUrl } from '@utils/converter';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 import { Row } from '@components/Table/StandardTable.interface';
 import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
 
@@ -12,11 +13,11 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
   thumbnailPath: string | null;
 }
 
-export const CardMainInfo = ({ isSecret, title, registerTime }: CardMainInfoProps) => {
+export const CardMainInfo = ({ registerTime }: CardMainInfoProps) => {
   return (
     <div className="flex justify-between">
       <Typography className="w-11/12 truncate font-semibold" variant="paragraph">
-        {isSecret ? '비밀글입니다.' : title}
+        title
       </Typography>
       {DateTime.fromISO(registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
         <span className="m-auto h-4 w-4 rounded-sm bg-pointBlue text-center text-small leading-4 text-mainBlack">
@@ -30,7 +31,7 @@ export const CardMainInfo = ({ isSecret, title, registerTime }: CardMainInfoProp
 export const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardDetailInfoProps) => {
   return (
     <div className="flex">
-      <Avatar className="mr-2 !h-6 !w-6" src={writerThumbnailPath ?? undefined} />
+      <ServerAvatar className="mr-2 !h-6 !w-6" thumbnailPath={writerThumbnailPath} />
       <Stack>
         <Typography className="font-medium" variant="small">
           {writerName}

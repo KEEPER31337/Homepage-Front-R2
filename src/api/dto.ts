@@ -237,16 +237,24 @@ export interface SignUpDuplication {
   duplicate: boolean;
 }
 
-export interface SeminarInfo {
+export interface SeminarCoreInfo {
   id: number;
   name: string;
   openTime: DateTime;
-  attendanceCloseTime: DateTime;
-  latenessCloseTime: DateTime;
-  attendanceCode: string;
+  attendanceCloseTime: DateTime | null;
+  latenessCloseTime: DateTime | null;
+  statusType: SeminarStatus;
+  attendanceCode: string | null;
+}
+
+export interface SeminarCardInfo extends SeminarCoreInfo {
+  attendanceStartTime: DateTime | null;
+  starterId: number | null;
+}
+
+export interface SeminarInfo extends SeminarCoreInfo {
   registerTime: DateTime;
   updateTime: DateTime;
-  statusType: SeminarStatus;
 }
 
 export interface AttendResponseData {
@@ -421,6 +429,7 @@ export interface TodayAttendRank {
 }
 
 export interface PointRankInfo {
+  thumbnailPath?: string | null;
   realName: string;
   generation: string;
   point: number;
@@ -444,7 +453,7 @@ export interface GameRankInfo {
   realName: string;
   generation: string;
   todayEarnedPoint: number;
-  profileImageUrl?: string | null;
+  thumbnailPath?: string | null;
   memberId: number;
 }
 
