@@ -32,6 +32,10 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
     return isValid;
   };
 
+  const resetExcuse = () => {
+    setExcuse('');
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -42,13 +46,8 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
 
   const handleEditSeminarButtonClick = () => {
     if (validate()) {
-      let excuseTrim = excuse.trim();
-      if (!isExcuseRequired()) {
-        excuseTrim = '';
-      }
-
       editAttendStatus(
-        { statusType, excuse: excuseTrim },
+        { statusType, excuse: excuse.trim() },
         {
           onSuccess: () => {
             handleClose();
@@ -78,7 +77,7 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
       onActionButonClick={handleEditSeminarButtonClick}
     >
       <div className="flex flex-col items-center space-y-5">
-        <StatusTypeSelector value={statusType} setValue={setStatusType} />
+        <StatusTypeSelector value={statusType} setValue={setStatusType} resetExcuse={resetExcuse} />
         {isExcuseRequired() && (
           <StandardInput
             className="w-52"
