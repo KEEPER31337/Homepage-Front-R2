@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchSection from '@components/Section/SearchSection';
 
@@ -15,9 +15,17 @@ const BorrowingStatusSearchSection = () => {
   const [searchType, setStatus] = useState('전체');
   const [, setSearchParams] = useSearchParams();
 
-  const handleSearchButtonClick = () => {
+  const searchBorrowingStatusList = () => {
     setSearchParams({ page: String(1), searchType, search: search.trim() });
   };
+
+  const handleSearchButtonClick = () => {
+    searchBorrowingStatusList();
+  };
+
+  useEffect(() => {
+    searchBorrowingStatusList();
+  }, [searchType]);
 
   return (
     <SearchSection
