@@ -49,6 +49,7 @@ const muiTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: KEEPER_COLOR.subBlack,
+          filter: 'brightness(.85)',
           color: KEEPER_COLOR.subGray,
         },
         fallback: {
