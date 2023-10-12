@@ -58,25 +58,34 @@ const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <DutyProfileButton
         jobName={jobName}
         badgeImage={badgeImage}
         setTooltipOpen={setTooltipOpen}
         toggleModalOpen={toggleModalOpen}
       />
-      <DescriptionRoleDutyTooltip
-        title={jobName !== 'ROLE_전산관리자' ? tooltipContent(jobName) : null}
-        open={tooltipOpen}
-        onMouseEnter={() => setTooltipOpen(true)}
-        onMouseLeave={() => setTooltipOpen(false)}
-        arrow
-      >
-        <div className="absolute -right-2 top-0.5 rounded-full border border-white p-1">
-          <VscSearch size={12} className="w-full" />
-        </div>
-      </DescriptionRoleDutyTooltip>
-      <ChangeRolePersonModal open={modalOpen} toggleOpen={toggleModalOpen} jobName={jobName} badgeImage={badgeImage} />
+      {jobName !== 'ROLE_전산관리자' ? (
+        <>
+          <DescriptionRoleDutyTooltip
+            title={tooltipContent(jobName)}
+            open={tooltipOpen}
+            onMouseEnter={() => setTooltipOpen(true)}
+            onMouseLeave={() => setTooltipOpen(false)}
+            arrow
+          >
+            <div className="absolute -right-2 top-0.5 rounded-full border border-white p-1">
+              <VscSearch size={12} className="w-full" />
+            </div>
+          </DescriptionRoleDutyTooltip>
+          <ChangeRolePersonModal
+            open={modalOpen}
+            toggleOpen={toggleModalOpen}
+            jobName={jobName}
+            badgeImage={badgeImage}
+          />
+        </>
+      ) : null}
     </div>
   );
 };

@@ -35,7 +35,7 @@ const roleDutyListInfo: RoleDutyList[] = [
   },
   {
     jobName: 'ROLE_대외부장',
-    roleDuty: [{ key: 1, content: '동아리 지원사업 관리 및 유지하며 관련 자료를 수집, 기록한다.' }],
+    roleDuty: [{ key: 1, content: '대외부장은 동아리 지원사업 관리 및 유지하며 관련 자료를 수집, 기록한다.' }],
   },
   {
     jobName: 'ROLE_전산관리자',
