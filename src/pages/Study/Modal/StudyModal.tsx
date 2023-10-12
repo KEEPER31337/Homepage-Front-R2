@@ -35,6 +35,8 @@ interface StudyModalProps {
 const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, currentPeriod }: StudyModalProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [memberInfos, setMemberInfos] = useState<MultiAutoCompleteValue>([]);
+  const [linkError, setLinkError] = useState(false);
+
   const headMemberInfo = useRecoilValue(memberState);
   const isEditMode = Boolean(selectedStudyInfo);
 
@@ -56,6 +58,11 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
   };
 
   const handleAddActionButtonClick = () => {
+    if (!(getValues('gitLink') || getValues('notionLink') || getValues('etcLink'))) {
+      setLinkError(true);
+    }
+    }
+
     const newStudyInfo = {
       title: getValues('studyTitle'),
       information: getValues('studyInformation'),
@@ -224,7 +231,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
         <div className="space-y-4">
           <InputLabel className="!font-semibold">
             <span className="mr-1">링크</span>
-            <span className="text-small text-subGray">(1개 이상 링크 필수)</span>
+            <span className={`text-small ${linkError ? 'text-subRed' : 'text-subGray'}`}>(1개 이상 링크 필수)</span>
           </InputLabel>
           <Stack spacing={{ xs: 3, sm: 2 }}>
             <div className="flex flex-col items-center gap-2 sm:flex-row">
@@ -246,6 +253,10 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                       className="w-full"
                       placeholder="https://"
                       {...field}
+                      onChange={(e) => {
+                        setLinkError(false);
+                        field.onChange(e);
+                      }}
                       error={Boolean(error)}
                       helperText={error?.message}
                       autoFocus
