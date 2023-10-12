@@ -22,7 +22,6 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const member: MemberInfo | null = useRecoilValue(memberState);
-  const now = DateTime.now();
 
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
