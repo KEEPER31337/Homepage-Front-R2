@@ -22,9 +22,11 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const member: MemberInfo | null = useRecoilValue(memberState);
+  const now = DateTime.now();
 
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
+    setSeminarStart(true);
     setStartMember(member?.memberId);
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
@@ -56,7 +58,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          {seminarData && !seminarData.attendanceStartTime ? (
+          {!seminarStart && seminarData && !seminarData.attendanceStartTime ? (
             <>
               <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue} />
               <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue} />
@@ -73,7 +75,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        {seminarData && !seminarData.attendanceStartTime ? (
+        {!seminarStart && seminarData && !seminarData.attendanceStartTime ? (
           <FilledButton onClick={handleOnStartSeminar}>시작</FilledButton>
         ) : (
           seminarData && <SeminarAttendStatus status={seminarData?.statusType} />
