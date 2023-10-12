@@ -11,8 +11,9 @@ interface AddSeminarModalProps {
 
 const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
   const [seminarDate, setSeminarDate] = useState(DateTime.now());
+  const [helperText, setHelperText] = useState('');
 
-  const { mutate: addSeminar } = useAddSeminarMutation();
+  const { mutate: addSeminar } = useAddSeminarMutation({ setHelperText });
 
   const handleClose = () => {
     setOpen(false);
@@ -28,7 +29,10 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
   };
 
   const handleDateChange = (newValue: DateTime | null) => {
-    if (newValue) setSeminarDate(newValue);
+    if (newValue) {
+      setSeminarDate(newValue);
+      setHelperText('');
+    }
   };
 
   return (
@@ -42,7 +46,13 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
       onActionButonClick={handleAddSeminarButtonClick}
     >
       <div className="flex justify-center">
-        <StandardDatePicker value={seminarDate} onChange={handleDateChange} label="날짜" />
+        <StandardDatePicker
+          value={seminarDate}
+          onChange={handleDateChange}
+          label="날짜"
+          helperText={helperText}
+          error={!!helperText}
+        />
       </div>
     </ActionModal>
   );
