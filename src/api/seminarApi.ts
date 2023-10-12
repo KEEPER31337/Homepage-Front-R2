@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
+import { useApiError } from '@hooks/useGetApiError';
 import { AttendSeminarListInfo, SeminarStatus, SeminarInfo, SeminarCardInfo } from './dto';
 
 const seminarKeys = {
@@ -134,8 +135,16 @@ const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?:
   });
 };
 
-const useAddSeminarMutation = () => {
+const useAddSeminarMutation = ({ setHelperText }: { setHelperText: React.Dispatch<React.SetStateAction<string>> }) => {
   const queryClient = useQueryClient();
+
+  const { handleError } = useApiError({
+    409: {
+      40901: () => {
+        setHelperText('동일한 날짜의 세미나는 생성할 수 없습니다.');
+      },
+    },
+  });
 
   const fetcher = (openDate: DateTime) =>
     axios
@@ -148,6 +157,7 @@ const useAddSeminarMutation = () => {
       queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminarList });
       return response;
     },
+    onError: (err) => handleError(err, 40901),
   });
 };
 

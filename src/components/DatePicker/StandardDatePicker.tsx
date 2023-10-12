@@ -31,14 +31,12 @@ const StandardDatePicker = forwardRef(
             <TextField
               {...params}
               variant="standard"
-              InputProps={
-                error
-                  ? undefined
-                  : {
-                      className: `before:!border-pointBlue pr-1 ${hasBackground ? 'bg-subGray/5 h-12' : ''}`,
-                      ...params.InputProps,
-                    }
-              }
+              InputProps={{
+                className: `${error ? '' : 'before:!border-pointBlue pr-1'} ${
+                  hasBackground ? 'bg-subGray/5 h-12' : ''
+                }`,
+                ...params.InputProps,
+              }}
               error={error}
               helperText={helperText}
               sx={hasBackground ? { '.MuiFormLabel-root[data-shrink=false]': { top: 8 } } : undefined}

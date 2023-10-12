@@ -6,9 +6,10 @@ import Selector from '@components/Selector/Selector';
 interface StatusTypeSelectorProps {
   value: SeminarStatus;
   setValue: React.Dispatch<React.SetStateAction<SeminarStatus>>;
+  resetExcuse: () => void;
 }
 
-const StatusTypeSelector = ({ value, setValue }: StatusTypeSelectorProps) => {
+const StatusTypeSelector = ({ value, setValue, resetExcuse }: StatusTypeSelectorProps) => {
   const seminarStatusList = [
     { id: 'ATTENDANCE', content: '출석' },
     { id: 'ABSENCE', content: '결석' },
@@ -19,6 +20,7 @@ const StatusTypeSelector = ({ value, setValue }: StatusTypeSelectorProps) => {
 
   const handleSeminarStatusChange = (event: SelectChangeEvent<unknown>) => {
     setValue(event.target.value as SeminarStatus);
+    resetExcuse();
   };
 
   return (
