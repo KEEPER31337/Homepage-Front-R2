@@ -22,9 +22,11 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const member: MemberInfo | null = useRecoilValue(memberState);
+  const now = DateTime.now();
 
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());
+    setSeminarStart(true);
     setStartMember(member?.memberId);
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
@@ -33,8 +35,12 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   };
 
   useEffect(() => {
-    if (seminarData && availableSeminarData?.id === seminarData.id) setSeminarStart(true);
-  }, [availableSeminarData]);
+    if (!seminarData || !availableSeminarData) return;
+
+    if (availableSeminarData.id === seminarData.id) {
+      setSeminarStart(true);
+    }
+  }, [seminarData, availableSeminarData]);
 
   return (
     <>
@@ -44,7 +50,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
         disabled
         helperText="ㅤ"
         setInputCode={() => null}
-        inputCode={seminarStart && seminarData ? seminarData?.attendanceCode : ''}
+        inputCode={seminarStart && seminarData && seminarData?.attendanceCode ? seminarData?.attendanceCode : ''}
       />
       <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
@@ -52,24 +58,27 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          {seminarStart && seminarData ? (
-            <>
-              <Countdown startTime={seminarData.openTime} endTime={seminarData.attendanceCloseTime} />
-              <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
-            </>
-          ) : (
+          {!seminarStart && seminarData && !seminarData.attendanceStartTime ? (
             <>
               <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue} />
               <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue} />
+            </>
+          ) : (
+            <>
+              <Countdown startTime={seminarData?.openTime ?? null} endTime={seminarData?.attendanceCloseTime ?? null} />
+              <Countdown
+                startTime={seminarData?.attendanceCloseTime ?? null}
+                endTime={seminarData?.latenessCloseTime ?? null}
+              />
             </>
           )}
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        {seminarStart ? (
-          <SeminarAttendStatus status="ATTENDANCE" />
-        ) : (
+        {!seminarStart && seminarData && !seminarData.attendanceStartTime ? (
           <FilledButton onClick={handleOnStartSeminar}>시작</FilledButton>
+        ) : (
+          seminarData && <SeminarAttendStatus status={seminarData?.statusType} />
         )}
       </div>
     </>

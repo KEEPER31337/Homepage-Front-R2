@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { AttendSeminarListInfo, SeminarStatus, SeminarInfo } from './dto';
+import { AttendSeminarListInfo, SeminarStatus, SeminarInfo, SeminarCardInfo } from './dto';
 
 const seminarKeys = {
   getSeminarList: ['getSeminar', 'seminarList'] as const,
@@ -31,14 +31,15 @@ const useGetSeminarInfoQuery = (id: number) => {
       const transformedData = {
         ...data,
         name: data.name.replaceAll('-', '.'),
-        openTime: DateTime.fromISO(data.openTime),
-        attendanceCloseTime: DateTime.fromISO(data.attendanceCloseTime),
-        latenessCloseTime: DateTime.fromISO(data.latenessCloseTime),
+        openTime: data.openTime ? DateTime.fromISO(data.openTime) : null,
+        attendanceStartTime: data.attendanceStartTime ? DateTime.fromISO(data.attendanceStartTime) : null,
+        attendanceCloseTime: data.attendanceCloseTime ? DateTime.fromISO(data.attendanceCloseTime) : null,
+        latenessCloseTime: data.latenessCloseTime ? DateTime.fromISO(data.latenessCloseTime) : null,
       };
       return transformedData;
     });
 
-  return useQuery<SeminarInfo>(seminarKeys.getSeminar({ id }), fetcher);
+  return useQuery<SeminarCardInfo>(seminarKeys.getSeminar({ id }), fetcher);
 };
 
 const useGetAvailableSeminarInfoQuery = () => {
