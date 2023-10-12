@@ -352,6 +352,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                       {...field}
                       error={Boolean(error)}
                       onChange={(e) => {
+                        setLinkError(false);
                         setEtcLinkError(false);
                         field.onChange(e);
                       }}
