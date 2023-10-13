@@ -25,7 +25,7 @@ const TotalBookNumberSelector = ({ value, setValue }: TotalBookNumberProps) => {
     setValue(Number(event.target.value as string));
   };
 
-  return <Selector options={bookNumberList} value={value} onChange={handleTotalBookNumberChange} />;
+  return <Selector label="권수" options={bookNumberList} value={value} onChange={handleTotalBookNumberChange} />;
 };
 
 export default TotalBookNumberSelector;
