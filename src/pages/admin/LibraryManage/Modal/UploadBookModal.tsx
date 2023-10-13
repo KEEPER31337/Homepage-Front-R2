@@ -31,7 +31,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
 
   const { mutate: addBookMutation } = useAddBookMutation();
   const { mutate: editBookInfo } = useEditBookInfoMutation();
-  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
+  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation({ bookId: bookDetail?.bookId || 0 });
 
   const validate = () => {
     const titleTrim = title.trim();
@@ -95,7 +95,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
         {
           onSuccess: () => {
             if (isThumbnailChanged) {
-              editBookThumbnail({ bookId: bookDetail.bookId, thumbnail });
+              editBookThumbnail({ thumbnail });
             }
             onClose();
           },

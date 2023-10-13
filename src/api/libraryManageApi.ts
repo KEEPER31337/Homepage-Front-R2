@@ -85,8 +85,10 @@ const useEditBookInfoMutation = () => {
   });
 };
 
-const useEditBookThumbnailMutation = () => {
-  const fetcher = ({ bookId, thumbnail }: { bookId: number; thumbnail: Blob | null }) => {
+const useEditBookThumbnailMutation = ({ bookId }: { bookId: number }) => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ thumbnail }: { thumbnail: Blob | null }) => {
     const formData = new FormData();
     if (thumbnail) formData.append('thumbnail', thumbnail);
 
@@ -96,7 +98,11 @@ const useEditBookThumbnailMutation = () => {
       },
     });
   };
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookDetail(bookId) });
+    },
+  });
 };
 
 const useGetBookDetailQuery = (bookId: number) => {
