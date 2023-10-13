@@ -24,7 +24,7 @@ const FileUploader = ({
     setFilesToAdd((prevFiles) => [...prevFiles, ...acceptedFiles]);
   };
 
-  const { getRootProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleDeleteUploadFileClick = (fileName: string, fileId?: number) => {
     if (fileId && setFileIdsToDelete && setExistingFiles) {
@@ -50,6 +50,7 @@ const FileUploader = ({
           isDragActive ? 'bg-pointBlue/10' : ''
         }`}
       >
+        <input {...getInputProps()} />
         <span className="text-center">
           <VscNewFile size={30} className="mr-2 inline" />
           <Typography className="inline">클릭 또는 드래그하여 파일을 첨부하세요</Typography>

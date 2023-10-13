@@ -40,7 +40,7 @@ const ProfileImageUploader = ({ isEdit, thumbnailPath, setThumbnail }: ProfileIm
     });
   }, []);
 
-  const { getRootProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     multiple: false,
     accept: {
@@ -87,6 +87,7 @@ const ProfileImageUploader = ({ isEdit, thumbnailPath, setThumbnail }: ProfileIm
           relative flex h-full items-center justify-center rounded-full border-dashed !border-pointBlue/30 hover:opacity-70
         `}
       >
+        <input {...getInputProps()} />
         {thumbnailBase64 ? (
           <Avatar
             sx={{ width: 'inherit', height: 'inherit' }}

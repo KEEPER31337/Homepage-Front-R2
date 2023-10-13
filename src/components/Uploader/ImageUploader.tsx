@@ -42,7 +42,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
     });
   }, []);
 
-  const { getRootProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     multiple: false,
     accept: {
@@ -98,6 +98,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
           relative flex h-full items-center justify-center border-dashed !border-pointBlue/30 hover:opacity-70
         `}
       >
+        <input {...getInputProps()} />
         {thumbnailBase64 ? (
           <img
             className={`${isDragActive ? 'opacity-50' : ''} absolute inset-0 h-full w-full object-cover`}
