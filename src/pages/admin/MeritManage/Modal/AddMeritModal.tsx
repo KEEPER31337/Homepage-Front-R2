@@ -73,6 +73,7 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
             className="!-z-10 w-full"
             value={meritInfo.awarders}
             multiple
+            grouped
             onChange={(v) => {
               setMeritInfo((prev) => ({ ...prev, awarders: v }));
             }}
