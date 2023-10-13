@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useMediaQuery, useTheme } from '@mui/material';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import MemberTypeChangeModal from '../Modal/MemberTypeChangeModal';
@@ -14,20 +13,15 @@ const MemberTypeChangeButton = ({ selectedMemberList, setSelectedMemberList }: M
   const [selectedTypeId, setSelectedTypeId] = useState(1);
   const [memberTypeChangeModalOpen, setMemberTypeChangeModalOpenOpen] = useState(false);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   const handleButtonClick = (typeId: number) => {
     setSelectedTypeId(typeId);
     if (selectedMemberList.length !== 0) setMemberTypeChangeModalOpenOpen(true);
   };
   return (
-    <div className="mt-2 flex w-full flex-wrap justify-end space-x-[2px] sm:mt-1 sm:space-x-2">
+    <div className="mt-2 flex h-fit w-full flex-wrap items-start justify-end gap-2">
       {memberTypes.map((member) => (
-        <OutlinedButton small={isMobile} key={member.typeId} onClick={() => handleButtonClick(member.typeId)}>
-          {member.color && (
-            <div className={`bg-${member.color} ${isMobile ? 'h-2 w-2' : 'h-4 w-4'} mr-2 rounded-full`} />
-          )}
+        <OutlinedButton key={member.typeId} onClick={() => handleButtonClick(member.typeId)} className="w-36">
+          {member.color && <div className={`bg-${member.color} mr-2 h-4 w-4 rounded-full`} />}
           {member.renderType}
         </OutlinedButton>
       ))}
