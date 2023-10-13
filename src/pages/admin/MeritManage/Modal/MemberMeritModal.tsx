@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Typography } from '@mui/material';
+import React, { ReactElement, useState } from 'react';
+import { IconButton, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
+import { VscTrash } from 'react-icons/vsc';
 import { useGetMemberMeritQuery } from '@api/meritApi';
 import usePagination from '@hooks/usePagination';
 import ConfirmModal from '@components/Modal/ConfirmModal';
@@ -15,6 +16,7 @@ interface MeritLogRow {
   score: number;
   reason: string;
   isMerit: boolean;
+  delete: ReactElement;
 }
 
 const MeritLogColumn: Column<MeritLogRow>[] = [
@@ -22,6 +24,7 @@ const MeritLogColumn: Column<MeritLogRow>[] = [
   { key: 'giveTime', headerName: '일시', width: 200 },
   { key: 'score', headerName: '점수', width: 100 },
   { key: 'reason', headerName: '사유', width: 300 },
+  { key: 'delete', headerName: '삭제', width: 100 },
 ];
 
 const MeritLogChildComponent = ({ key, value, rowData }: ChildComponent<MeritLogRow>) => {
@@ -34,6 +37,8 @@ const MeritLogChildComponent = ({ key, value, rowData }: ChildComponent<MeritLog
       return (
         <Typography className={`text-${color}`}>{DateTime.fromSQL(value as string).toFormat('yyyy.MM.dd')}</Typography>
       );
+    case 'delete':
+      return value;
     default:
       return <Typography className={`text-${color}`}>{value}</Typography>;
   }
@@ -76,10 +81,20 @@ const MemberMeritModal = ({ title, memberId, setMemberId }: MemberMeritModalProp
           columns={MeritLogColumn}
           rows={meritLog.content.map((item, index) => ({
             num: getRowNumber({ size: meritLog.size, index }),
+            delete: (
+              <IconButton
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setDeleteModalOpen({ open: true, meritLogId: item.id });
+                }}
+                className="!p-0"
+              >
+                <VscTrash size={20} className="fill-subRed" />
+              </IconButton>
+            ),
             ...item,
           }))}
           childComponent={MeritLogChildComponent}
-          onRowClick={({ rowData }) => setDeleteModalOpen({ open: true, meritLogId: rowData.id })}
           paginationOption={{ rowsPerPage: meritLog.size, totalItems: meritLog.totalElements }}
         />
       </ConfirmModal>
