@@ -64,6 +64,7 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
       modalWidth="xs"
       actionButtonName="추가"
       onActionButonClick={handleAddMeritButtonClick}
+      actionButtonDisabled={!validate()}
     >
       <div className="grow space-y-5">
         <div>
