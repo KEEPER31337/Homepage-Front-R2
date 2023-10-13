@@ -12,7 +12,7 @@ const RadioButton = ({ value, horizontal = false, onChange, options, ...radioGro
   return (
     <RadioGroup value={value} onChange={onChange} row={horizontal} {...radioGroupProps}>
       {options.map((option) => (
-        <FormControlLabel value={option.id} control={<Radio />} label={option.content} />
+        <FormControlLabel key={option.id} value={option.id} control={<Radio />} label={option.content} />
       ))}
     </RadioGroup>
   );

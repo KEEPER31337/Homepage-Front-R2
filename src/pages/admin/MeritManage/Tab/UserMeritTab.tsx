@@ -64,11 +64,13 @@ const UserMeritTab = () => {
         childComponent={MembersMeritChildComponent}
         paginationOption={{ rowsPerPage: membersMerit.size, totalItems: membersMerit.totalElements }}
       />
-      <MemberMeritModal
-        title={memberMeritOpen.title}
-        memberId={memberMeritOpen.memberId}
-        setMemberId={setMemberMeritOpen}
-      />
+      {memberMeritOpen.memberId !== 0 && (
+        <MemberMeritModal
+          title={memberMeritOpen.title}
+          memberId={memberMeritOpen.memberId}
+          setMemberId={setMemberMeritOpen}
+        />
+      )}
     </div>
   );
 };
