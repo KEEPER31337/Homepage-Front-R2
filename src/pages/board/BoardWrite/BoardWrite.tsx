@@ -46,6 +46,7 @@ const BoardWrite = () => {
     allowComment: true,
   });
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+  const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
   const [existingFiles, setExistingFiles] = useState<(File & { fileId: number })[]>([]);
   const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
   const [fileIdsToDelete, setFileIdsToDelete] = useState<number[]>([]);
@@ -90,7 +91,7 @@ const BoardWrite = () => {
         },
         {
           onSuccess: () => {
-            if (thumbnail) {
+            if (isThumbnailChanged) {
               editPostThumbnail({ postId: editMode.postId, thumbnail });
             }
 
@@ -232,6 +233,7 @@ const BoardWrite = () => {
         postSettingInfo={postSettingInfo}
         setPostSettingInfo={setPostSettingInfo}
         setThumbnail={setThumbnail}
+        setIsThumbnailChanged={setIsThumbnailChanged}
       />
     </div>
   );

@@ -10,6 +10,7 @@ interface ProfileImageUploaderProps {
   isEdit: boolean;
   thumbnailPath?: string;
   setThumbnail: React.Dispatch<Blob | null>;
+  setIsThumbnailChanged?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type ImageWarningType = 'Multiple' | 'WrongExtension';
@@ -19,12 +20,18 @@ interface ImageWarningInfo {
   type: ImageWarningType;
 }
 
-const ProfileImageUploader = ({ isEdit, thumbnailPath, setThumbnail }: ProfileImageUploaderProps) => {
+const ProfileImageUploader = ({
+  isEdit,
+  thumbnailPath,
+  setThumbnail,
+  setIsThumbnailChanged,
+}: ProfileImageUploaderProps) => {
   const MAX_IMAGE_COUNT = 1;
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
   const [openWarning, setOpenWarning] = useState<ImageWarningInfo>({ isOpen: false, type: 'Multiple' });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (setIsThumbnailChanged) setIsThumbnailChanged(true);
     setThumbnailBase64('');
     acceptedFiles.forEach((file: File) => {
       setThumbnail(file);
@@ -56,6 +63,7 @@ const ProfileImageUploader = ({ isEdit, thumbnailPath, setThumbnail }: ProfileIm
   });
 
   const handleToDefaultImageClick = () => {
+    if (setIsThumbnailChanged) setIsThumbnailChanged(true);
     setThumbnailBase64('');
     setThumbnail(null);
   };

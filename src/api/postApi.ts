@@ -55,9 +55,9 @@ const useEditPostMutation = () => {
 };
 
 const useEditPostThumbnailMutation = () => {
-  const fetcher = ({ postId, thumbnail }: { postId: number; thumbnail: Blob }) => {
+  const fetcher = ({ postId, thumbnail }: { postId: number; thumbnail: Blob | null }) => {
     const formData = new FormData();
-    formData.append('thumbnail', thumbnail);
+    if (thumbnail) formData.append('thumbnail', thumbnail);
 
     return axios.patch(`/posts/${postId}/thumbnail`, formData, {
       headers: {

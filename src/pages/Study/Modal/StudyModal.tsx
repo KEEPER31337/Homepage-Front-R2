@@ -34,6 +34,7 @@ interface StudyModalProps {
 
 const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, currentPeriod }: StudyModalProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+  const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
   const [memberInfos, setMemberInfos] = useState<MultiAutoCompleteValue>([]);
   const [linkError, setLinkError] = useState(false);
   const [etcLinkError, setEtcLinkError] = useState(false);
@@ -98,7 +99,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
         },
         {
           onSuccess: () => {
-            if (thumbnail) {
+            if (isThumbnailChanged) {
               editStudyThumbnail(
                 { studyId: selectedStudyInfo.studyId, thumbnail },
                 {
@@ -216,7 +217,12 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
             </div>
           </Stack>
           <div className="h-40 w-32 self-center sm:self-start">
-            <ImageUploader isEdit thumbnailPath={selectedStudyInfo?.thumbnailPath} setThumbnail={setThumbnail} />
+            <ImageUploader
+              isEditMode
+              thumbnailPath={selectedStudyInfo?.thumbnailPath}
+              setThumbnail={setThumbnail}
+              setIsThumbnailChanged={setIsThumbnailChanged}
+            />
           </div>
         </div>
         <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:gap-2">
