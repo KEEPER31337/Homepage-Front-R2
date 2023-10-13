@@ -94,7 +94,11 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
             }}
             options={meritTypes.content.map((type) => ({
               id: type.id,
-              content: type.detail,
+              content: (
+                <p className={type.isMerit ? 'text-pointBlue' : 'text-red-400'}>
+                  {type.detail} ({type.score})
+                </p>
+              ),
             }))}
           />
         </div>
