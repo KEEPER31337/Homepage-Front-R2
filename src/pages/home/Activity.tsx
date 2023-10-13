@@ -16,7 +16,7 @@ const SubTitleImageCard = ({ subtitleImage }: { subtitleImage: SubTitleImagesInf
     <div className="group sm:grid sm:grid-cols-[45%_55%]">
       <div className="flex place-content-center place-items-center group-even:order-last">
         <img
-          className={imagePath?.[subtitleImage?.id] ? 'w-full object-cover' : 'h-[960px] w-96 object-contain'}
+          className={imagePath?.[subtitleImage?.id] ? 'h-full object-cover' : 'h-[960px] w-96 object-contain'}
           src={imagePath?.[subtitleImage?.id] || LogoNeon}
           alt={subtitleImage?.subtitle}
         />
