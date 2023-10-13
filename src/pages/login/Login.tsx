@@ -24,7 +24,9 @@ const Login = () => {
     setLoginError(false);
   };
 
-  const handleLoginClick = () => {
+  const handleLoginClick: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
     if (form.id && form.password) {
       login(
         { loginId: form.id, password: form.password },
@@ -69,7 +71,7 @@ const Login = () => {
             </Typography>
           )}
         </Stack>
-        <OutlinedButton onClick={handleLoginClick}>로그인</OutlinedButton>
+        <OutlinedButton type="submit">로그인</OutlinedButton>
       </Stack>
       <Divider className="!mb-8 !mt-12 w-11/12 sm:w-full" />
       <Stack direction="row" spacing={2}>
