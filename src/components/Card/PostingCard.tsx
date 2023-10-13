@@ -13,11 +13,11 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
   thumbnailPath: string | null;
 }
 
-export const CardMainInfo = ({ registerTime }: CardMainInfoProps) => {
+export const CardMainInfo = ({ title, registerTime }: CardMainInfoProps) => {
   return (
     <div className="flex justify-between">
       <Typography className="w-11/12 truncate font-semibold" variant="paragraph">
-        title
+        {title}
       </Typography>
       {DateTime.fromISO(registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
         <span className="m-auto h-4 w-4 rounded-sm bg-pointBlue text-center text-small leading-4 text-mainBlack">
