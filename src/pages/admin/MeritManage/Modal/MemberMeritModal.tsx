@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useGetMemberMeritQuery } from '@api/meritApi';
@@ -6,6 +6,7 @@ import usePagination from '@hooks/usePagination';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column } from '@components/Table/StandardTable.interface';
+import DeleteMeritLogModal from './DeleteMeritLogModal';
 
 interface MeritLogRow {
   id: number;
@@ -52,32 +53,45 @@ type MemberMeritModalProps = {
 const MemberMeritModal = ({ title, memberId, setMemberId }: MemberMeritModalProps) => {
   const { page, getRowNumber } = usePagination();
 
-  const { data: meritLog } = useGetMemberMeritQuery({ page, memberId });
+  const { data: meritLog, refetch: meritLogRefetch } = useGetMemberMeritQuery({ page, memberId });
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState({ open: false, meritLogId: 0 });
 
   if (!meritLog) return null;
 
   return (
-    <ConfirmModal
-      open={memberId !== 0}
-      onClose={() => {
-        setMemberId({
-          memberId: 0,
-          title: '',
-        });
-      }}
-      title={title}
-      modalWidth="sm"
-    >
-      <StandardTable<MeritLogRow>
-        columns={MeritLogColumn}
-        rows={meritLog.content.map((item, index) => ({
-          num: getRowNumber({ size: meritLog.size, index }),
-          ...item,
-        }))}
-        childComponent={MeritLogChildComponent}
-        paginationOption={{ rowsPerPage: meritLog.size, totalItems: meritLog.totalElements }}
+    <>
+      <ConfirmModal
+        open={memberId !== 0}
+        onClose={() => {
+          setMemberId({
+            memberId: 0,
+            title: '',
+          });
+        }}
+        title={title}
+        modalWidth="lg"
+      >
+        <StandardTable<MeritLogRow>
+          columns={MeritLogColumn}
+          rows={meritLog.content.map((item, index) => ({
+            num: getRowNumber({ size: meritLog.size, index }),
+            ...item,
+          }))}
+          childComponent={MeritLogChildComponent}
+          onRowClick={({ rowData }) => setDeleteModalOpen({ open: true, meritLogId: rowData.id })}
+          paginationOption={{ rowsPerPage: meritLog.size, totalItems: meritLog.totalElements }}
+        />
+      </ConfirmModal>
+      <DeleteMeritLogModal
+        open={deleteModalOpen.open}
+        onClose={() => {
+          setDeleteModalOpen({ open: false, meritLogId: 0 });
+          meritLogRefetch();
+        }}
+        meritLogId={deleteModalOpen.meritLogId}
       />
-    </ConfirmModal>
+    </>
   );
 };
 
