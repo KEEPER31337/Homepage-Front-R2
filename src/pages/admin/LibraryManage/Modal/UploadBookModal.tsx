@@ -29,6 +29,8 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
   const [titleHelperText, setTitleHelperText] = useState('');
   const [authorHelperText, setAuthorHelperText] = useState('');
 
+  const [isDisabledButton, setIsDisabledButton] = useState(false);
+
   const { mutate: addBookMutation } = useAddBookMutation();
   const { mutate: editBookInfo } = useEditBookInfoMutation();
   const { mutate: editBookThumbnail } = useEditBookThumbnailMutation({ bookId: bookDetail?.bookId || 0 });
@@ -65,6 +67,13 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
     setTotalQuantity(1);
   };
 
+  const resetValidation = () => {
+    setIsInvalidTitle(false);
+    setIsInvalidAuthor(false);
+    setTitleHelperText('');
+    setAuthorHelperText('');
+  };
+
   const handleBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBookInfo({
@@ -76,12 +85,17 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
   const handleAddBookButtonClick = () => {
     const isValid = validate();
     if (isValid) {
+      setIsDisabledButton(true);
       addBookMutation(
         { bookCoreData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
         {
           onSuccess: () => {
             onClose();
+          },
+          onSettled: () => {
+            setIsDisabledButton(false);
             resetBookInfo();
+            resetValidation();
           },
         },
       );
@@ -121,6 +135,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
       title={`도서 ${bookDetail ? '수정' : '추가'}`}
       actionButtonName={bookDetail ? '수정' : '추가'}
       onActionButonClick={bookDetail ? handleEditBookButtonClick : handleAddBookButtonClick}
+      actionButtonDisabled={isDisabledButton}
     >
       <div className="flex space-x-6">
         <div className="space-y-5">
