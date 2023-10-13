@@ -30,7 +30,7 @@ const DeleteBookModal = ({ open, onClose, deleteBook }: DeleteBookModalProps) =>
       onActionButonClick={handleDeleteBookButtonClick}
     >
       <span className="text-pointBlue">{deleteBook.title}</span> 총{' '}
-      <span className="text-pointBlue">{deleteBook.bookQuantity.split('/')[1]}</span>권을 삭제하시겠습니까?
+      <span className="text-pointBlue">{deleteBook.currentQuantity}</span>권을 삭제하시겠습니까?
     </ActionModal>
   );
 };

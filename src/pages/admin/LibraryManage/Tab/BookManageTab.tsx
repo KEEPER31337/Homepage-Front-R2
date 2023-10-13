@@ -98,17 +98,16 @@ const BookManageTab = () => {
                   handleDeleteButtonClick(book);
                 }}
                 className="!p-0"
-                disabled={book.bookQuantity.split('/')[0] !== book.bookQuantity.split('/')[1]}
+                disabled={book.currentQuantity !== book.totalQuantity}
               >
                 <VscTrash
                   size={20}
-                  className={`${
-                    book.bookQuantity.split('/')[0] !== book.bookQuantity.split('/')[1] ? 'fill-subGray' : 'fill-subRed'
-                  } `}
+                  className={`${book.currentQuantity !== book.totalQuantity ? 'fill-subGray' : 'fill-subRed'} `}
                 />
               </IconButton>
             ),
             ...book,
+            bookQuantity: `${book.currentQuantity}/${book.totalQuantity}`,
           })) || []
         }
         childComponent={childComponent}

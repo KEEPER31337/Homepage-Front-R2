@@ -26,7 +26,8 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
         bookId: bookInfo.bookId,
         title: bookInfo.title,
         author: bookInfo.author,
-        bookQuantity: `${bookInfo.currentQuantity}/${bookInfo.totalQuantity}`,
+        currentQuantity: bookInfo.currentQuantity,
+        totalQuantity: bookInfo.totalQuantity,
         borrowers: bookInfo.borrowInfos.map((borrowInfo) => borrowInfo.borrowerRealName).join(', '),
         canBorrow: !!bookInfo.currentQuantity,
       }));
