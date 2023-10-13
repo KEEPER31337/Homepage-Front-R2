@@ -21,6 +21,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
   const { title, author } = bookInfo;
   const [totalQuantity, setTotalQuantity] = useState(1);
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+  const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
   const [isInvalidAuthor, setIsInvalidAuthor] = useState(false);
 
@@ -71,7 +72,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
         { bookCoreData: { title, author, totalQuantity, bookDepartment: 'ETC' }, bookId: bookDetail.bookId },
         {
           onSuccess: () => {
-            if (thumbnail) {
+            if (isThumbnailChanged) {
               editBookThumbnail({ bookId: bookDetail.bookId, thumbnail });
             }
             onClose();
@@ -151,6 +152,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
             isEditMode
             setThumbnail={setThumbnail}
             thumbnailPath={bookDetail && bookDetail.thumbnailPath}
+            setIsThumbnailChanged={setIsThumbnailChanged}
           />
         </div>
       </div>
