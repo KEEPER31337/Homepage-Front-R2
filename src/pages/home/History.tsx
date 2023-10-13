@@ -33,7 +33,7 @@ const History = () => {
           <HistoryItem subtitleImage={subtitleImage} key={subtitleImage.id} />
         ))}
       </div>
-      <img alt="firework" src="/img/main/firework.png" className="w-full object-fill" />
+      <img alt="firework" src="/img/main/firework.jpeg" className="w-full object-fill" />
     </div>
   );
 };

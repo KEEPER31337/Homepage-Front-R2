@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Typography, Tooltip, Stack } from '@mui/material';
 import { ManageBookInfo } from '@api/dto';
@@ -18,22 +18,19 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
   const {
     control,
     handleSubmit,
-    getValues,
-    setError,
     reset,
     formState: { isSubmitting, isValid },
   } = useForm({ mode: 'onBlur' });
 
   const [totalQuantity, setTotalQuantity] = useState(1);
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+  const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
 
-  const { mutate: addBookMutation, isLoading: addBookLoading, isIdle, isPaused, isSuccess } = useAddBookMutation();
-  console.log('addBookLoading', addBookLoading, 'isIdle', isIdle, 'isPaused', isPaused, 'isSuccess', isSuccess);
-  const { mutate: editBookInfo, isLoading: editBookLoading } = useEditBookInfoMutation();
+  const { mutate: addBookMutation } = useAddBookMutation();
+  const { mutate: editBookInfo } = useEditBookInfoMutation();
   const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
 
   const handleAddBookButtonClick: SubmitHandler<FieldValues> = ({ title, author }) => {
-    console.log('1');
     addBookMutation(
       { bookCoreData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
       {
@@ -46,34 +43,20 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
   };
 
   const handleEditBookButtonClick: SubmitHandler<FieldValues> = ({ title, author }) => {
-    console.log('2');
     if (bookDetail?.bookId) {
       editBookInfo(
         { bookCoreData: { title, author, bookDepartment: 'ETC', totalQuantity }, bookId: bookDetail.bookId },
         {
           onSuccess: () => {
-            if (thumbnail) {
+            if (isThumbnailChanged) {
               editBookThumbnail({ bookId: bookDetail.bookId, thumbnail });
             }
             onClose();
+            reset();
           },
         },
       );
     }
-    // const isValid = validate();
-    // if (isValid && bookDetail?.bookId) {
-    //   editBookInfo(
-    //     { bookCoreData: { title, author, totalQuantity, bookDepartment: 'ETC' }, bookId: bookDetail.bookId },
-    //     {
-    //       onSuccess: () => {
-    //         if (thumbnail) {
-    //           editBookThumbnail({ bookId: bookDetail.bookId, thumbnail });
-    //         }
-    //         onClose();
-    //       },
-    //     },
-    //   );
-    // }
   };
 
   return (
@@ -83,7 +66,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
       title={`도서 ${bookDetail ? '수정' : '추가'}`}
       actionButtonName={bookDetail ? '수정' : '추가'}
       onActionButonClick={bookDetail ? handleSubmit(handleEditBookButtonClick) : handleSubmit(handleAddBookButtonClick)}
-      actionButtonDisabled={bookDetail ? editBookLoading : addBookLoading}
+      actionButtonDisabled={isSubmitting || !isValid}
     >
       <div className="flex space-x-6">
         <Stack spacing={2}>
@@ -162,7 +145,12 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
           </div>
         </div>
         <div className="h-[210px] w-[128px]">
-          <ImageUploader isEdit setThumbnail={setThumbnail} thumbnailPath={bookDetail && bookDetail.thumbnailPath} />
+          <ImageUploader
+            isEditMode
+            setThumbnail={setThumbnail}
+            thumbnailPath={bookDetail && bookDetail.thumbnailPath}
+            setIsThumbnailChanged={setIsThumbnailChanged}
+          />
         </div>
       </div>
     </ActionModal>

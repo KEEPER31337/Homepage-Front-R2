@@ -36,7 +36,7 @@ const Home = () => {
   }, [member]);
 
   return (
-    <div ref={mainStartRef} className="-mt-14 bg-galaxy bg-contain bg-repeat sm:-mt-header">
+    <div ref={mainStartRef} className="-mt-14 w-full bg-galaxy bg-contain bg-repeat sm:-mt-header">
       <Intro />
       <Collapse ref={aboutStartRef} in={isAboutExpended}>
         <Activity />

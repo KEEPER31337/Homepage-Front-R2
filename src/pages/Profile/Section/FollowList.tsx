@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { List, ListItemIcon, ListItem, ListItemButton, Avatar, Typography } from '@mui/material';
+import { List, ListItemIcon, ListItem, ListItemButton, Typography } from '@mui/material';
 import { FollowInfo } from '@api/dto';
-import { getServerImgUrl } from '@utils/converter';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 
 interface FollowListProps {
   followlist: FollowInfo[];
@@ -23,10 +23,7 @@ const FollowList = ({ followlist }: FollowListProps) => {
             }}
           >
             <ListItemIcon className="items-center">
-              <Avatar
-                className="m-1 !h-5 !w-5 !bg-subBlack !text-white sm:!h-8 sm:!w-8"
-                src={followInfo?.thumbnailPath ? getServerImgUrl(followInfo?.thumbnailPath) : ''}
-              />
+              <ServerAvatar className="m-1 !h-5 !w-5 sm:!h-8 sm:!w-8" thumbnailPath={followInfo?.thumbnailPath} />
               <Typography className="!text-small sm:!text-paragraph">
                 {followInfo.generation}기 {followInfo.name}
               </Typography>

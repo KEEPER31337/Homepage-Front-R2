@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Avatar, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FollowInfo } from '@api/dto';
 import { useGetProfileQuery, useFollowMemberMutation, useUnFollowMemberMutation } from '@api/memberApi';
 import useCheckAuth from '@hooks/useCheckAuth';
-import { getServerImgUrl } from '@utils/converter';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
 import BadgeSection from './BadgeSection';
@@ -54,10 +54,7 @@ const ProfileSection = () => {
   return (
     <div className="flex w-full space-x-6 space-y-0 p-4 xl:flex-col xl:space-x-0 xl:space-y-4">
       <div className="flex w-1/2 flex-col items-center space-y-2  xl:w-full">
-        <Avatar
-          className="!h-40 !w-40 !bg-subBlack !text-white lg:!h-60 lg:!w-60"
-          src={profileInfo?.thumbnailPath ? getServerImgUrl(profileInfo?.thumbnailPath) : ''}
-        />
+        <ServerAvatar className="!h-40 !w-40 lg:!h-60 lg:!w-60" thumbnailPath={profileInfo?.thumbnailPath} />
         <div className="flex w-full justify-between  ">
           <Typography variant={`${isMobile ? 'h3' : 'h1'}`} className="!font-semibold">
             {profileInfo?.realName}

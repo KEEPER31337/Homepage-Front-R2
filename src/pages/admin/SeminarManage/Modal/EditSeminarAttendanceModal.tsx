@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AttendanceStatus } from '@api/dto';
 import { useEditAttendStatusMutation } from '@api/seminarApi';
+import usePagination from '@hooks/usePagination';
 import StatusTypeSelector from '@pages/admin/SeminarManage/Selector/StatusTypeSelector';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -13,19 +14,32 @@ interface AddSeminarModalProps {
 
 const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSeminarModalProps) => {
   const [statusType, setStatusType] = useState(attendanceStatus.attendanceStatus);
-  const [excuse, setExcuse] = useState('');
-  const [isInvalidExcuse, setIsInvalidExcuse] = useState(false);
+  const [excuse, setExcuse] = useState(attendanceStatus.excuse || '');
+  const [isValidExcuse, setIsValidExcuse] = useState(false);
 
-  const { mutate: editAttendStatus } = useEditAttendStatusMutation(attendanceStatus.attendanceId);
+  const { page } = usePagination();
+
+  const { mutate: editAttendStatus } = useEditAttendStatusMutation({
+    attendanceId: attendanceStatus.attendanceId,
+    page,
+  });
+
+  const isExcuseRequired = () => {
+    return statusType === 'PERSONAL' || statusType === 'LATENESS';
+  };
 
   const validate = () => {
-    const isValid = excuse.trim() !== '';
-    setIsInvalidExcuse(!isValid);
+    let isValid = true;
+    if (isExcuseRequired()) {
+      isValid = excuse.trim() !== '';
+    }
+
+    setIsValidExcuse(isValid);
     return isValid;
   };
 
-  const isExcuseRequired = () => {
-    return statusType === 'ABSENCE' || statusType === 'LATENESS';
+  const resetExcuse = () => {
+    setExcuse('');
   };
 
   const handleClose = () => {
@@ -43,7 +57,6 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
         {
           onSuccess: () => {
             handleClose();
-            setExcuse('');
           },
         },
       );
@@ -70,12 +83,12 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
       onActionButonClick={handleEditSeminarButtonClick}
     >
       <div className="flex flex-col items-center space-y-5">
-        <StatusTypeSelector value={statusType} setValue={setStatusType} />
+        <StatusTypeSelector value={statusType} setValue={setStatusType} resetExcuse={resetExcuse} />
         {isExcuseRequired() && (
           <StandardInput
             className="w-52"
-            error={isInvalidExcuse}
-            helperText={isInvalidExcuse && '사유을 입력해주세요.'}
+            error={!isValidExcuse}
+            helperText={!isValidExcuse && '사유을 입력해주세요.'}
             label="사유"
             value={excuse}
             onChange={handleBookInfoChange}

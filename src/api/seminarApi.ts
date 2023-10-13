@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
+import { useApiError } from '@hooks/useGetApiError';
 import { AttendSeminarListInfo, SeminarStatus, SeminarInfo, SeminarCardInfo } from './dto';
 
 const seminarKeys = {
@@ -10,7 +11,7 @@ const seminarKeys = {
   getRecentlyDoneSeminar: ['getSeminar', 'recentlyDone'] as const,
   getRecentlyUpcomingSeminar: ['getSeminar', 'recentlyUpcoming'] as const,
   startSeminar: ['startSeminar'] as const,
-  attendSeminarList: ['attendSeminarList'] as const,
+  attendSeminarList: ({ page }: { page?: number }) => ['attendSeminarList', page] as const,
 };
 
 const useGetSeminarListQuery = () => {
@@ -88,14 +89,14 @@ const useAttendSeminarMutation = (id: number) => {
   });
 };
 
-const useEditAttendStatusMutation = (attendanceId: number) => {
+const useEditAttendStatusMutation = ({ attendanceId, page }: { attendanceId: number; page?: number }) => {
   const queryClient = useQueryClient();
 
   const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarStatus }) =>
     axios.patch(`/seminars/attendances/${attendanceId}`, { excuse, statusType });
   return useMutation(fetcher, {
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: seminarKeys.attendSeminarList });
+      queryClient.invalidateQueries({ queryKey: seminarKeys.attendSeminarList({ page }) });
       return response.data;
     },
   });
@@ -104,7 +105,7 @@ const useEditAttendStatusMutation = (attendanceId: number) => {
 const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?: number }) => {
   const fetcher = () => axios.get(`/seminars/attendances`, { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList, fetcher, {
+  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList({ page }), fetcher, {
     select: (data) => {
       const transformedContent = data.content.map((membersSeminarAttendInfo) => {
         const seminarDateInfo = membersSeminarAttendInfo.attendances.reduce((prev, curr) => {
@@ -134,8 +135,16 @@ const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?:
   });
 };
 
-const useAddSeminarMutation = () => {
+const useAddSeminarMutation = ({ setHelperText }: { setHelperText: React.Dispatch<React.SetStateAction<string>> }) => {
   const queryClient = useQueryClient();
+
+  const { handleError } = useApiError({
+    409: {
+      40901: () => {
+        setHelperText('동일한 날짜의 세미나는 생성할 수 없습니다.');
+      },
+    },
+  });
 
   const fetcher = (openDate: DateTime) =>
     axios
@@ -148,6 +157,7 @@ const useAddSeminarMutation = () => {
       queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminarList });
       return response;
     },
+    onError: (err) => handleError(err, 40901),
   });
 };
 

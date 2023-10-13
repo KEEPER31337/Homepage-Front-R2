@@ -1,5 +1,7 @@
+import toast from 'react-hot-toast';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { useApiError } from '@hooks/useGetApiError';
 import { formatGeneration } from '@utils/converter';
 import { ProfileInfo, MemberDetailInfo } from './dto';
 
@@ -77,17 +79,25 @@ const useUnFollowMemberMutation = (memberId: number) => {
   });
 };
 
-const useEditProfileMutation = () => {
-  const fetcher = ({ realName, birthday, studentId }: Pick<ProfileInfo, 'realName' | 'birthday' | 'studentId'>) =>
-    axios.patch(`/members/profile`, { realName, birthday, studentId });
+const useEditProfileMutation = (memberId: number) => {
+  const queryClient = useQueryClient();
 
-  return useMutation(fetcher);
+  const fetcher = ({ realName, birthday }: Pick<ProfileInfo, 'realName' | 'birthday'>) =>
+    axios.patch(`/members/profile`, { realName, birthday });
+
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
+    },
+  });
 };
 
-const useEditProfileThumbnailMutation = () => {
-  const fetcher = ({ thumbnail }: { thumbnail: Blob }) => {
+const useEditProfileThumbnailMutation = (memberId: number) => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ thumbnail }: { thumbnail: Blob | null }) => {
     const formData = new FormData();
-    formData.append('thumbnail', thumbnail);
+    if (thumbnail) formData.append('thumbnail', thumbnail);
 
     return axios.patch(`/members/thumbnail`, formData, {
       headers: {
@@ -96,7 +106,11 @@ const useEditProfileThumbnailMutation = () => {
     });
   };
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
+    },
+  });
 };
 
 const useNewEmailAuthMutation = () => {
@@ -106,24 +120,51 @@ const useNewEmailAuthMutation = () => {
 };
 
 const useEditEmailMutation = () => {
+  const { handleError } = useApiError({
+    400: {
+      default: () => {
+        toast.error('현재 비밀번호가 일치하지 않습니다.');
+      },
+    },
+  });
+
   const fetcher = ({ email, auth, password }: { email: string; auth: string; password: string }) =>
     axios.patch('/members/email', { email, auth, password }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, { onError: (err) => handleError(err, 400) });
 };
 
 const useEditPasswordMutation = () => {
-  const fetcher = ({ newPassword }: { newPassword: string }) =>
-    axios.patch('/members/change-password', { newPassword }).then(({ data }) => data);
+  const { handleError } = useApiError({
+    400: {
+      default: () => {
+        toast.error('현재 비밀번호가 일치하지 않습니다.');
+      },
+    },
+  });
+  const fetcher = ({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }) =>
+    axios.patch('/members/change-password', { oldPassword, newPassword }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      toast.success('비밀번호가 변경되었습니다.');
+    },
+    onError: (err) => handleError(err, 400),
+  });
 };
 
 const useWithdrawalMutation = () => {
+  const { handleError } = useApiError({
+    400: {
+      default: () => {
+        toast.error('비밀번호가 일치하지 않습니다.');
+      },
+    },
+  });
   const fetcher = ({ rawPassword }: { rawPassword: string }) =>
     axios.delete('/members', { data: { rawPassword } }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  return useMutation(fetcher, { onError: (err) => handleError(err, 400) });
 };
 
 const useEditMemberTypeMutation = () => {

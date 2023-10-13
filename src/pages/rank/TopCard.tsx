@@ -1,6 +1,7 @@
 import React from 'react';
-import { Avatar, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { formatGeneration } from '@utils/converter';
+import ServerAvatar from '@components/Avatar/ServerAvatar';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface TopCardProps<T extends Record<string, any>> {
@@ -31,7 +32,7 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
               {message}
             </Typography>
           </div>
-          <Avatar alt="profile" className="my-auto !h-16 !w-16" />
+          <ServerAvatar className="my-auto !h-16 !w-16" thumbnailPath={item.thumbnailPath} />
         </div>
       </div>
       <div className="relative left-2 top-2 h-28 w-80 border-2 border-pointBlue" />
