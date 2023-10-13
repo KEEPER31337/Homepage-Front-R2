@@ -64,6 +64,7 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
       modalWidth="xs"
       actionButtonName="추가"
       onActionButonClick={handleAddMeritButtonClick}
+      actionButtonDisabled={!validate()}
     >
       <div className="grow space-y-5">
         <div>
@@ -72,6 +73,7 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
             className="!-z-10 w-full"
             value={meritInfo.awarders}
             multiple
+            grouped
             onChange={(v) => {
               setMeritInfo((prev) => ({ ...prev, awarders: v }));
             }}
@@ -92,7 +94,11 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
             }}
             options={meritTypes.content.map((type) => ({
               id: type.id,
-              content: type.detail,
+              content: (
+                <p className={type.isMerit ? 'text-pointBlue' : 'text-red-400'}>
+                  {type.detail} ({type.score})
+                </p>
+              ),
             }))}
           />
         </div>

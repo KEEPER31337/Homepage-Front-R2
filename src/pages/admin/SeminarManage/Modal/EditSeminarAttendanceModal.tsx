@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AttendanceStatus } from '@api/dto';
 import { useEditAttendStatusMutation } from '@api/seminarApi';
+import usePagination from '@hooks/usePagination';
 import StatusTypeSelector from '@pages/admin/SeminarManage/Selector/StatusTypeSelector';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -16,7 +17,12 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
   const [excuse, setExcuse] = useState(attendanceStatus.excuse || '');
   const [isValidExcuse, setIsValidExcuse] = useState(false);
 
-  const { mutate: editAttendStatus } = useEditAttendStatusMutation(attendanceStatus.attendanceId);
+  const { page } = usePagination();
+
+  const { mutate: editAttendStatus } = useEditAttendStatusMutation({
+    attendanceId: attendanceStatus.attendanceId,
+    page,
+  });
 
   const isExcuseRequired = () => {
     return statusType === 'PERSONAL' || statusType === 'LATENESS';

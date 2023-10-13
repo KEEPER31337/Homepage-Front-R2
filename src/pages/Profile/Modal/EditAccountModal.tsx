@@ -58,6 +58,7 @@ const EditEmailSection = () => {
       {
         onSuccess: () => {
           toast.success('이메일 변경 성공하였습니다.');
+          setIsEmailSent(false);
           reset();
         },
       },
@@ -186,8 +187,8 @@ const EditPasswordSection = () => {
 
   const { mutate: editPassword } = useEditPasswordMutation();
 
-  const handlePasswordFormSubmit: SubmitHandler<FieldValues> = ({ newPassword }) => {
-    editPassword({ newPassword });
+  const handlePasswordFormSubmit: SubmitHandler<FieldValues> = ({ password, newPassword }) => {
+    editPassword({ oldPassword: password, newPassword });
   };
 
   return (

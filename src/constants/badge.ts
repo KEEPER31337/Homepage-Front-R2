@@ -23,6 +23,6 @@ const roles = [
   { name: 'ROLE_INFRA_전산관리자', img: ITManagerBadge },
 ];
 
-const types: { [key: string]: string } = { 정회원: regularBadge, 졸업: graduateBadge, 휴면: sleepBadge };
+const types: { [key: string]: string } = { 정회원: regularBadge, 졸업: graduateBadge, 휴면회원: sleepBadge };
 
 export { types, roles };

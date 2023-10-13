@@ -10,7 +10,7 @@ import Selector from '@components/Selector/Selector';
 const SCORE_MIN = -10;
 const SCORE_RANGE = 21;
 
-const SCORE_LIST = Array.from({ length: SCORE_RANGE }, (_, i) => i + SCORE_MIN);
+const SCORE_LIST = Array.from({ length: SCORE_RANGE }, (_, i) => i + SCORE_MIN).filter((i) => i !== 0);
 
 export type MeritTypeModalInfo = {
   id: number;
@@ -21,7 +21,7 @@ export type MeritTypeModalInfo = {
 
 const baseMeritTypeInfo: MeritTypeModalInfo = {
   id: 0,
-  score: 0,
+  score: 1,
   reason: '',
   isMerit: true,
 };

@@ -118,6 +118,7 @@ const useDeleteMeritLogMutation = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: meritKeys.meritLog({ page: 0 }) });
+      queryClient.invalidateQueries({ queryKey: meritKeys.membersMerit({ page: 0 }) });
     },
   });
 };
