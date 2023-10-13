@@ -78,7 +78,7 @@ const SettingUploadModal = ({
     >
       <div className="mb-5 h-36">
         <ImageUploader
-          isEdit={Boolean(editMode)}
+          isEditMode={Boolean(editMode)}
           thumbnailPath={editMode?.post.thumbnailPath}
           setThumbnail={setThumbnail}
         />

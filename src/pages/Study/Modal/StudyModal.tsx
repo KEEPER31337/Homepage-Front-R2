@@ -194,7 +194,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
             </div>
           </Stack>
           <div className="h-40 w-32 self-center sm:self-start">
-            <ImageUploader isEdit thumbnailPath={selectedStudyInfo?.thumbnailPath} setThumbnail={setThumbnail} />
+            <ImageUploader isEditMode thumbnailPath={selectedStudyInfo?.thumbnailPath} setThumbnail={setThumbnail} />
           </div>
         </div>
         <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:gap-2">

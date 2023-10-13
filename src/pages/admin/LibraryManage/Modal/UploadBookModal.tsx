@@ -147,7 +147,11 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
           </div>
         </div>
         <div className="h-[210px] w-[128px]">
-          <ImageUploader isEdit setThumbnail={setThumbnail} thumbnailPath={bookDetail && bookDetail.thumbnailPath} />
+          <ImageUploader
+            isEditMode
+            setThumbnail={setThumbnail}
+            thumbnailPath={bookDetail && bookDetail.thumbnailPath}
+          />
         </div>
       </div>
     </ActionModal>

@@ -9,7 +9,7 @@ import WarningModal from '@components/Modal/WarningModal';
 
 interface ImageUploaderProps {
   title?: string;
-  isEdit: boolean;
+  isEditMode: boolean;
   thumbnailPath?: string;
   setThumbnail: React.Dispatch<Blob | null>;
 }
@@ -21,7 +21,7 @@ interface ImageWarningInfo {
   type: ImageWarningType;
 }
 
-const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUploaderProps) => {
+const ImageUploader = ({ title, isEditMode, thumbnailPath, setThumbnail }: ImageUploaderProps) => {
   const MAX_IMAGE_COUNT = 1;
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
   const [openWarning, setOpenWarning] = useState<ImageWarningInfo>({ isOpen: false, type: 'Multiple' });
@@ -63,7 +63,7 @@ const ImageUploader = ({ title, isEdit, thumbnailPath, setThumbnail }: ImageUplo
   };
 
   useEffect(() => {
-    if (isEdit && thumbnailPath) {
+    if (isEditMode && thumbnailPath) {
       setThumbnailBase64(getServerImgUrl(thumbnailPath));
     }
   }, []);
