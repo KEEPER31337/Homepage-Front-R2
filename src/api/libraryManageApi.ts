@@ -86,9 +86,9 @@ const useEditBookInfoMutation = () => {
 };
 
 const useEditBookThumbnailMutation = () => {
-  const fetcher = ({ bookId, thumbnail }: { bookId: number; thumbnail: Blob }) => {
+  const fetcher = ({ bookId, thumbnail }: { bookId: number; thumbnail: Blob | null }) => {
     const formData = new FormData();
-    formData.append('thumbnail', thumbnail);
+    if (thumbnail) formData.append('thumbnail', thumbnail);
 
     return axios.patch(`/manage/books/${bookId}/thumbnail`, formData, {
       headers: {

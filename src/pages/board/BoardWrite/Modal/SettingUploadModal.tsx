@@ -20,6 +20,7 @@ interface SettingUploadModalProps {
   postSettingInfo: UploadPostSettings;
   setPostSettingInfo: React.Dispatch<React.SetStateAction<UploadPostSettings>>;
   setThumbnail: React.Dispatch<React.SetStateAction<Blob | null>>;
+  setIsThumbnailChanged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SettingUploadModal = ({
@@ -30,6 +31,7 @@ const SettingUploadModal = ({
   postSettingInfo,
   setPostSettingInfo,
   setThumbnail,
+  setIsThumbnailChanged,
 }: SettingUploadModalProps) => {
   const {
     control,
@@ -78,9 +80,10 @@ const SettingUploadModal = ({
     >
       <div className="mb-5 h-36">
         <ImageUploader
-          isEdit={Boolean(editMode)}
+          isEditMode={Boolean(editMode)}
           thumbnailPath={editMode?.post.thumbnailPath}
           setThumbnail={setThumbnail}
+          setIsThumbnailChanged={setIsThumbnailChanged}
         />
       </div>
       <FormGroup>
