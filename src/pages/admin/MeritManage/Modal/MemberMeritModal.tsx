@@ -13,6 +13,7 @@ interface MeritLogRow {
   giveTime: string;
   score: number;
   reason: string;
+  isMerit: boolean;
 }
 
 const MeritLogColumn: Column<MeritLogRow>[] = [
@@ -24,8 +25,8 @@ const MeritLogColumn: Column<MeritLogRow>[] = [
 
 const MeritLogChildComponent = ({ key, value, rowData }: ChildComponent<MeritLogRow>) => {
   let color = 'white';
-  if (rowData.score > 0) color = 'pointBlue';
-  else if (rowData.score < 0) color = 'subRed';
+  if (rowData.isMerit) color = 'pointBlue';
+  else color = 'subRed';
 
   switch (key) {
     case 'giveTime':
