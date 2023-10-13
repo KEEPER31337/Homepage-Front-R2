@@ -26,7 +26,8 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
         bookId: bookInfo.bookId,
         title: bookInfo.title,
         author: bookInfo.author,
-        bookQuantity: `${bookInfo.currentQuantity}/${bookInfo.totalQuantity}`,
+        currentQuantity: bookInfo.currentQuantity,
+        totalQuantity: bookInfo.totalQuantity,
         borrowers: bookInfo.borrowInfos.map((borrowInfo) => borrowInfo.borrowerRealName).join(', '),
         canBorrow: !!bookInfo.currentQuantity,
       }));
@@ -85,8 +86,10 @@ const useEditBookInfoMutation = () => {
   });
 };
 
-const useEditBookThumbnailMutation = () => {
-  const fetcher = ({ bookId, thumbnail }: { bookId: number; thumbnail: Blob | null }) => {
+const useEditBookThumbnailMutation = ({ bookId }: { bookId: number }) => {
+  const queryClient = useQueryClient();
+
+  const fetcher = ({ thumbnail }: { thumbnail: Blob | null }) => {
     const formData = new FormData();
     if (thumbnail) formData.append('thumbnail', thumbnail);
 
@@ -96,7 +99,11 @@ const useEditBookThumbnailMutation = () => {
       },
     });
   };
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookDetail(bookId) });
+    },
+  });
 };
 
 const useGetBookDetailQuery = (bookId: number) => {
@@ -137,6 +144,7 @@ const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: Bor
     axios.get('/manage/borrow-infos', { params: { page, size, status } }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
         return {
+          borrowInfoId: borrowInfo.borrowInfoId,
           bookTitle: borrowInfo.bookTitle,
           author: borrowInfo.author,
           borrowerRealName: borrowInfo.borrowerRealName,

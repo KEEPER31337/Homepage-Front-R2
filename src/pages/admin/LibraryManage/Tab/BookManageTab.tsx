@@ -2,13 +2,14 @@ import React, { ReactElement, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { VscTrash } from 'react-icons/vsc';
-import { BookListSearch } from '@api/dto';
-import { useGetBookManageListQuery, useDeleteBookMutation, useGetBookDetailQuery } from '@api/libraryManageApi';
+import { BookListSearch, ManageBookInfo } from '@api/dto';
+import { useGetBookManageListQuery, useGetBookDetailQuery } from '@api/libraryManageApi';
 import usePagination from '@hooks/usePagination';
 import LibrarySearchSection from '@pages/Library/SearchSection/LibrarySearchSection';
 import ActionButton from '@components/Button/ActionButton';
 import StandardTable from '@components/Table/StandardTable';
 import { Column, Row, ChildComponent } from '@components/Table/StandardTable.interface';
+import DeleteBookModal from '../Modal/DeleteBookModal';
 import UploadBookModal from '../Modal/UploadBookModal';
 
 interface libraryManageRow {
@@ -42,6 +43,9 @@ const BookManageTab = () => {
   const search = searchParams.get('search') as BookListSearch['search'];
 
   const [addBookModalOpen, setAddBookModalOpen] = useState(false);
+  const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
+  const [deleteBook, setDeleteBook] = useState<ManageBookInfo>();
+
   const [editBookModalOpen, setEditBookModalOpen] = useState(false);
   const [editBookId, setEditBookId] = useState(0);
 
@@ -49,7 +53,6 @@ const BookManageTab = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { data: bookManageListData } = useGetBookManageListQuery({ page, searchType, search });
-  const { mutate: deleteBookMutation } = useDeleteBookMutation();
   const { data: bookDetail } = useGetBookDetailQuery(editBookId);
 
   const childComponent = ({ key, value }: ChildComponent<libraryManageRow>) => {
@@ -66,8 +69,9 @@ const BookManageTab = () => {
     setEditBookModalOpen(true);
   };
 
-  const handleDeleteButtonClick = (bookId: number) => {
-    deleteBookMutation(bookId);
+  const handleDeleteButtonClick = (book: ManageBookInfo) => {
+    setDeleteBook(book);
+    setDeleteBookModalOpen(true);
   };
 
   return (
@@ -91,14 +95,19 @@ const BookManageTab = () => {
               <IconButton
                 onClick={(event) => {
                   event.stopPropagation();
-                  handleDeleteButtonClick(book.bookId);
+                  handleDeleteButtonClick(book);
                 }}
                 className="!p-0"
+                disabled={book.currentQuantity !== book.totalQuantity}
               >
-                <VscTrash size={20} className="fill-subRed" />
+                <VscTrash
+                  size={20}
+                  className={`${book.currentQuantity !== book.totalQuantity ? 'fill-subGray' : 'fill-subRed'} `}
+                />
               </IconButton>
             ),
             ...book,
+            bookQuantity: `${book.currentQuantity}/${book.totalQuantity}`,
           })) || []
         }
         childComponent={childComponent}
@@ -107,6 +116,13 @@ const BookManageTab = () => {
       />
       {bookDetail && (
         <UploadBookModal open={editBookModalOpen} onClose={() => setEditBookModalOpen(false)} bookDetail={bookDetail} />
+      )}
+      {deleteBook && (
+        <DeleteBookModal
+          open={deleteBookModalOpen}
+          onClose={() => setDeleteBookModalOpen(false)}
+          deleteBook={deleteBook}
+        />
       )}
     </>
   );

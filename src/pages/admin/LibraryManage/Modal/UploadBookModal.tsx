@@ -22,17 +22,41 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
   const [totalQuantity, setTotalQuantity] = useState(1);
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
+
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
   const [isInvalidAuthor, setIsInvalidAuthor] = useState(false);
 
+  const [titleHelperText, setTitleHelperText] = useState('');
+  const [authorHelperText, setAuthorHelperText] = useState('');
+
+  const [isDisabledButton, setIsDisabledButton] = useState(false);
+
   const { mutate: addBookMutation } = useAddBookMutation();
   const { mutate: editBookInfo } = useEditBookInfoMutation();
-  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation();
+  const { mutate: editBookThumbnail } = useEditBookThumbnailMutation({ bookId: bookDetail?.bookId || 0 });
 
   const validate = () => {
-    setIsInvalidTitle(title === '');
-    setIsInvalidAuthor(author === '');
-    return title !== '' && author !== '';
+    const titleTrim = title.trim();
+    const authorTrim = author.trim();
+
+    if (titleTrim === '') {
+      setTitleHelperText('도서명을 입력해주세요');
+      setIsInvalidTitle(true);
+    }
+    if (authorTrim === '') {
+      setAuthorHelperText('저자명을 입력해주세요');
+      setIsInvalidAuthor(true);
+    }
+    if (titleTrim.length > 30) {
+      setTitleHelperText('도서명은 200자 이내여야 합니다.');
+      setIsInvalidTitle(true);
+    }
+    if (authorTrim.length > 20) {
+      setAuthorHelperText('저자명은 30자 이내여야 합니다.');
+      setIsInvalidAuthor(true);
+    }
+
+    return titleTrim !== '' && authorTrim !== '' && titleTrim.length <= 200 && authorTrim.length <= 30;
   };
 
   const resetBookInfo = () => {
@@ -41,6 +65,13 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
       author: '',
     });
     setTotalQuantity(1);
+  };
+
+  const resetValidation = () => {
+    setIsInvalidTitle(false);
+    setIsInvalidAuthor(false);
+    setTitleHelperText('');
+    setAuthorHelperText('');
   };
 
   const handleBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,12 +85,17 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
   const handleAddBookButtonClick = () => {
     const isValid = validate();
     if (isValid) {
+      setIsDisabledButton(true);
       addBookMutation(
         { bookCoreData: { title, author, bookDepartment: 'ETC', totalQuantity }, thumbnail },
         {
           onSuccess: () => {
             onClose();
+          },
+          onSettled: () => {
+            setIsDisabledButton(false);
             resetBookInfo();
+            resetValidation();
           },
         },
       );
@@ -73,7 +109,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
         {
           onSuccess: () => {
             if (isThumbnailChanged) {
-              editBookThumbnail({ bookId: bookDetail.bookId, thumbnail });
+              editBookThumbnail({ thumbnail });
             }
             onClose();
           },
@@ -99,6 +135,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
       title={`도서 ${bookDetail ? '수정' : '추가'}`}
       actionButtonName={bookDetail ? '수정' : '추가'}
       onActionButonClick={bookDetail ? handleEditBookButtonClick : handleAddBookButtonClick}
+      actionButtonDisabled={isDisabledButton}
     >
       <div className="flex space-x-6">
         <div className="space-y-5">
@@ -106,7 +143,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
             <Typography>도서명</Typography>
             <StandardInput
               error={isInvalidTitle}
-              helperText={isInvalidTitle && '도서명을 입력해주세요'}
+              helperText={titleHelperText}
               name="title"
               value={title}
               onChange={handleBookInfoChange}
@@ -116,7 +153,7 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
             <Typography>저자</Typography>
             <StandardInput
               error={isInvalidAuthor}
-              helperText={isInvalidAuthor && '저자명을 입력해주세요'}
+              helperText={authorHelperText}
               name="author"
               value={author}
               onChange={handleBookInfoChange}
