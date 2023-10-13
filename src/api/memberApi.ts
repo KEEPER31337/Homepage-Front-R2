@@ -85,9 +85,9 @@ const useEditProfileMutation = () => {
 };
 
 const useEditProfileThumbnailMutation = () => {
-  const fetcher = ({ thumbnail }: { thumbnail: Blob }) => {
+  const fetcher = ({ thumbnail }: { thumbnail: Blob | null }) => {
     const formData = new FormData();
-    formData.append('thumbnail', thumbnail);
+    if (thumbnail) formData.append('thumbnail', thumbnail);
 
     return axios.patch(`/members/thumbnail`, formData, {
       headers: {

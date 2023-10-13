@@ -25,6 +25,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
   const [studentIdState, setStudentIdState] = useState('');
   const [checkStudentIdDuplicateEnabled, setCheckStudentIdDuplicateEnabled] = useState(false);
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+  const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
 
   const { control, handleSubmit, watch, getValues, setError } = useForm({ mode: 'onBlur' });
 
@@ -41,7 +42,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
       { realName, studentId, birthday: birthday ? birthday.toFormat('yyyy.MM.dd') : null },
       {
         onSuccess: () => {
-          if (thumbnail) {
+          if (isThumbnailChanged) {
             editProfileThumbnail({ thumbnail });
           }
 
@@ -89,6 +90,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
             isEdit
             thumbnailPath={profileInfo.thumbnailPath ?? undefined}
             setThumbnail={setThumbnail}
+            setIsThumbnailChanged={setIsThumbnailChanged}
           />
         </div>
         <Stack width={{ sm: '100%', md: '55%' }} component="form" spacing={2}>
