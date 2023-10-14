@@ -14,6 +14,7 @@ const Countdown = ({ startTime, endTime, isTransitionTime, setIsTransitionTime }
   const [text, setText] = useState<string | JSX.Element>('--:--');
 
   const getRenderCountdownText = () => {
+    if (setIsTransitionTime) setIsTransitionTime(false);
     const now = DateTime.now();
 
     if (!startTime || !endTime) {

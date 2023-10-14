@@ -71,14 +71,16 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
             ) : (
               <>
                 <Countdown
-                  startTime={seminarData.openTime}
+                  startTime={seminarData.attendanceStartTime}
                   endTime={seminarData.attendanceCloseTime}
+                  isTransitionTime={isTransitionTime}
                   setIsTransitionTime={setIsTransitionTime}
                 />
                 <Countdown
                   startTime={seminarData.attendanceCloseTime}
                   endTime={seminarData.latenessCloseTime}
                   isTransitionTime={isTransitionTime}
+                  setIsTransitionTime={setIsTransitionTime}
                 />
               </>
             ))}
