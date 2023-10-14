@@ -84,7 +84,7 @@ const ProfileSection = () => {
             </Typography>
             <div className="w-full border border-pointBlue" />
           </div>
-          <div className="flex flex-col space-y-2 bg-red-300">
+          <div className="flex flex-col space-y-2">
             <div className="flex justify-center">
               <TextButton
                 small={isMobile}
@@ -102,12 +102,12 @@ const ProfileSection = () => {
               </TextButton>
             </div>
             {followState !== 'none' && (
-              <div className="h-[60px] !overflow-auto bg-red-400 sm:h-[120px]">
+              <div className="h-[60px] !overflow-auto sm:h-[120px]">
                 {followState !== 'none' &&
                   (followInfo[followState].list.length !== 0 ? (
                     <FollowList followlist={followInfo[followState].list} />
                   ) : (
-                    <div className="bg-pointBlue/10 text-center text-small sm:text-paragraph">
+                    <div className="bg-pointBlue/10 p-2 text-center text-small sm:text-paragraph">
                       {followInfo[followState].state} 목록이 없습니다
                     </div>
                   ))}
