@@ -1,7 +1,7 @@
 export interface Column<T> {
   key: keyof T | 'checkbox';
   headerName: string;
-  width?: string | number;
+  width?: string | number /* NOTE fixed 있을 때 width number 타입 및 필수 값 */;
   fixed?: 'left' | 'right';
 }
 

@@ -37,22 +37,28 @@ const StandardTable = <T extends Record<string, any>>({
         <Table size={size} sx={{ '.MuiTableCell-sizeSmall': { paddingY: '14px' } }}>
           <TableHead className="bg-middleBlack">
             <TableRow>
-              {columns.map((column, index) => (
-                <TableCell
-                  padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
-                  className="!truncate !border-subBlack !text-white"
-                  width={column.width}
-                  sx={{
-                    minWidth: column.width,
-                    position: column.fixed && 'sticky',
-                    left: column.fixed === 'left' ? index * 100 : undefined,
-                    backgroundColor: KEEPER_COLOR.middleBlack,
-                  }}
-                  key={column.key as string}
-                >
-                  {isCheckboxColumn(column.key) ? <Checkbox /> : column.headerName}
-                </TableCell>
-              ))}
+              {columns.map((column, index) => {
+                return (
+                  <TableCell
+                    padding={isCheckboxColumn(column.key) ? 'checkbox' : undefined}
+                    className="!truncate !border-subBlack !text-white"
+                    width={column.width}
+                    sx={{
+                      minWidth: column.width,
+                      position: column.fixed && 'sticky',
+                      left: column.fixed === 'left' ? index * ((column.width as number) || 0) : undefined,
+                      right:
+                        column.fixed === 'right'
+                          ? (columns.length - 1 - index) * ((column.width as number) || 0)
+                          : undefined,
+                      backgroundColor: KEEPER_COLOR.middleBlack,
+                    }}
+                    key={column.key as string}
+                  >
+                    {isCheckboxColumn(column.key) ? <Checkbox /> : column.headerName}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableHead>
           <TableBody className="bg-mainBlack">
@@ -89,8 +95,12 @@ const StandardTable = <T extends Record<string, any>>({
                             } !border-subBlack bg-mainBlack !text-white`}
                             sx={{
                               position: column.fixed && 'sticky',
-                              left: column.fixed === 'left' ? index * 100 : undefined,
                               backgroundColor: column.fixed && KEEPER_COLOR.middleBlack,
+                              left: column.fixed === 'left' ? index * ((column.width as number) || 0) : undefined,
+                              right:
+                                column.fixed === 'right'
+                                  ? (columns.length - 1 - index) * ((column.width as number) || 0)
+                                  : undefined,
                             }}
                             key={column.key as string}
                           >
@@ -132,8 +142,12 @@ const StandardTable = <T extends Record<string, any>>({
                           } overflow-hidden !border-subBlack bg-mainBlack !text-white`}
                           sx={{
                             position: column.fixed && 'sticky',
-                            left: column.fixed === 'left' ? index * 100 : undefined,
                             backgroundColor: column.fixed && KEEPER_COLOR.middleBlack,
+                            left: column.fixed === 'left' ? index * ((column.width as number) || 0) : undefined,
+                            right:
+                              column.fixed === 'right'
+                                ? (columns.length - 1 - index) * ((column.width as number) || 0)
+                                : undefined,
                           }}
                           key={column.key as string}
                         >
