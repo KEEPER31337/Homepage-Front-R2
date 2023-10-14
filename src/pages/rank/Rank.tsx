@@ -121,8 +121,8 @@ const Rank = () => {
           {tab === 0 && (
             <StandardTable<AttendRankRow>
               columns={attendColumns}
-              rows={attendRank.content.map((item) => ({
-                id: item.rank,
+              rows={attendRank.content.map((item, index) => ({
+                id: getRowNumber({ size: attendRank.size, index }),
                 name: {
                   realName: item.realName,
                   thumbnailPath: item.thumbnailPath,
