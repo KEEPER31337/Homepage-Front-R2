@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { MemberInfo } from '@api/dto';
@@ -15,7 +15,7 @@ import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [seminarStart, setSeminarStart] = useState(false);
   const setStartMember = useSetRecoilState<number | undefined>(starterState);
-  const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
+  const { data: seminarData, isLoading } = useGetSeminarInfoQuery(seminarId);
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
@@ -42,7 +42,11 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
     }
   }, [seminarData, availableSeminarData]);
 
-  return (
+  return isLoading ? (
+    <div className="flex h-full items-center">
+      <CircularProgress />
+    </div>
+  ) : (
     <>
       <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarData?.name} 세미나</Typography>
       <p className="mb-[14px] mt-[26px]">출석 코드</p>
@@ -58,25 +62,26 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
           <div>지각</div>
         </div>
         <div className="grid content-between text-right">
-          {!seminarStart && seminarData && !seminarData.attendanceStartTime ? (
-            <>
-              <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue} />
-              <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue} />
-            </>
-          ) : (
-            <>
-              <Countdown
-                startTime={seminarData?.openTime ?? null}
-                endTime={seminarData?.attendanceCloseTime ?? null}
-                setIsTransitionTime={setIsTransitionTime}
-              />
-              <Countdown
-                startTime={seminarData?.attendanceCloseTime ?? null}
-                endTime={seminarData?.latenessCloseTime ?? null}
-                isTransitionTime={isTransitionTime}
-              />
-            </>
-          )}
+          {seminarData &&
+            (!seminarData.attendanceStartTime ? (
+              <>
+                <SeminarSelector limitValue={attendValue} setLimitValue={setAttendValue} />
+                <SeminarSelector limitValue={lateAttendValue} setLimitValue={setLateAttendValue} />
+              </>
+            ) : (
+              <>
+                <Countdown
+                  startTime={seminarData.openTime}
+                  endTime={seminarData.attendanceCloseTime}
+                  setIsTransitionTime={setIsTransitionTime}
+                />
+                <Countdown
+                  startTime={seminarData.attendanceCloseTime}
+                  endTime={seminarData.latenessCloseTime}
+                  isTransitionTime={isTransitionTime}
+                />
+              </>
+            ))}
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">

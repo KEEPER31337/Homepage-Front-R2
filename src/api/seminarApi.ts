@@ -74,6 +74,7 @@ const useStartSeminarMutation = (id: number) => {
   return useMutation(fetcher, {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: seminarKeys.getAvailableSeminar });
+      queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminar({ id }) });
       return response.data.attendanceCode;
     },
   });
