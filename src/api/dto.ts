@@ -280,6 +280,11 @@ export interface AttendSeminarInfo {
   generation: number;
   attendances: MemberSeminarAttendance[];
   [key: `date${number}`]: MemberSeminarAttendance;
+  totalCount: string;
+  totalAttendance: number;
+  totalLateness: number;
+  totalAbsence: number;
+  totalPersonal: number;
 }
 
 export interface AttendSeminarListInfo extends Page {
