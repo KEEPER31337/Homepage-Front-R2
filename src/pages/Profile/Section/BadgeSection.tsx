@@ -13,7 +13,7 @@ const BadgeSection = ({ memberType, memberJobs }: FollowListProps) => {
 
   useEffect(() => {
     const updatedMemberJobInfo = memberJobs
-      .filter((job) => job !== 'ROLE_회원' && job !== 'ROLE_출제자')
+      .filter((job) => job !== ('ROLE_회원' || 'ROLE_출제자'))
       .map((job) => {
         const filteredRole = roles.find((role) => role.name === job);
         return {
