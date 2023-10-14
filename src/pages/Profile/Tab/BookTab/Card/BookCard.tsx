@@ -7,14 +7,27 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import ServerImg from '@components/Image/ServerImg';
 
 interface BookGuideProps {
+  index: number;
   bookInfo?: BorrowedBookInfo;
   onClick?: () => void;
 }
-const BookCard = ({ bookInfo, onClick }: BookGuideProps) => {
+const BookCard = ({ index, bookInfo, onClick }: BookGuideProps) => {
   return (
     <div className="m-1 flex w-[120px] flex-col space-y-2 lg:w-[150px] xl:w-[180px]">
       <div className={`${!bookInfo && 'opacity-50'} relative flex h-[180px] bg-subBlack lg:h-[210px] xl:h-[240px]`}>
-        <ServerImg src={bookInfo?.thumbnailPath || ''} alt="library thumbnail" />
+        {bookInfo ? (
+          <ServerImg
+            src={bookInfo?.thumbnailPath}
+            alt="library thumbnail"
+            className="absolute inset-0 h-full w-full object-cover"
+            errorClassName="absolute inset-0 m-auto p-2"
+          />
+        ) : (
+          <div className="text-bold absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-orbitron text-5xl">
+            {index}
+          </div>
+        )}
+
         <div className={`${bookInfo && 'p-1'} absolute bottom-0 flex w-full flex-col space-y-1 bg-middleBlack/50`}>
           <Tooltip
             title={bookInfo?.bookTitle}
@@ -43,6 +56,7 @@ const BookCard = ({ bookInfo, onClick }: BookGuideProps) => {
             </div>
           )}
         </div>
+        <div className="w-full border-b border-pointBlue" />
       </div>
       {bookInfo && (
         <OutlinedButton className="w-full" onClick={onClick} small>

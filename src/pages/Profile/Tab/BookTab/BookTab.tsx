@@ -38,6 +38,7 @@ const BookTab = () => {
             (index) => (
               <BookCard
                 key={index}
+                index={index + 1}
                 bookInfo={booksToRender[index]}
                 onClick={() => mutationCallback(booksToRender[index]?.borrowInfoId)}
               />
