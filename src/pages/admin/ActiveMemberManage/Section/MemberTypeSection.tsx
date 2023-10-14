@@ -25,7 +25,7 @@ const MemberTypeSection = ({ memberList, selectedMemberList, setSelectedMemberLi
   };
 
   return (
-    <div className="mb-5 grid grid-cols-2 content-start gap-3 sm:grid-cols-6">
+    <div className="mb-5 grid h-[580px] grid-cols-2 content-start gap-3 overflow-y-scroll sm:grid-cols-6">
       {memberTypes
         .filter((memberType) => memberType.renderType !== '탈퇴')
         .map((memberType) => (
