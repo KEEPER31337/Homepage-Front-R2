@@ -19,6 +19,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
   const [startTime, setStartTime] = useState(DateTime.now());
+  const [isTransitionTime, setIsTransitionTime] = useState(false);
   const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const member: MemberInfo | null = useRecoilValue(memberState);
@@ -64,10 +65,15 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
             </>
           ) : (
             <>
-              <Countdown startTime={seminarData?.openTime ?? null} endTime={seminarData?.attendanceCloseTime ?? null} />
+              <Countdown
+                startTime={seminarData?.openTime ?? null}
+                endTime={seminarData?.attendanceCloseTime ?? null}
+                setIsTransitionTime={setIsTransitionTime}
+              />
               <Countdown
                 startTime={seminarData?.attendanceCloseTime ?? null}
                 endTime={seminarData?.latenessCloseTime ?? null}
+                isTransitionTime={isTransitionTime}
               />
             </>
           )}

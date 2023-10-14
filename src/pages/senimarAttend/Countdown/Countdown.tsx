@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { DateTime } from 'luxon';
 import TextTimer from '@components/Typography/TextTimer';
@@ -6,10 +6,14 @@ import TextTimer from '@components/Typography/TextTimer';
 interface countdownProps {
   startTime: DateTime | null;
   endTime: DateTime | null;
+  isTransitionTime?: boolean;
+  setIsTransitionTime?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Countdown = ({ startTime, endTime }: countdownProps) => {
-  const renderCountdownText = () => {
+const Countdown = ({ startTime, endTime, isTransitionTime, setIsTransitionTime }: countdownProps) => {
+  const [text, setText] = useState<string | JSX.Element>('--:--');
+
+  const getRenderCountdownText = () => {
     const now = DateTime.now();
 
     if (!startTime || !endTime) {
@@ -22,10 +26,14 @@ const Countdown = ({ startTime, endTime }: countdownProps) => {
       return '마감';
     }
 
-    return <TextTimer expirationTime={endTime} />;
+    return <TextTimer expirationTime={endTime} setIsEnd={setIsTransitionTime} />;
   };
 
-  return <div>{renderCountdownText()}</div>;
+  useEffect(() => {
+    setText(getRenderCountdownText());
+  }, [startTime, endTime, isTransitionTime]);
+
+  return <div>{text}</div>;
 };
 
 export default Countdown;
