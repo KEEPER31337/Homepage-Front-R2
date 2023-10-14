@@ -102,12 +102,12 @@ const ProfileSection = () => {
               </TextButton>
             </div>
             {followState !== 'none' && (
-              <div className="h-[60px] !overflow-auto sm:h-[120px]">
+              <div className="h-[60px] !overflow-auto bg-pointBlue/10 sm:h-[120px]">
                 {followState !== 'none' &&
                   (followInfo[followState].list.length !== 0 ? (
                     <FollowList followlist={followInfo[followState].list} />
                   ) : (
-                    <div className="bg-pointBlue/10 p-2 text-center text-small sm:text-paragraph">
+                    <div className="p-2 text-center text-small sm:text-paragraph">
                       {followInfo[followState].state} 목록이 없습니다
                     </div>
                   ))}

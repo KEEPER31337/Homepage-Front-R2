@@ -12,7 +12,7 @@ const FollowList = ({ followlist }: FollowListProps) => {
   const navigate = useNavigate();
 
   return (
-    <List className="flex flex-col !bg-pointBlue/10 !p-0">
+    <List className="flex flex-col !p-0">
       <ListItem className="flex flex-col" disablePadding>
         {followlist.map((followInfo) => (
           <ListItemButton
