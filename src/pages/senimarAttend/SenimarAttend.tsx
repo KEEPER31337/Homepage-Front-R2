@@ -79,7 +79,7 @@ const SeminarAttend = () => {
             >
               <SeminarCard>
                 {visibleSeminar.id !== undefined ? (
-                  <div>
+                  <div className="h-full">
                     {isStarterMember() ? (
                       <BossCardContent seminarId={visibleSeminar.id} />
                     ) : (

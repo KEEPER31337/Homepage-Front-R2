@@ -26,6 +26,8 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   const [inputCode, setInputCode] = useState('');
   const [attendStatus, setAttendStatus] = useState<undefined | SeminarStatus>(undefined);
   const [excessModalOpen, setExcessModalOpen] = useState(false);
+  const [isTransitionTime, setIsTransitionTime] = useState(false);
+
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const isValidActivityStatus = (value: SeminarStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
@@ -97,8 +99,18 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         <div className="grid content-between text-right">
           {seminarData && (
             <>
-              <Countdown startTime={seminarData.attendanceStartTime} endTime={seminarData.attendanceCloseTime} />
-              <Countdown startTime={seminarData.attendanceCloseTime} endTime={seminarData.latenessCloseTime} />
+              <Countdown
+                startTime={seminarData.attendanceStartTime}
+                endTime={seminarData.attendanceCloseTime}
+                isTransitionTime={isTransitionTime}
+                setIsTransitionTime={setIsTransitionTime}
+              />
+              <Countdown
+                startTime={seminarData.attendanceCloseTime}
+                endTime={seminarData.latenessCloseTime}
+                isTransitionTime={isTransitionTime}
+                setIsTransitionTime={setIsTransitionTime}
+              />
             </>
           )}
         </div>
