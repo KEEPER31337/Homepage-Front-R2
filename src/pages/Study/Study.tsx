@@ -4,6 +4,7 @@ import { SelectChangeEvent, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { StudyInfo } from '@api/dto';
 import { useGetStudyListQuery } from '@api/studyApi';
+import { getCurrentSeasonNumber } from '@utils/getPeriodic';
 import ActionButton from '@components/Button/ActionButton';
 import Selector from '@components/Selector/Selector';
 import PageTitle from '@components/Typography/PageTitle';
@@ -29,7 +30,7 @@ const seasonList = [
 ];
 
 const Study = () => {
-  const [currentPeriod, setCurrentPeriod] = useState({ year: DateTime.now().year, season: DateTime.now().quarter });
+  const [currentPeriod, setCurrentPeriod] = useState({ year: DateTime.now().year, season: getCurrentSeasonNumber() });
   const [studyModalOpen, setStudyModalOpen] = useState(false);
   const [selectedStudyInfo, setSelectedStudyInfo] = useState<StudyInfo | null>(null);
   const isAfterOldYearBound = Number(currentPeriod.year) >= OLD_YEAR_BOUND;

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
 import { AttendSeminarInfo, MemberSeminarAttendance, AttendanceStatus } from '@api/dto';
 import { useGetAttendSeminarListMutation, useGetSeminarListQuery } from '@api/seminarApi';
 import usePagination from '@hooks/usePagination';
+import { getCurrentSeasonText } from '@utils/getPeriodic';
 import SeminarAttendStatus from '@pages/senimarAttend/Status/SeminarAttendStatus';
 import ActionButton from '@components/Button/ActionButton';
 import StandardTable from '@components/Table/StandardTable';
@@ -18,12 +20,15 @@ const seminarManageColumn: Column<AttendSeminarInfo>[] = [
 ];
 
 const SeminarManage = () => {
-  const currentTerm = { year: 2023, season: '1학기' }; // TODO - 임시데이터
+  const currentTerm = {
+    year: DateTime.now().year,
+    season: getCurrentSeasonText(),
+  };
   const [openAddSeminarModal, setOpenAddSeminarModal] = useState(false);
   const [openDeleteSeminarModal, setOpenDeleteSeminarModal] = useState(false);
   const [openEditAttendanceStatusModal, setOpenEditAttendanceStatusModal] = useState(false);
   const [dynamicColumn, setDynamicColumn] = useState<Column<AttendSeminarInfo>[]>([]);
-  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceStatus>(); // TODO - 임시데이터
+  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceStatus>();
 
   const { page } = usePagination();
   const { data: seminarList } = useGetSeminarListQuery();
