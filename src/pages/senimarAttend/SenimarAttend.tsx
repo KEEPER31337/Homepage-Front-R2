@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
+import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 import { useRecoilValue } from 'recoil';
 import { MemberInfo } from '@api/dto';
 import {
@@ -43,7 +44,7 @@ const SeminarAttend = () => {
     return false;
   };
 
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [currentCardIndex, setCurrentCardIndex] = useState(1);
 
   const handleNextButtonClick = () => {
     setCurrentCardIndex(currentCardIndex + 1);
@@ -78,7 +79,7 @@ const SeminarAttend = () => {
             >
               <SeminarCard>
                 {visibleSeminar.id !== undefined ? (
-                  <div>
+                  <div className="h-full">
                     {isStarterMember() ? (
                       <BossCardContent seminarId={visibleSeminar.id} />
                     ) : (
@@ -97,10 +98,10 @@ const SeminarAttend = () => {
       </div>
       <div className="flex w-[345px] justify-between md:hidden">
         <OutlinedButton onClick={handlePreviousButtonClick} disabled={currentCardIndex === 0}>
-          이전
+          <VscChevronLeft size={20} />
         </OutlinedButton>
         <OutlinedButton onClick={handleNextButtonClick} disabled={currentCardIndex === visibleSeminars.length - 1}>
-          다음
+          <VscChevronRight size={20} />
         </OutlinedButton>
       </div>
     </div>
