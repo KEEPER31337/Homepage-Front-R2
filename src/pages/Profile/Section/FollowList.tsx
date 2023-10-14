@@ -12,7 +12,7 @@ const FollowList = ({ followlist }: FollowListProps) => {
   const navigate = useNavigate();
 
   return (
-    <List className="flex h-[60px] flex-col !overflow-auto !bg-pointBlue/10 !p-0 sm:h-[120px]">
+    <List className="flex flex-col !bg-pointBlue/10 !p-0">
       <ListItem className="flex flex-col" disablePadding>
         {followlist.map((followInfo) => (
           <ListItemButton
@@ -23,7 +23,7 @@ const FollowList = ({ followlist }: FollowListProps) => {
             }}
           >
             <ListItemIcon className="items-center">
-              <ServerAvatar className="m-1 !h-5 !w-5 sm:!h-8 sm:!w-8" thumbnailPath={followInfo?.thumbnailPath} />
+              <ServerAvatar className="m-1 mr-3 !h-5 !w-5 sm:!h-8 sm:!w-8" thumbnailPath={followInfo?.thumbnailPath} />
               <Typography className="!text-small sm:!text-paragraph">
                 {followInfo.generation}기 {followInfo.name}
               </Typography>

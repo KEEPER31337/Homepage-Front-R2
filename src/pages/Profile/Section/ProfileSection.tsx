@@ -55,8 +55,8 @@ const ProfileSection = () => {
     <div className="flex w-full space-x-6 space-y-0 p-4 xl:flex-col xl:space-x-0 xl:space-y-4">
       <div className="flex w-1/2 flex-col items-center space-y-2  xl:w-full">
         <ServerAvatar className="!h-40 !w-40 lg:!h-60 lg:!w-60" thumbnailPath={profileInfo?.thumbnailPath} />
-        <div className="flex w-full justify-between  ">
-          <Typography variant={`${isMobile ? 'h3' : 'h1'}`} className="!font-semibold">
+        <div className="flex h-fit w-full justify-between space-x-2">
+          <Typography variant={`${isMobile ? 'h3' : 'h1'}`} className="h-fit shrink-0 !font-semibold">
             {profileInfo?.realName}
           </Typography>
           <BadgeSection memberType={profileInfo?.memberType || ''} memberJobs={profileInfo?.memberJobs || []} />
@@ -84,7 +84,7 @@ const ProfileSection = () => {
             </Typography>
             <div className="w-full border border-pointBlue" />
           </div>
-          <div className="flex flex-col space-y-2">
+          <div className="flex flex-col space-y-2 bg-red-300">
             <div className="flex justify-center">
               <TextButton
                 small={isMobile}
@@ -101,15 +101,18 @@ const ProfileSection = () => {
                 팔로잉 {followInfo.following.list.length}
               </TextButton>
             </div>
-
-            {followState !== 'none' &&
-              (followInfo[followState].list.length !== 0 ? (
-                <FollowList followlist={followInfo[followState].list} />
-              ) : (
-                <div className="text-center text-small sm:text-paragraph">
-                  {followInfo[followState].state} 목록이 없습니다
-                </div>
-              ))}
+            {followState !== 'none' && (
+              <div className="h-[60px] !overflow-auto bg-red-400 sm:h-[120px]">
+                {followState !== 'none' &&
+                  (followInfo[followState].list.length !== 0 ? (
+                    <FollowList followlist={followInfo[followState].list} />
+                  ) : (
+                    <div className="bg-pointBlue/10 text-center text-small sm:text-paragraph">
+                      {followInfo[followState].state} 목록이 없습니다
+                    </div>
+                  ))}
+              </div>
+            )}
           </div>
         </div>
 
