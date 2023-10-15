@@ -53,7 +53,7 @@ const Header = ({ setMobileSidebarOpen }: HeaderProps) => {
         {userInfo ? (
           <>
             <div>
-              <IconButton target="_blank" href="https://keeper.or.kr/wiki/%EB%8C%80%EB%AC%B8">
+              <IconButton target="_blank" href="https://wiki.keeper.or.kr">
                 <Typography className="h-6 w-6 rounded-full bg-pointBlue text-mainBlack">W</Typography>
               </IconButton>
               <IconButton target="_blank" href="https://github.com/KEEPER31337">
