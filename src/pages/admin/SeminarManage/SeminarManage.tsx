@@ -17,6 +17,7 @@ import EditSeminarAttendanceModal from './Modal/EditSeminarAttendanceModal';
 const seminarManageColumn: Column<AttendSeminarInfo>[] = [
   { key: 'generation', headerName: '기수', fixed: 'left', width: 100 },
   { key: 'memberName', headerName: '이름', fixed: 'left', width: 100 },
+  { key: 'totalCount', headerName: '출석 / 지각 / 결석 / 개인사정', fixed: 'right', width: 100 },
 ];
 
 const SeminarManage = () => {
@@ -48,6 +49,9 @@ const SeminarManage = () => {
     if (key.slice(0, 4) === 'date' && value) {
       return <SeminarAttendStatus status={(value as MemberSeminarAttendance).attendanceStatus} hasIcon={false} />;
     }
+    if (key === 'totalCount') {
+      return <p className="text-center">{value}</p>;
+    }
     return value;
   };
 
@@ -68,7 +72,7 @@ const SeminarManage = () => {
         </ActionButton>
       </div>
       <StandardTable<AttendSeminarInfo>
-        columns={[...seminarManageColumn, ...dynamicColumn]}
+        columns={[...seminarManageColumn.slice(0, 2), ...dynamicColumn, ...seminarManageColumn.slice(2)]}
         childComponent={childComponent}
         onCellClick={onCellClick}
         rows={

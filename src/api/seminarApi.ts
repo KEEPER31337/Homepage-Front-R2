@@ -124,6 +124,7 @@ const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?:
 
         return {
           ...membersSeminarAttendInfo,
+          totalCount: `${membersSeminarAttendInfo.totalAttendance} / ${membersSeminarAttendInfo.totalLateness} / ${membersSeminarAttendInfo.totalAbsence} / ${membersSeminarAttendInfo.totalPersonal}`,
           ...seminarDateInfo,
         };
       });
