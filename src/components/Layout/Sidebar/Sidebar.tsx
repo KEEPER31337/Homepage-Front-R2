@@ -39,7 +39,7 @@ const Sidebar = ({ mobileSidebarOpen, setMobileSidebarOpen }: SidebarProps) => {
       <div className="my-4 flex h-full items-end justify-center">
         <Button target="_blank" href="https://github.com/KEEPER31337/Homepage-Front-R2/issues/new/choose">
           <VscBug className="mr-2" />
-          버그 및 개선 사항 제보
+          버그 및 불편 사항 제보
         </Button>
       </div>
     </Drawer>
