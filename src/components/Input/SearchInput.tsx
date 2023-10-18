@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { KeyboardEvent } from 'react';
 import { IconButton, StandardTextFieldProps } from '@mui/material';
 import { MdOutlineSearch } from 'react-icons/md';
