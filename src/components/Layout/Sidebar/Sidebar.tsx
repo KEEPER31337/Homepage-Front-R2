@@ -1,5 +1,6 @@
 import React from 'react';
-import { Drawer, Toolbar, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Drawer, Toolbar, useMediaQuery, useTheme } from '@mui/material';
+import { VscBug } from 'react-icons/vsc';
 import { Role } from '@api/dto';
 import CATEGORIES from '@constants/category';
 import { KEEPER_COLOR, SIDEBAR_WIDTH } from '@constants/keeperTheme';
@@ -35,6 +36,12 @@ const Sidebar = ({ mobileSidebarOpen, setMobileSidebarOpen }: SidebarProps) => {
         }
         return <CategoryNav key={category.id} category={category} />;
       })}
+      <div className="my-4 flex h-full items-end justify-center">
+        <Button target="_blank" href="https://github.com/KEEPER31337/Homepage-Front-R2/issues/new/choose">
+          <VscBug className="mr-2" />
+          버그 및 불편 사항 제보
+        </Button>
+      </div>
     </Drawer>
   );
 };
