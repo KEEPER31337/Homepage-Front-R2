@@ -15,7 +15,7 @@ const CommentCard = ({ commentInfo, replyComments }: CommentCardProps) => {
     <Card className="!bg-mainBlack !bg-none">
       <CommentCardHeader commentInfo={commentInfo} />
       {(!commentInfo.isDeleted || replyComments.length > 0) && (
-        <CardContent className="mb-5 whitespace-pre sm:!px-16">
+        <CardContent className="mb-5 whitespace-pre-line break-all sm:!px-16">
           {!commentInfo.isDeleted && <Typography marginBottom={5}>{commentInfo.content}</Typography>}
           <div className="space-y-3">
             {replyComments.map((replyComment) => (
