@@ -11,7 +11,6 @@ import TimerInput from '@components/Input/TimerInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import WarningModal from '@components/Modal/WarningModal';
 
-const TIMER_DURATION_SECOND = 300;
 interface searchPWFormProps {
   id: string;
   email: string;
@@ -82,9 +81,9 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     requestAuthcode(
       { loginId: form.id, email: form.email },
       {
-        onSuccess: () => {
+        onSuccess: ({ expiredSeconds }) => {
           setIsAuthCodeRequireClick(true);
-          setExpirationTime(DateTime.now().plus({ seconds: TIMER_DURATION_SECOND }));
+          setExpirationTime(DateTime.now().plus({ seconds: expiredSeconds }));
           setMatchInfoModalOpen(false);
         },
         onError: () => {
@@ -125,8 +124,8 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
     requestAuthcode(
       { loginId: form.id, email: form.email },
       {
-        onSuccess: () => {
-          setExpirationTime(DateTime.now().plus({ seconds: TIMER_DURATION_SECOND }));
+        onSuccess: ({ expiredSeconds }) => {
+          setExpirationTime(DateTime.now().plus({ seconds: expiredSeconds }));
         },
       },
     );
