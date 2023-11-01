@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { AttendSeminarInfo, MemberSeminarAttendance, AttendanceStatus } from '@api/dto';
 import { useGetAttendSeminarListMutation, useGetSeminarListQuery } from '@api/seminarApi';
@@ -63,13 +64,18 @@ const SeminarManage = () => {
   return (
     <div>
       <PageTitle>세미나 관리 {`(${currentTerm.year}년 ${currentTerm.season})`}</PageTitle>
-      <div className="mb-5 flex justify-end space-x-2">
-        <ActionButton mode="add" onClick={() => setOpenAddSeminarModal(true)}>
-          추가
-        </ActionButton>
-        <ActionButton mode="delete" onClick={() => setOpenDeleteSeminarModal(true)}>
-          삭제
-        </ActionButton>
+      <div className="mb-5 flex items-end justify-between">
+        <Typography variant="small" className="text-subOrange">
+          *시간 만료로 인한 결석은 23시 50분에 일괄 결석으로 처리됩니다.
+        </Typography>
+        <div className="flex space-x-2">
+          <ActionButton mode="add" onClick={() => setOpenAddSeminarModal(true)}>
+            추가
+          </ActionButton>
+          <ActionButton mode="delete" onClick={() => setOpenDeleteSeminarModal(true)}>
+            삭제
+          </ActionButton>
+        </div>
       </div>
       <StandardTable<AttendSeminarInfo>
         columns={[...seminarManageColumn.slice(0, 2), ...dynamicColumn, ...seminarManageColumn.slice(2)]}
