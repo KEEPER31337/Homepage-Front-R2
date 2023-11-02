@@ -119,7 +119,9 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         {attendStatus === 'ATTENDANCE' || attendStatus === 'LATENESS' || attendStatus === 'ABSENCE' ? (
           <SeminarAttendStatus status={attendStatus} />
         ) : (
-          <FilledButton onClick={handleAttendButtonClick}>출석</FilledButton>
+          <FilledButton onClick={handleAttendButtonClick} disabled={unableSeminar}>
+            출석
+          </FilledButton>
         )}
       </div>
     </div>
