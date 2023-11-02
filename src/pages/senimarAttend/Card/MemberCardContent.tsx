@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from '@mui/material';
 import { AxiosError } from 'axios';
+import { DateTime } from 'luxon';
+import { useRecoilState } from 'recoil';
 import { SeminarStatus } from '@api/dto';
 import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import FilledButton from '@components/Button/FilledButton';
@@ -8,79 +10,88 @@ import ConfirmModal from '@components/Modal/ConfirmModal';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
+import attendCountState from '../seminarAttend.recoil';
 
 interface ErrorResponse {
   message: string;
 }
 
+const MAX_ATTEND_COUNT = 5;
+
 const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   const { data: seminarData } = useGetSeminarInfoQuery(seminarId);
-  const {
-    mutate: attend,
-    isSuccess: isAttendSuccess,
-    error: attendError,
-    data: attendData,
-  } = useAttendSeminarMutation(seminarId);
-  const validCode = seminarData?.attendanceCode;
+  const { mutate: attend, isSuccess: isAttendSuccess, data: attendData } = useAttendSeminarMutation(seminarId);
+
   const [incorrectCodeMsg, setIncorrectCodeMsg] = useState('ㅤ');
   const [inputCode, setInputCode] = useState('');
   const [attendStatus, setAttendStatus] = useState<undefined | SeminarStatus>(undefined);
   const [excessModalOpen, setExcessModalOpen] = useState(false);
   const [isTransitionTime, setIsTransitionTime] = useState(false);
 
+  const [attendCount, setAttendCount] = useRecoilState(attendCountState);
+
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const isValidActivityStatus = (value: SeminarStatus) => {
     return value === 'ATTENDANCE' || value === 'LATENESS' || value === 'ABSENCE' || value === 'BEFORE_ATTENDANCE';
   };
-  const unableSeminar = !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.id;
+  const unableSeminar =
+    !availableSeminarData?.id || availableSeminarData?.id !== seminarData?.id || attendCount >= MAX_ATTEND_COUNT;
 
   useEffect(() => {
     setAttendStatus(seminarData?.statusType);
   }, [seminarData]);
 
   const handleAttendButtonClick = () => {
-    attend(inputCode);
-    if (parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) > 5) setExcessModalOpen(true);
+    attend(inputCode, {
+      onError: (error) => {
+        const axiosError = error as AxiosError<ErrorResponse>;
+        if (axiosError.response?.status === 400) {
+          const remainAttendCount = MAX_ATTEND_COUNT - attendCount - 1;
+          setAttendCount((prev) => prev + 1);
+
+          if (remainAttendCount <= 0) {
+            setExcessModalOpen(true);
+            setIncorrectCodeMsg('남은 제출 횟수가 없습니다.');
+            return;
+          }
+          setIncorrectCodeMsg(`출석코드가 틀렸습니다. (남은 제출횟수 ${remainAttendCount}회)`);
+          return;
+        }
+        const errorMessage = axiosError?.response?.data?.message;
+        setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
+      },
+    });
   };
 
   useEffect(() => {
     if (isAttendSuccess && isValidActivityStatus(attendData.data.statusType)) {
       setAttendStatus(attendData.data.statusType);
       setIncorrectCodeMsg('ㅤ');
-      localStorage.removeItem('출석시도횟수');
     }
   }, [isAttendSuccess]);
-
-  useEffect(() => {
-    if (inputCode !== validCode) {
-      const attemptNum = parseInt(localStorage.getItem('출석시도횟수') ?? '0', 10) + 1;
-      if (attemptNum <= 5) {
-        localStorage.setItem('출석시도횟수', String(attemptNum));
-        setIncorrectCodeMsg(`출석코드가 틀렸습니다.(남은 제출횟수 ${attemptNum}회)`);
-      }
-    } else {
-      const axiosError = attendError as AxiosError<ErrorResponse>;
-      const errorMessage = axiosError?.response?.data?.message;
-      setIncorrectCodeMsg(errorMessage?.slice((errorMessage?.indexOf(':') || 0) + 1) ?? 'ㅤ');
-    }
-  }, [attendError]);
 
   useEffect(() => {
     setIncorrectCodeMsg('ㅤ');
   }, []);
 
+  useEffect(() => {
+    if (seminarData?.latenessCloseTime && DateTime.now() > seminarData.latenessCloseTime) {
+      setAttendCount(0);
+    }
+  }, [unableSeminar]);
+
   return (
     <div className={`${unableSeminar && 'opacity-50'}`}>
       <ConfirmModal
         open={excessModalOpen}
-        modalWidth="sm"
+        modalWidth="xs"
         onClose={() => setExcessModalOpen(false)}
         title="출석 제한 횟수 초과"
       >
         <Typography>가능한 출석 횟수를 초과했습니다.</Typography>
         <Typography>출석 처리에 문제가 있는 경우 회장님에게 문의해주세요</Typography>
       </ConfirmModal>
-      <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarData?.name} 세미나</Typography>
+      <Typography className="!mt-[16px] !text-h3 !font-bold">{seminarData?.name} 세미나</Typography>
       <p className="mb-[14px] mt-[26px]">출석 코드</p>
       <div className="mb-[15px]">
         <SeminarInput
@@ -90,7 +101,6 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
           inputCode={unableSeminar ? '' : inputCode}
         />
       </div>
-
       <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
           <div>출석</div>
@@ -119,7 +129,9 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
         {attendStatus === 'ATTENDANCE' || attendStatus === 'LATENESS' || attendStatus === 'ABSENCE' ? (
           <SeminarAttendStatus status={attendStatus} />
         ) : (
-          <FilledButton onClick={handleAttendButtonClick}>출석</FilledButton>
+          <FilledButton onClick={handleAttendButtonClick} disabled={unableSeminar}>
+            출석
+          </FilledButton>
         )}
       </div>
     </div>

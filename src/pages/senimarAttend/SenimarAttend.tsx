@@ -55,10 +55,6 @@ const SeminarAttend = () => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('출석시도횟수')) localStorage.setItem('출석시도횟수', '0');
-  }, []);
-
-  useEffect(() => {
     if (isGetRecentlyDoneSeminarIdSuccess && isGetRecentlyUpcomingSeminarIdsSuccess) {
       setVisibleSeminars([
         { order: 1, id: twoUpcomingSeminarIds.at(1)?.id },
