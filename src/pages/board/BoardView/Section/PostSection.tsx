@@ -71,11 +71,9 @@ const PostSection = ({ postId, post, password }: PostSectionProps) => {
           </Button>
           {fileOpen && (
             <div className="mb-10 mt-2 space-y-2 text-pointBlue">
-              {post.categoryName === '시험게시판' && (
-                <Typography variant="small" className="block text-subOrange">
-                  *시험 게시판 파일 다운로드를 위해서는 댓글 작성이 필요합니다.
-                </Typography>
-              )}
+              <Typography variant="small" className="block text-subOrange">
+                *파일 다운로드를 위해서는 댓글 작성이 필요합니다.
+              </Typography>
               {files && <FileViewer files={files} onRowClick={handleDownloadFileClick} />}
             </div>
           )}
