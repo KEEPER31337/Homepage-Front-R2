@@ -43,7 +43,7 @@ interface MemberBoardTableProps {
 
 const MemberBoardTable = ({ memberId }: MemberBoardTableProps) => {
   const navigate = useNavigate();
-  const { page, getRowNumber } = usePagination('myBoardPage');
+  const { page, getRowNumber } = usePagination(`memberBoardPage_${memberId}`);
 
   const { data: memberBoard } = useGetMemberPostsQuery({ page, size: rowCnt, memberId });
 

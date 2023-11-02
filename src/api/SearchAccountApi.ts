@@ -9,7 +9,7 @@ const useSearchIdMutation = () => {
 
 const useRequestAuthCodeMutation = () => {
   const fetcher = ({ loginId, email }: { loginId: string; email: string }) =>
-    axios.post('/sign-in/send-password-change-auth-code', { loginId, email });
+    axios.post('/sign-in/send-password-change-auth-code', { loginId, email }).then(({ data }) => data);
 
   return useMutation(fetcher);
 };
