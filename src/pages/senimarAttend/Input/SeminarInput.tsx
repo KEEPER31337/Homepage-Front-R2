@@ -25,7 +25,7 @@ const SeminarInput = ({ disabled, helperText, setInputCode, inputCode }: Seminar
         classNameCodeWrapper="w-[42px] border-b border-pointBlue text-white bg-subBlack text-3xl text-center"
       />
 
-      <div className="my-[4px] flex items-center justify-center text-small text-red-500">{helperText}</div>
+      <div className="mt-2 flex items-center justify-center text-small text-red-500">{helperText}</div>
     </div>
   );
 };
