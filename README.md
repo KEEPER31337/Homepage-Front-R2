@@ -96,26 +96,23 @@
 ## 💡 시작 가이드
 
 - nvm 설정
-    
-    ```
-    nvm install
-    nvm use
-    ```
-    
+  ```
+  nvm install
+  nvm use
+  ```
 - root path에 `.env` 파일 추가
-    
-    ```
-    REACT_APP_API_URL={{ apiUrl }}
-    HTTPS=true
-    ```
-    
+  ```
+  REACT_APP_API_URL={{ apiUrl }}
+  HTTPS=true
+  ```
 - 필요한 패키지 설치 및 실행
-    
-    ```
-    npm install
-    npm start
-    ```
+  ```
+  npm install
+  npm start
+  ```
 
 ## 🖥️ 화면 구성
 
 ## 💎 라이센스
+
+해당 프로젝트는 [MIT LICENSE](https://github.com/KEEPER31337/Homepage-Front-R2/blob/develop/LICENSE) 를 따릅니다.
