@@ -14,7 +14,9 @@
 >
 > 개발 서버 주소 : https://dev.keeper.or.kr/
 
-## 🕹️ 주담당자
+## 👨‍💻 구성원
+
+### 🕹️ 주담당자
 
 <table>
   <tr>
@@ -31,7 +33,7 @@
   </tr>
 </table>
 
-## 🛠️ 유지 보수 담당자
+### 🛠️ 유지 보수 담당자
 
 <table>
   <tr>
@@ -62,6 +64,6 @@
   </tr>
 </table>
 
-## 👨‍👨‍👦‍👦 기여자
+### 👨‍👨‍👦‍👦 기여자
 
 [![contributors](https://contrib.rocks/image?repo=KEEPER31337/Homepage-Front-R2)](https://github.com/KEEPER31337/Homepage-Front-R2/graphs/contributors)
