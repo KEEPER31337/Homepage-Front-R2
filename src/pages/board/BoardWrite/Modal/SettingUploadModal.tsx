@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Checkbox, FormControlLabel, FormGroup, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { UploadPostSettings, PostInfo } from '@api/dto';
-import { REQUIRE_ERROR_MSG } from '@constants/helperText';
+import { COMMON } from '@constants/helperText';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
@@ -118,10 +118,10 @@ const SettingUploadModal = ({
               defaultValue=""
               control={control}
               rules={{
-                required: REQUIRE_ERROR_MSG,
+                required: COMMON.error.required,
                 maxLength: {
                   value: POST_PASSWORD_MAX_LENGTH,
-                  message: `비밀번호는 최대 ${POST_PASSWORD_MAX_LENGTH}글자 입력이 가능합니다.`,
+                  message: COMMON.error.overMaxLen(POST_PASSWORD_MAX_LENGTH),
                 },
               }}
               render={({ field, fieldState: { error } }) => {

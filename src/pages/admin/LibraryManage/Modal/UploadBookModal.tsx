@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Tooltip } from '@mui/material';
 import { ManageBookInfo } from '@api/dto';
 import { useAddBookMutation, useEditBookInfoMutation, useEditBookThumbnailMutation } from '@api/libraryManageApi';
+import { COMMON } from '@constants/helperText';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
@@ -40,19 +41,19 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
     const authorTrim = author.trim();
 
     if (titleTrim === '') {
-      setTitleHelperText('도서명을 입력해주세요');
+      setTitleHelperText(COMMON.error.required);
       setIsInvalidTitle(true);
     }
     if (authorTrim === '') {
-      setAuthorHelperText('저자명을 입력해주세요');
+      setAuthorHelperText(COMMON.error.required);
       setIsInvalidAuthor(true);
     }
     if (titleTrim.length > 200) {
-      setTitleHelperText('도서명은 200자 이내여야 합니다.');
+      setTitleHelperText(COMMON.error.overMaxLen(200));
       setIsInvalidTitle(true);
     }
     if (authorTrim.length > 30) {
-      setAuthorHelperText('저자명은 30자 이내여야 합니다.');
+      setAuthorHelperText(COMMON.error.overMaxLen(30));
       setIsInvalidAuthor(true);
     }
 

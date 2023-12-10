@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Divider } from '@mui/material';
 import { useChangePasswordMutation } from '@api/SearchAccountApi';
-import { PASSWORD_ERROR_MSG } from '@constants/helperText';
+import { PASSWORD_MSG } from '@constants/helperText';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
 
@@ -46,11 +46,11 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
     const { name, value } = e.currentTarget;
     if (name === 'newPassword') {
-      if (value && !passwordRegex.test(value)) setPasswordErrorMsg(PASSWORD_ERROR_MSG);
+      if (value && !passwordRegex.test(value)) setPasswordErrorMsg(PASSWORD_MSG.error.formatError);
     }
     if (name === 'confirmPassword') {
       if (!(value.length > 0 && isSame)) {
-        setConfirmPasswordErrorMsg('비밀번호가 일치하지 않습니다.');
+        setConfirmPasswordErrorMsg(PASSWORD_MSG.error.incorrect);
       }
     }
   };
@@ -113,7 +113,7 @@ const SearchPWSecondStep = ({ setCurrentStep, firstForm }: SearchPWSecondStepPro
             onChange={handleChange}
             onBlur={handleBlur}
             error={Boolean(confirmPasswordErrorMsg)}
-            helperText={confirmPasswordErrorMsg || (isSame && '비밀번호가 일치합니다.')}
+            helperText={confirmPasswordErrorMsg || (isSame && PASSWORD_MSG.success.correct)}
           />
         </div>
       </div>
