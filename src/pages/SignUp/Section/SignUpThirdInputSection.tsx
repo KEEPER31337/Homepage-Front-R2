@@ -6,7 +6,7 @@ import { Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useRecoilValue } from 'recoil';
 import { useCheckEmailDuplicationQuery, useEmailAuthMutation, useSignUpMutation } from '@api/signUpApi';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { REQUIRE_ERROR_MSG } from '@constants/helperText';
 import { emailRegex } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';

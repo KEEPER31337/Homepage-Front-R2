@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Checkbox, FormControlLabel, FormGroup, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { UploadPostSettings, PostInfo } from '@api/dto';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { REQUIRE_ERROR_MSG } from '@constants/helperText';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';

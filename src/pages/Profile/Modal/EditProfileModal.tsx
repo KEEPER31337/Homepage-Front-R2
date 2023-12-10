@@ -3,7 +3,7 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import { Stack } from '@mui/material';
 import { ProfileInfo } from '@api/dto';
 import { useEditProfileMutation, useEditProfileThumbnailMutation } from '@api/memberApi';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { REQUIRE_ERROR_MSG } from '@constants/helperText';
 import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';

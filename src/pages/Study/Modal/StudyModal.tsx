@@ -14,7 +14,7 @@ import {
   useEditStudyThumbnailMutation,
   useGetStudyQuery,
 } from '@api/studyApi';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { REQUIRE_ERROR_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import AutoComplete, { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import StandardInput from '@components/Input/StandardInput';

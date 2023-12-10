@@ -13,7 +13,7 @@ import {
   useEditPostThumbnailMutation,
   useUploadPostMutation,
 } from '@api/postApi';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { REQUIRE_ERROR_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';

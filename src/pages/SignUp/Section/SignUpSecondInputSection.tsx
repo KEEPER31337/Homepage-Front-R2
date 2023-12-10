@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
-import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/helperText';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
