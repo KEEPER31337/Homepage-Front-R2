@@ -4,7 +4,7 @@ import { InputLabel } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useGetProfileQuery } from '@api/memberApi';
 import { useSendPointMutation } from '@api/pointApi';
-import { REQUIRE_ERROR_MSG } from '@constants/helperText';
+import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -76,7 +76,7 @@ const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
                 },
                 pattern: {
                   value: /^[0-9]+$/,
-                  message: '숫자만 입력 가능합니다.',
+                  message: NUMBER_ERROR_MSG,
                 },
               }}
               render={({ field, fieldState: { error } }) => (
