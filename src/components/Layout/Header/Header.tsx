@@ -4,7 +4,7 @@ import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 import { VscAccount, VscGithubInverted, VscThreeBars } from 'react-icons/vsc';
 import { useRecoilValue } from 'recoil';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import { HEADER_HEIGHT } from '@constants/keeperTheme';
+import { HEADER_HEIGHT, KEEPER_COLOR } from '@constants/keeperTheme';
 import memberState from '@recoil/member.recoil';
 import FilledButton from '@components/Button/FilledButton';
 import AccountMenu from './Menu/AccountMenu';
@@ -57,10 +57,10 @@ const Header = ({ setMobileSidebarOpen }: HeaderProps) => {
                 <Typography className="h-6 w-6 rounded-full bg-pointBlue text-mainBlack">W</Typography>
               </IconButton>
               <IconButton target="_blank" href="https://github.com/KEEPER31337">
-                <VscGithubInverted fill="#4CEEF9" />
+                <VscGithubInverted fill={KEEPER_COLOR.pointBlue} />
               </IconButton>
               <IconButton edge="end" onClick={handleAccountIconClick}>
-                <VscAccount fill="#4CEEF9" />
+                <VscAccount fill={KEEPER_COLOR.pointBlue} />
               </IconButton>
             </div>
             <AccountMenu userInfo={userInfo} anchorEl={anchorEl} open={profileMenuOpen} onClose={handleMenuClose} />
