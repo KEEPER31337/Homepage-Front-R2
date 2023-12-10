@@ -5,11 +5,11 @@ const muiTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#4CEEF9',
+      main: KEEPER_COLOR.pointBlue,
     },
     secondary: {
-      main: '#26262C',
-      contrastText: '#4CEEF9',
+      main: KEEPER_COLOR.subBlack,
+      contrastText: KEEPER_COLOR.pointBlue,
     },
   },
   typography: {
