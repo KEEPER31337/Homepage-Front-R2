@@ -13,6 +13,7 @@ import EmailAuthInput from '@components/Input/EmailAuthInput';
 import TimerInput from '@components/Input/TimerInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import signUpPageState from '../SignUp.recoil';
+import { EMAIL } from '@constants/apiResponseMsg';
 
 const SignUpThirdInputSection = () => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
@@ -73,7 +74,7 @@ const SignUpThirdInputSection = () => {
     if (!checkEmailDuplicationSuccess) return;
 
     if (isEmailDuplicate.duplicate === true) {
-      setError('email', { message: '이미 존재하는 이메일입니다.' });
+      setError('email', { message: EMAIL.error.existingEmail });
       setIsEmailSent(false);
       return;
     }

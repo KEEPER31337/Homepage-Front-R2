@@ -10,6 +10,7 @@ import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
 import signUpPageState from '../SignUp.recoil';
+import { ID } from '@constants/apiResponseMsg';
 
 interface SignUpFirstInputSectionProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<1 | 2 | 3>>;
@@ -50,7 +51,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
     if (!isLoginIdDuplicate) return;
 
     if (isLoginIdDuplicate.duplicate === true) {
-      setError('loginId', { message: '이미 존재하는 아이디입니다.' });
+      setError('loginId', { message: ID.errror.existingId });
       setCheckLoginIdDuplicateEnabled(false);
     }
   }, [isLoginIdDuplicate]);

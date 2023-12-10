@@ -11,6 +11,7 @@ import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 import attendCountState from '../seminarAttend.recoil';
+import { MEMBER_CARD } from '@constants/apiResponseMsg';
 
 interface ErrorResponse {
   message: string;
@@ -51,10 +52,10 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
 
           if (remainAttendCount <= 0) {
             setExcessModalOpen(true);
-            setIncorrectCodeMsg('남은 제출 횟수가 없습니다.');
+            setIncorrectCodeMsg(MEMBER_CARD.error.noSubmissionsLeft);
             return;
           }
-          setIncorrectCodeMsg(`출석코드가 틀렸습니다. (남은 제출횟수 ${remainAttendCount}회)`);
+          setIncorrectCodeMsg(MEMBER_CARD.error.invalidAttendanceWithCount(remainAttendCount));
           return;
         }
         const errorMessage = axiosError?.response?.data?.message;

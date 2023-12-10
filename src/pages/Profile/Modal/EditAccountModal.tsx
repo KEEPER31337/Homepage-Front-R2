@@ -23,6 +23,7 @@ import EmailAuthInput from '@components/Input/EmailAuthInput';
 import StandardInput from '@components/Input/StandardInput';
 import TimerInput from '@components/Input/TimerInput';
 import ConfirmModal from '@components/Modal/ConfirmModal';
+import { EMAIL } from '@constants/apiResponseMsg';
 
 const EditEmailSection = () => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
@@ -57,7 +58,7 @@ const EditEmailSection = () => {
       { email, auth, password },
       {
         onSuccess: () => {
-          toast.success('이메일 변경 성공하였습니다.');
+          toast.success(EMAIL.success.changedSuccess);
           setIsEmailSent(false);
           reset();
         },
@@ -69,7 +70,7 @@ const EditEmailSection = () => {
     if (!checkEmailDuplicationSuccess) return;
 
     if (isEmailDuplicate.duplicate === true) {
-      setError('email', { message: '이미 존재하는 이메일입니다.' });
+      setError('email', { message: EMAIL.error.existingEmail });
       setIsEmailSent(false);
       return;
     }
