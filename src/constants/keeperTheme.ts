@@ -5,7 +5,8 @@ export const KEEPER_COLOR = {
   pointBlue: '#4CEEF9',
   subGray: '#575E69',
   subRed: '#EF4444',
-};
+  subOrange: '#FFA500',
+} as const;
 
 export const SIDEBAR_WIDTH = 240;
-export const HEADER_HEIGHT = { xs: 56, sm: 66 };
+export const HEADER_HEIGHT = { xs: 56, sm: 66 } as const;
