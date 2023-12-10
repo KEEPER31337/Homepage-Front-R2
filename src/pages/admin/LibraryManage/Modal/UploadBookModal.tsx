@@ -47,11 +47,11 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
       setAuthorHelperText('저자명을 입력해주세요');
       setIsInvalidAuthor(true);
     }
-    if (titleTrim.length > 30) {
+    if (titleTrim.length > 200) {
       setTitleHelperText('도서명은 200자 이내여야 합니다.');
       setIsInvalidTitle(true);
     }
-    if (authorTrim.length > 20) {
+    if (authorTrim.length > 30) {
       setAuthorHelperText('저자명은 30자 이내여야 합니다.');
       setIsInvalidAuthor(true);
     }
