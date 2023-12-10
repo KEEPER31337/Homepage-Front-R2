@@ -5,6 +5,7 @@ export const KEEPER_COLOR = {
   pointBlue: '#4CEEF9',
   subGray: '#575E69',
   subRed: '#EF4444',
+  subOrange: '#FFA500',
 };
 
 export const SIDEBAR_WIDTH = 240;
