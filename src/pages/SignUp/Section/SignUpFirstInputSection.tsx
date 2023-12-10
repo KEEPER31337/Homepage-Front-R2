@@ -6,6 +6,7 @@ import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
+import { REQUIRE_ERROR_MSG } from '@constants/helperText';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
@@ -71,7 +72,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         defaultValue=""
         control={control}
         rules={{
-          required: '필수 정보입니다.',
+          required: REQUIRE_ERROR_MSG,
           minLength: {
             value: 4,
             message: '4글자 이상 입력해주세요.',
@@ -107,7 +108,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         defaultValue=""
         control={control}
         rules={{
-          required: '필수 정보입니다.',
+          required: REQUIRE_ERROR_MSG,
           minLength: {
             value: 8,
             message: '8글자 이상 입력해주세요.',
@@ -135,7 +136,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         defaultValue=""
         control={control}
         rules={{
-          required: '필수 정보입니다.',
+          required: REQUIRE_ERROR_MSG,
           validate: {
             confirmMatchPassward: (value) => {
               if (getValues('password') !== value) return '비밀번호가 일치하지 않습니다.';

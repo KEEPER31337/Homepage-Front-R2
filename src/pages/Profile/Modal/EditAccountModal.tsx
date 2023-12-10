@@ -97,7 +97,7 @@ const EditEmailSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: '필수 정보입니다.',
+            required: REQUIRE_ERROR_MSG,
           }}
           render={({ field, fieldState: { error } }) => {
             return (
@@ -206,7 +206,7 @@ const EditPasswordSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: '필수 정보입니다.',
+            required: REQUIRE_ERROR_MSG,
           }}
           render={({ field, fieldState: { error } }) => {
             return (
@@ -226,7 +226,7 @@ const EditPasswordSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: '필수 정보입니다.',
+            required: REQUIRE_ERROR_MSG,
             minLength: {
               value: 8,
               message: '8글자 이상 입력해주세요.',
@@ -254,7 +254,7 @@ const EditPasswordSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: '필수 정보입니다.',
+            required: REQUIRE_ERROR_MSG,
             validate: {
               confirmMatchPassward: (value) => {
                 if (getValues('newPassword') !== value) return '비밀번호가 일치하지 않습니다.';
@@ -348,7 +348,7 @@ const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
             defaultValue=""
             control={control}
             rules={{
-              required: '필수 정보입니다.',
+              required: REQUIRE_ERROR_MSG,
             }}
             render={({ field, fieldState: { error } }) => {
               return (
