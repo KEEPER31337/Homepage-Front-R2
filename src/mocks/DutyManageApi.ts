@@ -6,6 +6,7 @@ import ITManagerBadge from '@assets/dutyManage/badge_5_it_manager.gif';
 import clerkBadge from '@assets/dutyManage/badge_6_clerk.gif';
 import administratorBadge from '@assets/dutyManage/badge_7_administrator.gif';
 import librarianBadge from '@assets/dutyManage/badge_8_librarian.gif';
+import { MEMBER_ROLE } from '@constants/member';
 
 interface RoleDutyList {
   jobName: string;
@@ -82,14 +83,16 @@ const roleDutyListInfo: RoleDutyList[] = [
 ];
 
 const roles = [
-  { name: 'ROLE_회장', img: chairmanBadge },
-  { name: 'ROLE_부회장', img: viceChairmanBadge },
-  { name: 'ROLE_대외부장', img: externalManagerBadge },
-  { name: 'ROLE_학술부장', img: studyManagerBadge },
-  { name: 'ROLE_전산관리자', img: ITManagerBadge },
-  { name: 'ROLE_서기', img: clerkBadge },
-  { name: 'ROLE_총무', img: administratorBadge },
-  { name: 'ROLE_사서', img: librarianBadge },
+  { name: MEMBER_ROLE.회장, img: chairmanBadge },
+  { name: MEMBER_ROLE.부회장, img: viceChairmanBadge },
+  { name: MEMBER_ROLE.대외부장, img: externalManagerBadge },
+  { name: MEMBER_ROLE.학술부장, img: studyManagerBadge },
+  { name: MEMBER_ROLE.FRONT_전산관리자, img: ITManagerBadge },
+  { name: MEMBER_ROLE.BACK_전산관리자, img: ITManagerBadge },
+  { name: MEMBER_ROLE.INFRA_전산관리자, img: ITManagerBadge },
+  { name: MEMBER_ROLE.서기, img: clerkBadge },
+  { name: MEMBER_ROLE.총무, img: administratorBadge },
+  { name: MEMBER_ROLE.사서, img: librarianBadge },
 ];
 
 export type JobInfoType = {

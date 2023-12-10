@@ -1,21 +1,21 @@
 import React from 'react';
+import { MEMBER_ROLE } from '@constants/member';
 import PageTitle from '@components/Typography/PageTitle';
-
 import DutyProfileTooltip from './Tooltip/DutyProfileTooltip';
 
 const jobNameArray = [
-  { key: 1, jobName: 'ROLE_학술부장' },
-  { key: 2, jobName: 'ROLE_대외부장' },
-  { key: 3, jobName: 'ROLE_전산관리자' },
-  { key: 4, jobName: 'ROLE_서기' },
-  { key: 5, jobName: 'ROLE_사서' },
-  { key: 6, jobName: 'ROLE_총무' },
+  { key: 1, jobName: MEMBER_ROLE.학술부장 },
+  { key: 2, jobName: MEMBER_ROLE.대외부장 },
+  { key: 3, jobName: MEMBER_ROLE.전산관리자 },
+  { key: 4, jobName: MEMBER_ROLE.서기 },
+  { key: 5, jobName: MEMBER_ROLE.사서 },
+  { key: 6, jobName: MEMBER_ROLE.총무 },
 ];
 
 const ITjobNameArray = [
-  { key: 1, jobName: 'ROLE_FRONT_전산관리자' },
-  { key: 2, jobName: 'ROLE_BACK_전산관리자' },
-  { key: 3, jobName: 'ROLE_INFRA_전산관리자' },
+  { key: 1, jobName: MEMBER_ROLE.FRONT_전산관리자 },
+  { key: 2, jobName: MEMBER_ROLE.BACK_전산관리자 },
+  { key: 3, jobName: MEMBER_ROLE.INFRA_전산관리자 },
 ];
 
 const MiddleBar = () => {
@@ -66,7 +66,7 @@ const ViceChairman = () => {
           </div>
         </div>
         <div className="absolute left-[40%] translate-y-2">
-          <DutyProfileTooltip jobName="ROLE_부회장" />
+          <DutyProfileTooltip jobName={MEMBER_ROLE.부회장} />
         </div>
       </div>
     </div>
@@ -78,7 +78,7 @@ const DutyManage = () => {
     <div>
       <PageTitle>직책관리</PageTitle>
       <div className="flex flex-col items-center">
-        <DutyProfileTooltip jobName="ROLE_회장" />
+        <DutyProfileTooltip jobName={MEMBER_ROLE.회장} />
         <ViceChairman />
 
         <MiddleBar />

@@ -9,18 +9,19 @@ import librarianBadge from '@assets/dutyManage/badge_8_librarian.gif';
 import graduateBadge from '@assets/profileBadge/profile_badge_state_graduate.gif';
 import regularBadge from '@assets/profileBadge/profile_badge_state_regular.gif';
 import sleepBadge from '@assets/profileBadge/profile_badge_state_sleep.gif';
+import { MEMBER_ROLE } from './member';
 
 const roles = [
-  { name: 'ROLE_회장', img: chairmanBadge },
-  { name: 'ROLE_부회장', img: viceChairmanBadge },
-  { name: 'ROLE_서기', img: clerkBadge },
-  { name: 'ROLE_총무', img: administratorBadge },
-  { name: 'ROLE_사서', img: librarianBadge },
-  { name: 'ROLE_학술부장', img: studyManagerBadge },
-  { name: 'ROLE_대외부장', img: externalManagerBadge },
-  { name: 'ROLE_FRONT_전산관리자', img: ITManagerBadge },
-  { name: 'ROLE_BACK_전산관리자', img: ITManagerBadge },
-  { name: 'ROLE_INFRA_전산관리자', img: ITManagerBadge },
+  { name: MEMBER_ROLE.회장, img: chairmanBadge },
+  { name: MEMBER_ROLE.부회장, img: viceChairmanBadge },
+  { name: MEMBER_ROLE.서기, img: clerkBadge },
+  { name: MEMBER_ROLE.총무, img: administratorBadge },
+  { name: MEMBER_ROLE.사서, img: librarianBadge },
+  { name: MEMBER_ROLE.학술부장, img: studyManagerBadge },
+  { name: MEMBER_ROLE.대외부장, img: externalManagerBadge },
+  { name: MEMBER_ROLE.FRONT_전산관리자, img: ITManagerBadge },
+  { name: MEMBER_ROLE.BACK_전산관리자, img: ITManagerBadge },
+  { name: MEMBER_ROLE.INFRA_전산관리자, img: ITManagerBadge },
 ];
 
 const types: { [key: string]: string } = { 정회원: regularBadge, 졸업: graduateBadge, 휴면회원: sleepBadge };

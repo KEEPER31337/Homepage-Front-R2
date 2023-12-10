@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { BookListSearch } from '@api/dto';
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
 import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQuery } from '@api/libraryApi';
+import { MEMBER_ROLE } from '@constants/member';
 import usePagination from '@hooks/usePagination';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
 import PageTitle from '@components/Typography/PageTitle';
@@ -28,7 +29,7 @@ const Library = () => {
   const { data: executiveInfos } = useGetExecutiveInfoQuery();
   const { mutate: RequestBorrowBook } = useRequestBorrowBookMutation();
 
-  const librarian = executiveInfos?.find((role) => role.jobName === 'ROLE_사서')?.realName || '';
+  const librarian = executiveInfos?.find((role) => role.jobName === MEMBER_ROLE.사서)?.realName || '';
 
   const handleRequestBook = (bookId: number) => {
     RequestBorrowBook(bookId, {

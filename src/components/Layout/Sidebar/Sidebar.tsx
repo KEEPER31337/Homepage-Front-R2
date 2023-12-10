@@ -4,6 +4,7 @@ import { VscBug } from 'react-icons/vsc';
 import { Role } from '@api/dto';
 import CATEGORIES from '@constants/category';
 import { KEEPER_COLOR, SIDEBAR_WIDTH } from '@constants/keeperTheme';
+import { MEMBER_ROLE } from '@constants/member';
 import useCheckAuth from '@hooks/useCheckAuth';
 import CategoryNav from '@components/Navigation/CategoryNav';
 
@@ -13,7 +14,13 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ mobileSidebarOpen, setMobileSidebarOpen }: SidebarProps) => {
-  const executiveRoles: Role[] = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기', 'ROLE_총무', 'ROLE_사서'];
+  const executiveRoles: Role[] = [
+    MEMBER_ROLE.회장,
+    MEMBER_ROLE.부회장,
+    MEMBER_ROLE.서기,
+    MEMBER_ROLE.총무,
+    MEMBER_ROLE.사서,
+  ];
   const { checkIncludeOneOfAuths } = useCheckAuth();
 
   const theme = useTheme();

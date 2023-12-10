@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { VscSearch } from 'react-icons/vsc';
+import { MEMBER_ROLE } from '@constants/member';
 import muiTheme from '@constants/muiTheme';
 import { roleDutyListInfo, roles } from '@mocks/DutyManageApi';
 
@@ -50,12 +51,7 @@ const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [modalOpen, toggleModalOpen] = useReducer((prev) => !prev, false);
 
-  let badgeImage;
-  if (jobName.search('전산관리자') !== -1) {
-    badgeImage = roles.find((role) => role.name === 'ROLE_전산관리자')?.img;
-  } else {
-    badgeImage = roles.find((role) => role.name === jobName)?.img;
-  }
+  const badgeImage = roles.find((role) => role.name === jobName)?.img;
 
   return (
     <div className="relative z-10">
@@ -65,7 +61,7 @@ const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
         setTooltipOpen={setTooltipOpen}
         toggleModalOpen={toggleModalOpen}
       />
-      {jobName !== 'ROLE_전산관리자' ? (
+      {jobName !== MEMBER_ROLE.전산관리자 && (
         <>
           <DescriptionRoleDutyTooltip
             title={tooltipContent(jobName)}
@@ -85,7 +81,7 @@ const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
             badgeImage={badgeImage}
           />
         </>
-      ) : null}
+      )}
     </div>
   );
 };
