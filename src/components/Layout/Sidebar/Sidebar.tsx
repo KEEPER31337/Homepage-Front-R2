@@ -3,7 +3,7 @@ import { Button, Drawer, Toolbar, useMediaQuery, useTheme } from '@mui/material'
 import { VscBug } from 'react-icons/vsc';
 import { Role } from '@api/dto';
 import CATEGORIES from '@constants/category';
-import { KEEPER_COLOR, SIDEBAR_WIDTH } from '@constants/keeperTheme';
+import { KEEPER_COLOR, KEEPER_WIDTH } from '@constants/keeperTheme';
 import useCheckAuth from '@hooks/useCheckAuth';
 import CategoryNav from '@components/Navigation/CategoryNav';
 
@@ -26,7 +26,7 @@ const Sidebar = ({ mobileSidebarOpen, setMobileSidebarOpen }: SidebarProps) => {
       open={mobileSidebarOpen}
       onClose={() => setMobileSidebarOpen(false)}
       sx={{
-        [`& .MuiDrawer-paper`]: { width: SIDEBAR_WIDTH, bgcolor: KEEPER_COLOR.mainBlack },
+        [`& .MuiDrawer-paper`]: { width: KEEPER_WIDTH.sidebar, bgcolor: KEEPER_COLOR.mainBlack },
       }}
     >
       <Toolbar />

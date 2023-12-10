@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import { KEEPER_COLOR } from './src/constants/keeperTheme';
+import { KEEPER_HEIGHT, KEEPER_COLOR, KEEPER_WIDTH } from './src/constants/keeperTheme';
 
 export const content = ['./src/**/*.{js,jsx,ts,tsx}'];
 export const theme = {
@@ -24,14 +24,14 @@ export const theme = {
       small: '10px',
     },
     spacing: {
-      header: '66px',
-      sidebar: '240px',
+      header: KEEPER_HEIGHT.header.sm,
+      sidebar: KEEPER_WIDTH.sidebar,
     },
     maxWidth: {
-      container: '1080px',
+      container: KEEPER_WIDTH.container,
     },
     minWidth: {
-      sidebar: '240px',
+      sidebar: KEEPER_WIDTH.sidebar,
     },
     backgroundImage: {
       galaxy: "url('/public/img/background_galaxy.png')",

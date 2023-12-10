@@ -4,7 +4,7 @@ import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 import { VscAccount, VscGithubInverted, VscThreeBars } from 'react-icons/vsc';
 import { useRecoilValue } from 'recoil';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
-import { HEADER_HEIGHT, KEEPER_COLOR } from '@constants/keeperTheme';
+import { KEEPER_HEIGHT, KEEPER_COLOR } from '@constants/keeperTheme';
 import memberState from '@recoil/member.recoil';
 import FilledButton from '@components/Button/FilledButton';
 import AccountMenu from './Menu/AccountMenu';
@@ -33,7 +33,7 @@ const Header = ({ setMobileSidebarOpen }: HeaderProps) => {
     <AppBar
       position="fixed"
       className="h-14 !bg-mainBlack !bg-none sm:h-header sm:border-b sm:border-pointBlue"
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, height: HEADER_HEIGHT }}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, height: KEEPER_HEIGHT.header }}
     >
       <Toolbar className="flex items-center justify-between">
         <div className="flex items-center">

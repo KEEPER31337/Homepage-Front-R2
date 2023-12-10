@@ -8,5 +8,11 @@ export const KEEPER_COLOR = {
   subOrange: '#FFA500',
 } as const;
 
-export const SIDEBAR_WIDTH = 240;
-export const HEADER_HEIGHT = { xs: 56, sm: 66 } as const;
+export const KEEPER_WIDTH = {
+  sidebar: 240,
+  container: 1080,
+} as const;
+
+export const KEEPER_HEIGHT = {
+  header: { xs: 56, sm: 66 },
+} as const;
