@@ -52,7 +52,7 @@ const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
   const [modalOpen, toggleModalOpen] = useReducer((prev) => !prev, false);
 
   const badgeImage = roles.find((role) => role.name === jobName)?.img;
-
+  // NOTE jobName으로는 "ROLE_전산관리자" 내려오지만, roles에는 존재하지 않습니다! 세부적인 전산관리자(프론트, 백, 인프라)만 존재합니다
   return (
     <div className="relative z-10">
       <DutyProfileButton
