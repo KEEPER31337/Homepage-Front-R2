@@ -14,7 +14,7 @@ import {
   useWithdrawalMutation,
 } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
-import { REQUIRE_ERROR_MSG } from '@constants/helperText';
+import { MIN_LENGTH_ERROR_MSG, PASSWORD_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import { emailRegex } from '@utils/validateEmail';
 import FilledButton from '@components/Button/FilledButton';
@@ -229,11 +229,11 @@ const EditPasswordSection = () => {
             required: REQUIRE_ERROR_MSG,
             minLength: {
               value: 8,
-              message: '8글자 이상 입력해주세요.',
+              message: MIN_LENGTH_ERROR_MSG(8),
             },
             pattern: {
               value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,
-              message: '8~20자 영문과 숫자를 사용하세요.',
+              message: PASSWORD_ERROR_MSG,
             },
           }}
           render={({ field, fieldState: { error } }) => {

@@ -6,7 +6,7 @@ import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
-import { REQUIRE_ERROR_MSG } from '@constants/helperText';
+import { MIN_LENGTH_ERROR_MSG, PASSWORD_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/helperText';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
@@ -75,7 +75,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
           required: REQUIRE_ERROR_MSG,
           minLength: {
             value: 4,
-            message: '4글자 이상 입력해주세요.',
+            message: MIN_LENGTH_ERROR_MSG(4),
           },
           pattern: {
             value: /^[a-zA-Z0-9_]{4,12}$/,
@@ -111,11 +111,11 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
           required: REQUIRE_ERROR_MSG,
           minLength: {
             value: 8,
-            message: '8글자 이상 입력해주세요.',
+            message: MIN_LENGTH_ERROR_MSG(8),
           },
           pattern: {
             value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,
-            message: '8~20자 영문과 숫자를 사용하세요.',
+            message: PASSWORD_ERROR_MSG,
           },
         }}
         render={({ field, fieldState: { error } }) => {
