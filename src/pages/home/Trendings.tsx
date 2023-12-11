@@ -12,8 +12,8 @@ const Card = ({ post }: { post: TrendingPostInfo }) => {
     <Link to={`/board/view/${post.id}`} className="h-80 w-72 bg-black sm:h-[320px] sm:w-[300px]">
       <ServerImg
         alt="thumbnail"
-        className="h-44 w-full bg-[#212121]"
-        errorClassName="h-44 w-full p-14 bg-[#212121]"
+        className="h-44 w-full bg-middleBlack brightness-150"
+        errorClassName="h-44 w-full p-14 bg-middleBlack brightness-150"
         src={post.thumbnailPath}
       />
       <div className="px-5">
