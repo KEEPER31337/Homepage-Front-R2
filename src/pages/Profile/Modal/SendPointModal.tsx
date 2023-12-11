@@ -4,7 +4,7 @@ import { InputLabel } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useGetProfileQuery } from '@api/memberApi';
 import { useSendPointMutation } from '@api/pointApi';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { COMMON, SEND_POINT_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -69,14 +69,14 @@ const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
               defaultValue={1}
               control={control}
               rules={{
-                required: REQUIRE_ERROR_MSG,
+                required: COMMON.error.required,
                 max: {
                   value: profileInfo.point,
-                  message: '보유 포인트보다 많은 포인트를 보낼 수 없습니다.',
+                  message: SEND_POINT_MSG.error.overMaxValue,
                 },
                 pattern: {
                   value: /^[0-9]+$/,
-                  message: '숫자만 입력 가능합니다.',
+                  message: COMMON.error.onlyNumber,
                 },
               }}
               render={({ field, fieldState: { error } }) => (
@@ -97,10 +97,10 @@ const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
               defaultValue=""
               control={control}
               rules={{
-                required: REQUIRE_ERROR_MSG,
+                required: COMMON.error.required,
                 maxLength: {
                   value: SEND_POINT_MAX_LENGTH,
-                  message: `최대 ${SEND_POINT_MAX_LENGTH}글자 입력이 가능합니다.`,
+                  message: COMMON.error.maxLength(SEND_POINT_MAX_LENGTH),
                 },
               }}
               render={({ field, fieldState: { error } }) => (

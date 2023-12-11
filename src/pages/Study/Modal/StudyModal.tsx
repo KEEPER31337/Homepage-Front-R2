@@ -14,7 +14,7 @@ import {
   useEditStudyThumbnailMutation,
   useGetStudyQuery,
 } from '@api/studyApi';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { COMMON, STUDY_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import AutoComplete, { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import StandardInput from '@components/Input/StandardInput';
@@ -168,10 +168,10 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                 defaultValue={selectedStudyInfo?.title ?? ''}
                 control={control}
                 rules={{
-                  required: REQUIRE_ERROR_MSG,
+                  required: COMMON.error.required,
                   maxLength: {
                     value: STUDY_TITLE_MAX_LENGTH,
-                    message: `최대 ${STUDY_TITLE_MAX_LENGTH}글자 입력이 가능합니다.`,
+                    message: COMMON.error.maxLength(STUDY_TITLE_MAX_LENGTH),
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {
@@ -194,10 +194,10 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                 defaultValue={studyDetail?.information ?? ''}
                 control={control}
                 rules={{
-                  required: REQUIRE_ERROR_MSG,
+                  required: COMMON.error.required,
                   maxLength: {
                     value: STUDY_CONTENT_MAX_LENGTH,
-                    message: `최대 ${STUDY_CONTENT_MAX_LENGTH}글자 입력이 가능합니다.`,
+                    message: COMMON.error.maxLength(STUDY_CONTENT_MAX_LENGTH),
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {
@@ -265,7 +265,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                 rules={{
                   pattern: {
                     value: /^(https:\/\/github.com)/,
-                    message: `깃헙 링크만 입력이 가능합니다.`,
+                    message: STUDY_MSG.error.onlyGitLink,
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {
@@ -296,7 +296,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                 rules={{
                   pattern: {
                     value: /^(https:\/\/)/,
-                    message: `https:// 로 시작해야 합니다.`,
+                    message: COMMON.error.onlyHttps,
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {
@@ -347,7 +347,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                 rules={{
                   pattern: {
                     value: /^(https:\/\/)/,
-                    message: `https:// 로 시작해야 합니다.`,
+                    message: COMMON.error.onlyHttps,
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {

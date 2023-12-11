@@ -6,6 +6,7 @@ import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
+import { COMMON, LOGIN_ID_MSG, PASSWORD_MSG } from '@constants/helperText';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
@@ -71,14 +72,14 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         defaultValue=""
         control={control}
         rules={{
-          required: '필수 정보입니다.',
+          required: COMMON.error.required,
           minLength: {
             value: 4,
-            message: '4글자 이상 입력해주세요.',
+            message: COMMON.error.minLength(4),
           },
           pattern: {
             value: /^[a-zA-Z0-9_]{4,12}$/,
-            message: '4~12자 영어, 숫자, _ 만 가능합니다.',
+            message: LOGIN_ID_MSG.error.formatError,
           },
         }}
         render={({ field, fieldState: { error, isDirty } }) => {
@@ -107,14 +108,14 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         defaultValue=""
         control={control}
         rules={{
-          required: '필수 정보입니다.',
+          required: COMMON.error.required,
           minLength: {
             value: 8,
-            message: '8글자 이상 입력해주세요.',
+            message: COMMON.error.minLength(8),
           },
           pattern: {
             value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,
-            message: '8~20자 영문과 숫자를 사용하세요.',
+            message: PASSWORD_MSG.error.formatError,
           },
         }}
         render={({ field, fieldState: { error } }) => {
@@ -135,11 +136,11 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         defaultValue=""
         control={control}
         rules={{
-          required: '필수 정보입니다.',
+          required: COMMON.error.required,
           validate: {
             confirmMatchPassward: (value) => {
-              if (getValues('password') !== value) return '비밀번호가 일치하지 않습니다.';
-              setPasswordConfirmSuccessMsg('비밀번호가 일치합니다.');
+              if (getValues('password') !== value) return PASSWORD_MSG.error.incorrect;
+              setPasswordConfirmSuccessMsg(PASSWORD_MSG.success.correct);
               return undefined;
             },
           },
