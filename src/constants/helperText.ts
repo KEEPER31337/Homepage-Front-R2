@@ -5,7 +5,7 @@ export const COMMON = {
     onlyNumber: '숫자만 입력 가능합니다.',
     onlyHttps: 'https:// 로 시작해야 합니다.',
     minLength: (min: number) => `${min}글자 이상 입력해주세요.` as const,
-    maxLength: (max: number) => `최대 ${max}글자 입력해주세요.` as const,
+    maxLength: (max: number) => `최대 글자수 ${max}글자를 초과했습니다.` as const,
   },
 } as const;
 
@@ -53,3 +53,10 @@ export const STUDY_MSG = {
     onlyGitLink: '깃허브 링크만 입력이 가능합니다.',
   },
 } as const;
+
+export const BOARD_MSG = {
+  success: {},
+  error: {
+    requiredPassword: '작성자가 아니면 비밀번호가 필요합니다.',
+  },
+};

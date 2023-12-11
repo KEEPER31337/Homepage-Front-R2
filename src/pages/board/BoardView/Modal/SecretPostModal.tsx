@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
-import { COMMON } from '@constants/helperText';
+import { BOARD_MSG, COMMON } from '@constants/helperText';
 import { POST_PASSWORD_MAX_LENGTH } from '@pages/board/BoardWrite/Modal/SettingUploadModal';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -49,7 +49,7 @@ const SecretPostModal = ({ setPassword, setIsSecretPasswordSubmited, open, setOp
           defaultValue=""
           control={control}
           rules={{
-            required: COMMON.error.required,
+            required: BOARD_MSG.error.requiredPassword,
             maxLength: {
               value: POST_PASSWORD_MAX_LENGTH,
               message: COMMON.error.maxLength(POST_PASSWORD_MAX_LENGTH),
