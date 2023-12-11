@@ -124,7 +124,7 @@ const useEditEmailMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error(PASSWORD.error.mismatchPassword);
+        toast.error(PASSWORD.error.mismatch);
       },
     },
   });
@@ -139,7 +139,7 @@ const useEditPasswordMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error(PASSWORD.error.mismatchPassword);
+        toast.error(PASSWORD.error.mismatch);
       },
     },
   });
@@ -158,7 +158,7 @@ const useWithdrawalMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error(PASSWORD.error.mismatchPassword);
+        toast.error(PASSWORD.error.mismatch);
       },
     },
   });

@@ -5,7 +5,7 @@ export const PASSWORD = {
     changed: '비밀번호가 변경되었습니다.',
   },
   error: {
-    mismatchPassword: '현재 비밀번호가 일치하지 않습니다.',
+    mismatch: '현재 비밀번호가 일치하지 않습니다.',
   },
 } as const;
 
