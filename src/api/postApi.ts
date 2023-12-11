@@ -2,6 +2,7 @@ import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
+import { POST } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import {
   BoardPosts,
@@ -15,7 +16,6 @@ import {
   PageAndSize,
   MemberPost,
 } from './dto';
-import { POST } from '@constants/apiResponseMsg';
 
 const postKeys = {
   memberPost: (param: PageAndSize & { memberId: number }) => ['memberPost', param] as const,

@@ -6,6 +6,7 @@ import { Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useRecoilValue } from 'recoil';
 import { useCheckEmailDuplicationQuery, useEmailAuthMutation, useSignUpMutation } from '@api/signUpApi';
+import { EMAIL } from '@constants/apiResponseMessage';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import { emailRegex } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -13,7 +14,6 @@ import EmailAuthInput from '@components/Input/EmailAuthInput';
 import TimerInput from '@components/Input/TimerInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
 import signUpPageState from '../SignUp.recoil';
-import { EMAIL } from '@constants/apiResponseMsg';
 
 const SignUpThirdInputSection = () => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);

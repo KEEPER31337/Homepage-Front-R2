@@ -2,10 +2,10 @@ export const COMMON = {} as const;
 
 export const PASSWORD = {
   success: {
-    changedSuccess: '비밀번호가 변경되었습니다.',
+    changed: '비밀번호가 변경되었습니다.',
   },
   error: {
-    passwordMismatch: '현재 비밀번호가 일치하지 않습니다.',
+    mismatchPassword: '현재 비밀번호가 일치하지 않습니다.',
   },
 } as const;
 
@@ -27,7 +27,7 @@ export const SEMINAR = {
 
 export const EMAIL = {
   success: {
-    changedSuccess: '이메일 변경 성공하였습니다.',
+    changed: '이메일 변경 성공하였습니다.',
   },
   error: {
     existingEmail: '이미 존재하는 이메일입니다.',
@@ -38,20 +38,20 @@ export const MEMBER_CARD = {
   success: {},
   error: {
     noSubmissionsLeft: '남은 제출 횟수가 없습니다.',
-    invalidAttendanceWithCount: (min: number) => `출석코드가 틀렸습니다. (남은 제출횟수 ${min}회)` as const,
+    invalidAttendanceWithCount: (min: number) => `출석코드가 틀렸습니다. (남은 제출횟수 ${min}회)`,
   },
 } as const;
 
 export const ID = {
   success: {},
-  errror: {
+  error: {
     existingId: '이미 존재하는 아이디입니다.',
   },
 };
 
-export const StudentID = {
+export const STUDENT_ID = {
   success: {},
-  errror: {
+  error: {
     existingStudentId: '이미 존재하는 학번입니다.',
   },
 };

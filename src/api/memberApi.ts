@@ -1,10 +1,10 @@
 import toast from 'react-hot-toast';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { PASSWORD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import { formatGeneration } from '@utils/converter';
 import { ProfileInfo, MemberDetailInfo } from './dto';
-import { PASSWORD } from '@constants/apiResponseMsg';
 
 const memberKeys = {
   memberList: ['member', 'memberList'] as const,
@@ -124,7 +124,7 @@ const useEditEmailMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error(PASSWORD.error.passwordMismatch);
+        toast.error(PASSWORD.error.mismatchPassword);
       },
     },
   });
@@ -139,7 +139,7 @@ const useEditPasswordMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error(PASSWORD.error.passwordMismatch);
+        toast.error(PASSWORD.error.mismatchPassword);
       },
     },
   });
@@ -148,7 +148,7 @@ const useEditPasswordMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      toast.success(PASSWORD.success.changedSuccess);
+      toast.success(PASSWORD.success.changed);
     },
     onError: (err) => handleError(err, 400),
   });
@@ -158,7 +158,7 @@ const useWithdrawalMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error(PASSWORD.error.passwordMismatch);
+        toast.error(PASSWORD.error.mismatchPassword);
       },
     },
   });

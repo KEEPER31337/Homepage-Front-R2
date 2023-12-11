@@ -6,11 +6,11 @@ import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
+import { ID } from '@constants/apiResponseMessage';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
 import signUpPageState from '../SignUp.recoil';
-import { ID } from '@constants/apiResponseMsg';
 
 interface SignUpFirstInputSectionProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<1 | 2 | 3>>;
@@ -51,7 +51,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
     if (!isLoginIdDuplicate) return;
 
     if (isLoginIdDuplicate.duplicate === true) {
-      setError('loginId', { message: ID.errror.existingId });
+      setError('loginId', { message: ID.error.existingId });
       setCheckLoginIdDuplicateEnabled(false);
     }
   }, [isLoginIdDuplicate]);

@@ -5,13 +5,13 @@ import { DateTime } from 'luxon';
 import { useRecoilState } from 'recoil';
 import { SeminarStatus } from '@api/dto';
 import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
+import { MEMBER_CARD } from '@constants/apiResponseMessage';
 import FilledButton from '@components/Button/FilledButton';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 import attendCountState from '../seminarAttend.recoil';
-import { MEMBER_CARD } from '@constants/apiResponseMsg';
 
 interface ErrorResponse {
   message: string;

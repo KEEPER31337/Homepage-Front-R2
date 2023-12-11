@@ -5,6 +5,7 @@ import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
+import { STUDENT_ID } from '@constants/apiResponseMessage';
 import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -57,7 +58,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
     if (!isStudentIdDuplicate) return;
 
     if (isStudentIdDuplicate.duplicate === true) {
-      setError('studentId', { message: '이미 존재하는 학번입니다.' });
+      setError('studentId', { message: STUDENT_ID.error.existingStudentId });
       setCheckStudentIdDuplicateEnabled(false);
     }
   }, [isStudentIdDuplicate]);

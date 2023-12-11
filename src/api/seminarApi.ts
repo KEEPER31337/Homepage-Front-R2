@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
+import { SEMINAR } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import { AttendSeminarListInfo, SeminarStatus, SeminarInfo, SeminarCardInfo } from './dto';
-import { SEMINAR } from '@constants/apiResponseMsg';
 
 const seminarKeys = {
   getSeminarList: ['getSeminar', 'seminarList'] as const,

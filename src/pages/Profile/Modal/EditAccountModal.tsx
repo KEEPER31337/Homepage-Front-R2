@@ -14,6 +14,7 @@ import {
   useWithdrawalMutation,
 } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
+import { EMAIL } from '@constants/apiResponseMessage';
 import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
 import memberState from '@recoil/member.recoil';
 import { emailRegex } from '@utils/validateEmail';
@@ -23,7 +24,6 @@ import EmailAuthInput from '@components/Input/EmailAuthInput';
 import StandardInput from '@components/Input/StandardInput';
 import TimerInput from '@components/Input/TimerInput';
 import ConfirmModal from '@components/Modal/ConfirmModal';
-import { EMAIL } from '@constants/apiResponseMsg';
 
 const EditEmailSection = () => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
@@ -58,7 +58,7 @@ const EditEmailSection = () => {
       { email, auth, password },
       {
         onSuccess: () => {
-          toast.success(EMAIL.success.changedSuccess);
+          toast.success(EMAIL.success.changed);
           setIsEmailSent(false);
           reset();
         },
