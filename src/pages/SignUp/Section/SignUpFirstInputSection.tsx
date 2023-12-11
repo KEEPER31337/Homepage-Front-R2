@@ -51,7 +51,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
     if (!isLoginIdDuplicate) return;
 
     if (isLoginIdDuplicate.duplicate === true) {
-      setError('loginId', { message: ID.error.existingId });
+      setError('loginId', { message: ID.error.existing });
       setCheckLoginIdDuplicateEnabled(false);
     }
   }, [isLoginIdDuplicate]);

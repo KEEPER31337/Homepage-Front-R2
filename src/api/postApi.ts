@@ -157,7 +157,7 @@ const useGetEachPostQuery = (
     },
     403: {
       40301: () => {
-        toast.error(POST.error.passwordMismatch);
+        toast.error(POST.error.mismatchPassword);
       },
       40302: () => {
         // 비밀글 여부 true로 변경
@@ -227,7 +227,7 @@ const useDownloadFileMutation = () => {
     },
     onError: (error) => {
       if ((error as AxiosError)?.response?.status === 400) {
-        toast.error(POST.error.commentRequired);
+        toast.error(POST.error.requiredComment);
       }
     },
   });

@@ -74,7 +74,7 @@ const SignUpThirdInputSection = () => {
     if (!checkEmailDuplicationSuccess) return;
 
     if (isEmailDuplicate.duplicate === true) {
-      setError('email', { message: EMAIL.error.existingEmail });
+      setError('email', { message: EMAIL.error.existing });
       setIsEmailSent(false);
       return;
     }

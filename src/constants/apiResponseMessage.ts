@@ -13,8 +13,8 @@ export const POST = {
   success: {},
   error: {
     readCondition: '게시글 열람 조건을 충족하지 않습니다.',
-    passwordMismatch: '게시글의 비밀번호가 일치하지 않습니다.',
-    commentRequired: '댓글 작성이 필요합니다.',
+    mismatchPassword: '게시글의 비밀번호가 일치하지 않습니다.',
+    requiredComment: '댓글 작성이 필요합니다.',
   },
 } as const;
 
@@ -30,7 +30,7 @@ export const EMAIL = {
     changed: '이메일 변경 성공하였습니다.',
   },
   error: {
-    existingEmail: '이미 존재하는 이메일입니다.',
+    existing: '이미 존재하는 이메일입니다.',
   },
 } as const;
 
@@ -45,13 +45,13 @@ export const MEMBER_CARD = {
 export const ID = {
   success: {},
   error: {
-    existingId: '이미 존재하는 아이디입니다.',
+    existing: '이미 존재하는 아이디입니다.',
   },
 };
 
 export const STUDENT_ID = {
   success: {},
   error: {
-    existingStudentId: '이미 존재하는 학번입니다.',
+    existing: '이미 존재하는 학번입니다.',
   },
 };

@@ -58,7 +58,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
     if (!isStudentIdDuplicate) return;
 
     if (isStudentIdDuplicate.duplicate === true) {
-      setError('studentId', { message: STUDENT_ID.error.existingStudentId });
+      setError('studentId', { message: STUDENT_ID.error.existing });
       setCheckStudentIdDuplicateEnabled(false);
     }
   }, [isStudentIdDuplicate]);
