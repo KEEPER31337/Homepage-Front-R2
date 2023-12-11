@@ -49,11 +49,11 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
       setIsInvalidAuthor(true);
     }
     if (titleTrim.length > 200) {
-      setTitleHelperText(COMMON.error.overMaxLen(200));
+      setTitleHelperText(COMMON.error.maxLength(200));
       setIsInvalidTitle(true);
     }
     if (authorTrim.length > 30) {
-      setAuthorHelperText(COMMON.error.overMaxLen(30));
+      setAuthorHelperText(COMMON.error.maxLength(30));
       setIsInvalidAuthor(true);
     }
 

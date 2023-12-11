@@ -171,7 +171,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                   required: COMMON.error.required,
                   maxLength: {
                     value: STUDY_TITLE_MAX_LENGTH,
-                    message: COMMON.error.overMaxLen(STUDY_TITLE_MAX_LENGTH),
+                    message: COMMON.error.maxLength(STUDY_TITLE_MAX_LENGTH),
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {
@@ -197,7 +197,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
                   required: COMMON.error.required,
                   maxLength: {
                     value: STUDY_CONTENT_MAX_LENGTH,
-                    message: COMMON.error.overMaxLen(STUDY_CONTENT_MAX_LENGTH),
+                    message: COMMON.error.maxLength(STUDY_CONTENT_MAX_LENGTH),
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {

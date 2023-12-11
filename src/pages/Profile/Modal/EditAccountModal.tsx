@@ -229,7 +229,7 @@ const EditPasswordSection = () => {
             required: COMMON.error.required,
             minLength: {
               value: 8,
-              message: COMMON.error.underMinLen(8),
+              message: COMMON.error.minLength(8),
             },
             pattern: {
               value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,

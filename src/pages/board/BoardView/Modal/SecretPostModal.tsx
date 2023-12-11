@@ -52,7 +52,7 @@ const SecretPostModal = ({ setPassword, setIsSecretPasswordSubmited, open, setOp
             required: COMMON.error.required,
             maxLength: {
               value: POST_PASSWORD_MAX_LENGTH,
-              message: COMMON.error.overMaxLen(POST_PASSWORD_MAX_LENGTH),
+              message: COMMON.error.maxLength(POST_PASSWORD_MAX_LENGTH),
             },
           }}
           render={({ field, fieldState: { error } }) => {

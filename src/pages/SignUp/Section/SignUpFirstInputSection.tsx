@@ -75,7 +75,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
           required: COMMON.error.required,
           minLength: {
             value: 4,
-            message: COMMON.error.underMinLen(4),
+            message: COMMON.error.minLength(4),
           },
           pattern: {
             value: /^[a-zA-Z0-9_]{4,12}$/,
@@ -111,7 +111,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
           required: COMMON.error.required,
           minLength: {
             value: 8,
-            message: COMMON.error.underMinLen(8),
+            message: COMMON.error.minLength(8),
           },
           pattern: {
             value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,

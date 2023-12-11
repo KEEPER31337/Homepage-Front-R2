@@ -175,7 +175,7 @@ const BoardWrite = () => {
               required: COMMON.error.required,
               maxLength: {
                 value: POST_TITLE_MAX_LENGTH,
-                message: COMMON.error.overMaxLen(POST_TITLE_MAX_LENGTH),
+                message: COMMON.error.maxLength(POST_TITLE_MAX_LENGTH),
               },
             }}
             render={({ field, fieldState: { error } }) => {

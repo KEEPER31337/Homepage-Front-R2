@@ -100,7 +100,7 @@ const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
                 required: COMMON.error.required,
                 maxLength: {
                   value: SEND_POINT_MAX_LENGTH,
-                  message: COMMON.error.overMaxLen(SEND_POINT_MAX_LENGTH),
+                  message: COMMON.error.maxLength(SEND_POINT_MAX_LENGTH),
                 },
               }}
               render={({ field, fieldState: { error } }) => (

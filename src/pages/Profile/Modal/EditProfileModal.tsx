@@ -68,7 +68,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
               required: COMMON.error.required,
               maxLength: {
                 value: NAME_MAX_LENGTH,
-                message: COMMON.error.overMaxLen(NAME_MAX_LENGTH),
+                message: COMMON.error.maxLength(NAME_MAX_LENGTH),
               },
               pattern: {
                 value: /^[가-힣a-zA-Z]{1,20}$/,
