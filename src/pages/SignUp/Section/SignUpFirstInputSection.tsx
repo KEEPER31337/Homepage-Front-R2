@@ -6,8 +6,8 @@ import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
-import { COMMON, LOGIN_ID_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperText';
 import { LOGIN_ID } from '@constants/apiResponseMessage';
+import { COMMON, LOGIN_ID_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperText';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
