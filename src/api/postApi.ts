@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
-import { POST } from '@constants/apiResponseMessage';
+import { BOARD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import {
   BoardPosts,
@@ -152,12 +152,12 @@ const useGetEachPostQuery = (
     400: {
       default: () => {
         // TODO 페이지 문구로 띄워주기
-        toast.error(POST.error.readCondition);
+        toast.error(BOARD.error.readCondition);
       },
     },
     403: {
       40301: () => {
-        toast.error(POST.error.mismatchPassword);
+        toast.error(BOARD.error.mismatchPassword);
       },
       40302: () => {
         // 비밀글 여부 true로 변경
@@ -227,7 +227,7 @@ const useDownloadFileMutation = () => {
     },
     onError: (error) => {
       if ((error as AxiosError)?.response?.status === 400) {
-        toast.error(POST.error.requiredComment);
+        toast.error(BOARD.error.requiredComment);
       }
     },
   });

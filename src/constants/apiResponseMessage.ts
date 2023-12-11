@@ -9,7 +9,7 @@ export const PASSWORD = {
   },
 } as const;
 
-export const POST = {
+export const BOARD = {
   success: {},
   error: {
     readCondition: '게시글 열람 조건을 충족하지 않습니다.',
@@ -38,11 +38,11 @@ export const MEMBER_CARD = {
   success: {},
   error: {
     noSubmissionsLeft: '남은 제출 횟수가 없습니다.',
-    invalidAttendanceWithCount: (min: number) => `출석코드가 틀렸습니다. (남은 제출횟수 ${min}회)` as const,
+    mismatchWithCount: (min: number) => `출석코드가 틀렸습니다. (남은 제출횟수 ${min}회)` as const,
   },
 } as const;
 
-export const ID = {
+export const LOGIN_ID = {
   success: {},
   error: {
     existing: '이미 존재하는 아이디입니다.',

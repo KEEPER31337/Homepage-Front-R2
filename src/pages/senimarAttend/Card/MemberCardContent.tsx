@@ -55,7 +55,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
             setIncorrectCodeMsg(MEMBER_CARD.error.noSubmissionsLeft);
             return;
           }
-          setIncorrectCodeMsg(MEMBER_CARD.error.invalidAttendanceWithCount(remainAttendCount));
+          setIncorrectCodeMsg(MEMBER_CARD.error.mismatchWithCount(remainAttendCount));
           return;
         }
         const errorMessage = axiosError?.response?.data?.message;
