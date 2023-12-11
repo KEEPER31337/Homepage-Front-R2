@@ -14,6 +14,7 @@ import {
   useWithdrawalMutation,
 } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
+import { EMAIL } from '@constants/apiResponseMessage';
 import { COMMON, EMAIL_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import { emailRegex } from '@utils/validateEmail';
@@ -57,7 +58,7 @@ const EditEmailSection = () => {
       { email, auth, password },
       {
         onSuccess: () => {
-          toast.success('이메일 변경 성공하였습니다.');
+          toast.success(EMAIL.success.changed);
           setIsEmailSent(false);
           reset();
         },
@@ -69,7 +70,7 @@ const EditEmailSection = () => {
     if (!checkEmailDuplicationSuccess) return;
 
     if (isEmailDuplicate.duplicate === true) {
-      setError('email', { message: '이미 존재하는 이메일입니다.' });
+      setError('email', { message: EMAIL.error.existing });
       setIsEmailSent(false);
       return;
     }

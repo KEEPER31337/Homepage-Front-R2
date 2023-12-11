@@ -6,6 +6,7 @@ import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
+import { LOGIN_ID } from '@constants/apiResponseMessage';
 import { COMMON, LOGIN_ID_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperText';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -51,7 +52,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
     if (!isLoginIdDuplicate) return;
 
     if (isLoginIdDuplicate.duplicate === true) {
-      setError('loginId', { message: '이미 존재하는 아이디입니다.' });
+      setError('loginId', { message: LOGIN_ID.error.existing });
       setCheckLoginIdDuplicateEnabled(false);
     }
   }, [isLoginIdDuplicate]);

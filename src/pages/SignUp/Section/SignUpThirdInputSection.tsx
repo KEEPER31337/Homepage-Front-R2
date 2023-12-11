@@ -6,6 +6,7 @@ import { Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useRecoilValue } from 'recoil';
 import { useCheckEmailDuplicationQuery, useEmailAuthMutation, useSignUpMutation } from '@api/signUpApi';
+import { EMAIL } from '@constants/apiResponseMessage';
 import { COMMON, EMAIL_MSG } from '@constants/helperText';
 import { emailRegex } from '@utils/validateEmail';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -73,7 +74,7 @@ const SignUpThirdInputSection = () => {
     if (!checkEmailDuplicationSuccess) return;
 
     if (isEmailDuplicate.duplicate === true) {
-      setError('email', { message: '이미 존재하는 이메일입니다.' });
+      setError('email', { message: EMAIL.error.existing });
       setIsEmailSent(false);
       return;
     }
