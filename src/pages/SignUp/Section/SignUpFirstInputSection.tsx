@@ -6,7 +6,7 @@ import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
-import { COMMON, LOGIN_ID_MSG, PASSWORD_MSG } from '@constants/helperText';
+import { COMMON, LOGIN_ID_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperText';
 import { LOGIN_ID } from '@constants/apiResponseMessage';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -116,7 +116,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
           },
           pattern: {
             value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,
-            message: PASSWORD_MSG.error.formatError,
+            message: CONFIRM_PASSWORD_MSG.error.formatError,
           },
         }}
         render={({ field, fieldState: { error } }) => {
@@ -140,8 +140,8 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
           required: COMMON.error.required,
           validate: {
             confirmMatchPassward: (value) => {
-              if (getValues('password') !== value) return PASSWORD_MSG.error.incorrect;
-              setPasswordConfirmSuccessMsg(PASSWORD_MSG.success.correct);
+              if (getValues('password') !== value) return CONFIRM_PASSWORD_MSG.error.mismatch;
+              setPasswordConfirmSuccessMsg(CONFIRM_PASSWORD_MSG.success.match);
               return undefined;
             },
           },
