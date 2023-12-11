@@ -13,7 +13,7 @@ import {
   useEditPostThumbnailMutation,
   useUploadPostMutation,
 } from '@api/postApi';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { COMMON } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -74,7 +74,7 @@ const BoardWrite = () => {
 
     if (!content || content.length < 0) {
       setHasContent(false);
-      setContentErrMsg(REQUIRE_ERROR_MSG);
+      setContentErrMsg(COMMON.error.required);
       return;
     }
     setHasContent(true);
@@ -172,10 +172,10 @@ const BoardWrite = () => {
             defaultValue={editMode ? editMode.post.title : ''}
             control={control}
             rules={{
-              required: REQUIRE_ERROR_MSG,
+              required: COMMON.error.required,
               maxLength: {
                 value: POST_TITLE_MAX_LENGTH,
-                message: `제목은 최대 ${POST_TITLE_MAX_LENGTH}글자 입력이 가능합니다.`,
+                message: COMMON.error.maxLength(POST_TITLE_MAX_LENGTH),
               },
             }}
             render={({ field, fieldState: { error } }) => {

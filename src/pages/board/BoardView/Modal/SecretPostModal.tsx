@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { BOARD_MSG, COMMON } from '@constants/helperText';
 import { POST_PASSWORD_MAX_LENGTH } from '@pages/board/BoardWrite/Modal/SettingUploadModal';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -49,10 +49,10 @@ const SecretPostModal = ({ setPassword, setIsSecretPasswordSubmited, open, setOp
           defaultValue=""
           control={control}
           rules={{
-            required: `작성자가 아닐 시 ${REQUIRE_ERROR_MSG}`,
+            required: BOARD_MSG.error.requiredPassword,
             maxLength: {
               value: POST_PASSWORD_MAX_LENGTH,
-              message: `비밀번호는 최대 ${POST_PASSWORD_MAX_LENGTH}글자 입력이 가능합니다.`,
+              message: COMMON.error.maxLength(POST_PASSWORD_MAX_LENGTH),
             },
           }}
           render={({ field, fieldState: { error } }) => {
