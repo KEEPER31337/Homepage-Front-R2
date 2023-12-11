@@ -16,12 +16,12 @@ export const EMAIL_MSG = {
   },
 } as const;
 
-export const PASSWORD_MSG = {
+export const CONFIRM_PASSWORD_MSG = {
   success: {
-    correct: '비밀번호가 일치합니다.',
+    match: '비밀번호가 일치합니다.',
   },
   error: {
-    incorrect: '비밀번호가 일치하지 않습니다.',
+    mismatch: '비밀번호가 일치하지 않습니다.',
     formatError: '8~20자 영문과 숫자를 사용하세요.',
   },
 } as const;
