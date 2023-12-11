@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Typography } from '@mui/material';
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
+import { MEMBER_ROLE } from '@constants/member';
 import muiTheme from '@constants/muiTheme';
 import { convertJobName } from '@mocks/DutyManageApi';
 
@@ -21,7 +22,7 @@ const DutyProfileButton = ({ jobName, badgeImage, setTooltipOpen, toggleModalOpe
     toggleModalOpen();
   };
 
-  if (jobName === 'ROLE_전산관리자') {
+  if (jobName === MEMBER_ROLE.전산관리자) {
     return (
       <div className="flex w-[120px] flex-col items-center">
         <Typography variant="h3" sx={{ fontWeight: 600, color: 'white' }}>
