@@ -14,7 +14,7 @@ import {
   useWithdrawalMutation,
 } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
-import { COMMON, EMAIL_MSG, PASSWORD_MSG } from '@constants/helperText';
+import { COMMON, EMAIL_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import { emailRegex } from '@utils/validateEmail';
 import FilledButton from '@components/Button/FilledButton';
@@ -233,7 +233,7 @@ const EditPasswordSection = () => {
             },
             pattern: {
               value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,
-              message: PASSWORD_MSG.error.formatError,
+              message: CONFIRM_PASSWORD_MSG.error.formatError,
             },
           }}
           render={({ field, fieldState: { error } }) => {
@@ -257,8 +257,8 @@ const EditPasswordSection = () => {
             required: COMMON.error.required,
             validate: {
               confirmMatchPassward: (value) => {
-                if (getValues('newPassword') !== value) return PASSWORD_MSG.error.incorrect;
-                setPasswordConfirmSuccessMsg(PASSWORD_MSG.success.correct);
+                if (getValues('newPassword') !== value) return CONFIRM_PASSWORD_MSG.error.mismatch;
+                setPasswordConfirmSuccessMsg(CONFIRM_PASSWORD_MSG.success.match);
                 return undefined;
               },
             },
