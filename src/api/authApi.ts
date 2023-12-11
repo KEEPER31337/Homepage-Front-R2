@@ -1,19 +1,28 @@
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useSetRecoilState } from 'recoil';
 import memberState from '@recoil/member.recoil';
 
 const useSignOutMutation = () => {
-  const fetcher = () => axios.post(`/sign-out`);
-
   const navigate = useNavigate();
   const setMemberState = useSetRecoilState(memberState);
 
+  const fetcher = () => axios.post(`/sign-out`);
+  const signOut = () => {
+    navigate('/');
+    setMemberState(null);
+  };
+
   return useMutation(fetcher, {
     onSuccess: () => {
-      navigate('/');
-      setMemberState(null);
+      signOut();
+    },
+    onError: (error) => {
+      const errorStatusCode = (error as AxiosError).response?.status;
+      if (errorStatusCode === 401) {
+        signOut();
+      }
     },
   });
 };
