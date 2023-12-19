@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { PASSWORD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import { formatGeneration } from '@utils/converter';
 import { ProfileInfo, MemberDetailInfo } from './dto';
@@ -123,7 +124,7 @@ const useEditEmailMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error('현재 비밀번호가 일치하지 않습니다.');
+        toast.error(PASSWORD.error.mismatch);
       },
     },
   });
@@ -138,7 +139,7 @@ const useEditPasswordMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error('현재 비밀번호가 일치하지 않습니다.');
+        toast.error(PASSWORD.error.mismatch);
       },
     },
   });
@@ -147,7 +148,7 @@ const useEditPasswordMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      toast.success('비밀번호가 변경되었습니다.');
+      toast.success(PASSWORD.success.changed);
     },
     onError: (err) => handleError(err, 400),
   });
@@ -157,7 +158,7 @@ const useWithdrawalMutation = () => {
   const { handleError } = useApiError({
     400: {
       default: () => {
-        toast.error('비밀번호가 일치하지 않습니다.');
+        toast.error(PASSWORD.error.mismatch);
       },
     },
   });

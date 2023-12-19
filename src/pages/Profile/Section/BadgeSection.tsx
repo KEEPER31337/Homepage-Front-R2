@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Tooltip } from '@mui/material';
 import { Role, RoleInfo } from '@api/dto';
 import { roles, types } from '@constants/badge';
+import { MEMBER_ROLE_PREFIX, MEMBER_ROLE } from '@constants/member';
 
 interface FollowListProps {
   memberType: string;
@@ -13,7 +14,7 @@ const BadgeSection = ({ memberType, memberJobs }: FollowListProps) => {
 
   useEffect(() => {
     const updatedMemberJobInfo = memberJobs
-      .filter((job) => job !== 'ROLE_회원' && job !== 'ROLE_출제자')
+      .filter((job) => job !== MEMBER_ROLE.회원 && job !== MEMBER_ROLE.출제자)
       .map((job) => {
         const filteredRole = roles.find((role) => role.name === job);
         return {
@@ -27,7 +28,7 @@ const BadgeSection = ({ memberType, memberJobs }: FollowListProps) => {
   return (
     <div className="flex h-8 flex-wrap items-center space-x-2 overflow-y-auto md:h-10">
       {MemberJobInfo.map((job: RoleInfo) => (
-        <Tooltip key={job.name} title={job.name.replace('ROLE_', '')} placement="top">
+        <Tooltip key={job.name} title={job.name.replace(MEMBER_ROLE_PREFIX, '')} placement="top">
           <img src={job.img} alt="" className="h-8 w-8 md:h-10 md:w-10" />
         </Tooltip>
       ))}

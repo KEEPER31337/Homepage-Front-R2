@@ -7,6 +7,7 @@ import {
   useCancleReturnBookMutation,
   useCancleBorrowBookMutation,
 } from '@api/libraryApi';
+import { MEMBER_ROLE } from '@constants/member';
 import BookCard from './Card/BookCard';
 import BookGuide from './Guide/BookGuide';
 
@@ -20,7 +21,7 @@ const BookTab = () => {
   const { mutate: cancleReturnBookMutation } = useCancleReturnBookMutation();
   const { mutate: cancleBorrowBookMutation } = useCancleBorrowBookMutation();
 
-  const librarian = executiveInfos?.find((role) => role.jobName === 'ROLE_사서')?.realName || '';
+  const librarian = executiveInfos?.find((role) => role.jobName === MEMBER_ROLE.사서)?.realName || '';
 
   const borrowLength = borrowedBookListData?.content?.filter((bookInfo) => bookInfo.status === '대출대기').length;
   const returnLength = borrowedBookListData?.content?.filter((bookInfo) => bookInfo.status === '반납대기').length;

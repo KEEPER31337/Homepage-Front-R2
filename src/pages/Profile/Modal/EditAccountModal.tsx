@@ -14,7 +14,8 @@ import {
   useWithdrawalMutation,
 } from '@api/memberApi';
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
-import { REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { EMAIL } from '@constants/apiResponseMessage';
+import { COMMON, EMAIL_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperText';
 import memberState from '@recoil/member.recoil';
 import { emailRegex } from '@utils/validateEmail';
 import FilledButton from '@components/Button/FilledButton';
@@ -57,7 +58,7 @@ const EditEmailSection = () => {
       { email, auth, password },
       {
         onSuccess: () => {
-          toast.success('이메일 변경 성공하였습니다.');
+          toast.success(EMAIL.success.changed);
           setIsEmailSent(false);
           reset();
         },
@@ -69,7 +70,7 @@ const EditEmailSection = () => {
     if (!checkEmailDuplicationSuccess) return;
 
     if (isEmailDuplicate.duplicate === true) {
-      setError('email', { message: '이미 존재하는 이메일입니다.' });
+      setError('email', { message: EMAIL.error.existing });
       setIsEmailSent(false);
       return;
     }
@@ -97,7 +98,7 @@ const EditEmailSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: '필수 정보입니다.',
+            required: COMMON.error.required,
           }}
           render={({ field, fieldState: { error } }) => {
             return (
@@ -117,10 +118,10 @@ const EditEmailSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: REQUIRE_ERROR_MSG,
+            required: COMMON.error.required,
             pattern: {
               value: emailRegex,
-              message: '이메일 주소를 다시 확인해주세요.',
+              message: EMAIL_MSG.error.formatError,
             },
           }}
           render={({ field, fieldState: { error, isDirty } }) => {
@@ -144,7 +145,7 @@ const EditEmailSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: REQUIRE_ERROR_MSG,
+            required: COMMON.error.required,
           }}
           render={({ field, fieldState: { error } }) => {
             return (
@@ -206,7 +207,7 @@ const EditPasswordSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: '필수 정보입니다.',
+            required: COMMON.error.required,
           }}
           render={({ field, fieldState: { error } }) => {
             return (
@@ -226,14 +227,14 @@ const EditPasswordSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: '필수 정보입니다.',
+            required: COMMON.error.required,
             minLength: {
               value: 8,
-              message: '8글자 이상 입력해주세요.',
+              message: COMMON.error.minLength(8),
             },
             pattern: {
               value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/,
-              message: '8~20자 영문과 숫자를 사용하세요.',
+              message: CONFIRM_PASSWORD_MSG.error.formatError,
             },
           }}
           render={({ field, fieldState: { error } }) => {
@@ -254,11 +255,11 @@ const EditPasswordSection = () => {
           defaultValue=""
           control={control}
           rules={{
-            required: '필수 정보입니다.',
+            required: COMMON.error.required,
             validate: {
               confirmMatchPassward: (value) => {
-                if (getValues('newPassword') !== value) return '비밀번호가 일치하지 않습니다.';
-                setPasswordConfirmSuccessMsg('비밀번호가 일치합니다.');
+                if (getValues('newPassword') !== value) return CONFIRM_PASSWORD_MSG.error.mismatch;
+                setPasswordConfirmSuccessMsg(CONFIRM_PASSWORD_MSG.success.match);
                 return undefined;
               },
             },
@@ -348,7 +349,7 @@ const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
             defaultValue=""
             control={control}
             rules={{
-              required: '필수 정보입니다.',
+              required: COMMON.error.required,
             }}
             render={({ field, fieldState: { error } }) => {
               return (

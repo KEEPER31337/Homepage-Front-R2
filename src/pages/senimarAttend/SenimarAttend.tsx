@@ -8,6 +8,7 @@ import {
   useGetRecentlyDoneSeminarInfoQuery,
   useGetRecentlyUpcomingSeminarInfoQuery,
 } from '@api/seminarApi';
+import { MEMBER_ROLE } from '@constants/member';
 import useCheckAuth from '@hooks/useCheckAuth';
 import memberState from '@recoil/member.recoil';
 import starterState from '@recoil/seminarStarter.recoil';
@@ -30,7 +31,7 @@ const SeminarAttend = () => {
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
 
   const { checkIncludeOneOfAuths } = useCheckAuth();
-  const authorizedMember = checkIncludeOneOfAuths(['ROLE_회장', 'ROLE_부회장', 'ROLE_서기']);
+  const authorizedMember = checkIncludeOneOfAuths([MEMBER_ROLE.회장, MEMBER_ROLE.부회장, MEMBER_ROLE.서기]);
   const startMember: number | undefined = useRecoilValue(starterState);
   const member: MemberInfo | null = useRecoilValue(memberState);
 

@@ -5,7 +5,8 @@ import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
-import { NUMBER_ERROR_MSG, REQUIRE_ERROR_MSG } from '@constants/errorMsg';
+import { STUDENT_ID } from '@constants/apiResponseMessage';
+import { COMMON, NAME_MSG } from '@constants/helperText';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
@@ -57,7 +58,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
     if (!isStudentIdDuplicate) return;
 
     if (isStudentIdDuplicate.duplicate === true) {
-      setError('studentId', { message: '이미 존재하는 학번입니다.' });
+      setError('studentId', { message: STUDENT_ID.error.existing });
       setCheckStudentIdDuplicateEnabled(false);
     }
   }, [isStudentIdDuplicate]);
@@ -78,14 +79,14 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
         defaultValue=""
         control={control}
         rules={{
-          required: REQUIRE_ERROR_MSG,
+          required: COMMON.error.required,
           maxLength: {
             value: NAME_MAX_LENGTH,
-            message: `이름은 최대 ${NAME_MAX_LENGTH}글자 입력이 가능합니다.`,
+            message: COMMON.error.maxLength(NAME_MAX_LENGTH),
           },
           pattern: {
             value: /^[가-힣a-zA-Z]{1,20}$/,
-            message: '1~20자 한글, 영어만 가능합니다.',
+            message: NAME_MSG.error.formatError,
           },
         }}
         render={({ field, fieldState: { error } }) => {
@@ -99,10 +100,10 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
         defaultValue=""
         control={control}
         rules={{
-          required: REQUIRE_ERROR_MSG,
+          required: COMMON.error.required,
           pattern: {
             value: /^[0-9]+$/,
-            message: NUMBER_ERROR_MSG,
+            message: COMMON.error.onlyNumber,
           },
         }}
         render={({ field, fieldState: { error, isDirty } }) => {

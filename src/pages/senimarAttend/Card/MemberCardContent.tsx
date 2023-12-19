@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { useRecoilState } from 'recoil';
 import { SeminarStatus } from '@api/dto';
 import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
+import { MEMBER_CARD } from '@constants/apiResponseMessage';
 import FilledButton from '@components/Button/FilledButton';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 import Countdown from '../Countdown/Countdown';
@@ -51,10 +52,10 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
 
           if (remainAttendCount <= 0) {
             setExcessModalOpen(true);
-            setIncorrectCodeMsg('남은 제출 횟수가 없습니다.');
+            setIncorrectCodeMsg(MEMBER_CARD.error.noSubmissionsLeft);
             return;
           }
-          setIncorrectCodeMsg(`출석코드가 틀렸습니다. (남은 제출횟수 ${remainAttendCount}회)`);
+          setIncorrectCodeMsg(MEMBER_CARD.error.mismatchWithCount(remainAttendCount));
           return;
         }
         const errorMessage = axiosError?.response?.data?.message;

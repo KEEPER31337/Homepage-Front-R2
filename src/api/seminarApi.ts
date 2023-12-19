@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
+import { SEMINAR } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import { AttendSeminarListInfo, SeminarStatus, SeminarInfo, SeminarCardInfo } from './dto';
 
@@ -143,7 +144,7 @@ const useAddSeminarMutation = ({ setHelperText }: { setHelperText: React.Dispatc
   const { handleError } = useApiError({
     409: {
       40901: () => {
-        setHelperText('동일한 날짜의 세미나는 생성할 수 없습니다.');
+        setHelperText(SEMINAR.error.duplicateSeminarDate);
       },
     },
   });

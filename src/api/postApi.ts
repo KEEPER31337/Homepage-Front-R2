@@ -2,6 +2,7 @@ import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
+import { BOARD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import {
   BoardPosts,
@@ -151,12 +152,12 @@ const useGetEachPostQuery = (
     400: {
       default: () => {
         // TODO 페이지 문구로 띄워주기
-        toast.error('게시글 열람 조건을 충족하지 않습니다.');
+        toast.error(BOARD.error.readCondition);
       },
     },
     403: {
       40301: () => {
-        toast.error('게시글의 비밀번호가 일치하지 않습니다.');
+        toast.error(BOARD.error.mismatchPassword);
       },
       40302: () => {
         // 비밀글 여부 true로 변경
@@ -226,7 +227,7 @@ const useDownloadFileMutation = () => {
     },
     onError: (error) => {
       if ((error as AxiosError)?.response?.status === 400) {
-        toast.error('댓글 작성이 필요합니다.');
+        toast.error(BOARD.error.requiredComment);
       }
     },
   });
