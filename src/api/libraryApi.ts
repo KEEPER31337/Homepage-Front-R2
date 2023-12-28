@@ -3,8 +3,8 @@ import axios from 'axios';
 import { BookInfo, BorrowedBookInfo, BookListSearch } from './dto';
 
 const libraryKeys = {
-  bookList: (param: BookListSearch) => ['library', 'bookList', param] as const,
-  borrowedBookList: ['library', 'borrowedBookList'] as const,
+  bookList: (params: BookListSearch) => ['bookList', params] as const,
+  borrowedBookList: ['borrowedBookList'] as const,
 };
 
 const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSearch) => {
@@ -23,6 +23,14 @@ const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSea
   );
 };
 
+const useGetBorrowedBookListQuery = ({ page, size }: { page: number; size: number }) => {
+  const fetcher = () =>
+    axios.get(`/books/book-borrows`, { params: { page, size } }).then(({ data }) => {
+      return { content: data.content, totalElement: data.totalElements };
+    });
+  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList, fetcher);
+};
+
 const useRequestBorrowBookMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (selectedBookId: number) => axios.post(`/books/${selectedBookId}/request-borrow`);
@@ -33,14 +41,6 @@ const useRequestBorrowBookMutation = () => {
       queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
     },
   });
-};
-
-const useGetBookBorrowsQuery = ({ page, size }: { page: number; size: number }) => {
-  const fetcher = () =>
-    axios.get(`/books/book-borrows`, { params: { page, size } }).then(({ data }) => {
-      return { content: data.content, totalElement: data.totalElements };
-    });
-  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList, fetcher);
 };
 
 const useRequestReturnBookMutation = () => {
@@ -54,7 +54,7 @@ const useRequestReturnBookMutation = () => {
   });
 };
 
-const useCancleReturnBookMutation = () => {
+const useCancelReturnBookMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (selectedBookId: number) => axios.patch(`/books/borrows/${selectedBookId}/cancel-return`);
 
@@ -65,7 +65,7 @@ const useCancleReturnBookMutation = () => {
   });
 };
 
-const useCancleBorrowBookMutation = () => {
+const useCancelBorrowBookMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = (selectedBookId: number) => axios.delete(`/books/borrows/${selectedBookId}/cancel-borrow`);
@@ -79,9 +79,9 @@ const useCancleBorrowBookMutation = () => {
 
 export {
   useGetBookListQuery,
+  useGetBorrowedBookListQuery,
   useRequestBorrowBookMutation,
-  useGetBookBorrowsQuery,
   useRequestReturnBookMutation,
-  useCancleReturnBookMutation,
-  useCancleBorrowBookMutation,
+  useCancelReturnBookMutation,
+  useCancelBorrowBookMutation,
 };
