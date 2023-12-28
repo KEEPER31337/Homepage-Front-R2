@@ -3,9 +3,9 @@ import axios from 'axios';
 import { SignUpDuplication, SignUpInfo } from './dto';
 
 export const signUpKeys = {
-  idDuplication: (loginId: string) => ['sighUp', 'duplication', 'loginId', loginId] as const,
-  emailDuplication: (email: string) => ['sighUp', 'duplication', 'email', email] as const,
-  studentIdDuplication: (studentId: string) => ['sighUp', 'duplication', 'studentId', studentId] as const,
+  idDuplication: (params: { loginId: string }) => ['sighUp', 'duplication', 'loginId', params] as const,
+  emailDuplication: (params: { email: string }) => ['sighUp', 'duplication', 'email', params] as const,
+  studentIdDuplication: (params: { studentId: string }) => ['sighUp', 'duplication', 'studentId', params] as const,
 };
 
 const useSignUpMutation = () => {
@@ -21,21 +21,24 @@ const useEmailAuthMutation = () => {
 };
 
 const useCheckLoginIdDuplicationQuery = ({ loginId, enabled }: { loginId: string; enabled: boolean }) => {
-  const fetcher = () => axios.get('/sign-up/exists/login-id', { params: { loginId } }).then(({ data }) => data);
+  const params = { loginId };
+  const fetcher = () => axios.get('/sign-up/exists/login-id', { params }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.idDuplication(loginId), fetcher, { enabled });
+  return useQuery<SignUpDuplication>(signUpKeys.idDuplication(params), fetcher, { enabled });
 };
 
 const useCheckEmailDuplicationQuery = ({ email, enabled }: { email: string; enabled: boolean }) => {
-  const fetcher = () => axios.get('/sign-up/exists/email', { params: { email } }).then(({ data }) => data);
+  const params = { email };
+  const fetcher = () => axios.get('/sign-up/exists/email', { params }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.emailDuplication(email), fetcher, { enabled });
+  return useQuery<SignUpDuplication>(signUpKeys.emailDuplication(params), fetcher, { enabled });
 };
 
 const useCheckStudentIdDuplicationQuery = ({ studentId, enabled }: { studentId: string; enabled: boolean }) => {
-  const fetcher = () => axios.get('/sign-up/exists/student-id', { params: { studentId } }).then(({ data }) => data);
+  const params = { studentId };
+  const fetcher = () => axios.get('/sign-up/exists/student-id', { params }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.studentIdDuplication(studentId), fetcher, { enabled });
+  return useQuery<SignUpDuplication>(signUpKeys.studentIdDuplication(params), fetcher, { enabled });
 };
 
 export {
