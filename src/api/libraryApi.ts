@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
-import { BookInfo, BorrowedBookInfo, BookListSearch } from './dto';
+import { BookInfo, BorrowedBookInfo, BookListSearch, PageAndSize } from './dto';
 
 const libraryKeys = {
   bookList: (params: BookListSearch) => ['bookList', params] as const,
@@ -23,7 +23,7 @@ const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSea
   );
 };
 
-const useGetBorrowedBookListQuery = ({ page, size }: { page: number; size: number }) => {
+const useGetBorrowedBookListQuery = ({ page, size }: PageAndSize) => {
   const fetcher = () =>
     axios.get(`/books/book-borrows`, { params: { page, size } }).then(({ data }) => {
       return { content: data.content, totalElement: data.totalElements };
