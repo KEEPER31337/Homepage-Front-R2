@@ -140,7 +140,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         rules={{
           required: COMMON.error.required,
           validate: {
-            confirmMatchPassward: (value) => {
+            confirmMatchPassword: (value) => {
               if (getValues('password') !== value) return CONFIRM_PASSWORD_MSG.error.mismatch;
               setPasswordConfirmSuccessMsg(CONFIRM_PASSWORD_MSG.success.match);
               return undefined;
