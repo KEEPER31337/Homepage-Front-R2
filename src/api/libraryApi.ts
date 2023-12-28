@@ -8,8 +8,9 @@ const libraryKeys = {
 };
 
 const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSearch) => {
+  const params = { page, size, searchType, search };
   const fetcher = () =>
-    axios.get('/books', { params: { page, size, searchType, search } }).then(({ data }) => {
+    axios.get('/books', { params }).then(({ data }) => {
       const content = data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
         ...rest,
         bookQuantity: `${currentQuantity}/${totalQuantity}`,
@@ -17,15 +18,13 @@ const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSea
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: BookInfo[]; totalElement: number; size: number }>(
-    libraryKeys.bookList({ page, size, searchType, search }),
-    fetcher,
-  );
+  return useQuery<{ content: BookInfo[]; totalElement: number; size: number }>(libraryKeys.bookList(params), fetcher);
 };
 
 const useGetBorrowedBookListQuery = ({ page, size }: PageAndSize) => {
+  const params = { page, size };
   const fetcher = () =>
-    axios.get(`/books/book-borrows`, { params: { page, size } }).then(({ data }) => {
+    axios.get(`/books/book-borrows`, { params }).then(({ data }) => {
       return { content: data.content, totalElement: data.totalElements };
     });
   return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList, fetcher);
