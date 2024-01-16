@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BookInfo, BorrowedBookInfo, BookListSearch, PageAndSize } from './dto';
 
 const libraryKeys = {
-  base: ['books'],
+  base: ['books'] as const,
   bookList: (params: BookListSearch) => [...libraryKeys.base, params] as const,
   borrowedBookList: () => [...libraryKeys.base, 'bookBorrows'] as const,
 };
