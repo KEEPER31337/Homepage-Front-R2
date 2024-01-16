@@ -3,14 +3,15 @@ import axios from 'axios';
 import { PageBlockInfo } from './dto';
 
 const aboutKeys = {
-  titleType: ['titleType'] as const,
-  blockList: (params: { type: string }) => ['blockList', params] as const,
+  base: ['about'] as const,
+  titleType: () => [...aboutKeys.base, 'titleType'] as const,
+  blockList: (params: { type: string }) => [...aboutKeys.base, 'blockList', params] as const,
 };
 
 const useGetTitleTypesQuery = () => {
   const fetcher = () => axios.get(`/about/titles/types`).then(({ data }) => data.list);
 
-  return useQuery<string[]>(aboutKeys.titleType, fetcher);
+  return useQuery<string[]>(aboutKeys.titleType(), fetcher);
 };
 
 const useGetBlockListQuery = ({ type }: { type: string }) => {
