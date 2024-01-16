@@ -1,15 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
-import { BookInfo, BorrowedBookInfo, BookListSearch } from './dto';
+import { BookInfo, BorrowedBookInfo, BookListSearch, PageAndSize } from './dto';
 
 const libraryKeys = {
-  bookList: (param: BookListSearch) => ['library', 'bookList', param] as const,
-  borrowedBookList: ['library', 'borrowedBookList'] as const,
+  base: ['books'] as const,
+  bookList: (params: BookListSearch) => [...libraryKeys.base, params] as const,
+  borrowedBookList: (params: PageAndSize) => [...libraryKeys.base, 'bookBorrows', params] as const,
 };
 
 const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSearch) => {
+  const params = { page, size, searchType, search };
   const fetcher = () =>
-    axios.get('/books', { params: { page, size, searchType, search } }).then(({ data }) => {
+    axios.get('/books', { params }).then(({ data }) => {
       const content = data.content.map(({ currentQuantity, totalQuantity, ...rest }: BookInfo) => ({
         ...rest,
         bookQuantity: `${currentQuantity}/${totalQuantity}`,
@@ -17,10 +19,16 @@ const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSea
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: BookInfo[]; totalElement: number; size: number }>(
-    libraryKeys.bookList({ page, size, searchType, search }),
-    fetcher,
-  );
+  return useQuery<{ content: BookInfo[]; totalElement: number; size: number }>(libraryKeys.bookList(params), fetcher);
+};
+
+const useGetBorrowedBookListQuery = ({ page, size }: PageAndSize) => {
+  const params = { page, size };
+  const fetcher = () =>
+    axios.get(`/books/book-borrows`, { params }).then(({ data }) => {
+      return { content: data.content, totalElement: data.totalElements };
+    });
+  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList(params), fetcher);
 };
 
 const useRequestBorrowBookMutation = () => {
@@ -30,17 +38,9 @@ const useRequestBorrowBookMutation = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryKeys.bookList({}) });
-      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList({}) });
     },
   });
-};
-
-const useGetBookBorrowsQuery = ({ page, size }: { page: number; size: number }) => {
-  const fetcher = () =>
-    axios.get(`/books/book-borrows`, { params: { page, size } }).then(({ data }) => {
-      return { content: data.content, totalElement: data.totalElements };
-    });
-  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList, fetcher);
 };
 
 const useRequestReturnBookMutation = () => {
@@ -49,39 +49,39 @@ const useRequestReturnBookMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList({}) });
     },
   });
 };
 
-const useCancleReturnBookMutation = () => {
+const useCancelReturnBookMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (selectedBookId: number) => axios.patch(`/books/borrows/${selectedBookId}/cancel-return`);
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList({}) });
     },
   });
 };
 
-const useCancleBorrowBookMutation = () => {
+const useCancelBorrowBookMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = (selectedBookId: number) => axios.delete(`/books/borrows/${selectedBookId}/cancel-borrow`);
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList({}) });
     },
   });
 };
 
 export {
   useGetBookListQuery,
+  useGetBorrowedBookListQuery,
   useRequestBorrowBookMutation,
-  useGetBookBorrowsQuery,
   useRequestReturnBookMutation,
-  useCancleReturnBookMutation,
-  useCancleBorrowBookMutation,
+  useCancelReturnBookMutation,
+  useCancelBorrowBookMutation,
 };

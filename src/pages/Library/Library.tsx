@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { BookListSearch } from '@api/dto';
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
-import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBookBorrowsQuery } from '@api/libraryApi';
+import { useGetBookListQuery, useRequestBorrowBookMutation, useGetBorrowedBookListQuery } from '@api/libraryApi';
 import { MEMBER_ROLE } from '@constants/member';
 import usePagination from '@hooks/usePagination';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
@@ -25,7 +25,7 @@ const Library = () => {
   const search = searchParams.get('search') as BookListSearch['search'];
 
   const { data: bookListData } = useGetBookListQuery({ page, searchType, search });
-  const { data: borrowedBookListData } = useGetBookBorrowsQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
+  const { data: borrowedBookListData } = useGetBorrowedBookListQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
   const { data: executiveInfos } = useGetExecutiveInfoQuery();
   const { mutate: RequestBorrowBook } = useRequestBorrowBookMutation();
 

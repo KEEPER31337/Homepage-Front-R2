@@ -2,10 +2,10 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
 import {
-  useGetBookBorrowsQuery,
+  useGetBorrowedBookListQuery,
   useRequestReturnBookMutation,
-  useCancleReturnBookMutation,
-  useCancleBorrowBookMutation,
+  useCancelReturnBookMutation,
+  useCancelBorrowBookMutation,
 } from '@api/libraryApi';
 import { MEMBER_ROLE } from '@constants/member';
 import BookCard from './Card/BookCard';
@@ -14,12 +14,12 @@ import BookGuide from './Guide/BookGuide';
 const MAX_BORROWABLE_BOOKS = 5;
 
 const BookTab = () => {
-  const { data: borrowedBookListData } = useGetBookBorrowsQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
+  const { data: borrowedBookListData } = useGetBorrowedBookListQuery({ page: 0, size: MAX_BORROWABLE_BOOKS });
   const { data: executiveInfos } = useGetExecutiveInfoQuery();
   const { mutate: requestReturnBookMutation } = useRequestReturnBookMutation();
 
-  const { mutate: cancleReturnBookMutation } = useCancleReturnBookMutation();
-  const { mutate: cancleBorrowBookMutation } = useCancleBorrowBookMutation();
+  const { mutate: cancelReturnBookMutation } = useCancelReturnBookMutation();
+  const { mutate: cancelBorrowBookMutation } = useCancelBorrowBookMutation();
 
   const librarian = executiveInfos?.find((role) => role.jobName === MEMBER_ROLE.사서)?.realName || '';
 
@@ -66,8 +66,8 @@ const BookTab = () => {
       <div className="flex flex-col space-y-4 overflow-y-auto">
         {renderBookCard('대출중', requestReturnBookMutation)}
         <div className="flex flex-row flex-wrap">
-          {renderBookCard('대출대기', cancleBorrowBookMutation)}
-          {renderBookCard('반납대기', cancleReturnBookMutation)}
+          {renderBookCard('대출대기', cancelBorrowBookMutation)}
+          {renderBookCard('반납대기', cancelReturnBookMutation)}
         </div>
         <div className="flex w-full flex-col items-center space-y-1">
           {borrowLength === 0 && <Typography>대출대기가 없습니다</Typography>}
