@@ -63,7 +63,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
 
     if (isLoginIdDuplicate.duplicate === false) {
       setCheckLoginIdDuplicateEnabled(false);
-      queryClient.setQueryData(signUpKeys.idDuplication({ loginId: loginIdState }), undefined);
+      queryClient.setQueryData(signUpKeys.loginIdDuplication({ loginId: loginIdState }), undefined);
     }
   }, [watch('loginId')]);
 

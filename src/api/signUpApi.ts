@@ -3,9 +3,11 @@ import axios from 'axios';
 import { SignUpDuplication, SignUpInfo } from './dto';
 
 export const signUpKeys = {
-  idDuplication: (params: { loginId: string }) => ['sighUp', 'duplication', 'loginId', params] as const,
-  emailDuplication: (params: { email: string }) => ['sighUp', 'duplication', 'email', params] as const,
-  studentIdDuplication: (params: { studentId: string }) => ['sighUp', 'duplication', 'studentId', params] as const,
+  base: ['sighUp'] as const,
+  duplication: () => [...signUpKeys.base, 'exists'] as const,
+  loginIdDuplication: (params: { loginId: string }) => [...signUpKeys.duplication(), 'loginId', params] as const,
+  emailDuplication: (params: { email: string }) => [...signUpKeys.duplication(), 'email', params] as const,
+  studentIdDuplication: (params: { studentId: string }) => [...signUpKeys.duplication(), 'studentId', params] as const,
 };
 
 const useSignUpMutation = () => {
@@ -24,7 +26,7 @@ const useCheckLoginIdDuplicationQuery = ({ loginId, enabled }: { loginId: string
   const params = { loginId };
   const fetcher = () => axios.get('/sign-up/exists/login-id', { params }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.idDuplication(params), fetcher, { enabled });
+  return useQuery<SignUpDuplication>(signUpKeys.loginIdDuplication(params), fetcher, { enabled });
 };
 
 const useCheckEmailDuplicationQuery = ({ email, enabled }: { email: string; enabled: boolean }) => {
