@@ -3,8 +3,9 @@ import axios from 'axios';
 import { BookInfo, BorrowedBookInfo, BookListSearch, PageAndSize } from './dto';
 
 const libraryKeys = {
-  bookList: (params: BookListSearch) => ['bookList', params] as const,
-  borrowedBookList: ['borrowedBookList'] as const,
+  base: ['books'],
+  bookList: (params: BookListSearch) => [...libraryKeys.base, params] as const,
+  borrowedBookList: () => [...libraryKeys.base, 'bookBorrows'] as const,
 };
 
 const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSearch) => {
@@ -27,7 +28,7 @@ const useGetBorrowedBookListQuery = ({ page, size }: PageAndSize) => {
     axios.get(`/books/book-borrows`, { params }).then(({ data }) => {
       return { content: data.content, totalElement: data.totalElements };
     });
-  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList, fetcher);
+  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList(), fetcher);
 };
 
 const useRequestBorrowBookMutation = () => {
@@ -37,7 +38,7 @@ const useRequestBorrowBookMutation = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryKeys.bookList({}) });
-      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList() });
     },
   });
 };
@@ -48,7 +49,7 @@ const useRequestReturnBookMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList() });
     },
   });
 };
@@ -59,7 +60,7 @@ const useCancelReturnBookMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList() });
     },
   });
 };
@@ -71,7 +72,7 @@ const useCancelBorrowBookMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList });
+      queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList() });
     },
   });
 };
