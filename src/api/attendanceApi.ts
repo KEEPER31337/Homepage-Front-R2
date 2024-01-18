@@ -19,8 +19,8 @@ const attendanceKeys = {
     memberId,
     year,
   ],
-  todayAttendanceRank: (param: PageAndSize) => [...attendanceKeys.base, 'today-rank', param] as const,
-  continuousAttendanceRank: () => [...attendanceKeys.base, 'continuous-rank'] as const,
+  todayAttendanceRank: (param: PageAndSize) => [...attendanceKeys.base, 'todayRank', param] as const,
+  continuousAttendanceRank: () => [...attendanceKeys.base, 'continuousRank'] as const,
 };
 
 const useGetTodayAttendancePointQuery = () => {
@@ -47,6 +47,8 @@ const useGetAttendanceInfoListQuery = ({ memberId, year }: { memberId: number; y
 };
 
 const useGetTodayAttendanceRank = ({ page, size = 10 }: PageAndSize) => {
+  const params = { page, size };
+
   const fetcher = () =>
     axios
       .get('/attendances/today-rank', {
@@ -54,7 +56,7 @@ const useGetTodayAttendanceRank = ({ page, size = 10 }: PageAndSize) => {
       })
       .then(({ data }) => data);
 
-  return useQuery<TodayAttendRank>(attendanceKeys.todayAttendanceRank({ page, size }), fetcher, {
+  return useQuery<TodayAttendRank>(attendanceKeys.todayAttendanceRank(params), fetcher, {
     keepPreviousData: true,
   });
 };

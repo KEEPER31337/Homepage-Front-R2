@@ -9,7 +9,7 @@ import { ProfileInfo, MemberDetailInfo, PageAndSize, PointRank } from './dto';
 const memberKeys = {
   base: ['member'] as const,
   memberList: ['member', 'memberList'] as const,
-  pointRank: (param: PageAndSize) => [...memberKeys.base, 'point_rank', param] as const,
+  pointRank: (param: PageAndSize) => [...memberKeys.base, 'pointRank', param] as const,
 };
 const profileKeys = {
   profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
@@ -194,9 +194,11 @@ const useDeleteMemberMutation = () => {
 };
 
 const useGetPointRank = ({ page, size = 10 }: PageAndSize) => {
+  const params = { page, size };
+
   const fetcher = () => axios.get('/members/point-rank', { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<PointRank>(memberKeys.pointRank({ page, size }), fetcher, {
+  return useQuery<PointRank>(memberKeys.pointRank(params), fetcher, {
     keepPreviousData: true,
   });
 };
