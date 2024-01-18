@@ -52,7 +52,7 @@ const useGetTodayAttendanceRank = ({ page, size = 10 }: PageAndSize) => {
   const fetcher = () =>
     axios
       .get('/attendances/today-rank', {
-        params: { page, size },
+        params,
       })
       .then(({ data }) => data);
 

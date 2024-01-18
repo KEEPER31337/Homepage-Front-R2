@@ -196,7 +196,7 @@ const useDeleteMemberMutation = () => {
 const useGetPointRank = ({ page, size = 10 }: PageAndSize) => {
   const params = { page, size };
 
-  const fetcher = () => axios.get('/members/point-rank', { params: { page, size } }).then(({ data }) => data);
+  const fetcher = () => axios.get('/members/point-rank', { params }).then(({ data }) => data);
 
   return useQuery<PointRank>(memberKeys.pointRank(params), fetcher, {
     keepPreviousData: true,
