@@ -12,16 +12,20 @@ import {
 } from './dto';
 
 const libraryManageKeys = {
-  bookManageList: (param: BookListSearch) => ['libraryManage', 'bookManageList', param] as const,
-  bookDetail: (param: number) => ['library', 'bookDetail', param] as const,
-  borrowInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'borrowInfoList', param] as const,
-  overdueInfoList: (param: BorrowInfoListSearch) => ['libraryManage', 'overdueInfoList', param] as const,
-  borrowLogList: (param: BorrowLogListSearch) => ['libraryManage', 'borrowLogList', param] as const,
+  base: ['manage'] as const,
+  book: () => [...libraryManageKeys.base, 'books'] as const,
+  borrowInfo: () => [...libraryManageKeys.base, 'borrow-infos'] as const,
+  bookManageList: (params: BookListSearch) => [...libraryManageKeys.book(), params] as const,
+  bookDetail: (params: number) => [...libraryManageKeys.book(), params] as const,
+  borrowInfoList: (params: BorrowInfoListSearch) => [...libraryManageKeys.borrowInfo(), params] as const,
+  overdueInfoList: (params: BorrowInfoListSearch) => [...libraryManageKeys.borrowInfo(), 'overdue', params] as const,
+  borrowLogList: (params: BorrowLogListSearch) => [...libraryManageKeys.borrowInfo(), 'logs', params] as const,
 };
 
 const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: BookListSearch) => {
+  const params = { page, size, searchType, search };
   const fetcher = () =>
-    axios.get('/manage/books', { params: { page, size, searchType, search } }).then(({ data }) => {
+    axios.get('/manage/books', { params }).then(({ data }) => {
       const content = data.content.map((bookInfo: ManageBookInfo) => ({
         bookId: bookInfo.bookId,
         title: bookInfo.title,
@@ -35,7 +39,7 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
     });
 
   return useQuery<{ content: ManageBookInfo[]; totalElement: number; size: number }>(
-    libraryManageKeys.bookManageList({ page, size, searchType, search }),
+    libraryManageKeys.bookManageList(params),
     fetcher,
   );
 };
@@ -113,8 +117,9 @@ const useGetBookDetailQuery = (bookId: number) => {
 };
 
 const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowInfoListSearch) => {
+  const params = { page, size, status, search };
   const fetcher = () =>
-    axios.get('/manage/borrow-infos', { params: { page, size, status, search } }).then(({ data }) => {
+    axios.get('/manage/borrow-infos', { params }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
         const borrowStatus: { [key: string]: string } = {
           대출대기: '대출 신청',
@@ -134,14 +139,15 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
     });
 
   return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>(
-    libraryManageKeys.borrowInfoList({ page, size, status, search }),
+    libraryManageKeys.borrowInfoList(params),
     fetcher,
   );
 };
 
 const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: BorrowInfoListSearch) => {
+  const params = { page, size, status };
   const fetcher = () =>
-    axios.get('/manage/borrow-infos', { params: { page, size, status } }).then(({ data }) => {
+    axios.get('/manage/borrow-infos', { params }).then(({ data }) => {
       const content = data.content.map((borrowInfo: BorrowInfo) => {
         return {
           borrowInfoId: borrowInfo.borrowInfoId,
@@ -157,7 +163,7 @@ const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: Bor
     });
 
   return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>(
-    libraryManageKeys.overdueInfoList({ page, size, status }),
+    libraryManageKeys.overdueInfoList(params),
     fetcher,
   );
 };
@@ -204,8 +210,9 @@ const useDenyReturnMutation = () => {
 };
 
 const useGetBorrowLogListQuery = ({ page, size = 10, searchType, search }: BorrowLogListSearch) => {
+  const params = { page, size, searchType, search };
   const fetcher = () =>
-    axios.get('/manage/borrow-infos/logs', { params: { page, size, searchType, search } }).then(({ data }) => {
+    axios.get('/manage/borrow-infos/logs', { params }).then(({ data }) => {
       const content = data.content.map((borrowLogInfo: BorrowLogInfo) => {
         return {
           ...borrowLogInfo,
@@ -227,7 +234,7 @@ const useGetBorrowLogListQuery = ({ page, size = 10, searchType, search }: Borro
     });
 
   return useQuery<{ content: BorrowLogInfo[]; totalElement: number; size: number }>(
-    libraryManageKeys.borrowLogList({ page, size, searchType, search }),
+    libraryManageKeys.borrowLogList(params),
     fetcher,
   );
 };
