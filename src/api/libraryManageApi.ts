@@ -14,9 +14,9 @@ import {
 const libraryManageKeys = {
   base: ['manage'] as const,
   book: () => [...libraryManageKeys.base, 'books'] as const,
-  borrowInfo: () => [...libraryManageKeys.base, 'borrow-infos'] as const,
+  borrowInfo: () => [...libraryManageKeys.base, 'borrowInfos'] as const,
   bookManageList: (params: BookListSearch) => [...libraryManageKeys.book(), params] as const,
-  bookDetail: (params: number) => [...libraryManageKeys.book(), params] as const,
+  bookDetail: (bookId: number) => [...libraryManageKeys.book(), bookId] as const,
   borrowInfoList: (params: BorrowInfoListSearch) => [...libraryManageKeys.borrowInfo(), params] as const,
   overdueInfoList: (params: BorrowInfoListSearch) => [...libraryManageKeys.borrowInfo(), 'overdue', params] as const,
   borrowLogList: (params: BorrowLogListSearch) => [...libraryManageKeys.borrowInfo(), 'logs', params] as const,
