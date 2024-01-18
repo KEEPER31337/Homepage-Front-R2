@@ -19,7 +19,7 @@ const attendanceKeys = {
     memberId,
     year,
   ],
-  todayAttendanceRank: (param: PageAndSize) => [...attendanceKeys.base, 'todayRank', param] as const,
+  todayAttendanceRank: (params: PageAndSize) => [...attendanceKeys.base, 'todayRank', params] as const,
   continuousAttendanceRank: () => [...attendanceKeys.base, 'continuousRank'] as const,
 };
 
