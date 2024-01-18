@@ -8,8 +8,8 @@ import { ProfileInfo, MemberDetailInfo, PageAndSize, PointRank } from './dto';
 
 const memberKeys = {
   base: ['member'] as const,
-  memberList: ['member', 'memberList'] as const,
-  pointRank: (param: PageAndSize) => [...memberKeys.base, 'pointRank', param] as const,
+  memberList: () => [...memberKeys.base, 'memberList'] as const,
+  pointRank: (params: PageAndSize) => [...memberKeys.base, 'pointRank', params] as const,
 };
 const profileKeys = {
   profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
@@ -31,7 +31,7 @@ const useGetMembersQuery = ({
         };
       });
     });
-  return useQuery<MemberDetailInfo[]>(memberKeys.memberList, fetcher, {
+  return useQuery<MemberDetailInfo[]>(memberKeys.memberList(), fetcher, {
     onSuccess,
   });
 };
@@ -177,7 +177,7 @@ const useEditMemberTypeMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: memberKeys.memberList });
+      queryClient.invalidateQueries({ queryKey: memberKeys.memberList() });
     },
   });
 };
@@ -188,7 +188,7 @@ const useDeleteMemberMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: memberKeys.memberList });
+      queryClient.invalidateQueries({ queryKey: memberKeys.memberList() });
     },
   });
 };
