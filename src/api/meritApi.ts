@@ -4,10 +4,10 @@ import { PageAndSize, MeritLog, MeritType, MembersMerit } from './dto';
 
 const meritKeys = {
   base: ['merits'] as const,
-  meritLog: (param: PageAndSize & { meritType?: string }) => [...meritKeys.base, param] as const,
-  meritType: (param: PageAndSize) => [...meritKeys.base, 'types', param] as const,
-  membersMerit: (param: PageAndSize) => [...meritKeys.base, 'members', param] as const,
-  memberMerit: (memberId: number, param: PageAndSize) => [...meritKeys.base, 'members', memberId, param] as const,
+  meritLog: (params: PageAndSize & { meritType?: string }) => [...meritKeys.base, params] as const,
+  meritType: (params: PageAndSize) => [...meritKeys.base, 'types', params] as const,
+  membersMerit: (params: PageAndSize) => [...meritKeys.base, 'members', params] as const,
+  memberMerit: (memberId: number, params: PageAndSize) => [...meritKeys.base, 'members', memberId, params] as const,
 };
 
 const useGetMeritLogQuery = ({ page, size = 10, meritType = 'ALL' }: PageAndSize & { meritType?: string }) => {
