@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { useGetContinuousAttendanceRank, useGetTodayAttendanceRank } from '@api/attendanceApi';
 import { AttendRankInfo, GameRankInfo } from '@api/dto';
-import {
-  useGetContinuousAttendanceRank,
-  useGetGameRank,
-  useGetPointRank,
-  useGetTodayAttendanceRank,
-} from '@api/rankApi';
+import { useGetPointRank } from '@api/memberApi';
 import usePagination from '@hooks/usePagination';
 import { formatGeneration } from '@utils/converter';
+import { useGetGameRank } from '@pages/Game/Baseball/api/baseballApi';
 import ServerAvatar from '@components/Avatar/ServerAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardTab from '@components/Tab/StandardTab';

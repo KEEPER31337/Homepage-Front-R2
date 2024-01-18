@@ -4,10 +4,12 @@ import axios from 'axios';
 import { PASSWORD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import { formatGeneration } from '@utils/converter';
-import { ProfileInfo, MemberDetailInfo } from './dto';
+import { ProfileInfo, MemberDetailInfo, PageAndSize, PointRank } from './dto';
 
 const memberKeys = {
-  memberList: ['member', 'memberList'] as const,
+  base: ['member'] as const,
+  memberList: () => [...memberKeys.base, 'memberList'] as const,
+  pointRank: (params: PageAndSize) => [...memberKeys.base, 'pointRank', params] as const,
 };
 const profileKeys = {
   profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
@@ -29,7 +31,7 @@ const useGetMembersQuery = ({
         };
       });
     });
-  return useQuery<MemberDetailInfo[]>(memberKeys.memberList, fetcher, {
+  return useQuery<MemberDetailInfo[]>(memberKeys.memberList(), fetcher, {
     onSuccess,
   });
 };
@@ -175,7 +177,7 @@ const useEditMemberTypeMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: memberKeys.memberList });
+      queryClient.invalidateQueries({ queryKey: memberKeys.memberList() });
     },
   });
 };
@@ -186,8 +188,18 @@ const useDeleteMemberMutation = () => {
 
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: memberKeys.memberList });
+      queryClient.invalidateQueries({ queryKey: memberKeys.memberList() });
     },
+  });
+};
+
+const useGetPointRank = ({ page, size = 10 }: PageAndSize) => {
+  const params = { page, size };
+
+  const fetcher = () => axios.get('/members/point-rank', { params }).then(({ data }) => data);
+
+  return useQuery<PointRank>(memberKeys.pointRank(params), fetcher, {
+    keepPreviousData: true,
   });
 };
 
@@ -204,4 +216,5 @@ export {
   useWithdrawalMutation,
   useEditMemberTypeMutation,
   useDeleteMemberMutation,
+  useGetPointRank,
 };
