@@ -4,10 +4,12 @@ import axios from 'axios';
 import { PASSWORD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import { formatGeneration } from '@utils/converter';
-import { ProfileInfo, MemberDetailInfo } from './dto';
+import { ProfileInfo, MemberDetailInfo, PageAndSize, PointRank } from './dto';
 
 const memberKeys = {
+  base: ['member'] as const,
   memberList: ['member', 'memberList'] as const,
+  pointRank: (param: PageAndSize) => [...memberKeys.base, 'point_rank', param] as const,
 };
 const profileKeys = {
   profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
@@ -191,6 +193,14 @@ const useDeleteMemberMutation = () => {
   });
 };
 
+const useGetPointRank = ({ page, size = 10 }: PageAndSize) => {
+  const fetcher = () => axios.get('/members/point-rank', { params: { page, size } }).then(({ data }) => data);
+
+  return useQuery<PointRank>(memberKeys.pointRank({ page, size }), fetcher, {
+    keepPreviousData: true,
+  });
+};
+
 export {
   useGetMembersQuery,
   useGetProfileQuery,
@@ -204,4 +214,5 @@ export {
   useWithdrawalMutation,
   useEditMemberTypeMutation,
   useDeleteMemberMutation,
+  useGetPointRank,
 };

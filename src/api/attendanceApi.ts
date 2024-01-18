@@ -1,9 +1,17 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { CallenderChartInfo, TodayAttendInfo, TodayAttendPoint } from './dto';
+import {
+  AttendRankInfo,
+  CallenderChartInfo,
+  PageAndSize,
+  TodayAttendInfo,
+  TodayAttendPoint,
+  TodayAttendRank,
+} from './dto';
 
 const attendanceKeys = {
+  base: ['attendances'] as const,
   todayAttendancePoint: ['todayAttendancePoint'],
   todayAttendanceInfo: ({ memberId }: { memberId: number }) => ['todayAttendanceInfo', memberId],
   attendanceInfoList: ({ memberId, year }: { memberId: number; year: number }) => [
@@ -11,6 +19,8 @@ const attendanceKeys = {
     memberId,
     year,
   ],
+  todayAttendanceRank: (param: PageAndSize) => [...attendanceKeys.base, 'today-rank', param] as const,
+  continuousAttendanceRank: () => [...attendanceKeys.base, 'continuous-rank'] as const,
 };
 
 const useGetTodayAttendancePointQuery = () => {
@@ -36,4 +46,29 @@ const useGetAttendanceInfoListQuery = ({ memberId, year }: { memberId: number; y
   return useQuery<CallenderChartInfo[]>(attendanceKeys.attendanceInfoList({ memberId, year }), fetcher);
 };
 
-export { useGetTodayAttendancePointQuery, useGetTodayAttendanceInfoQuery, useGetAttendanceInfoListQuery };
+const useGetTodayAttendanceRank = ({ page, size = 10 }: PageAndSize) => {
+  const fetcher = () =>
+    axios
+      .get('/attendances/today-rank', {
+        params: { page, size },
+      })
+      .then(({ data }) => data);
+
+  return useQuery<TodayAttendRank>(attendanceKeys.todayAttendanceRank({ page, size }), fetcher, {
+    keepPreviousData: true,
+  });
+};
+
+const useGetContinuousAttendanceRank = () => {
+  const fetcher = () => axios.get('/attendances/continuous-rank').then(({ data }) => data);
+
+  return useQuery<AttendRankInfo[]>(attendanceKeys.continuousAttendanceRank(), fetcher);
+};
+
+export {
+  useGetTodayAttendancePointQuery,
+  useGetTodayAttendanceInfoQuery,
+  useGetAttendanceInfoListQuery,
+  useGetTodayAttendanceRank,
+  useGetContinuousAttendanceRank,
+};
