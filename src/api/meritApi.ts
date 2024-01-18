@@ -17,7 +17,7 @@ const useGetMeritLogQuery = ({ page, size = 10, meritType = 'ALL' }: PageAndSize
   const fetcher = () =>
     axios
       .get('/merits', {
-        params: { page, size, meritType },
+        params,
       })
       .then(({ data }) => data);
 
@@ -32,7 +32,7 @@ const useGetMeritTypeQuery = ({ page, size = 10 }: PageAndSize) => {
   const fetcher = () =>
     axios
       .get('/merits/types', {
-        params: { page, size },
+        params,
       })
       .then(({ data }) => data);
 
@@ -47,7 +47,7 @@ const useGetMembersMeritQuery = ({ page, size = 10 }: PageAndSize) => {
   const fetcher = () =>
     axios
       .get('/merits/members', {
-        params: { page, size },
+        params,
       })
       .then(({ data }) => data);
 
@@ -62,7 +62,7 @@ const useGetMemberMeritQuery = ({ page, size = 10, memberId }: PageAndSize & { m
   const fetcher = () =>
     axios
       .get(`/merits/members/${memberId}`, {
-        params: { page, size },
+        params,
       })
       .then(({ data }) => data);
 
