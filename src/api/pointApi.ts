@@ -8,9 +8,11 @@ const pointKeys = {
 };
 
 const useGetPointLogQuery = ({ page, size = 10 }: PageAndSize) => {
-  const fetcher = () => axios.get('/points', { params: { page, size } }).then(({ data }) => data);
+  const params = { page, size };
 
-  return useQuery<PointLog>(pointKeys.pointLog({ page, size }), fetcher, {
+  const fetcher = () => axios.get('/points', { params }).then(({ data }) => data);
+
+  return useQuery<PointLog>(pointKeys.pointLog(params), fetcher, {
     keepPreviousData: true,
   });
 };
