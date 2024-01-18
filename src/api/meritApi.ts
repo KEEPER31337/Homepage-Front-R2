@@ -4,13 +4,16 @@ import { PageAndSize, MeritLog, MeritType, MembersMerit } from './dto';
 
 const meritKeys = {
   base: ['merits'] as const,
+  members: () => [...meritKeys.base, 'members'] as const,
   meritLog: (params: PageAndSize & { meritType?: string }) => [...meritKeys.base, params] as const,
   meritType: (params: PageAndSize) => [...meritKeys.base, 'types', params] as const,
-  membersMerit: (params: PageAndSize) => [...meritKeys.base, 'members', params] as const,
-  memberMerit: (memberId: number, params: PageAndSize) => [...meritKeys.base, 'members', memberId, params] as const,
+  membersMerit: (params: PageAndSize) => [...meritKeys.members(), params] as const,
+  memberMerit: (memberId: number, params: PageAndSize) => [...meritKeys.members(), memberId, params] as const,
 };
 
 const useGetMeritLogQuery = ({ page, size = 10, meritType = 'ALL' }: PageAndSize & { meritType?: string }) => {
+  const params = { page, size, meritType };
+
   const fetcher = () =>
     axios
       .get('/merits', {
@@ -18,12 +21,14 @@ const useGetMeritLogQuery = ({ page, size = 10, meritType = 'ALL' }: PageAndSize
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritLog>(meritKeys.meritLog({ page, size, meritType }), fetcher, {
+  return useQuery<MeritLog>(meritKeys.meritLog(params), fetcher, {
     keepPreviousData: true,
   });
 };
 
 const useGetMeritTypeQuery = ({ page, size = 10 }: PageAndSize) => {
+  const params = { page, size };
+
   const fetcher = () =>
     axios
       .get('/merits/types', {
@@ -31,12 +36,14 @@ const useGetMeritTypeQuery = ({ page, size = 10 }: PageAndSize) => {
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritType>(meritKeys.meritType({ page, size }), fetcher, {
+  return useQuery<MeritType>(meritKeys.meritType(params), fetcher, {
     keepPreviousData: true,
   });
 };
 
 const useGetMembersMeritQuery = ({ page, size = 10 }: PageAndSize) => {
+  const params = { page, size };
+
   const fetcher = () =>
     axios
       .get('/merits/members', {
@@ -44,12 +51,14 @@ const useGetMembersMeritQuery = ({ page, size = 10 }: PageAndSize) => {
       })
       .then(({ data }) => data);
 
-  return useQuery<MembersMerit>(meritKeys.membersMerit({ page, size }), fetcher, {
+  return useQuery<MembersMerit>(meritKeys.membersMerit(params), fetcher, {
     keepPreviousData: true,
   });
 };
 
 const useGetMemberMeritQuery = ({ page, size = 10, memberId }: PageAndSize & { memberId: number }) => {
+  const params = { page, size };
+
   const fetcher = () =>
     axios
       .get(`/merits/members/${memberId}`, {
@@ -57,7 +66,7 @@ const useGetMemberMeritQuery = ({ page, size = 10, memberId }: PageAndSize & { m
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritLog>(meritKeys.memberMerit(memberId, { page, size }), fetcher, {
+  return useQuery<MeritLog>(meritKeys.memberMerit(memberId, params), fetcher, {
     keepPreviousData: true,
   });
 };
