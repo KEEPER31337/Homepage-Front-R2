@@ -3,10 +3,11 @@ import axios from 'axios';
 import { PageAndSize, MeritLog, MeritType, MembersMerit } from './dto';
 
 const meritKeys = {
-  meritLog: (param: PageAndSize & { meritType?: string }) => ['meritLog', param] as const,
-  meritType: (param: PageAndSize) => ['meritType', param] as const,
-  membersMerit: (param: PageAndSize) => ['membersMerit', param] as const,
-  memberMerit: (param: PageAndSize & { memberId: number }) => ['memberMerit', param] as const,
+  base: ['merits'] as const,
+  meritLog: (param: PageAndSize & { meritType?: string }) => [...meritKeys.base, param] as const,
+  meritType: (param: PageAndSize) => [...meritKeys.base, 'types', param] as const,
+  membersMerit: (param: PageAndSize) => [...meritKeys.base, 'members', param] as const,
+  memberMerit: (memberId: number, param: PageAndSize) => [...meritKeys.base, 'members', memberId, param] as const,
 };
 
 const useGetMeritLogQuery = ({ page, size = 10, meritType = 'ALL' }: PageAndSize & { meritType?: string }) => {
@@ -56,7 +57,7 @@ const useGetMemberMeritQuery = ({ page, size = 10, memberId }: PageAndSize & { m
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritLog>(meritKeys.memberMerit({ page, size, memberId }), fetcher, {
+  return useQuery<MeritLog>(meritKeys.memberMerit(memberId, { page, size }), fetcher, {
     keepPreviousData: true,
   });
 };
