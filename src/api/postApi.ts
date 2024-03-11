@@ -183,8 +183,10 @@ const useGetEachPostQuery = (
 
 const useGetPostFilesQuery = (postId: number, fileOpen: boolean, password?: string) => {
   const queryClient = useQueryClient();
-
-  const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
+  const fetcher = () =>
+    axios.get(`/posts/${postId}/files`).then(({ data }) => {
+      return data;
+    });
 
   return useQuery<FileInfo[]>(['files', postId], fetcher, {
     enabled: fileOpen,
