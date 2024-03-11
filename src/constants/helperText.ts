@@ -2,6 +2,7 @@ export const COMMON = {
   success: {},
   error: {
     required: '필수 정보입니다.',
+    requiredLogin: '로그인이 필요합니다.',
     onlyNumber: '숫자만 입력 가능합니다.',
     onlyHttps: 'https:// 로 시작해야 합니다.',
     minLength: (min: number) => `${min}글자 이상 입력해주세요.` as const,
