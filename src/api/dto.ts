@@ -20,6 +20,11 @@ export type borrowStatus = '대출대기' | '반납대기' | '대출반려' | '�
 
 export type MemberType = '비회원' | '정회원' | '휴면회원' | '졸업' | '탈퇴';
 
+export interface PageAndSize {
+  page?: number;
+  size?: number;
+}
+
 export interface MemberInfo {
   memberId: number;
   loginId: number;
@@ -94,11 +99,9 @@ export interface PageBlockInfo {
   subtitleImages: Array<SubTitleImagesInfo>;
 }
 
-export interface BookListSearch {
+export interface BookListSearch extends PageAndSize {
   searchType?: 'title' | 'author' | 'all';
   search?: string;
-  page?: number;
-  size?: number;
 }
 
 export interface BorrowInfoListSearch {
@@ -403,11 +406,6 @@ export interface TrendingPostInfo {
   isSecret: boolean;
   thumbnailPath: string;
   registerTime: string;
-}
-
-export interface PageAndSize {
-  page?: number;
-  size?: number;
 }
 
 export interface AttendRankInfo {

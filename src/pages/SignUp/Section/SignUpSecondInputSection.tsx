@@ -20,6 +20,7 @@ interface SignUpFirstInputSectionProps {
 }
 
 const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProps) => {
+  // REVIEW useForm 사용하는데 별도의 state가 필요한 지 점검 필요
   const [studentIdState, setStudentIdState] = useState('');
   const [checkStudentIdDuplicateEnabled, setCheckStudentIdDuplicateEnabled] = useState(false);
   const setSignUpPageState = useSetRecoilState(signUpPageState);
@@ -68,7 +69,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
 
     if (isStudentIdDuplicate.duplicate === false) {
       setCheckStudentIdDuplicateEnabled(false);
-      queryClient.setQueryData(signUpKeys.studentIdDuplication(studentIdState), undefined);
+      queryClient.setQueryData(signUpKeys.studentIdDuplication({ studentId: studentIdState }), undefined);
     }
   }, [watch('studentId')]);
 

@@ -18,6 +18,7 @@ interface SignUpFirstInputSectionProps {
 }
 
 const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProps) => {
+  // REVIEW useForm 사용하는데 별도의 state가 필요한 지 점검 필요
   const [loginIdState, setLoginIdState] = useState('');
   const [checkLoginIdDuplicateEnabled, setCheckLoginIdDuplicateEnabled] = useState(false);
   const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
@@ -62,7 +63,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
 
     if (isLoginIdDuplicate.duplicate === false) {
       setCheckLoginIdDuplicateEnabled(false);
-      queryClient.setQueryData(signUpKeys.idDuplication(loginIdState), undefined);
+      queryClient.setQueryData(signUpKeys.loginIdDuplication({ loginId: loginIdState }), undefined);
     }
   }, [watch('loginId')]);
 
@@ -139,7 +140,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
         rules={{
           required: COMMON.error.required,
           validate: {
-            confirmMatchPassward: (value) => {
+            confirmMatchPassword: (value) => {
               if (getValues('password') !== value) return CONFIRM_PASSWORD_MSG.error.mismatch;
               setPasswordConfirmSuccessMsg(CONFIRM_PASSWORD_MSG.success.match);
               return undefined;

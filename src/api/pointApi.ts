@@ -3,13 +3,16 @@ import axios from 'axios';
 import { PointLog, PageAndSize } from './dto';
 
 const pointKeys = {
-  pointLog: (param: PageAndSize) => ['pointLog', param] as const,
+  base: ['points'] as const,
+  pointLog: (param: PageAndSize) => [...pointKeys.base, param] as const,
 };
 
 const useGetPointLogQuery = ({ page, size = 10 }: PageAndSize) => {
-  const fetcher = () => axios.get('/points', { params: { page, size } }).then(({ data }) => data);
+  const params = { page, size };
 
-  return useQuery<PointLog>(pointKeys.pointLog({ page, size }), fetcher, {
+  const fetcher = () => axios.get('/points', { params }).then(({ data }) => data);
+
+  return useQuery<PointLog>(pointKeys.pointLog(params), fetcher, {
     keepPreviousData: true,
   });
 };

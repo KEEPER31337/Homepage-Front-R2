@@ -29,7 +29,7 @@ const StudyAccordion = ({ study, setStudyModalOpen, setSelectedStudyInfo }: Stud
   };
 
   return (
-    <Accordion className="!shadow-none">
+    <Accordion TransitionProps={{ mountOnEnter: true }} className="!shadow-none">
       <AccordionSummary
         className="!border-b !border-white/[20%] !bg-subBlack !px-4 !text-white hover:!bg-subGray hover:!text-white focus:!outline-0"
         expandIcon={<VscChevronDown />}

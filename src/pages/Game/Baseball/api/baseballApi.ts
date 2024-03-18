@@ -1,14 +1,17 @@
 import toast from 'react-hot-toast';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { GameRankInfo } from '@api/dto';
 import { gameKeys } from '@api/gameApi';
 import { useApiError } from '@hooks/useGetApiError';
 import { GameInfo, GameResultInfo, GameStatus } from './baseballDto';
 
 export const baseballKeys = {
+  base: ['game'] as const,
   game_info: ['game_info'] as const,
   status: ['status'] as const,
   result: ['result'] as const,
+  gameRank: () => [...baseballKeys.base, 'rank'] as const,
 };
 
 const useGetGameInfoQuery = () => {
@@ -69,4 +72,17 @@ const useGetResultQuery = () => {
   return useQuery<GameResultInfo>(baseballKeys.result, fetcher);
 };
 
-export { useGetGameInfoQuery, useGetBaseBallStatusQuery, useGameStartMutation, useGuessMutation, useGetResultQuery };
+const useGetGameRank = () => {
+  const fetcher = () => axios.get('/game/rank').then(({ data }) => data);
+
+  return useQuery<GameRankInfo[]>(baseballKeys.gameRank(), fetcher);
+};
+
+export {
+  useGetGameInfoQuery,
+  useGetBaseBallStatusQuery,
+  useGameStartMutation,
+  useGuessMutation,
+  useGetResultQuery,
+  useGetGameRank,
+};

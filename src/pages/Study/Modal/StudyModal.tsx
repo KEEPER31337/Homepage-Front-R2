@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
 import { InputLabel, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
@@ -146,6 +147,9 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
           group: member.generation,
         })) || []),
       ]);
+    } else if (open && !headMemberInfo) {
+      toast.error(COMMON.error.requiredLogin);
+      setOpen(false);
     }
   }, [open, headMemberInfo]);
 
