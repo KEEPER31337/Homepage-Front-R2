@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Role } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
+import ConfirmModal from '@components/Modal/ConfirmModal';
 
 interface NeedLoginProps {
   children: JSX.Element;
@@ -12,16 +13,18 @@ const NeedAuth = ({ children, roles }: NeedLoginProps) => {
   const { checkIncludeOneOfAuths } = useCheckAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!checkIncludeOneOfAuths(roles)) {
-      navigate('/');
-    }
-  }, [checkIncludeOneOfAuths(roles)]);
+  const onClose = () => {
+    navigate('/');
+  };
 
   if (checkIncludeOneOfAuths(roles)) {
     return children;
   }
-  return null;
+  return (
+    <ConfirmModal open onClose={onClose} title="권한이 필요한 서비스입니다">
+      <p>접근 권한이 없습니다</p>
+    </ConfirmModal>
+  );
 };
 
 export default NeedAuth;
