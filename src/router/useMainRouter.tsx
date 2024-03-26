@@ -22,6 +22,8 @@ import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
 import FitContainer from '@components/Layout/Container/FitContainer';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import MainLayout from '@components/Layout/MainLayout';
+import NeedAuth from '@components/NeedAuth/NeedAuth';
+import NeedLogin from '@components/NeedAuth/NeedLogin';
 
 const useMainRouter = () =>
   useRoutes([
@@ -54,7 +56,11 @@ const useMainRouter = () =>
             },
             {
               path: 'profile/:memberId/*',
-              element: <Profile />,
+              element: (
+                <NeedLogin>
+                  <Profile />
+                </NeedLogin>
+              ),
             },
           ],
         },
@@ -66,7 +72,11 @@ const useMainRouter = () =>
               children: [
                 {
                   path: 'dutyManage',
-                  element: <DutyManage />,
+                  element: (
+                    <NeedAuth>
+                      <DutyManage />
+                    </NeedAuth>
+                  ),
                 },
                 /* {
                   path: 'electionManage',
@@ -74,19 +84,35 @@ const useMainRouter = () =>
                 }, */
                 {
                   path: 'libraryManage/*',
-                  element: <LibraryManage />,
+                  element: (
+                    <NeedAuth roles={['ROLE_사서']}>
+                      <LibraryManage />
+                    </NeedAuth>
+                  ),
                 },
                 {
                   path: 'seminarManage',
-                  element: <SeminarManage />,
+                  element: (
+                    <NeedAuth roles={['ROLE_서기']}>
+                      <SeminarManage />
+                    </NeedAuth>
+                  ),
                 },
                 {
                   path: 'activeMemberManage',
-                  element: <ActiveMemberManage />,
+                  element: (
+                    <NeedAuth roles={['ROLE_서기']}>
+                      <ActiveMemberManage />
+                    </NeedAuth>
+                  ),
                 },
                 {
                   path: 'meritManage',
-                  element: <MeritManage />,
+                  element: (
+                    <NeedAuth roles={['ROLE_서기']}>
+                      <MeritManage />
+                    </NeedAuth>
+                  ),
                 },
               ],
             },
@@ -95,29 +121,53 @@ const useMainRouter = () =>
               children: [
                 {
                   path: ':categoryName',
-                  element: <BoardList />,
+                  element: (
+                    <NeedLogin>
+                      <BoardList />
+                    </NeedLogin>
+                  ),
                 },
                 {
                   path: 'write/:categoryName',
-                  element: <BoardWrite />,
+                  element: (
+                    <NeedLogin>
+                      <BoardWrite />
+                    </NeedLogin>
+                  ),
                 },
                 {
                   path: 'view/:postId',
-                  element: <BoardView />,
+                  element: (
+                    <NeedLogin>
+                      <BoardView />
+                    </NeedLogin>
+                  ),
                 },
               ],
             },
             {
               path: 'study',
-              element: <Study />,
+              element: (
+                <NeedLogin>
+                  <Study />
+                </NeedLogin>
+              ),
             },
             {
               path: 'library',
-              element: <Library />,
+              element: (
+                <NeedLogin>
+                  <Library />
+                </NeedLogin>
+              ),
             },
             {
               path: 'seminar',
-              element: <SeminarAttend />,
+              element: (
+                <NeedLogin>
+                  <SeminarAttend />
+                </NeedLogin>
+              ),
             },
             /* {
               path: 'election',
@@ -125,11 +175,19 @@ const useMainRouter = () =>
             }, */
             {
               path: 'rank',
-              element: <Rank />,
+              element: (
+                <NeedLogin>
+                  <Rank />
+                </NeedLogin>
+              ),
             },
             {
               path: 'game',
-              element: <Game />,
+              element: (
+                <NeedLogin>
+                  <Game />
+                </NeedLogin>
+              ),
             },
             /* {
               path: 'ctf',

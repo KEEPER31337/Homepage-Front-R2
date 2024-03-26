@@ -6,10 +6,10 @@ import ConfirmModal from '@components/Modal/ConfirmModal';
 
 interface NeedLoginProps {
   children: JSX.Element;
-  roles: Role[];
+  roles?: Role[];
 }
 
-const NeedAuth = ({ children, roles }: NeedLoginProps) => {
+const NeedAuth = ({ children, roles = [] }: NeedLoginProps) => {
   const { checkIncludeOneOfAuths } = useCheckAuth();
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ const NeedAuth = ({ children, roles }: NeedLoginProps) => {
     navigate('/');
   };
 
-  if (checkIncludeOneOfAuths(roles)) {
+  if (checkIncludeOneOfAuths([...roles, 'ROLE_회장', 'ROLE_부회장'])) {
     return children;
   }
   return (
