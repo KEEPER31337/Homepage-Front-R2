@@ -6,6 +6,10 @@ import memberState from '@recoil/member.recoil';
 const useCheckAuth = () => {
   const member: MemberInfo | null = useRecoilValue(memberState);
 
+  const checkLogin = useMemo(() => {
+    return () => member !== null;
+  }, [member]);
+
   const checkAuth = useMemo(() => {
     return (requiredRole: Role) => member?.memberJobs?.includes(requiredRole);
   }, [member]);
@@ -16,7 +20,7 @@ const useCheckAuth = () => {
 
   const checkIsMyId = (id: number) => member?.memberId === id;
 
-  return { checkAuth, checkIncludeOneOfAuths, checkIsMyId };
+  return { checkLogin, checkAuth, checkIncludeOneOfAuths, checkIsMyId };
 };
 
 export default useCheckAuth;
