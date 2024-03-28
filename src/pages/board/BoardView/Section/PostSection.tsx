@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { VscArrowDown, VscArrowUp, VscFolder, VscFolderOpened } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
@@ -21,7 +21,7 @@ interface PostSectionProps {
 }
 
 const PostSection = ({ postId, post, password }: PostSectionProps) => {
-  const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, false);
+  const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, true);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
   const hasWarningModal = post.categoryName === '시험게시판' && post.isRead === false && !fileOpen;
 
@@ -29,7 +29,6 @@ const PostSection = ({ postId, post, password }: PostSectionProps) => {
   const { mutate: controlLikes } = useControlPostLikesMutation();
   const { mutate: controlDislikes } = useControlPostDislikesMutation();
   const { mutate: downloadFile } = useDownloadFileMutation();
-
   const handleFileOpenButtonClick = () => {
     if (hasWarningModal) {
       setWarningModalOpen(true);
@@ -55,6 +54,11 @@ const PostSection = ({ postId, post, password }: PostSectionProps) => {
   const handleDisikeButtonClick = () => {
     controlDislikes(postId);
   };
+
+  useEffect(() => {
+    handleFileOpenButtonClick();
+    // toggleFileOpen();
+  }, []);
 
   return (
     <div className="min-h-[500px] bg-middleBlack px-6 pb-8 pt-3 sm:px-14 sm:py-10">

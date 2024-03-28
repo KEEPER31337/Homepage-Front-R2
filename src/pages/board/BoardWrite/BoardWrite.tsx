@@ -5,12 +5,13 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
 import { useRecoilValue } from 'recoil';
-import { PostInfo, UploadPostSettings } from '@api/dto';
+import { FileInfo, PostInfo, UploadPostSettings } from '@api/dto';
 import {
   useAddFilesMutation,
   useDeleteFilesMutation,
   useEditPostMutation,
   useEditPostThumbnailMutation,
+  useGetPostFilesQuery,
   useUploadPostMutation,
 } from '@api/postApi';
 import { COMMON } from '@constants/helperText';
@@ -33,6 +34,7 @@ const BoardWrite = () => {
     state: {
       postId: number;
       post: PostInfo;
+      password: string;
     } | null;
   } = useLocation();
 
@@ -67,7 +69,14 @@ const BoardWrite = () => {
     getValues,
     formState: { isValid },
   } = useForm({ mode: 'onBlur' });
-  const queryClient = useQueryClient();
+
+  if (editMode) {
+    const { data: filesInfo } = useGetPostFilesQuery(editMode?.postId, true, editMode?.password);
+    useEffect(() => {
+      if (!filesInfo) return;
+      setExistingFiles(filesInfo as any);
+    }, [filesInfo]);
+  }
 
   const handleEditorBlur = () => {
     const content = editorRef.current?.getInstance().getMarkdown();
@@ -148,8 +157,6 @@ const BoardWrite = () => {
       isTemp: editMode.post.isTemp,
       allowComment: editMode.post.allowComment,
     });
-    const serverFiles: (File & { fileId: number })[] | undefined = queryClient.getQueryData(['files', editMode.postId]);
-    if (serverFiles) setExistingFiles(serverFiles);
   }, []);
 
   return (
@@ -197,7 +204,7 @@ const BoardWrite = () => {
           height="470px"
           initialValue={editMode?.post.content}
           forwardedRef={editorRef as React.MutableRefObject<Editor>}
-          onBlur={handleEditorBlur}
+          onChange={handleEditorBlur}
         />
         <Typography variant="small" className="text-subRed">
           {!hasContent && contentErrMsg}

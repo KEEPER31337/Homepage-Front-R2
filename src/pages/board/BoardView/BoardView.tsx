@@ -58,7 +58,7 @@ const BoardView = () => {
       {postInfo && (
         <>
           <div className="space-y-2">
-            <BannerSection postId={postId} post={postInfo} />
+            <BannerSection postId={postId} post={postInfo} password={password} />
             <PostSection postId={postId} post={postInfo} password={password} />
           </div>
           <AdjacentPostNavSection previousPost={postInfo.previousPost} nextPost={postInfo.nextPost} />
