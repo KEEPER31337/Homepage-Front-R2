@@ -47,14 +47,14 @@ export const LOGIN_ID = {
   error: {
     existing: '이미 존재하는 아이디입니다.',
   },
-};
+} as const;
 
 export const STUDENT_ID = {
   success: {},
   error: {
     existing: '이미 존재하는 학번입니다.',
   },
-};
+} as const;
 
 export const FILE = {
   success: {},
