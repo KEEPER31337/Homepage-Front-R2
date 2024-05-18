@@ -18,14 +18,26 @@ const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
 
   const { mutate: uploadPostImageMutation } = useUploadPostImageMutation();
 
-  const handleImageUpload: HookMap['addImageBlobHook'] = (blob, callback) => {
+  const handleImageUpload: HookMap['addImageBlobHook'] = (blob) => {
     // TODO: 이미지 크기가 30MB 넘어가면 에러 처리
-    // TODO: 서버에서 이미지 받아오는 동안 딜레이 처리
+
+    const editor = forwardedRef?.current.getInstance();
+    if (!editor) return;
+
+    const [startPos] = editor.getSelection();
+
+    const IMAGE_MARKDOWN_LOADING_MSG = `![Uploading image...]()`;
+    editor.insertText(IMAGE_MARKDOWN_LOADING_MSG);
+
+    // selection 타입을 명확히 하여 마크다운 위치 계산
+    const [startLinePos, startCharPos] = startPos as Exclude<typeof startPos, number>;
+    const endPos = [startLinePos, startCharPos + IMAGE_MARKDOWN_LOADING_MSG.length] as Exclude<typeof startPos, number>;
+
     uploadPostImageMutation(
       { file: blob },
       {
-        onSuccess: ({ filePath }) => {
-          callback(getServerImgUrl(filePath));
+        onSuccess: ({ fileName, filePath }) => {
+          editor.replaceSelection(`![${fileName}](${getServerImgUrl(filePath)})`, startPos, endPos);
         },
       },
     );
