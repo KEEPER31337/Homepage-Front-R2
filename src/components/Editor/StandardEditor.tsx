@@ -36,7 +36,7 @@ const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
     const [startPos] = editor.getSelection();
 
     const IMAGE_MARKDOWN_LOADING_MSG = `![Uploading image...]()`;
-    editor.insertText(IMAGE_MARKDOWN_LOADING_MSG);
+    editor.insertText(`${IMAGE_MARKDOWN_LOADING_MSG}\n`);
 
     // selection 타입을 명확히 하여 마크다운 위치 계산
     const [startLinePos, startCharPos] = startPos as Exclude<typeof startPos, number>;
