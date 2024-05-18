@@ -58,7 +58,7 @@ export const STUDENT_ID = {
   },
 } as const;
 
-export const MAX_FILE_SIZE = 30000000; // Byte
+export const MAX_FILE_SIZE = 30 * 1024 * 1024; // Byte
 export const FILE = {
   success: {},
   error: {
