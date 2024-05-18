@@ -4,7 +4,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { HookMap } from '@toast-ui/editor';
 import { Editor, EditorProps } from '@toast-ui/react-editor';
 import { useUploadPostImageMutation } from '@api/postApi';
-import { FILE } from '@constants/apiResponseMessage';
+import { FILE, MAX_FILE_SIZE } from '@constants/apiResponseMessage';
 import { getServerImgUrl } from '@utils/converter';
 
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -21,7 +21,14 @@ const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
   const { mutate: uploadPostImageMutation } = useUploadPostImageMutation();
 
   const handleImageUpload: HookMap['addImageBlobHook'] = (blob) => {
-    // TODO: 이미지 크기가 30MB 넘어가면 에러 처리
+    if (blob.size > MAX_FILE_SIZE) {
+      toast.error(FILE.error.exceedFileSize, {
+        style: {
+          maxWidth: 1500,
+        },
+      });
+      return;
+    }
 
     const editor = forwardedRef?.current.getInstance();
     if (!editor) return;

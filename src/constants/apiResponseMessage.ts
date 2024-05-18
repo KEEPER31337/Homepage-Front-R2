@@ -1,3 +1,5 @@
+import { formatFileSize } from '@utils/converter';
+
 export const COMMON = {} as const;
 
 export const PASSWORD = {
@@ -56,9 +58,11 @@ export const STUDENT_ID = {
   },
 } as const;
 
+export const MAX_FILE_SIZE = 30000000; // Byte
 export const FILE = {
   success: {},
   error: {
     uploadFail: '업로드가 실패하였습니다.',
+    exceedFileSize: `파일이 제한된 크기(${formatFileSize(MAX_FILE_SIZE)})를 초과하였습니다.`,
   },
 } as const;
