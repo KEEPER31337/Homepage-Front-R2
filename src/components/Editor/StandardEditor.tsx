@@ -1,12 +1,14 @@
 import React from 'react';
+import toast from 'react-hot-toast';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { HookMap } from '@toast-ui/editor';
 import { Editor, EditorProps } from '@toast-ui/react-editor';
+import { useUploadPostImageMutation } from '@api/postApi';
+import { FILE } from '@constants/apiResponseMessage';
+import { getServerImgUrl } from '@utils/converter';
 
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
-import { useUploadPostImageMutation } from '@api/postApi';
-import { getServerImgUrl } from '@utils/converter';
 
 interface StandardEditorProps extends EditorProps {
   forwardedRef?: React.MutableRefObject<Editor>;
@@ -38,6 +40,10 @@ const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
       {
         onSuccess: ({ fileName, filePath }) => {
           editor.replaceSelection(`![${fileName}](${getServerImgUrl(filePath)})`, startPos, endPos);
+        },
+        onError: () => {
+          editor.deleteSelection(startPos, endPos);
+          toast.error(FILE.error.uploadFail);
         },
       },
     );

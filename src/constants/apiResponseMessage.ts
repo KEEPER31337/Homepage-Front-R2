@@ -55,3 +55,10 @@ export const STUDENT_ID = {
     existing: '이미 존재하는 학번입니다.',
   },
 };
+
+export const FILE = {
+  success: {},
+  error: {
+    uploadFail: '업로드가 실패하였습니다.',
+  },
+} as const;
