@@ -29,7 +29,14 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
 
   const options: { value: number; label: string; group: string }[] = [];
   memberList?.forEach((data) => options.push({ value: data.memberId, label: data.realName, group: data.generation }));
-  const sortedOptions = options.sort((a, b) => (a.group > b.group ? 1 : -1));
+  const sortedOptions = options.sort((a, b) => {
+    const aGroup = parseFloat(a.group);
+    const bGroup = parseFloat(b.group);
+    if (aGroup !== bGroup) {
+      return aGroup - bGroup;
+    }
+    return a.label.localeCompare(b.label);
+  });
 
   const [value, setValue] = useState<SingleAutoCompleteValue>(null);
   const [prevInfo, setPrevInfo] = useState<{ value: number; label: string; group: string }>({
