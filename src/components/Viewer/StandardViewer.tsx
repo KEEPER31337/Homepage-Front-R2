@@ -1,6 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import { Viewer } from '@toast-ui/react-editor';
+import Prism from 'prismjs';
+
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import 'prismjs/themes/prism-tomorrow.css';
 
 interface StandardViewerProps {
   content: string;
@@ -16,7 +21,12 @@ const StandardViewer = ({ content, className }: StandardViewerProps) => {
 
   return (
     <div className={className}>
-      <Viewer ref={viewerRef} initialValue={content} theme="dark" />
+      <Viewer
+        ref={viewerRef}
+        initialValue={content}
+        theme="dark"
+        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+      />
     </div>
   );
 };

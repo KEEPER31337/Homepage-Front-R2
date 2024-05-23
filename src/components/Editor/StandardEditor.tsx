@@ -2,13 +2,17 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { HookMap } from '@toast-ui/editor';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import { Editor, EditorProps } from '@toast-ui/react-editor';
+import Prism from 'prismjs';
+import './prismLang';
 import { useUploadPostImageMutation } from '@api/postApi';
 import { FILE, MAX_FILE_SIZE } from '@constants/apiResponseMessage';
 import { getServerImgUrl } from '@utils/converter';
 
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
+import 'prismjs/themes/prism-tomorrow.css';
 
 interface StandardEditorProps extends EditorProps {
   forwardedRef?: React.MutableRefObject<Editor>;
@@ -70,6 +74,7 @@ const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
       language="ko"
       theme="dark"
       autofocus={false}
+      plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
       {...props}
     />
   );
