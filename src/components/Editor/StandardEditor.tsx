@@ -2,12 +2,12 @@ import React from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import { Editor, EditorProps } from '@toast-ui/react-editor';
+import Prism from 'prismjs';
+import './prismLang';
 
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
-import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
-import './prismLang';
 
 interface StandardEditorProps extends EditorProps {
   forwardedRef?: React.MutableRefObject<Editor>;
