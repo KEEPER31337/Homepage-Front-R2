@@ -7,7 +7,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
-import '@constants/prismLang';
+import './prismLang';
 
 interface StandardEditorProps extends EditorProps {
   forwardedRef?: React.MutableRefObject<Editor>;
