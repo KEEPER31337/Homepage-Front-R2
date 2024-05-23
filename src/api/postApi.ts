@@ -39,6 +39,22 @@ const useUploadPostMutation = () => {
   return useMutation(fetcher);
 };
 
+const useUploadPostImageMutation = () => {
+  const fetcher = async ({ file }: { file: Blob }) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const { data } = await axios.post('/posts/files', formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+    return data;
+  };
+
+  return useMutation(fetcher);
+};
+
 const useGetPostListQuery = ({ categoryId, searchType, search, page, size }: BoardSearch) => {
   const fetcher = () =>
     axios.get('/posts', { params: { categoryId, searchType, search, page, size } }).then(({ data }) => data);
@@ -251,6 +267,7 @@ const useGetMemberTempPostsQuery = ({ page, size = 10 }: PageAndSize) => {
 
 export {
   useUploadPostMutation,
+  useUploadPostImageMutation,
   useGetPostListQuery,
   useGetRecentPostsQuery,
   useGetTrendPostsQuery,
