@@ -25,7 +25,6 @@ module.exports = {
       'error',
       {
         endOfLine: 'auto',
-        customPropertySorting: false,
       },
     ],
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['craco.config.ts', 'prettier.config.js'] }],
