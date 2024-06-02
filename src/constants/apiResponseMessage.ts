@@ -59,10 +59,28 @@ export const STUDENT_ID = {
 } as const;
 
 export const MAX_FILE_SIZE = 30 * 1024 * 1024; // Byte
+export const ALLOWED_FILE_EXTENSIONS = [
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.gif',
+  '.svg',
+  '.mp4',
+  '.mp3',
+  '.txt',
+  '.pdf',
+  '.docx',
+  '.xlsx',
+  '.pptx',
+  '.zip',
+  '.7z',
+  '.hwpx',
+];
 export const FILE = {
   success: {},
   error: {
     uploadFail: '업로드가 실패하였습니다.',
     exceedFileSize: `파일이 제한된 크기(${formatFileSize(MAX_FILE_SIZE)})를 초과하였습니다.`,
+    disallowedFileExtension: '해당 파일 확장자는 허용되지 않습니다.',
   },
 } as const;
