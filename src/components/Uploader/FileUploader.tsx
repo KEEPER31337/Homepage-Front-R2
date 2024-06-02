@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useDropzone } from 'react-dropzone';
+import toast from 'react-hot-toast';
 import { Typography } from '@mui/material';
 import { VscNewFile } from 'react-icons/vsc';
 import FileUploadListTable from './FileUploadList';
