@@ -13,9 +13,10 @@ import ActionModal from '@components/Modal/ActionModal';
 interface BannerSectionProps {
   postId: number;
   post: PostInfo;
+  password?: string;
 }
 
-const BannerSection = ({ postId, post }: BannerSectionProps) => {
+const BannerSection = ({ postId, post, password }: BannerSectionProps) => {
   const [warningDeleteModalopen, setWarningDeleteModalopen] = useState(false);
 
   const { mutate: deletePost } = useDeletePostMutation();
@@ -23,7 +24,7 @@ const BannerSection = ({ postId, post }: BannerSectionProps) => {
   const { checkIsMyId } = useCheckAuth();
 
   const handleEditPostClick = () => {
-    navigate(`/board/write/${post.categoryName}`, { state: { postId, post } });
+    navigate(`/board/write/${post.categoryName}`, { state: { postId, post, password } });
   };
 
   const handleDeletePostClick = () => {
