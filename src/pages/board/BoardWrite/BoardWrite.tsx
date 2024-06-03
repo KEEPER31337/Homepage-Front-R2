@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useQueryClient } from 'react-query';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { Editor } from '@toast-ui/react-editor';
 import { useRecoilValue } from 'recoil';
-import { FileInfo, PostInfo, UploadPostSettings } from '@api/dto';
+import { PostInfo, UploadPostSettings } from '@api/dto';
 import {
   useAddFilesMutation,
   useDeleteFilesMutation,
