@@ -59,23 +59,8 @@ export const STUDENT_ID = {
 } as const;
 
 export const MAX_FILE_SIZE = 30 * 1024 * 1024; // Byte
-export const ALLOWED_FILE_EXTENSIONS = [
-  '.jpg',
-  '.jpeg',
-  '.png',
-  '.gif',
-  '.svg',
-  '.mp4',
-  '.mp3',
-  '.txt',
-  '.pdf',
-  '.docx',
-  '.xlsx',
-  '.pptx',
-  '.zip',
-  '.7z',
-  '.hwpx',
-];
+export const EXTENSION_NOTICE =
+  '지원하는 파일: .jpg, .jpeg, .png, .gif, .svg, .mp4, .mp3, .txt, .pdf, .docx, .xlsx, .pptx, .zip, .7z, .hwpx, etc.';
 export const FILE = {
   success: {},
   error: {
