@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { Typography } from '@mui/material';
 import { VscNewFile } from 'react-icons/vsc';
-import { FILE, MAX_FILE_SIZE, ALLOWED_FILE_EXTENSIONS } from '@constants/apiResponseMessage';
+import { FILE, MAX_FILE_SIZE, EXTENSION_NOTICE } from '@constants/apiResponseMessage';
 import FileUploadListTable from './FileUploadList';
 
 interface FileUploaderProps {
@@ -96,7 +96,7 @@ const FileUploader = ({
           <Typography className="inline">
             클릭 또는 드래그하여 파일을 첨부하세요
             <br />
-            <span style={{ fontSize: '12px' }}>지원하는 파일: {ALLOWED_FILE_EXTENSIONS.join(', ')}</span>
+            <span style={{ fontSize: '12px' }}>{EXTENSION_NOTICE}</span>
           </Typography>
         </span>
       </div>
