@@ -26,7 +26,7 @@ const FileUploader = ({
     setFilesToAdd((prevFiles) => [...prevFiles, ...acceptedFiles]);
   };
 
-  const onDropRejected = (rejectedFiles: { file: File; errors: { code: string; message: string }[] }[]) => {
+  const onDropRejected = (rejectedFiles: { file: File; errors: { code: string }[] }[]) => {
     rejectedFiles.forEach(({ errors }) => {
       errors.forEach((error) => {
         if (error.code === 'file-too-large') {
@@ -56,12 +56,12 @@ const FileUploader = ({
       'audio/wav': ['.wav'],
       'text/plain': ['.txt'],
       'application/pdf': ['.pdf'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.doc', '.docx'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xls', '.xlsx'],
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.ppt', '.pptx'],
       'application/zip': ['.zip'],
       'application/x-7z-compressed': ['.7z'],
-      'application/vnd.hancom.hwpx': ['.hwpx'],
+      'application/vnd.hancom.hwpx': ['.hwp', '.hwpx'],
     },
     maxSize: MAX_FILE_SIZE,
   });
