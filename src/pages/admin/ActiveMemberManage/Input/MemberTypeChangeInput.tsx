@@ -15,7 +15,9 @@ const MemberTypeChangeInput = ({
 }: MemberTypeChangeInputProps) => {
   const options: { value: number; label: string; group: string }[] = [];
   memberList?.forEach((data) => options.push({ value: data.memberId, label: data.realName, group: data.generation }));
-  const sortedOptions = options.sort((a, b) => (a.group > b.group ? 1 : -1));
+  const sortedOptions = options.sort(
+    (a, b) => parseFloat(a.group) - parseFloat(b.group) || a.label.localeCompare(b.label),
+  );
 
   return (
     <AutoComplete
