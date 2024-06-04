@@ -49,6 +49,7 @@ const FileUploader = ({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     onDropRejected,
+    maxSize: MAX_FILE_SIZE,
     accept: {
       'image/jpg': ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.bmp', '.ico'],
       'video/mp4': ['.mp4'],
@@ -63,7 +64,6 @@ const FileUploader = ({
       'application/x-7z-compressed': ['.7z'],
       'application/vnd.hancom.hwpx': ['.hwp', '.hwpx'],
     },
-    maxSize: MAX_FILE_SIZE,
   });
 
   const handleDeleteUploadFileClick = (fileName: string, fileId?: number) => {
