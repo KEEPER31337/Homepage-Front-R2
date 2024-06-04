@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { useDropzone } from 'react-dropzone';
+import toast from 'react-hot-toast';
 import { Typography } from '@mui/material';
 import { VscNewFile } from 'react-icons/vsc';
+import { FILE, MAX_FILE_SIZE } from '@constants/apiResponseMessage';
 import FileUploadListTable from './FileUploadList';
 
 interface FileUploaderProps {
@@ -24,7 +26,45 @@ const FileUploader = ({
     setFilesToAdd((prevFiles) => [...prevFiles, ...acceptedFiles]);
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const onDropRejected = (rejectedFiles: { file: File; errors: { code: string }[] }[]) => {
+    rejectedFiles.forEach(({ errors }) => {
+      errors.forEach((error) => {
+        if (error.code === 'file-too-large') {
+          toast.error(FILE.error.exceedFileSize, {
+            style: {
+              maxWidth: 1500,
+            },
+          });
+        } else if (error.code === 'file-invalid-type') {
+          toast.error(FILE.error.disallowedFileExtension, {
+            style: {
+              maxWidth: 1500,
+            },
+          });
+        }
+      });
+    });
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    onDropRejected,
+    maxSize: MAX_FILE_SIZE,
+    accept: {
+      'image/jpg': ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.bmp', '.ico'],
+      'video/mp4': ['.mp4'],
+      'audio/mp3': ['.mp3'],
+      'audio/wav': ['.wav'],
+      'text/plain': ['.txt'],
+      'application/pdf': ['.pdf'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.doc', '.docx'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xls', '.xlsx'],
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.ppt', '.pptx'],
+      'application/zip': ['.zip'],
+      'application/x-7z-compressed': ['.7z'],
+      'application/vnd.hancom.hwpx': ['.hwp', '.hwpx'],
+    },
+  });
 
   const handleDeleteUploadFileClick = (fileName: string, fileId?: number) => {
     if (fileId && setFileIdsToDelete && setExistingFiles) {
@@ -53,7 +93,13 @@ const FileUploader = ({
         <input {...getInputProps()} />
         <span className="text-center">
           <VscNewFile size={30} className="mr-2 inline" />
-          <Typography className="inline">클릭 또는 드래그하여 파일을 첨부하세요</Typography>
+          <Typography className="inline">
+            클릭 또는 드래그하여 파일을 첨부하세요
+            <Typography className="block" variant="caption">
+              지원하는 파일: .jpg, .jpeg, .png, .gif, .svg, .mp4, .mp3, .txt, .pdf, .docx, .xlsx, .pptx, .zip, .7z,
+              .hwpx, etc.
+            </Typography>
+          </Typography>
         </span>
       </div>
     </div>
