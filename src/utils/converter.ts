@@ -36,7 +36,7 @@ const formatMemberGeneration = (member: Pick<MemberDetailInfo, 'memberId' | 'gen
 });
 
 const getServerImgUrl = (url: string) => {
-  return `${process.env.REACT_APP_API_URL}/${url}`;
+  return `${import.meta.env.PUBLIC_API_URL}/${url}`;
 };
 
 export { formatFileSize, categoryNameToId, getServerImgUrl, formatGeneration, formatMemberGeneration };
