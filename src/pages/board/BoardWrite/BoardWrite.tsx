@@ -73,7 +73,6 @@ const BoardWrite = () => {
     const { data: filesInfo } = useGetPostFilesQuery(editMode?.postId, true, editMode?.password);
     useEffect(() => {
       if (!filesInfo) return;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setExistingFiles(filesInfo as any);
     }, [filesInfo]);
   }
