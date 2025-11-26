@@ -121,7 +121,7 @@
   ```
 - root path에 `.env` 파일 추가
   ```
-  REACT_APP_API_URL={{ apiUrl }}
+  PUBLIC_API_URL={{ apiUrl }}
   ```
 - 필요한 패키지 설치 및 실행
   ```
