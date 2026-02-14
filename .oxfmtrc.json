@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "singleQuote": true,
+  "semi": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "printWidth": 120,
+  "arrowParens": "always",
+  "experimentalSortPackageJson": false,
+  "experimentalTailwindcss": {
+    "config": "./tailwind.config.js"
+  },
+  "ignorePatterns": ["node_modules", "public"]
+}

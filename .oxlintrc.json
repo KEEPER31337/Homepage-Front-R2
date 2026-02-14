@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+
+  "plugins": ["typescript", "unicorn", "oxc", "react", "jsx-a11y", "import"],
+
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+
+  "ignorePatterns": ["node_modules", "dist", "build"],
+
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "off",
+    "perf": "off",
+    "style": "off",
+    "restriction": "off",
+    "nursery": "off"
+  },
+
+  "rules": {
+    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
+    "react/jsx-props-no-spreading": "off"
+
+    // 지원 될 때 추가하기 (oxlint 미구현)
+    // - import/no-extraneous-dependencies
+    // - react/function-component-definition
+    // - react/require-default-props
+  }
+}

@@ -48,7 +48,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
     </div>
   ) : (
     <>
-      <Typography className="!mt-[16px] !text-h3 !font-bold ">{seminarData?.name} 세미나</Typography>
+      <Typography className="!mt-[16px] !text-h3 !font-bold">{seminarData?.name} 세미나</Typography>
       <p className="mb-[14px] mt-[26px]">출석 코드</p>
       <SeminarInput
         disabled
