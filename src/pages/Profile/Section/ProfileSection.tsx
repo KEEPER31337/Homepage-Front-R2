@@ -53,7 +53,7 @@ const ProfileSection = () => {
 
   return (
     <div className="flex w-full space-x-6 space-y-0 p-4 xl:flex-col xl:space-x-0 xl:space-y-4">
-      <div className="flex w-1/2 flex-col items-center space-y-2  xl:w-full">
+      <div className="flex w-1/2 flex-col items-center space-y-2 xl:w-full">
         <ServerAvatar className="!h-40 !w-40 lg:!h-60 lg:!w-60" thumbnailPath={profileInfo?.thumbnailPath} />
         <div className="flex h-fit w-full justify-between space-x-2">
           <Typography variant={`${isMobile ? 'h3' : 'h1'}`} className="h-fit shrink-0 !font-semibold">
@@ -61,20 +61,20 @@ const ProfileSection = () => {
           </Typography>
           <BadgeSection memberType={profileInfo?.memberType || ''} memberJobs={profileInfo?.memberJobs || []} />
         </div>
-        <div className="flex  w-full ">
-          <div className="flex flex-col space-y-2  pr-2">
+        <div className="flex w-full">
+          <div className="flex flex-col space-y-2 pr-2">
             <Typography>기수</Typography>
             <Typography>이메일</Typography>
             <Typography>생년월일</Typography>
           </div>
-          <div className="flex flex-col space-y-2  ">
+          <div className="flex flex-col space-y-2">
             <Typography>{profileInfo?.generation}기</Typography>
             <Typography>{profileInfo?.emailAddress}</Typography>
             <Typography>{profileInfo?.birthday}</Typography>
           </div>
         </div>
       </div>
-      <div className="flex h-full w-1/2 flex-col justify-between space-y-5 xl:w-full ">
+      <div className="flex h-full w-1/2 flex-col justify-between space-y-5 xl:w-full">
         <div className="space-y-2">
           <div className="flex flex-col items-center space-y-2">
             <div className="w-full border border-pointBlue" />

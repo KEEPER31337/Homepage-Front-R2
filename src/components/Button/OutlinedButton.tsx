@@ -27,7 +27,7 @@ const OutlinedButton = ({
       variant="outlined"
       className={`${
         small ? '!text-small' : '!px-6'
-      } h-fit !rounded-sm !border-pointBlue !font-semibold disabled:!border-subGray  ${className}`}
+      } h-fit !rounded-sm !border-pointBlue !font-semibold disabled:!border-subGray ${className}`}
       type={type}
       onClick={onClick}
       disabled={disabled}

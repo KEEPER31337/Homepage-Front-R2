@@ -190,7 +190,7 @@ const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepP
         </div>
         {!isValidAuthCode && <p className="text-red-500">인증코드가 맞지 않습니다. 다시 입력해주세요.</p>}
         {isAuthCodeRequireClick && (
-          <div className="relative -mx-2 sm:-mx-20 ">
+          <div className="relative -mx-2 sm:-mx-20">
             <Typography
               variant={isMobile ? 'small' : 'paragraph'}
               className="absolute right-0 w-fit hover:underline hover:underline-offset-4"

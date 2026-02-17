@@ -20,8 +20,7 @@ const MemberCard = ({ memberInfo, onClick, isSelected }: MemberCardProps) => {
       onClick={handleCardClick}
       className={`${
         isSelected && '!border-pointBlue'
-      } flex h-fit items-center border border-transparent bg-middleBlack/50 p-1
-      `}
+      } flex h-fit items-center border border-transparent bg-middleBlack/50 p-1`}
     >
       <ServerAvatar className="mr-1 !h-7 !w-7" thumbnailPath={memberInfo?.thumbnailPath} />
       <Typography className="!text-[14px]">{memberInfo.realName}</Typography>

@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@pages/*": ["src/pages/*"],
-      "@components/*": ["src/components/*"],
-      "@router/*": ["src/router/*"],
-      "@api/*": ["src/api/*"],
-      "@constants/*": ["src/constants/*"],
-      "@mocks/*": ["src/mocks/*"],
-      "@assets/*": ["src/assets/*"],
-      "@utils/*": ["src/utils/*"],
-      "@recoil/*": ["src/recoil/*"],
-      "@hooks/*": ["src/hooks/*"]
+      "@pages/*": ["./src/pages/*"],
+      "@components/*": ["./src/components/*"],
+      "@router/*": ["./src/router/*"],
+      "@api/*": ["./src/api/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@mocks/*": ["./src/mocks/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@recoil/*": ["./src/recoil/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   }
 }
