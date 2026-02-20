@@ -8,8 +8,8 @@ import LogoNeon from '@assets/logo/logo_neon.svg';
 import { HOME_ACTIVITY_BLOCK } from '@constants/homeAbout';
 
 const imagePathMap: Record<number, string> = {
-  2: activityStudyImage,
-  3: activitySeminarImage,
+  2: activitySeminarImage,
+  3: activityStudyImage,
   4: activityDocsImage,
 };
 
