@@ -212,11 +212,10 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
       staticWriteContents: [
         { id: 24, content: '2024 KOSPO CTF 장려상', displayOrder: 1 },
         { id: 25, content: '2024 세종 HackTheon 우수상', displayOrder: 2 },
-        { id: 26, content: '제1회 대한민국 SW 융합 해커톤 대회 지정 과제부문 대상', displayOrder: 3 },
-        { id: 27, content: '2024 XRPL 해커톤 스마트 컨트랙트 부문 Winner', displayOrder: 4 },
-        { id: 29, content: '2024년 제1회 전국대학스마트정보통신공유포럼 우수상', displayOrder: 5 },
-        { id: 31, content: '시큐포럼(Security One) 공동운영 참여', displayOrder: 6 },
-        { id: 32, content: 'PNU 정보보호대학원 해킹경진대회 운영', displayOrder: 7 },
+        { id: 27, content: '2024 XRPL 해커톤 스마트 컨트랙트 부문 Winner', displayOrder: 3 },
+        { id: 29, content: '2024년 제1회 전국대학스마트정보통신공유포럼 우수상', displayOrder: 4 },
+        { id: 31, content: '시큐포럼(Security One) 공동운영 참여', displayOrder: 5 },
+        { id: 32, content: 'PNU 정보보호대학원 해킹경진대회 운영', displayOrder: 6 },
       ],
     },
     {
