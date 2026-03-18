@@ -9,6 +9,9 @@ jobs:
     steps: 
       - uses: actions/checkout@v6
 
+      - name: Set release tag
+        run: echo "SHORT_SHA=$(git rev-parse --short "${GITHUB_SHA}")" >> "$GITHUB_ENV"
+
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
@@ -20,7 +23,7 @@ jobs:
       - name: Build React App
         run: npm run build
         env:
-          PUBLIC_API_URL: https://api.keeper.or.kr
+          PUBLIC_API_URL: https://api.dev.keeper.or.kr
           
       - uses: webfactory/ssh-agent@v0.9.0
         with:
@@ -31,5 +34,27 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Send static files to server
-        run: rsync -az -e ssh ./build "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/home/keeper/frontend_static_files"
+      - name: Prepare frontend release directory
+        run: |
+          ssh "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "mkdir -p /var/lib/frontend_static_files/${SHORT_SHA}"
+
+      - name: Send static files to release directory
+        run: |
+          rsync -az --delete -e ssh \
+            ./build/ \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/var/lib/frontend_static_files/${SHORT_SHA}/"
+
+      - name: Update www symlink
+        run: |
+          ssh "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" "SHORT_SHA=${SHORT_SHA} bash -s" << 'EOF'
+            set -euo pipefail
+
+            BASE_DIR=/var/lib/frontend_static_files
+            RELEASE_DIR="${BASE_DIR}/${SHORT_SHA}"
+            TMP_LINK="${BASE_DIR}/.www_tmp"
+
+            test -d "${RELEASE_DIR}"
+            ln -sfn "${RELEASE_DIR}" "${TMP_LINK}"
+            mv -Tf "${TMP_LINK}" "${BASE_DIR}/www"
+          EOF
