@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chip, Typography } from '@mui/material';
+import { DateTime } from 'luxon';
 import { VscCalendar, VscEye } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
 import { useDeletePostMutation } from '@api/postApi';
@@ -18,6 +19,7 @@ interface BannerSectionProps {
 
 const BannerSection = ({ postId, post, password }: BannerSectionProps) => {
   const [warningDeleteModalopen, setWarningDeleteModalopen] = useState(false);
+  const formattedRegisterTime = DateTime.fromFormat(post.registerTime, 'yyyy-MM-dd HH:mm:ss').toFormat('yyyy-MM-dd');
 
   const { mutate: deletePost } = useDeletePostMutation();
   const navigate = useNavigate();
@@ -54,7 +56,7 @@ const BannerSection = ({ postId, post, password }: BannerSectionProps) => {
             </div>
             <div className="flex items-center justify-center">
               <VscCalendar className="mr-1 h-4 w-4" />
-              {post.registerTime}
+              {formattedRegisterTime}
             </div>
             <div className="flex items-center justify-center">
               <VscEye className="mr-1 h-4 w-4" />
