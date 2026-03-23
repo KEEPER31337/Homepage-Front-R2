@@ -85,20 +85,23 @@ const BoardList = () => {
           value
         );
       case 'title':
+        const registerDateTime = DateTime.fromFormat(rowData.registerTime, 'yyyy-MM-dd HH:mm:ss');
+        const formattedRegisterTime = registerDateTime.toFormat('yyyy-MM-dd');
+
         return (
           <>
             <div className="flex items-center">
               {rowData.isSecret && <AiFillLock className="mr-1 fill-pointBlue" />}
               <span>{value}</span>
               {rowData.commentCount > 0 && <span className="ml-1 text-pointBlue">[{rowData.commentCount}]</span>}
-              {DateTime.fromISO(rowData.registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
+              {registerDateTime >= DateTime.now().plus({ days: -1 }).startOf('day') && (
                 <span className="ml-1 rounded-sm bg-pointBlue px-1 text-center text-small text-mainBlack">N</span>
               )}
             </div>
             {isMobile && (
               <div className="flex items-end justify-between">
                 <Typography variant="small">
-                  {rowData.writerName} | {rowData.registerTime}
+                  {rowData.writerName} | {formattedRegisterTime}
                 </Typography>
                 <div className="flex items-end">
                   <VscEye className="mr-0.5 fill-pointBlue" size={12} />
@@ -111,6 +114,8 @@ const BoardList = () => {
             )}
           </>
         );
+      case 'registerTime':
+        return DateTime.fromFormat(value as string, 'yyyy-MM-dd HH:mm:ss').toFormat('yyyy-MM-dd');
       default:
         return value;
     }
