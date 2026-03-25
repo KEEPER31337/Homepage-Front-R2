@@ -1,20 +1,22 @@
 name: KEEPER Homepage-Front-R2 deploy
-on: workflow_dispatch 
+on: workflow_dispatch
 # todo: 임시로 설정한 부분으로 나중에 release 태그 푸시나 어떻게 할지는 고민.
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: deploy 
+    environment: deploy
+    env:
+      DEPLOY_RETENTION_COUNT: '3' # keep the newest 3 frontend releases
 
-    steps: 
-      - uses: actions/checkout@v6
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Set release tag
         run: echo "SHORT_SHA=$(git rev-parse --short "${GITHUB_SHA}")" >> "$GITHUB_ENV"
 
       - name: Use Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: '20.x'
 
@@ -25,8 +27,8 @@ jobs:
         run: npm run build
         env:
           PUBLIC_API_URL: https://api.dev.keeper.or.kr
-          
-      - uses: webfactory/ssh-agent@v0.9.0
+
+      - uses: webfactory/ssh-agent@dc588b651fe13675774614f8e6a936a468676387 # v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -46,16 +48,40 @@ jobs:
             ./build/ \
             "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/var/lib/frontend_static_files/${SHORT_SHA}/"
 
-      - name: Update www symlink
+      - name: Update www symlink and prune old releases
         run: |
-          ssh "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" "SHORT_SHA=${SHORT_SHA} bash -s" << 'EOF'
+          ssh "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "SHORT_SHA=${SHORT_SHA} DEPLOY_RETENTION_COUNT=${DEPLOY_RETENTION_COUNT} bash -s" << 'EOF'
             set -euo pipefail
 
             BASE_DIR=/var/lib/frontend_static_files
             RELEASE_DIR="${BASE_DIR}/${SHORT_SHA}"
             TMP_LINK="${BASE_DIR}/.www_tmp"
 
+            if ! [[ "${DEPLOY_RETENTION_COUNT}" =~ ^[1-9][0-9]*$ ]]; then
+              echo "DEPLOY_RETENTION_COUNT must be a positive integer" >&2
+              exit 1
+            fi
+
             test -d "${RELEASE_DIR}"
+            touch -c "${RELEASE_DIR}"
             ln -sfn "${RELEASE_DIR}" "${TMP_LINK}"
             mv -Tf "${TMP_LINK}" "${BASE_DIR}/www"
+
+            mapfile -t old_releases < <(
+              find "${BASE_DIR}" -mindepth 1 -maxdepth 1 -type d -printf '%T@|%P\n' \
+                | sort -t '|' -k1,1nr \
+                | awk -F '|' -v keep="${DEPLOY_RETENTION_COUNT}" '
+                    $2 ~ /^[0-9a-f]+$/ {
+                      count++
+                      if (count > keep) {
+                        print $2
+                      }
+                    }
+                  '
+            )
+
+            for release in "${old_releases[@]}"; do
+              rm -rf -- "${BASE_DIR}/${release}"
+            done
           EOF
