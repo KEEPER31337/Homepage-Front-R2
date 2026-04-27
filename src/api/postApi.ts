@@ -1,4 +1,4 @@
-import toast from 'react-hot-toast';
+import hotToast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
@@ -18,6 +18,7 @@ import {
 } from './dto';
 
 const postKeys = {
+  examFilesAccess: (postId: number) => ['examFilesAccess', postId] as const,
   memberPost: (param: PageAndSize & { memberId: number }) => ['memberPost', param] as const,
   memberTempPost: (param: PageAndSize) => ['memberTempPost', param] as const,
 };
@@ -168,12 +169,12 @@ const useGetEachPostQuery = (
     400: {
       default: () => {
         // TODO 페이지 문구로 띄워주기
-        toast.error(BOARD.error.readCondition);
+        hotToast.error(BOARD.error.readCondition);
       },
     },
     403: {
       40301: () => {
-        toast.error(BOARD.error.mismatchPassword);
+        hotToast.error(BOARD.error.mismatchPassword);
       },
       40302: () => {
         // 비밀글 여부 true로 변경
@@ -197,18 +198,46 @@ const useGetEachPostQuery = (
   });
 };
 
-const useGetPostFilesQuery = (postId: number, fileOpen: boolean, password?: string) => {
-  const queryClient = useQueryClient();
-  const fetcher = () =>
-    axios.get(`/posts/${postId}/files`).then(({ data }) => {
-      return data;
-    });
+const useGetPostFilesQuery = (postId: number, fileOpen: boolean, _password?: string) => {
+  const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
 
   return useQuery<FileInfo[]>(['files', postId], fetcher, {
     enabled: fileOpen,
-    onSuccess: () => {
-      queryClient.setQueryData(['post', postId, password], (oldData) => oldData && { ...oldData, isRead: true });
+  });
+};
+
+const useGetExamPostFilesAccessQuery = (postId: number, enabled: boolean) => {
+  const { handleError } = useApiError({
+    403: {
+      default: () => undefined,
     },
+  });
+  const fetcher = () => axios.get(`/posts/${postId}/exam-files-access`).then(() => undefined);
+
+  return useQuery<void>(postKeys.examFilesAccess(postId), fetcher, {
+    enabled,
+    retry: false,
+    onError: (error) => handleError(error),
+  });
+};
+
+const useGrantExamPostFilesAccessMutation = () => {
+  const queryClient = useQueryClient();
+  const { handleError } = useApiError({
+    403: {
+      default: () => {
+        hotToast.error(BOARD.error.examFilePointNotEnough);
+      },
+    },
+  });
+  const fetcher = (postId: number) => axios.post(`/posts/${postId}/exam-files-access`);
+
+  return useMutation(fetcher, {
+    onSuccess: (_, postId) => {
+      queryClient.invalidateQueries({ queryKey: postKeys.examFilesAccess(postId) });
+      queryClient.invalidateQueries({ queryKey: ['post', postId] });
+    },
+    onError: (error) => handleError(error),
   });
 };
 
@@ -225,6 +254,18 @@ const useGetTrendPostsQuery = () => {
 };
 
 const useDownloadFileMutation = () => {
+  const { handleError } = useApiError({
+    400: {
+      default: () => {
+        hotToast.error(BOARD.error.requiredComment);
+      },
+    },
+    403: {
+      default: () => {
+        hotToast.error(BOARD.error.requiredExamFileAccess);
+      },
+    },
+  });
   const fetcher = ({ postId, fileId, fileName }: { postId: number; fileId: number; fileName: string }) =>
     axios
       .get(`/posts/${postId}/files/${fileId}`, { responseType: 'blob' })
@@ -243,11 +284,7 @@ const useDownloadFileMutation = () => {
       link.click();
       link.remove();
     },
-    onError: (error) => {
-      if ((error as AxiosError)?.response?.status === 400) {
-        toast.error(BOARD.error.requiredComment);
-      }
-    },
+    onError: (error) => handleError(error),
   });
 };
 
@@ -283,6 +320,8 @@ export {
   useDeleteFilesMutation,
   useGetEachPostQuery,
   useGetPostFilesQuery,
+  useGetExamPostFilesAccessQuery,
+  useGrantExamPostFilesAccessMutation,
   useDownloadFileMutation,
   useGetMemberPostsQuery,
   useGetMemberTempPostsQuery,

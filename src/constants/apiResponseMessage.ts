@@ -17,6 +17,8 @@ export const BOARD = {
     readCondition: '게시글 열람 조건을 충족하지 않습니다.',
     mismatchPassword: '게시글의 비밀번호가 일치하지 않습니다.',
     requiredComment: '댓글 작성이 필요합니다.',
+    requiredExamFileAccess: '시험게시판 첨부파일 열람 권한이 필요합니다.',
+    examFilePointNotEnough: '포인트가 부족합니다.',
   },
 } as const;
 

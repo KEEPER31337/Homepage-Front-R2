@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import { Button, Typography } from '@mui/material';
 import { VscArrowDown, VscArrowUp, VscFolder, VscFolderOpened } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
@@ -12,34 +12,25 @@ import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import FileViewer from '@components/Viewer/FileViewer';
 import StandardViewer from '@components/Viewer/StandardViewer';
-import WarningDeductPointModal from '../Modal/WarningDeductPointModal';
 
 interface PostSectionProps {
   postId: number;
   post: PostInfo;
-  password?: string;
+  canOpenFiles: boolean;
 }
 
-const PostSection = ({ postId, post, password }: PostSectionProps) => {
-  const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, true);
-  const [warningModalOpen, setWarningModalOpen] = useState(false);
-  const hasWarningModal = post.categoryName === '시험게시판' && post.isRead === false && !fileOpen;
+const PostSection = ({ postId, post, canOpenFiles }: PostSectionProps) => {
+  const [fileOpen, toggleFileOpen] = useReducer((prev) => !prev, false);
 
-  const { data: files } = useGetPostFilesQuery(postId, fileOpen, password);
+  const { data: files } = useGetPostFilesQuery(postId, fileOpen);
   const { mutate: controlLikes } = useControlPostLikesMutation();
   const { mutate: controlDislikes } = useControlPostDislikesMutation();
   const { mutate: downloadFile } = useDownloadFileMutation();
   const handleFileOpenButtonClick = () => {
-    if (hasWarningModal) {
-      setWarningModalOpen(true);
+    if (!canOpenFiles) {
       return;
     }
 
-    toggleFileOpen();
-  };
-
-  const handleWarningModalActionClick = () => {
-    setWarningModalOpen(false);
     toggleFileOpen();
   };
 
@@ -55,11 +46,6 @@ const PostSection = ({ postId, post, password }: PostSectionProps) => {
     controlDislikes(postId);
   };
 
-  useEffect(() => {
-    handleFileOpenButtonClick();
-    // toggleFileOpen();
-  }, []);
-
   return (
     <div className="min-h-[500px] bg-middleBlack px-6 pb-8 pt-3 sm:px-14 sm:py-10">
       <StandardViewer className="mb-4 min-h-[380px]" content={post.content} />
@@ -68,6 +54,7 @@ const PostSection = ({ postId, post, password }: PostSectionProps) => {
           <Button
             className="hover:!bg-transparent"
             variant="text"
+            disabled={!canOpenFiles}
             onClick={handleFileOpenButtonClick}
             startIcon={fileOpen ? <VscFolderOpened /> : <VscFolder />}
           >
@@ -107,13 +94,6 @@ const PostSection = ({ postId, post, password }: PostSectionProps) => {
           </OutlinedButton>
         )}
       </div>
-      {hasWarningModal && (
-        <WarningDeductPointModal
-          open={warningModalOpen}
-          onClose={() => setWarningModalOpen(false)}
-          onActionButonClick={handleWarningModalActionClick}
-        />
-      )}
     </div>
   );
 };
