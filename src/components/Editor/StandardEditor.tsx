@@ -18,11 +18,46 @@ interface StandardEditorProps extends EditorProps {
   forwardedRef?: React.MutableRefObject<Editor>;
 }
 
+const TOAST_UI_TOOLBAR_ICON_SELECTOR = '.toastui-editor-toolbar-icons';
+
+const findToastUiToolbarIconSprite = () => {
+  for (const styleSheet of Array.from(document.styleSheets)) {
+    try {
+      for (const rule of Array.from(styleSheet.cssRules)) {
+        if (
+          typeof CSSStyleRule !== 'undefined' &&
+          rule instanceof CSSStyleRule &&
+          rule.selectorText === TOAST_UI_TOOLBAR_ICON_SELECTOR &&
+          rule.style.backgroundImage.includes('url(')
+        ) {
+          return {
+            backgroundImage: rule.style.backgroundImage,
+            backgroundSize: rule.style.backgroundSize,
+          };
+        }
+      }
+    } catch {
+      // External stylesheets such as font imports may block cssRules access.
+    }
+  }
+
+  return null;
+};
+
 const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const editorWrapperRef = React.useRef<HTMLDivElement>(null);
 
   const { mutate: uploadPostImageMutation } = useUploadPostImageMutation();
+
+  React.useLayoutEffect(() => {
+    const iconSprite = findToastUiToolbarIconSprite();
+    if (!iconSprite || !editorWrapperRef.current) return;
+
+    editorWrapperRef.current.style.setProperty('--toastui-editor-toolbar-icon-image', iconSprite.backgroundImage);
+    editorWrapperRef.current.style.setProperty('--toastui-editor-toolbar-icon-size', iconSprite.backgroundSize);
+  }, []);
 
   const handleImageUpload: HookMap['addImageBlobHook'] = (blob) => {
     if (blob.size > MAX_FILE_SIZE) {
@@ -61,22 +96,32 @@ const StandardEditor = ({ forwardedRef, ...props }: StandardEditorProps) => {
   };
 
   return (
-    <Editor
-      ref={forwardedRef}
-      initialValue={props.initialValue ?? ''}
-      placeholder="내용을 입력해주세요."
-      hooks={{
-        addImageBlobHook: handleImageUpload,
-      }}
-      previewStyle={isMobile ? 'tab' : 'vertical'}
-      minHeight="300px"
-      initialEditType={isMobile ? 'wysiwyg' : 'markdown'}
-      language="ko"
-      theme="dark"
-      autofocus={false}
-      plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
-      {...props}
-    />
+    <div ref={editorWrapperRef} data-standard-editor>
+      <style>
+        {`
+          [data-standard-editor] button.toastui-editor-toolbar-icons {
+            background-image: var(--toastui-editor-toolbar-icon-image);
+            background-size: var(--toastui-editor-toolbar-icon-size);
+          }
+        `}
+      </style>
+      <Editor
+        ref={forwardedRef}
+        initialValue={props.initialValue ?? ''}
+        placeholder="내용을 입력해주세요."
+        hooks={{
+          addImageBlobHook: handleImageUpload,
+        }}
+        previewStyle={isMobile ? 'tab' : 'vertical'}
+        minHeight="300px"
+        initialEditType={isMobile ? 'wysiwyg' : 'markdown'}
+        language="ko"
+        theme="dark"
+        autofocus={false}
+        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+        {...props}
+      />
+    </div>
   );
 };
 
