@@ -46,7 +46,7 @@ jobs:
       - name: Build React App
         run: npm run build
         env:
-          PUBLIC_API_URL: ${{ inputs.deploy_target == 'PROD' && 'https://api.pr.keeper.or.kr' || 'https://api.dev.keeper.or.kr' }}
+          PUBLIC_API_URL: ${{ inputs.deploy_target == 'PROD' && 'https://api.keeper.or.kr' || 'https://api.dev.keeper.or.kr' }}
 
       - uses: webfactory/ssh-agent@dc588b651fe13675774614f8e6a936a468676387 # v0.9.0
         with:
