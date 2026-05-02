@@ -96,7 +96,7 @@
 - **명확한 기획과 디자인**  
   기획 담당과 디자인 담당을 명확히 정하고, 분야별 회의를 진행하여 통일성을 유지하고자 합니다.
 - **클린 코드**  
-  Eslint와 Prettier를 명확하게 정의하여 코드의 일관성을 높이고, 코드 리뷰를 적극적으로 수행하여 상호간에 놓친 부분을 보완하여 클린 코드를 유지하고자 합니다.
+  oxlint와 oxfmt를 사용하여 코드의 일관성을 높이고, 코드 리뷰를 적극적으로 수행하여 상호간에 놓친 부분을 보완하여 클린 코드를 유지하고자 합니다.
 - **가시적인 진척도와 활발한 소통**  
   주기적인 업무 공유 및 회의를 통해 팀원 간 의견을 조율하고, GitHub의 프로젝트 기능을 활용하여 전체적인 프로젝트 진행 상황과 개별 진척도를 명확히 파악할 수 있도록 합니다.
 - **코드 재사용성 높이기**  
@@ -106,7 +106,7 @@
 
 ### 🛠 Skill & Tool
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-0769AD?style=flat-square&logo=TypeScript&logoColor=white" /> <img src="https://img.shields.io/badge/ReactQuery-FF4154?style=flat-square&logo=ReactQuery&logoColor=white" /> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=Recoil&logoColor=white" /> <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white" /> <img src="https://img.shields.io/badge/MUI-007FFF?style=flat-square&logo=MUI&logoColor=white" /> <img src="https://img.shields.io/badge/ESLint-4B32C3?style=flat-square&logo=eslint&logoColor=white" /> <img src="https://img.shields.io/badge/Prettier-F7B93E?style=flat-square&logo=prettier&logoColor=white" />
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-0769AD?style=flat-square&logo=TypeScript&logoColor=white" /> <img src="https://img.shields.io/badge/ReactQuery-FF4154?style=flat-square&logo=ReactQuery&logoColor=white" /> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=Recoil&logoColor=white" /> <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white" />
 
 ### 🧩 Communication Tool
 
@@ -121,8 +121,7 @@
   ```
 - root path에 `.env` 파일 추가
   ```
-  REACT_APP_API_URL={{ apiUrl }}
-  HTTPS=true
+  PUBLIC_API_URL={{ apiUrl }}
   ```
 - 필요한 패키지 설치 및 실행
   ```

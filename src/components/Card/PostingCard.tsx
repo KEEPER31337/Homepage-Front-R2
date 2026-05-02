@@ -14,12 +14,14 @@ export interface PostingCardProps extends CardMainInfoProps, CardDetailInfoProps
 }
 
 export const CardMainInfo = ({ title, registerTime }: CardMainInfoProps) => {
+  const registerDateTime = DateTime.fromFormat(registerTime, 'yyyy-MM-dd HH:mm:ss');
+
   return (
     <div className="flex justify-between">
       <Typography className="w-11/12 truncate font-semibold" variant="paragraph">
         {title}
       </Typography>
-      {DateTime.fromISO(registerTime) >= DateTime.now().plus({ days: -1 }).startOf('day') && (
+      {registerDateTime >= DateTime.now().plus({ days: -1 }).startOf('day') && (
         <span className="m-auto h-4 w-4 rounded-sm bg-pointBlue text-center text-small leading-4 text-mainBlack">
           N
         </span>
@@ -29,6 +31,8 @@ export const CardMainInfo = ({ title, registerTime }: CardMainInfoProps) => {
 };
 
 export const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardDetailInfoProps) => {
+  const formattedRegisterTime = DateTime.fromFormat(registerTime, 'yyyy-MM-dd HH:mm:ss').toFormat('yyyy-MM-dd');
+
   return (
     <div className="flex">
       <ServerAvatar className="mr-2 !h-6 !w-6" thumbnailPath={writerThumbnailPath} />
@@ -37,7 +41,7 @@ export const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }
           {writerName}
         </Typography>
         <Typography className="font-semibold text-subGray" variant="small">
-          {registerTime}
+          {formattedRegisterTime}
         </Typography>
       </Stack>
     </div>

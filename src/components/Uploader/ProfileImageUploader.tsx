@@ -89,11 +89,7 @@ const ProfileImageUploader = ({
 
       <div
         {...getRootProps()}
-        className={`
-          ${isDragActive ? 'bg-pointBlue/30' : ''} 
-          ${thumbnailBase64 ? '' : 'border-2'} 
-          relative flex h-full items-center justify-center rounded-full border-dashed !border-pointBlue/30 hover:opacity-70
-        `}
+        className={` ${isDragActive ? 'bg-pointBlue/30' : ''} ${thumbnailBase64 ? '' : 'border-2'} relative flex h-full items-center justify-center rounded-full border-dashed !border-pointBlue/30 hover:opacity-70`}
       >
         <input {...getInputProps()} />
         {thumbnailBase64 ? (

@@ -1,30 +1,32 @@
 import React from 'react';
-import { useGetBlockListQuery } from '@api/aboutApi';
+// import { useGetBlockListQuery } from '@api/aboutApi';
 import { SubTitleImagesInfo } from '@api/dto';
+import activityStudyImage from '@assets/home/activity_study.png';
+import activitySeminarImage from '@assets/home/activity_seminar.png';
+import activityDocsImage from '@assets/home/activity_docs.png';
 import LogoNeon from '@assets/logo/logo_neon.svg';
+import { HOME_ACTIVITY_BLOCK } from '@constants/homeAbout';
 
-const imagePath = [
-  null,
-  null,
-  '/img/main/activity_study.png',
-  '/img/main/activity_seminar.png',
-  '/img/main/activity_docs.png',
-];
+const imagePathMap: Record<number, string> = {
+  2: activitySeminarImage,
+  3: activityStudyImage,
+  4: activityDocsImage,
+};
 
 const SubTitleImageCard = ({ subtitleImage }: { subtitleImage: SubTitleImagesInfo }) => {
   return (
     <div className="group sm:grid sm:grid-cols-[45%_55%]">
       <div className="flex place-content-center place-items-center group-even:order-last">
         <img
-          className={imagePath?.[subtitleImage?.id] ? 'h-full object-cover' : 'h-[960px] w-96 object-contain'}
-          src={imagePath?.[subtitleImage?.id] || LogoNeon}
-          alt={subtitleImage?.subtitle}
+          className={imagePathMap[subtitleImage.id] ? 'h-full object-cover' : 'h-[960px] w-96 object-contain'}
+          src={imagePathMap[subtitleImage.id] || LogoNeon}
+          alt={subtitleImage.subtitle}
         />
       </div>
       <div className="flex flex-col place-content-center px-14 py-10 text-left">
-        <p className="mb-8 text-3xl font-bold text-pointBlue">{subtitleImage?.subtitle}</p>
+        <p className="mb-8 text-3xl font-bold text-pointBlue">{subtitleImage.subtitle}</p>
         <p className="whitespace-pre-line bg-gradient-to-b from-gray-500 to-white bg-clip-text text-xl text-transparent">
-          {subtitleImage?.staticWriteContents?.map((staticWriteInfo) => `${staticWriteInfo?.content}\n\n`)}
+          {subtitleImage.staticWriteContents.map((staticWriteInfo) => `${staticWriteInfo.content}\n\n`)}
         </p>
       </div>
     </div>
@@ -32,11 +34,12 @@ const SubTitleImageCard = ({ subtitleImage }: { subtitleImage: SubTitleImagesInf
 };
 
 const Activity = () => {
-  const { data: activityList } = useGetBlockListQuery({ type: 'activity' });
+  // const { data: activityList } = useGetBlockListQuery({ type: 'activity' });
+  const activityList = HOME_ACTIVITY_BLOCK;
 
   return (
     <div className="bg-mainBlack">
-      {activityList?.subtitleImages?.map((subtitleImage) => (
+      {activityList.subtitleImages.map((subtitleImage) => (
         <SubTitleImageCard key={subtitleImage.id} subtitleImage={subtitleImage} />
       ))}
     </div>
