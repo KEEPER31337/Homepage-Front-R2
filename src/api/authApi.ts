@@ -1,12 +1,12 @@
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import memberState from '@recoil/member.recoil';
 
 const useSignOutMutation = () => {
   const navigate = useNavigate();
-  const setMemberState = useSetRecoilState(memberState);
+  const setMemberState = useSetAtom(memberState);
 
   const fetcher = () => axios.post(`/sign-out`);
   const signOut = () => {
@@ -14,7 +14,8 @@ const useSignOutMutation = () => {
     setMemberState(null);
   };
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSettled: () => {
       signOut();
     },

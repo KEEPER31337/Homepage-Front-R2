@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { CommentInfo } from './dto';
 
@@ -8,7 +8,8 @@ const useCreateCommentMutation = () => {
   const fetcher = ({ postId, parentId, content }: { postId: number; parentId?: number; content: string }) =>
     axios.post(`/comments`, { postId, parentId, content });
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },
@@ -18,7 +19,7 @@ const useCreateCommentMutation = () => {
 const useGetCommentQuery = (postId: number) => {
   const fetcher = () => axios.get(`/comments/posts/${postId}`).then(({ data }) => data.comments);
 
-  return useQuery<CommentInfo[]>(['comments', postId], fetcher);
+  return useQuery<CommentInfo[]>({ queryKey: ['comments', postId], queryFn: fetcher });
 };
 
 const useControlCommentLikesMutation = () => {
@@ -26,7 +27,8 @@ const useControlCommentLikesMutation = () => {
 
   const fetcher = (commentId: number) => axios.patch(`/comments/${commentId}/likes`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },
@@ -38,7 +40,8 @@ const useControlCommentDislikesMutation = () => {
 
   const fetcher = (commentId: number) => axios.patch(`/comments/${commentId}/dislikes`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },
@@ -50,7 +53,8 @@ const useDeleteCommentMutation = () => {
 
   const fetcher = (commentId: number) => axios.delete(`/comments/${commentId}`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { SignUpDuplication, SignUpInfo } from './dto';
 
@@ -13,34 +13,34 @@ export const signUpKeys = {
 const useSignUpMutation = () => {
   const fetcher = (signUpInfo: SignUpInfo) => axios.post('/sign-up', signUpInfo);
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useEmailAuthMutation = () => {
   const fetcher = (email: string) => axios.post('/sign-up/email-auth', { email }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useCheckLoginIdDuplicationQuery = ({ loginId, enabled }: { loginId: string; enabled: boolean }) => {
   const params = { loginId };
   const fetcher = () => axios.get('/sign-up/exists/login-id', { params }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.loginIdDuplication(params), fetcher, { enabled });
+  return useQuery<SignUpDuplication>({ queryKey: signUpKeys.loginIdDuplication(params), queryFn: fetcher, enabled });
 };
 
 const useCheckEmailDuplicationQuery = ({ email, enabled }: { email: string; enabled: boolean }) => {
   const params = { email };
   const fetcher = () => axios.get('/sign-up/exists/email', { params }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.emailDuplication(params), fetcher, { enabled });
+  return useQuery<SignUpDuplication>({ queryKey: signUpKeys.emailDuplication(params), queryFn: fetcher, enabled });
 };
 
 const useCheckStudentIdDuplicationQuery = ({ studentId, enabled }: { studentId: string; enabled: boolean }) => {
   const params = { studentId };
   const fetcher = () => axios.get('/sign-up/exists/student-id', { params }).then(({ data }) => data);
 
-  return useQuery<SignUpDuplication>(signUpKeys.studentIdDuplication(params), fetcher, { enabled });
+  return useQuery<SignUpDuplication>({ queryKey: signUpKeys.studentIdDuplication(params), queryFn: fetcher, enabled });
 };
 
 export {

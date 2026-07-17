@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import {
@@ -26,13 +26,13 @@ const attendanceKeys = {
 const useGetTodayAttendancePointQuery = () => {
   const fetcher = () => axios.get(`/attendances/point`).then(({ data }) => data);
 
-  return useQuery<TodayAttendPoint>(attendanceKeys.todayAttendancePoint, fetcher);
+  return useQuery<TodayAttendPoint>({ queryKey: attendanceKeys.todayAttendancePoint, queryFn: fetcher });
 };
 
 const useGetTodayAttendanceInfoQuery = ({ memberId }: { memberId: number }) => {
   const fetcher = () => axios.get(`/attendances/members/${memberId}/info`).then(({ data }) => data);
 
-  return useQuery<TodayAttendInfo>(attendanceKeys.todayAttendanceInfo({ memberId }), fetcher);
+  return useQuery<TodayAttendInfo>({ queryKey: attendanceKeys.todayAttendanceInfo({ memberId }), queryFn: fetcher });
 };
 
 const useGetAttendanceInfoListQuery = ({ memberId, year }: { memberId: number; year: number }) => {
@@ -43,7 +43,10 @@ const useGetAttendanceInfoListQuery = ({ memberId, year }: { memberId: number; y
       })
       .then(({ data }) => data);
 
-  return useQuery<CallenderChartInfo[]>(attendanceKeys.attendanceInfoList({ memberId, year }), fetcher);
+  return useQuery<CallenderChartInfo[]>({
+    queryKey: attendanceKeys.attendanceInfoList({ memberId, year }),
+    queryFn: fetcher,
+  });
 };
 
 const useGetTodayAttendanceRank = ({ page, size = 10 }: PageAndSize) => {
@@ -56,15 +59,17 @@ const useGetTodayAttendanceRank = ({ page, size = 10 }: PageAndSize) => {
       })
       .then(({ data }) => data);
 
-  return useQuery<TodayAttendRank>(attendanceKeys.todayAttendanceRank(params), fetcher, {
-    keepPreviousData: true,
+  return useQuery<TodayAttendRank>({
+    queryKey: attendanceKeys.todayAttendanceRank(params),
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
 const useGetContinuousAttendanceRank = () => {
   const fetcher = () => axios.get('/attendances/continuous-rank').then(({ data }) => data);
 
-  return useQuery<AttendRankInfo[]>(attendanceKeys.continuousAttendanceRank(), fetcher);
+  return useQuery<AttendRankInfo[]>({ queryKey: attendanceKeys.continuousAttendanceRank(), queryFn: fetcher });
 };
 
 export {

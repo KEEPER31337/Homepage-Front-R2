@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { keepPreviousData, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { PASSWORD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
@@ -15,13 +15,7 @@ const profileKeys = {
   profileInfo: (memberId: number) => ['profile', 'profileInfo', memberId] as const,
 };
 
-const useGetMembersQuery = ({
-  searchName,
-  onSuccess,
-}: {
-  searchName?: string;
-  onSuccess?: (data: MemberDetailInfo[]) => void;
-}) => {
+const useGetMembersQuery = ({ searchName }: { searchName?: string } = {}) => {
   const fetcher = () =>
     axios.get('/members/real-name', { params: { searchName } }).then(({ data }) => {
       return data.map((memberInfo: MemberDetailInfo) => {
@@ -31,9 +25,7 @@ const useGetMembersQuery = ({
         };
       });
     });
-  return useQuery<MemberDetailInfo[]>(memberKeys.memberList(), fetcher, {
-    onSuccess,
-  });
+  return useQuery<MemberDetailInfo[]>({ queryKey: memberKeys.memberList(), queryFn: fetcher });
 };
 
 const useGetProfileQuery = (memberId: number) => {
@@ -57,14 +49,19 @@ const useGetProfileQuery = (memberId: number) => {
       };
     });
 
-  return useQuery<ProfileInfo>(profileKeys.profileInfo(memberId), fetcher, { enabled: memberId !== 0 });
+  return useQuery<ProfileInfo>({
+    queryKey: profileKeys.profileInfo(memberId),
+    queryFn: fetcher,
+    enabled: memberId !== 0,
+  });
 };
 
 const useFollowMemberMutation = (memberId: number) => {
   const queryClient = useQueryClient();
   const fetcher = () => axios.post(`/members/${memberId}/follow`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
     },
@@ -75,7 +72,8 @@ const useUnFollowMemberMutation = (memberId: number) => {
   const queryClient = useQueryClient();
   const fetcher = () => axios.delete(`/members/${memberId}/unfollow`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
     },
@@ -88,7 +86,8 @@ const useEditProfileMutation = (memberId: number) => {
   const fetcher = ({ realName, birthday }: Pick<ProfileInfo, 'realName' | 'birthday'>) =>
     axios.patch(`/members/profile`, { realName, birthday });
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
     },
@@ -109,7 +108,8 @@ const useEditProfileThumbnailMutation = (memberId: number) => {
     });
   };
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
     },
@@ -119,7 +119,7 @@ const useEditProfileThumbnailMutation = (memberId: number) => {
 const useNewEmailAuthMutation = () => {
   const fetcher = (email: string) => axios.post('/members/email-auth', { email }).then(({ data }) => data);
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useEditEmailMutation = () => {
@@ -134,7 +134,7 @@ const useEditEmailMutation = () => {
   const fetcher = ({ email, auth, password }: { email: string; auth: string; password: string }) =>
     axios.patch('/members/email', { email, auth, password }).then(({ data }) => data);
 
-  return useMutation(fetcher, { onError: (err) => handleError(err, 400) });
+  return useMutation({ mutationFn: fetcher, onError: (err) => handleError(err, 400) });
 };
 
 const useEditPasswordMutation = () => {
@@ -148,7 +148,8 @@ const useEditPasswordMutation = () => {
   const fetcher = ({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }) =>
     axios.patch('/members/change-password', { oldPassword, newPassword }).then(({ data }) => data);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       toast.success(PASSWORD.success.changed);
     },
@@ -167,7 +168,7 @@ const useWithdrawalMutation = () => {
   const fetcher = ({ rawPassword }: { rawPassword: string }) =>
     axios.delete('/members', { data: { rawPassword } }).then(({ data }) => data);
 
-  return useMutation(fetcher, { onError: (err) => handleError(err, 400) });
+  return useMutation({ mutationFn: fetcher, onError: (err) => handleError(err, 400) });
 };
 
 const useEditMemberTypeMutation = () => {
@@ -175,7 +176,8 @@ const useEditMemberTypeMutation = () => {
   const fetcher = ({ typeId, memberIds }: { typeId: number; memberIds: number[] }) =>
     axios.patch(`/members/types/${typeId}`, { memberIds });
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: memberKeys.memberList() });
     },
@@ -186,7 +188,8 @@ const useDeleteMemberMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = ({ memberIds }: { memberIds: number[] }) => axios.delete(`/members/admin`, { data: { memberIds } });
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: memberKeys.memberList() });
     },
@@ -198,8 +201,10 @@ const useGetPointRank = ({ page, size = 10 }: PageAndSize) => {
 
   const fetcher = () => axios.get('/members/point-rank', { params }).then(({ data }) => data);
 
-  return useQuery<PointRank>(memberKeys.pointRank(params), fetcher, {
-    keepPreviousData: true,
+  return useQuery<PointRank>({
+    queryKey: memberKeys.pointRank(params),
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 

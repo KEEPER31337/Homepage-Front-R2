@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { formatMemberGeneration } from '@utils/converter';
 import { ExecutiveInfo, JobList, MemberDetailInfo } from './dto';
@@ -14,13 +14,13 @@ type ExecutiveMember = Pick<MemberDetailInfo, 'memberId' | 'generation' | 'realN
 const useGetExecutiveInfoQuery = () => {
   const fetcher = () => axios.get(`/members/executives`).then(({ data }) => data);
 
-  return useQuery<ExecutiveInfo[]>(dutyManageKeys.executiveInfo, fetcher);
+  return useQuery<ExecutiveInfo[]>({ queryKey: dutyManageKeys.executiveInfo, queryFn: fetcher });
 };
 
 const useGetJobListQuery = () => {
   const fetcher = () => axios.get(`/members/executive-jobs`).then(({ data }) => data);
 
-  return useQuery<JobList[]>(dutyManageKeys.jobList, fetcher);
+  return useQuery<JobList[]>({ queryKey: dutyManageKeys.jobList, queryFn: fetcher });
 };
 
 const useCreateExecutiveJobMutation = () => {
@@ -29,7 +29,8 @@ const useCreateExecutiveJobMutation = () => {
   const fetcher = ({ memberId, jobId }: { memberId: number; jobId: number }) =>
     axios.post(`/members/${memberId}/executive-jobs/${jobId}`).then(({ data }) => data);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dutyManageKeys.executiveInfo });
     },
@@ -42,7 +43,8 @@ const useDeleteExecutiveJobMutation = () => {
   const fetcher = ({ memberId, jobId }: { memberId: number; jobId: number }) =>
     axios.delete(`/members/${memberId}/executive-jobs/${jobId}`).then(({ data }) => data);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dutyManageKeys.executiveInfo });
     },
@@ -52,7 +54,9 @@ const useDeleteExecutiveJobMutation = () => {
 const useGetMemberInfoQuery = () => {
   const fetcher = () => axios.get(`members/real-name`).then(({ data }) => data);
 
-  return useQuery<ExecutiveMember[]>(dutyManageKeys.memberInfo, fetcher, {
+  return useQuery<ExecutiveMember[]>({
+    queryKey: dutyManageKeys.memberInfo,
+    queryFn: fetcher,
     select: (data) => data.map(formatMemberGeneration),
   });
 };

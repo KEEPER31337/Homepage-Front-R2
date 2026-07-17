@@ -1,5 +1,6 @@
 import hotToast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useEffect, useRef } from 'react';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import { BOARD } from '@constants/apiResponseMessage';
@@ -37,7 +38,7 @@ const useUploadPostMutation = () => {
     });
   };
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useUploadPostImageMutation = () => {
@@ -53,15 +54,17 @@ const useUploadPostImageMutation = () => {
     return data;
   };
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useGetPostListQuery = ({ categoryId, searchType, search, page, size }: BoardSearch) => {
   const fetcher = () =>
     axios.get('/posts', { params: { categoryId, searchType, search, page, size } }).then(({ data }) => data);
 
-  return useQuery<BoardPosts>(['posts', categoryId, searchType, search, page, size], fetcher, {
-    keepPreviousData: true,
+  return useQuery<BoardPosts>({
+    queryKey: ['posts', categoryId, searchType, search, page, size],
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -69,7 +72,7 @@ const useEditPostMutation = () => {
   const fetcher = ({ postId, editPostInfo }: { postId: number; editPostInfo: Omit<UploadPostCore, 'categoryId'> }) =>
     axios.put(`/posts/${postId}`, editPostInfo);
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useEditPostThumbnailMutation = () => {
@@ -84,7 +87,7 @@ const useEditPostThumbnailMutation = () => {
     });
   };
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useDeletePostMutation = () => {
@@ -93,7 +96,8 @@ const useDeletePostMutation = () => {
 
   const fetcher = (postId: number) => axios.delete(`/posts/${postId}`).then(({ data }) => data);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: ({ categoryName }) => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
 
@@ -107,7 +111,8 @@ const useControlPostLikesMutation = () => {
 
   const fetcher = (postId: number) => axios.patch(`/posts/${postId}/likes`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post'] });
     },
@@ -119,7 +124,8 @@ const useControlPostDislikesMutation = () => {
 
   const fetcher = (postId: number) => axios.patch(`/posts/${postId}/dislikes`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post'] });
     },
@@ -129,8 +135,10 @@ const useControlPostDislikesMutation = () => {
 const useGetNoticePostListQuery = ({ categoryId }: { categoryId: number }) => {
   const fetcher = () => axios.get('/posts/notices', { params: { categoryId } }).then(({ data }) => data.posts);
 
-  return useQuery<PostSummaryInfo[]>(['posts', 'notices', categoryId], fetcher, {
-    keepPreviousData: true,
+  return useQuery<PostSummaryInfo[]>({
+    queryKey: ['posts', 'notices', categoryId],
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -146,7 +154,7 @@ const useAddFilesMutation = () => {
     });
   };
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useDeleteFilesMutation = () => {
@@ -154,7 +162,7 @@ const useDeleteFilesMutation = () => {
     return axios.delete(`/posts/${postId}/files`, { data: { fileIds } });
   };
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useGetEachPostQuery = (
@@ -184,26 +192,36 @@ const useGetEachPostQuery = (
   });
   const fetcher = () => axios.get(`/posts/${postId}`, { params: { password } }).then(({ data }) => data);
 
-  return useQuery<PostInfo>(['post', postId, password], fetcher, {
+  const query = useQuery<PostInfo>({
+    queryKey: ['post', postId, password],
+    queryFn: fetcher,
     enabled: !isSecret || Boolean(isSecret && setIsSecretPasswordSubmited),
-    onError: (err) => {
-      if ((err as AxiosError)?.response?.status === 403) {
-        if (isSecret === null) {
-          return handleError(err, 40302);
-        }
-        return handleError(err, 40301);
-      }
-      return handleError(err);
-    },
   });
+  const handledErrorUpdatedAt = useRef(0);
+
+  useEffect(() => {
+    if (!query.isError || query.errorUpdatedAt <= handledErrorUpdatedAt.current) return;
+
+    handledErrorUpdatedAt.current = query.errorUpdatedAt;
+    const err = query.error;
+    if ((err as AxiosError)?.response?.status === 403) {
+      if (isSecret === null) {
+        handleError(err, 40302);
+        return;
+      }
+      handleError(err, 40301);
+      return;
+    }
+    handleError(err);
+  }, [handleError, isSecret, query.error, query.errorUpdatedAt, query.isError]);
+
+  return query;
 };
 
 const useGetPostFilesQuery = (postId: number, fileOpen: boolean, _password?: string) => {
   const fetcher = () => axios.get(`/posts/${postId}/files`).then(({ data }) => data);
 
-  return useQuery<FileInfo[]>(['files', postId], fetcher, {
-    enabled: fileOpen,
-  });
+  return useQuery<FileInfo[]>({ queryKey: ['files', postId], queryFn: fetcher, enabled: fileOpen });
 };
 
 const useGetExamPostFilesAccessQuery = (postId: number, enabled: boolean) => {
@@ -214,11 +232,22 @@ const useGetExamPostFilesAccessQuery = (postId: number, enabled: boolean) => {
   });
   const fetcher = () => axios.get(`/posts/${postId}/exam-files-access`).then(() => undefined);
 
-  return useQuery<void>(postKeys.examFilesAccess(postId), fetcher, {
+  const query = useQuery<void>({
+    queryKey: postKeys.examFilesAccess(postId),
+    queryFn: fetcher,
     enabled,
     retry: false,
-    onError: (error) => handleError(error),
   });
+  const handledErrorUpdatedAt = useRef(0);
+
+  useEffect(() => {
+    if (!query.isError || query.errorUpdatedAt <= handledErrorUpdatedAt.current) return;
+
+    handledErrorUpdatedAt.current = query.errorUpdatedAt;
+    handleError(query.error);
+  }, [handleError, query.error, query.errorUpdatedAt, query.isError]);
+
+  return query;
 };
 
 const useGrantExamPostFilesAccessMutation = () => {
@@ -232,7 +261,8 @@ const useGrantExamPostFilesAccessMutation = () => {
   });
   const fetcher = (postId: number) => axios.post(`/posts/${postId}/exam-files-access`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: (_, postId) => {
       queryClient.invalidateQueries({ queryKey: postKeys.examFilesAccess(postId) });
       queryClient.invalidateQueries({ queryKey: ['post', postId] });
@@ -244,13 +274,13 @@ const useGrantExamPostFilesAccessMutation = () => {
 const useGetRecentPostsQuery = () => {
   const fetcher = () => axios.get('/posts/recent').then(({ data }) => data);
 
-  return useQuery<TrendingPostInfo[]>('recentPosts', fetcher);
+  return useQuery<TrendingPostInfo[]>({ queryKey: ['recentPosts'], queryFn: fetcher });
 };
 
 const useGetTrendPostsQuery = () => {
   const fetcher = () => axios.get('/posts/trend').then(({ data }) => data);
 
-  return useQuery<TrendingPostInfo[]>('trendPosts', fetcher);
+  return useQuery<TrendingPostInfo[]>({ queryKey: ['trendPosts'], queryFn: fetcher });
 };
 
 const useDownloadFileMutation = () => {
@@ -271,7 +301,8 @@ const useDownloadFileMutation = () => {
       .get(`/posts/${postId}/files/${fileId}`, { responseType: 'blob' })
       .then(({ data }) => ({ blob: data, fileName }));
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: ({ blob, fileName }) => {
       const url = window.URL.createObjectURL(new Blob([blob]));
 
@@ -291,16 +322,20 @@ const useDownloadFileMutation = () => {
 const useGetMemberPostsQuery = ({ page, size = 10, memberId }: PageAndSize & { memberId: number }) => {
   const fetcher = () => axios.get(`/posts/members/${memberId}`, { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<MemberPost>(postKeys.memberPost({ page, size, memberId }), fetcher, {
-    keepPreviousData: true,
+  return useQuery<MemberPost>({
+    queryKey: postKeys.memberPost({ page, size, memberId }),
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
 const useGetMemberTempPostsQuery = ({ page, size = 10 }: PageAndSize) => {
   const fetcher = () => axios.get('/posts/temp', { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<MemberPost>(postKeys.memberTempPost({ page, size }), fetcher, {
-    keepPreviousData: true,
+  return useQuery<MemberPost>({
+    queryKey: postKeys.memberTempPost({ page, size }),
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
