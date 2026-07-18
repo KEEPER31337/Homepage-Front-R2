@@ -1,12 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import axios from 'axios';
-import { RecoilRoot } from 'recoil';
 
 import './tailwind.css';
 import muiTheme from '@constants/muiTheme';
@@ -23,19 +22,16 @@ const queryClient = new QueryClient({
   },
 });
 
-ReactDOM.render(
+createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <RecoilRoot>
-      <LocalizationProvider dateAdapter={AdapterLuxon}>
-        <MUIThemeProvider theme={muiTheme}>
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-              <App />
-            </QueryClientProvider>
-          </BrowserRouter>
-        </MUIThemeProvider>
-      </LocalizationProvider>
-    </RecoilRoot>
+    <LocalizationProvider dateAdapter={AdapterLuxon}>
+      <MUIThemeProvider theme={muiTheme}>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
+        </BrowserRouter>
+      </MUIThemeProvider>
+    </LocalizationProvider>
   </React.StrictMode>,
-  document.getElementById('root') as HTMLElement,
 );
