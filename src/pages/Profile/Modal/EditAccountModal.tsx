@@ -44,7 +44,7 @@ const EditEmailSection = () => {
   });
   const {
     mutate: newEmailAuth,
-    isLoading: isEmailSendLoading,
+    isPending: isEmailSendLoading,
     isSuccess: isEmailSendSuccess,
   } = useNewEmailAuthMutation();
   const { mutate: editEmail } = useEditEmailMutation();

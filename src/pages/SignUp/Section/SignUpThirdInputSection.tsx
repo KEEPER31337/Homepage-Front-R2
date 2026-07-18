@@ -36,7 +36,7 @@ const SignUpThirdInputSection = () => {
     enabled: isEmailSent,
   });
 
-  const { mutate: emailAuth, isLoading: isEmailSendLoading, isSuccess: isEmailSendSuccess } = useEmailAuthMutation();
+  const { mutate: emailAuth, isPending: isEmailSendLoading, isSuccess: isEmailSendSuccess } = useEmailAuthMutation();
   const { mutate: signUp } = useSignUpMutation();
 
   const handleRequestVerificationCode = () => {

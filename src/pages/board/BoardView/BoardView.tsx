@@ -38,7 +38,7 @@ const BoardView = () => {
   const isExamPost = postInfo?.categoryName === '시험게시판';
   const isExamRegularPost = Boolean(isExamPost && postInfo && !postInfo.isNotice && postInfo.fileCount > 0);
   const examPostFilesAccessQuery = useGetExamPostFilesAccessQuery(postId, isExamRegularPost);
-  const { mutate: grantExamPostFilesAccess, isLoading: isGrantExamPostFilesAccessLoading } =
+  const { mutate: grantExamPostFilesAccess, isPending: isGrantExamPostFilesAccessLoading } =
     useGrantExamPostFilesAccessMutation();
 
   useEffect(() => {
