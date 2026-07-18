@@ -1,13 +1,14 @@
 import React from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { MdOutlineApps, MdOutlineViewHeadline } from 'react-icons/md';
-import { useRecoilState } from 'recoil';
-import tableViewState from '@recoil/view.recoil';
 import { TableType } from '@components/Table/StandardTable.interface';
 
-const TableViewSwitchButton = () => {
-  const [tableView, setTableView] = useRecoilState(tableViewState);
+interface TableViewSwitchButtonProps {
+  tableView: TableType;
+  setTableView: (tableView: TableType) => void;
+}
 
+const TableViewSwitchButton = ({ tableView, setTableView }: TableViewSwitchButtonProps) => {
   const handleTableView = (event: React.MouseEvent<HTMLElement>, newTableView: TableType | null) => {
     if (!newTableView) return;
     setTableView(newTableView);
