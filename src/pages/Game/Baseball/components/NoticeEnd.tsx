@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { gameKeys } from '@api/gameApi';
 import { baseballKeys } from '../api/baseballApi';
 import { GameStatus } from '../api/baseballDto';
@@ -19,7 +19,7 @@ const NoticeEnd = ({ endType }: NoticeEndProps) => {
   useEffect(() => {
     if (!data || data.status === 'END') return;
 
-    queryClient.invalidateQueries(gameKeys.myInfo);
+    queryClient.invalidateQueries({ queryKey: gameKeys.myInfo });
   }, []);
 
   const msg = {

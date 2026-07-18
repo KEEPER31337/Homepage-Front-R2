@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { useSetRecoilState } from 'recoil';
 import memberState from '@recoil/member.recoil';
 
-type ErrorHandler = (error?: AxiosError) => void;
+type ErrorHandler = (error?: unknown) => void;
 
 interface ServiceCodeHandler {
   [key: number]: ErrorHandler;
@@ -38,48 +38,55 @@ const useApiError = (handlers?: HttpStatusHandlers) => {
   const navigate = useNavigate();
   const setMemberState = useSetRecoilState(memberState);
 
-  const defaultHandlers: DefaultHttpStatusHandlers = {
-    default: () => {
-      console.log('알 수 없는 에러가 발생하였습니다.');
-    },
-    400: {
+  const defaultHandlers: DefaultHttpStatusHandlers = useMemo(
+    () => ({
       default: () => {
-        console.log('400 에러 발생');
+        console.log('알 수 없는 에러가 발생하였습니다.');
       },
-    },
-    401: {
-      default: () => {
-        setMemberState(null);
-        navigate('/login');
+      400: {
+        default: () => {
+          console.log('400 에러 발생');
+        },
       },
-    },
-    403: {
-      default: () => {
-        console.log('403 에러 발생');
+      401: {
+        default: () => {
+          setMemberState(null);
+          navigate('/login');
+        },
       },
-    },
-    409: {
-      default: () => {
-        console.log('409 에러 발생');
+      403: {
+        default: () => {
+          console.log('403 에러 발생');
+        },
       },
-    },
-    500: {
-      default: () => {
-        console.log('500 에러 발생');
+      409: {
+        default: () => {
+          console.log('409 에러 발생');
+        },
       },
-    },
-  };
+      500: {
+        default: () => {
+          console.log('500 에러 발생');
+        },
+      },
+    }),
+    [navigate, setMemberState],
+  );
 
   const handleError = useCallback(
-    (error, serviceCode?) => {
-      const httpStatus: number = error.response?.status;
-      if (handlers && handlers[httpStatus]?.[serviceCode]) {
+    (error: unknown, serviceCode?: number) => {
+      const httpStatus = (error as AxiosError).response?.status;
+      if (!httpStatus) {
+        defaultHandlers.default();
+        return;
+      }
+      if (handlers && serviceCode !== undefined && handlers[httpStatus]?.[serviceCode]) {
         // 우선순위 1. 컴포넌트에서 (HTTP Status, 서비스 표준 에러 Code) Key 조합으로 재정의한 핸들러
         handlers[httpStatus][serviceCode]();
       } else if (handlers && handlers[httpStatus]) {
         // 우선순위 2. 컴포넌트에서 (HTTP Status) Key로 재정의한 핸들러
         handlers[httpStatus].default?.();
-      } else if (defaultHandlers[httpStatus] && defaultHandlers[httpStatus][serviceCode]) {
+      } else if (serviceCode !== undefined && defaultHandlers[httpStatus] && defaultHandlers[httpStatus][serviceCode]) {
         // 우선순위 3. Hook에서 (HTTP Status, 서비스 표준 에러 Code) Key 조합으로 정의한 핸들러
         defaultHandlers[httpStatus][serviceCode]();
       } else if (defaultHandlers[httpStatus]) {
@@ -90,7 +97,7 @@ const useApiError = (handlers?: HttpStatusHandlers) => {
         defaultHandlers.default();
       }
     },
-    [handlers],
+    [defaultHandlers, handlers],
   );
 
   return { handleError };

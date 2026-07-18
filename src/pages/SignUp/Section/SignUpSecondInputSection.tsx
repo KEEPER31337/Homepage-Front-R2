@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
