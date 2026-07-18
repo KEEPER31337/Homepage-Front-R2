@@ -7,7 +7,7 @@ import SearchPW from './Search/SearchPW';
 const SignUp = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
-  const stepInputSection: { [key: number]: JSX.Element } = {
+  const stepInputSection: { [key: number]: React.ReactElement } = {
     0: <SearchID />,
     1: <SearchPW />,
   };
