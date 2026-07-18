@@ -10,7 +10,7 @@ interface AddSeminarModalProps {
 }
 
 const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
-  const [seminarDate, setSeminarDate] = useState(DateTime.now());
+  const [seminarDate, setSeminarDate] = useState<DateTime>(DateTime.now());
   const [helperText, setHelperText] = useState('');
 
   const { mutate: addSeminar } = useAddSeminarMutation({ setHelperText });

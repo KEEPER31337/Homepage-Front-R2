@@ -66,16 +66,20 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
         />
       )}
       renderTags={(tagValue, getTagProps) =>
-        tagValue.map((option, index) => (
-          <MemberChip label={option.label} {...getTagProps({ index })} disabled={option?.fixed} />
-        ))
+        tagValue.map((option, index) => {
+          const { key, ...tagProps } = getTagProps({ index });
+          return <MemberChip key={key} label={option.label} {...tagProps} disabled={option?.fixed} />;
+        })
       }
-      renderOption={(props, option) => (
-        <li key={`${option.label}_${option.value}`} {...props}>
-          {option.label}
-          {option?.fixed && <span className="text-xs text-gray-400"> (기본값)</span>}
-        </li>
-      )}
+      renderOption={(props, option) => {
+        const { key, ...optionProps } = props;
+        return (
+          <li key={key} {...optionProps}>
+            {option.label}
+            {option?.fixed && <span className="text-xs text-gray-400"> (기본값)</span>}
+          </li>
+        );
+      }}
     />
   );
 };

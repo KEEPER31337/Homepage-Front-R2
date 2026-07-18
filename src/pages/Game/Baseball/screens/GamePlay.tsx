@@ -33,8 +33,8 @@ const GamePlay = ({ isPlaying, gameInfo, initEarnablePoint }: GamePlayProps) => 
     result: null,
   });
   const { data: currentGameCondition, refetch: refetchCurrentGameCondition } = useGetResultQuery();
-  const isWin: boolean = gameResults.at(-1)?.strike === gameInfo.guessNumberLength ?? false;
-  const isLose: boolean = (gameResults.length === gameInfo.tryCount && !isWin) ?? false;
+  const isWin = gameResults.at(-1)?.strike === gameInfo.guessNumberLength;
+  const isLose = gameResults.length === gameInfo.tryCount && !isWin;
 
   const AuthInputRef = useRef<AuthCodeRef>(null);
   const { mutate: guess } = useGuessMutation();
@@ -61,7 +61,7 @@ const GamePlay = ({ isPlaying, gameInfo, initEarnablePoint }: GamePlayProps) => 
       refetchCurrentGameCondition();
       setIsTurnStart(false);
     }
-  }, [turnRemainTime]);
+  }, [isPlaying, refetchCurrentGameCondition, turnRemainTime]);
 
   useEffect(() => {
     if (currentGameCondition) {
