@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
-import { Editor } from '@toast-ui/react-editor';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { PostInfo, UploadPostSettings } from '@api/dto';
 import {
   useAddFilesMutation,
@@ -18,6 +17,7 @@ import memberState from '@recoil/member.recoil';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardEditor from '@components/Editor/StandardEditor';
+import type { StandardEditorHandle } from '@components/Editor/StandardEditor';
 import StandardInput from '@components/Input/StandardInput';
 import PageTitle from '@components/Typography/PageTitle';
 import FileUploader from '@components/Uploader/FileUploader';
@@ -55,8 +55,8 @@ const BoardWrite = () => {
   const [hasContent, setHasContent] = useState(false);
   const [contentErrMsg, setContentErrMsg] = useState('');
 
-  const userInfo = useRecoilValue(memberState);
-  const editorRef = useRef<Editor>();
+  const userInfo = useAtomValue(memberState);
+  const editorRef = useRef<StandardEditorHandle | null>(null);
   const navigate = useNavigate();
   const { mutate: uploadPostMutation } = useUploadPostMutation();
   const { mutate: editPost } = useEditPostMutation();
@@ -203,7 +203,7 @@ const BoardWrite = () => {
         <StandardEditor
           height="470px"
           initialValue={editMode?.post.content}
-          forwardedRef={editorRef as React.MutableRefObject<Editor>}
+          forwardedRef={editorRef}
           onChange={handleEditorBlur}
         />
         <Typography variant="small" className="text-subRed">
