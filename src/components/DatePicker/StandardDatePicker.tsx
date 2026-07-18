@@ -1,12 +1,11 @@
 import React, { forwardRef } from 'react';
-import { TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { DateTime } from 'luxon';
 
 interface StandardDatePickerProps {
   value: DateTime | null;
-  onChange: (value: DateTime | null, keyboardInputValue?: string | undefined) => void;
+  onChange: (value: DateTime | null) => void;
   label?: React.ReactNode;
   hasBackground?: boolean;
   error?: boolean;
@@ -23,25 +22,24 @@ const StandardDatePicker = forwardRef(
         <DatePicker
           ref={ref}
           label={label}
-          inputFormat="yyyy.MM.dd"
-          OpenPickerButtonProps={{ size: 'small', color: 'primary' }}
+          format="yyyy.MM.dd"
+          enableAccessibleFieldDOMStructure={false}
           value={value}
           onChange={onChange}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="standard"
-              InputProps={{
+          slotProps={{
+            openPickerButton: { size: 'small', color: 'primary' },
+            textField: {
+              variant: 'standard',
+              InputProps: {
                 className: `${error ? '' : 'before:!border-pointBlue pr-1'} ${
                   hasBackground ? 'bg-subGray/5 h-12' : ''
                 }`,
-                ...params.InputProps,
-              }}
-              error={error}
-              helperText={helperText}
-              sx={hasBackground ? { '.MuiFormLabel-root[data-shrink=false]': { top: 8 } } : undefined}
-            />
-          )}
+              },
+              error,
+              helperText,
+              sx: hasBackground ? { '.MuiFormLabel-root[data-shrink=false]': { top: 8 } } : undefined,
+            },
+          }}
         />
       </LocalizationProvider>
     );
