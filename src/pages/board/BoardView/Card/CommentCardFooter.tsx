@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CardActions, Typography } from '@mui/material';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { useCreateCommentMutation } from '@api/commentApi';
 import { CommentInfo } from '@api/dto';
 import memberState from '@recoil/member.recoil';
@@ -19,7 +19,7 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
   const [replyOpen, setReplyOpen] = useState(false);
   const [replyContent, setReplyContent] = useState('');
 
-  const member = useRecoilValue(memberState);
+  const member = useAtomValue(memberState);
   const { mutate: createReply } = useCreateCommentMutation();
 
   const handleReplyClick = () => {

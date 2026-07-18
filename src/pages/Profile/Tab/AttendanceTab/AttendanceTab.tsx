@@ -1,13 +1,13 @@
 import React from 'react';
 import { Stack } from '@mui/material';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import memberState from '@recoil/member.recoil';
 import AttendanceChartSection from './Section/AttendanceChartSection';
 import AttendanceGuideSection from './Section/AttendanceGuideSection';
 import AttendanceInfoSection from './Section/AttendanceInfoSection';
 
 const AttendanceTab = () => {
-  const member = useRecoilValue(memberState);
+  const member = useAtomValue(memberState);
 
   if (!member) return null;
   return (

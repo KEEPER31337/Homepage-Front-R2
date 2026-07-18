@@ -6,7 +6,7 @@ import { Button, Divider, Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
 import { VscSignOut } from 'react-icons/vsc';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import {
   useEditEmailMutation,
   useEditPasswordMutation,
@@ -292,7 +292,7 @@ interface EditAccountModalProps {
 
 const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
   const [startWithdrawal, setStartWithdrawal] = useState(false);
-  const setMemberState = useSetRecoilState(memberState);
+  const setMemberState = useSetAtom(memberState);
 
   const {
     control,

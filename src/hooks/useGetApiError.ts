@@ -2,7 +2,7 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import memberState from '@recoil/member.recoil';
 
 type ErrorHandler = (error?: unknown) => void;
@@ -36,7 +36,7 @@ interface DefaultHttpStatusHandlers extends DefaultHandler {
 
 const useApiError = (handlers?: HttpStatusHandlers) => {
   const navigate = useNavigate();
-  const setMemberState = useSetRecoilState(memberState);
+  const setMemberState = useSetAtom(memberState);
 
   const defaultHandlers: DefaultHttpStatusHandlers = useMemo(
     () => ({

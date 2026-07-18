@@ -1,13 +1,6 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
 import { MemberInfo } from '@api/dto';
+import atomWithRecoilPersist from './recoilPersistStorage';
 
-const { persistAtom } = recoilPersist();
-
-const memberState = atom<MemberInfo | null>({
-  key: 'memberState',
-  default: null,
-  effects_UNSTABLE: [persistAtom],
-});
+const memberState = atomWithRecoilPersist<MemberInfo | null>('memberState', null);
 
 export default memberState;

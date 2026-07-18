@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { MemberInfo, Role } from '@api/dto';
 import memberState from '@recoil/member.recoil';
 
 const useCheckAuth = () => {
-  const member: MemberInfo | null = useRecoilValue(memberState);
+  const member: MemberInfo | null = useAtomValue(memberState);
 
   const checkLogin = useMemo(() => {
     return () => member !== null;

@@ -1,12 +1,5 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+import atomWithRecoilPersist from './recoilPersistStorage';
 
-const { persistAtom } = recoilPersist();
-
-const starterState = atom<number | undefined>({
-  key: 'starterState',
-  default: undefined,
-  effects_UNSTABLE: [persistAtom],
-});
+const starterState = atomWithRecoilPersist<number | undefined>('starterState', undefined);
 
 export default starterState;

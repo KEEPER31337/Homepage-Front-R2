@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { InputLabel } from '@mui/material';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { useGetProfileQuery } from '@api/memberApi';
 import { useSendPointMutation } from '@api/pointApi';
 import { COMMON, SEND_POINT_MSG } from '@constants/helperText';
@@ -18,7 +18,7 @@ interface SendPointModalProps {
 }
 
 const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
-  const userInfo = useRecoilValue(memberState);
+  const userInfo = useAtomValue(memberState);
   const {
     control,
     getValues,

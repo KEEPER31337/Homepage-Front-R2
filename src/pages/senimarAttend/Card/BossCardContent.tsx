@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CircularProgress, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { MemberInfo } from '@api/dto';
 import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import memberState from '@recoil/member.recoil';
@@ -14,7 +14,7 @@ import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
 const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [seminarStart, setSeminarStart] = useState(false);
-  const setStartMember = useSetRecoilState<number | undefined>(starterState);
+  const setStartMember = useSetAtom(starterState);
   const { data: seminarData, isLoading } = useGetSeminarInfoQuery(seminarId);
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
@@ -22,7 +22,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [isTransitionTime, setIsTransitionTime] = useState(false);
   const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
-  const member: MemberInfo | null = useRecoilValue(memberState);
+  const member: MemberInfo | null = useAtomValue(memberState);
 
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());

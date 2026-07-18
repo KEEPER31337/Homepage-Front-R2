@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { useCheckEmailDuplicationQuery, useEmailAuthMutation, useSignUpMutation } from '@api/signUpApi';
 import { EMAIL } from '@constants/apiResponseMessage';
 import { COMMON, EMAIL_MSG } from '@constants/helperText';
@@ -20,7 +20,7 @@ const SignUpThirdInputSection = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
 
-  const signUpParams = useRecoilValue(signUpPageState);
+  const signUpParams = useAtomValue(signUpPageState);
   const navigate = useNavigate();
   const {
     control,

@@ -6,7 +6,7 @@ import { InputLabel, Stack, Typography, useMediaQuery, useTheme } from '@mui/mat
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { PeriodicInfo, StudyInfo } from '@api/dto';
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import {
@@ -40,7 +40,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
   const [linkError, setLinkError] = useState(false);
   const [etcLinkError, setEtcLinkError] = useState(false);
 
-  const headMemberInfo = useRecoilValue(memberState);
+  const headMemberInfo = useAtomValue(memberState);
   const isEditMode = Boolean(selectedStudyInfo);
 
   const {
