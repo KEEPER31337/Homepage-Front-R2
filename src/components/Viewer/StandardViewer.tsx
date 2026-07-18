@@ -19,8 +19,9 @@ const StandardViewer = ({ content, className }: StandardViewerProps) => {
   useLayoutEffect(() => {
     if (!viewerElementRef.current) return undefined;
 
+    const viewerElement = viewerElementRef.current;
     const viewer = new ToastViewer({
-      el: viewerElementRef.current,
+      el: viewerElement,
       initialValue: '',
       theme: 'dark',
       plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
@@ -29,6 +30,7 @@ const StandardViewer = ({ content, className }: StandardViewerProps) => {
 
     return () => {
       viewer.destroy();
+      viewerElement.replaceChildren();
       viewerInstanceRef.current = null;
     };
   }, []);
