@@ -50,6 +50,7 @@ const FixedPostingCard = <T,>({
                   subtitle={
                     <div className="relative flex h-full items-end justify-between">
                       <CardDetailInfo
+                        writerId={row.writerId}
                         writerThumbnailPath={row.writerThumbnailPath}
                         writerName={row.writerName}
                         registerTime={row.registerTime}

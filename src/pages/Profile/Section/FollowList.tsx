@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { List, ListItemIcon, ListItem, ListItemButton, Typography } from '@mui/material';
 import { FollowInfo } from '@api/dto';
-import ServerAvatar from '@components/Avatar/ServerAvatar';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 
 interface FollowListProps {
   followlist: FollowInfo[];
@@ -23,7 +23,11 @@ const FollowList = ({ followlist }: FollowListProps) => {
             }}
           >
             <ListItemIcon className="items-center">
-              <ServerAvatar className="m-1 mr-3 !h-5 !w-5 sm:!h-8 sm:!w-8" thumbnailPath={followInfo?.thumbnailPath} />
+              <CommonAvatar
+                className="m-1 mr-3 !h-5 !w-5 sm:!h-8 sm:!w-8"
+                userId={followInfo.id}
+                thumbnailPath={followInfo.thumbnailPath}
+              />
               <Typography className="!text-small sm:!text-paragraph">
                 {followInfo.generation}기 {followInfo.name}
               </Typography>

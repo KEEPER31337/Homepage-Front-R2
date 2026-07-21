@@ -5,7 +5,7 @@ import { AiFillLock } from 'react-icons/ai';
 import { VscComment, VscEye, VscThumbsup } from 'react-icons/vsc';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { getServerImgUrl } from '@utils/converter';
-import ServerAvatar from '@components/Avatar/ServerAvatar';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 import { Row } from '@components/Table/StandardTable.interface';
 import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
 
@@ -30,12 +30,12 @@ export const CardMainInfo = ({ title, registerTime }: CardMainInfoProps) => {
   );
 };
 
-export const CardDetailInfo = ({ writerThumbnailPath, writerName, registerTime }: CardDetailInfoProps) => {
+export const CardDetailInfo = ({ writerId, writerThumbnailPath, writerName, registerTime }: CardDetailInfoProps) => {
   const formattedRegisterTime = DateTime.fromFormat(registerTime, 'yyyy-MM-dd HH:mm:ss').toFormat('yyyy-MM-dd');
 
   return (
     <div className="flex">
-      <ServerAvatar className="mr-2 !h-6 !w-6" thumbnailPath={writerThumbnailPath} />
+      <CommonAvatar className="mr-2 !h-6 !w-6" userId={writerId} thumbnailPath={writerThumbnailPath} />
       <Stack>
         <Typography className="font-medium" variant="small">
           {writerName}
@@ -97,6 +97,7 @@ const PostingCard = <T,>({
         <CardMainInfo isSecret={row.isSecret} title={row.title} registerTime={row.registerTime} />
         <div className="relative flex items-end justify-between">
           <CardDetailInfo
+            writerId={row.writerId}
             writerThumbnailPath={row.writerThumbnailPath}
             writerName={row.writerName}
             registerTime={row.registerTime}

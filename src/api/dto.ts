@@ -373,8 +373,9 @@ export interface PostInfo {
 export interface PostSummaryInfo {
   id: number;
   title: string;
+  writerId: number;
   writerName: string;
-  writerThumbnailPath: string;
+  writerThumbnailPath: string | null;
   visitCount: number;
   commentCount: number;
   likeCount: number;
@@ -398,8 +399,9 @@ export interface BoardPosts extends Page {
 export interface TrendingPostInfo {
   id: number;
   title: string;
+  writerId: number;
   writerName: string;
-  writerThumbnailPath: string;
+  writerThumbnailPath: string | null;
   categoryId: number;
   categoryName: string;
   visitCount: number;
@@ -409,8 +411,9 @@ export interface TrendingPostInfo {
 }
 
 export interface AttendRankInfo {
+  memberId: number;
   rank: number;
-  thumbnailPath?: string | null;
+  thumbnailPath: string | null;
   realName: string;
   generation: string;
   totalAttendance: number;
@@ -432,7 +435,8 @@ export interface TodayAttendRank {
 }
 
 export interface PointRankInfo {
-  thumbnailPath?: string | null;
+  memberId: number;
+  thumbnailPath: string | null;
   realName: string;
   generation: string;
   point: number;
@@ -456,7 +460,7 @@ export interface GameRankInfo {
   realName: string;
   generation: string;
   todayEarnedPoint: number;
-  thumbnailPath?: string | null;
+  thumbnailPath: string | null;
   memberId: number;
 }
 

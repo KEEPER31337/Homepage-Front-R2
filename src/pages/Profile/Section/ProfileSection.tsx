@@ -4,7 +4,7 @@ import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FollowInfo } from '@api/dto';
 import { useGetProfileQuery, useFollowMemberMutation, useUnFollowMemberMutation } from '@api/memberApi';
 import useCheckAuth from '@hooks/useCheckAuth';
-import ServerAvatar from '@components/Avatar/ServerAvatar';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
 import BadgeSection from './BadgeSection';
@@ -54,7 +54,11 @@ const ProfileSection = () => {
   return (
     <div className="flex w-full space-x-6 space-y-0 p-4 xl:flex-col xl:space-x-0 xl:space-y-4">
       <div className="flex w-1/2 flex-col items-center space-y-2 xl:w-full">
-        <ServerAvatar className="!h-40 !w-40 lg:!h-60 lg:!w-60" thumbnailPath={profileInfo?.thumbnailPath} />
+        <CommonAvatar
+          className="!h-40 !w-40 lg:!h-60 lg:!w-60"
+          userId={profileInfo?.id ?? otherMemberId}
+          thumbnailPath={profileInfo?.thumbnailPath ?? null}
+        />
         <div className="flex h-fit w-full justify-between space-x-2">
           <Typography variant={`${isMobile ? 'h3' : 'h1'}`} className="h-fit shrink-0 !font-semibold">
             {profileInfo?.realName}

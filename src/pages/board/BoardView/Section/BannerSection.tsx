@@ -6,7 +6,7 @@ import { VscCalendar, VscEye } from 'react-icons/vsc';
 import { PostInfo } from '@api/dto';
 import { useDeletePostMutation } from '@api/postApi';
 import useCheckAuth from '@hooks/useCheckAuth';
-import ServerAvatar from '@components/Avatar/ServerAvatar';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ServerImg from '@components/Image/ServerImg';
 import ActionModal from '@components/Modal/ActionModal';
@@ -51,7 +51,11 @@ const BannerSection = ({ postId, post, password }: BannerSectionProps) => {
           </Typography>
           <div className="flex items-center justify-center gap-2 text-small leading-8 text-gray-300">
             <div className="flex items-center justify-center">
-              <ServerAvatar className="mr-1 !h-4 !w-4" thumbnailPath={post.writerThumbnailPath} />
+              <CommonAvatar
+                className="mr-1 !h-4 !w-4"
+                userId={post.writerId}
+                thumbnailPath={post.writerThumbnailPath}
+              />
               {post.writerName}
             </div>
             <div className="flex items-center justify-center">

@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai';
 import { useCreateCommentMutation } from '@api/commentApi';
 import { CommentInfo } from '@api/dto';
 import memberState from '@recoil/member.recoil';
-import ServerAvatar from '@components/Avatar/ServerAvatar';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 import CommentWriteCardAction from './CommentWriteCardAction';
 
 interface CommentCardFooterProps {
@@ -46,7 +46,11 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
         />
       ) : (
         <div className="flex w-full items-center justify-between gap-2">
-          <ServerAvatar className="!h-7 !w-7" thumbnailPath={member?.thumbnailPath} />
+          <CommonAvatar
+            className="!h-7 !w-7"
+            userId={member?.memberId ?? 0}
+            thumbnailPath={member?.thumbnailPath ?? null}
+          />
           <button
             type="button"
             className="flex h-9 w-full items-center border border-subBlack bg-mainBlack pl-3"

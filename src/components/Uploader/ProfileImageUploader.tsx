@@ -3,12 +3,14 @@ import { useDropzone } from 'react-dropzone';
 import { Avatar, Typography } from '@mui/material';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 import { getServerImgUrl } from '@utils/converter';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 import WarningModal from '@components/Modal/WarningModal';
 
 interface ProfileImageUploaderProps {
   title?: string;
   isEdit: boolean;
-  thumbnailPath?: string;
+  userId: number;
+  thumbnailPath: string | null;
   setThumbnail: React.Dispatch<Blob | null>;
   setIsThumbnailChanged?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -22,6 +24,7 @@ interface ImageWarningInfo {
 
 const ProfileImageUploader = ({
   isEdit,
+  userId,
   thumbnailPath,
   setThumbnail,
   setIsThumbnailChanged,
@@ -30,22 +33,25 @@ const ProfileImageUploader = ({
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
   const [openWarning, setOpenWarning] = useState<ImageWarningInfo>({ isOpen: false, type: 'Multiple' });
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (setIsThumbnailChanged) setIsThumbnailChanged(true);
-    setThumbnailBase64('');
-    acceptedFiles.forEach((file: File) => {
-      setThumbnail(file);
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        const base64 = reader.result;
-        if (base64) {
-          const base64Sub = base64.toString();
-          setThumbnailBase64(base64Sub);
-        }
-      };
-    });
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (setIsThumbnailChanged) setIsThumbnailChanged(true);
+      setThumbnailBase64('');
+      acceptedFiles.forEach((file: File) => {
+        setThumbnail(file);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          const base64 = reader.result;
+          if (base64) {
+            const base64Sub = base64.toString();
+            setThumbnailBase64(base64Sub);
+          }
+        };
+      });
+    },
+    [setIsThumbnailChanged, setThumbnail],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -72,7 +78,7 @@ const ProfileImageUploader = ({
     if (isEdit && thumbnailPath) {
       setThumbnailBase64(getServerImgUrl(thumbnailPath));
     }
-  }, []);
+  }, [isEdit, thumbnailPath]);
 
   return (
     <div className="relative flex h-full flex-col space-y-[10px]">
@@ -100,9 +106,10 @@ const ProfileImageUploader = ({
           />
         ) : (
           <div className="flex items-center text-pointBlue/70">
-            <Avatar
-              sx={{ width: 'inherit', height: 'inherit' }}
-              className="!absolute inset-0 -z-10 m-auto opacity-10"
+            <CommonAvatar
+              userId={userId}
+              thumbnailPath={null}
+              className="!absolute inset-0 -z-10 m-auto !h-full !w-full opacity-10"
             />
             {isDragActive ? (
               <Typography className="mx-2 text-center text-small">이미지를 놓으세요</Typography>
