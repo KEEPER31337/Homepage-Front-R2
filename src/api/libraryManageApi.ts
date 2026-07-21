@@ -22,6 +22,16 @@ const libraryManageKeys = {
   borrowLogList: (params: BorrowLogListSearch) => [...libraryManageKeys.borrowInfo(), 'logs', params] as const,
 };
 
+type FormattedBorrowLogInfo = Omit<
+  BorrowLogInfo,
+  'borrowDateTime' | 'expireDateTime' | 'returnDateTime' | 'rejectDateTime'
+> & {
+  borrowDateTime: string;
+  expireDateTime: string;
+  returnDateTime: string;
+  rejectDateTime: string;
+};
+
 const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: BookListSearch) => {
   const params = { page, size, searchType, search };
   const fetcher = () =>
@@ -225,7 +235,7 @@ const useGetBorrowLogListQuery = ({ page, size = 10, searchType, search }: Borro
   const params = { page, size, searchType, search };
   const fetcher = () =>
     axios.get('/manage/borrow-infos/logs', { params }).then(({ data }) => {
-      const content = data.content.map((borrowLogInfo: BorrowLogInfo) => {
+      const content = data.content.map((borrowLogInfo: BorrowLogInfo): FormattedBorrowLogInfo => {
         return {
           ...borrowLogInfo,
           returnDateTime: borrowLogInfo?.returnDateTime
@@ -245,7 +255,7 @@ const useGetBorrowLogListQuery = ({ page, size = 10, searchType, search }: Borro
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: BorrowLogInfo[]; totalElement: number; size: number }>({
+  return useQuery<{ content: FormattedBorrowLogInfo[]; totalElement: number; size: number }>({
     queryKey: libraryManageKeys.borrowLogList(params),
     queryFn: fetcher,
   });

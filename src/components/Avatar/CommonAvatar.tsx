@@ -1,16 +1,16 @@
 import React from 'react';
 import { Avatar as MuiAvatar } from '@mui/material';
 import BoringAvatars from 'boring-avatars';
+import { ANONYMOUS_OR_VIRTUAL_USER_ID } from '@constants/member';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
 import { getServerImgUrl } from '@utils/converter';
 
 interface CommonAvatarProps {
-  userId: number;
+  userId: number | null;
   thumbnailPath: string | null;
   className?: string;
 }
 
-const ANONYMOUS_USER_ID = 1;
 const KEEPER_AVATAR_COLORS = [
   KEEPER_COLOR.mainBlack,
   KEEPER_COLOR.middleBlack,
@@ -22,17 +22,18 @@ const KEEPER_AVATAR_COLORS = [
 ];
 
 const CommonAvatar = ({ userId, thumbnailPath, className }: CommonAvatarProps) => {
-  const canIdentifyUser = Number.isInteger(userId) && userId > 0 && userId !== ANONYMOUS_USER_ID;
+  const canIdentifyUser =
+    typeof userId === 'number' && Number.isInteger(userId) && userId > 0 && userId !== ANONYMOUS_OR_VIRTUAL_USER_ID;
 
   // MUI Avatar는 src -> children -> default 이미지 순으로 fall back함.
-  
+
   // 아래 코드 구조면
-  
-  // 익명 유저 -> MUI default Avatar로 감.
-  
+
+  // 익명 댓글(null) 및 익명, 탈퇴 회원을 나타내는 가상 유저(ID 1) -> thubmnail undefined로 설정 children을 제거해 MUI default Avatar로 감.
+
   // 서버 이미지가 있으면 -> src를 사용하고
   // 서버 이미지가 없거나 로딩에 실패하면 -> userId 기반 BoringAvatars로 만들어진 SVG 프로필을 사용함.
-  // user id가 이상하거나, 없는 특별한 예외사항들은 children도 제거해 모두 MUI default Avatar로 감.
+  // 특별한 예외사항들은 children도 제거해 모두 MUI default Avatar로 감.
 
   return (
     <MuiAvatar

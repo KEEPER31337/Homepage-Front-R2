@@ -14,6 +14,8 @@ interface AttendanceInfoSectionProps {
 const AttendanceInfoSection = ({ memberId, summary = false }: AttendanceInfoSectionProps) => {
   const [selectedCard, setSelectedCard] = useState<'continuousDay' | 'todayRank' | 'todayPoint'>('todayPoint');
   const { data: todayAttendInfo } = useGetTodayAttendanceInfoQuery({ memberId });
+  const continuousDay = todayAttendInfo?.continuousDay ?? '-';
+  const todayRank = todayAttendInfo?.todayRank ?? '-';
 
   return (
     <div className="w-full xl:w-1/2">
@@ -25,12 +27,12 @@ const AttendanceInfoSection = ({ memberId, summary = false }: AttendanceInfoSect
         </TextButton>
         <TextButton disabled={summary} onClick={() => setSelectedCard('continuousDay')} small>
           <Typography variant="small" className={`${summary && 'text-white'}`}>
-            🌱 개근 {todayAttendInfo?.continuousDay}일차
+            🌱 개근 {continuousDay}일차
           </Typography>
         </TextButton>
         <TextButton disabled={summary} onClick={() => setSelectedCard('todayRank')} small>
           <Typography variant="small" className={`${summary && 'text-white'}`}>
-            🏅 오늘 출석 {todayAttendInfo?.todayRank}등
+            🏅 오늘 출석 {todayRank}등
           </Typography>
         </TextButton>
         <TextButton disabled={summary} onClick={() => setSelectedCard('todayPoint')} small>

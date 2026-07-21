@@ -17,8 +17,9 @@ interface BorrowLogRow {
   borrowerRealName: string;
   borrowDateTime: string;
   expireDateTime: string;
-  returnDateTime: string | null;
-  rejectDateTime: string | null;
+  // useGetBorrowLogListQuery에서 어차피 null 이면 문자열로 변경함.
+  returnDateTime: string; 
+  rejectDateTime: string;
   status: string;
 }
 

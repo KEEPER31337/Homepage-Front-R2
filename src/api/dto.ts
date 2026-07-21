@@ -27,7 +27,7 @@ export interface PageAndSize {
 
 export interface MemberInfo {
   memberId: number;
-  loginId: number;
+  loginId: string;
   emailAddress: string;
   realName: string;
   thumbnailPath: string | null;
@@ -87,7 +87,7 @@ export interface StaticWriteContentsInfo {
 export interface SubTitleImagesInfo {
   id: number;
   subtitle: string;
-  thumbnailPath: string | undefined;
+  thumbnailPath: string | null;
   displayOrder: number;
   staticWriteContents: Array<StaticWriteContentsInfo>;
 }
@@ -135,8 +135,8 @@ export interface BorrowInfo {
   borrowerId: number;
   borrowerRealName: string;
   requestDatetime: string | null;
-  borrowDateTime: string;
-  expiredDateTime: string;
+  borrowDateTime: string | null;
+  expiredDateTime: string | null;
   bookQuantity: string;
   currentQuantity: number;
   totalQuantity: number;
@@ -145,7 +145,7 @@ export interface BorrowInfo {
 
 export interface BookInfo {
   bookId: number;
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   title: string;
   author: string;
   bookQuantity: string;
@@ -164,12 +164,12 @@ export type BookCoreData = Pick<ManageBookInfo, 'title' | 'author' | 'bookDepart
 
 export interface BorrowedBookInfo {
   borrowInfoId: number;
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   bookTitle: string;
   author: string;
   overdue: boolean;
-  borrowDateTime: string;
-  expireDateTime: string;
+  borrowDateTime: string | null;
+  expireDateTime: string | null;
   status: borrowStatus;
 }
 
@@ -180,10 +180,10 @@ export interface BorrowLogInfo {
   author: string;
   borrowerId: number;
   borrowerRealName: string;
-  borrowDateTime: string;
-  expireDateTime: string;
-  returnDateTime: string;
-  rejectDateTime: string;
+  borrowDateTime: string | null;
+  expireDateTime: string | null;
+  returnDateTime: string | null;
+  rejectDateTime: string | null;
   status: borrowStatus;
 }
 
@@ -207,7 +207,7 @@ export interface UploadStudy {
 
 export interface StudyInfo {
   studyId: number;
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   title: string;
   headName: string;
   headId: number;
@@ -215,8 +215,8 @@ export interface StudyInfo {
 }
 
 export interface StudyLinkInfo {
-  title: string;
-  content: string;
+  title: string | null;
+  content: string | null;
 }
 
 export interface StudyDetail {
@@ -246,11 +246,11 @@ export interface SeminarCoreInfo {
   openTime: DateTime;
   attendanceCloseTime: DateTime | null;
   latenessCloseTime: DateTime | null;
-  statusType: SeminarStatus;
   attendanceCode: string | null;
 }
 
 export interface SeminarCardInfo extends SeminarCoreInfo {
+  statusType: SeminarStatus;
   attendanceStartTime: DateTime | null;
   starterId: number | null;
 }
@@ -262,10 +262,11 @@ export interface SeminarInfo extends SeminarCoreInfo {
 
 export interface AttendResponseData {
   id: number;
-  statusText: string;
+  statusType: SeminarStatus;
 }
 
 export interface MemberSeminarAttendance {
+  seminarId: number;
   attendanceId: number;
   attendanceStatus: SeminarStatus;
   excuse: string | null;
@@ -280,10 +281,10 @@ export interface AttendanceStatus extends MemberSeminarAttendance {
 export interface AttendSeminarInfo {
   memberId: number;
   memberName: string;
-  generation: number;
+  generation: string;
   attendances: MemberSeminarAttendance[];
   [key: `date${number}`]: MemberSeminarAttendance;
-  totalCount: string;
+  totalCount?: string;
   totalAttendance: number;
   totalLateness: number;
   totalAbsence: number;
@@ -296,7 +297,7 @@ export interface AttendSeminarListInfo extends Page {
 
 export interface CommentInfo {
   commentId: number;
-  writerId: number;
+  writerId: number | null;
   writerName: string;
   writerThumbnailPath: string | null;
   content: string | null;
@@ -330,12 +331,9 @@ export interface UploadPost {
 }
 
 export interface FileInfo {
-  id: number;
   fileId: number;
   name: string;
-  path: string;
   size: number;
-  ipAddress: string;
   uploadTime: string;
 }
 
@@ -352,16 +350,16 @@ export interface PostInfo {
   writerName: string;
   writerThumbnailPath: string | null;
   visitCount: number;
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   content: string;
-  previousPost: AdjacentPostInfo;
-  nextPost: AdjacentPostInfo;
+  previousPost: AdjacentPostInfo | null;
+  nextPost: AdjacentPostInfo | null;
   likeCount: number;
   dislikeCount: number;
   fileCount: number;
   isLike: boolean;
   isDislike: boolean;
-  isRead: boolean;
+  isRead: boolean | null;
   allowComment: boolean;
   isNotice: boolean;
   isSecret: boolean;
@@ -380,7 +378,7 @@ export interface PostSummaryInfo {
   commentCount: number;
   likeCount: number;
   isSecret: boolean;
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   registerTime: string;
 }
 
@@ -406,32 +404,33 @@ export interface TrendingPostInfo {
   categoryName: string;
   visitCount: number;
   isSecret: boolean;
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   registerTime: string;
 }
 
-export interface AttendRankInfo {
+interface AttendRankBase {
   memberId: number;
   rank: number;
   thumbnailPath: string | null;
   realName: string;
   generation: string;
-  totalAttendance: number;
-  continuousDay: number;
   time: string;
 }
 
-export interface TodayAttendRank {
-  content: AttendRankInfo[];
-  empty: boolean;
-  first: boolean;
-  last: boolean;
-  number: number;
-  numberOfElements: number;
-  pageable: PageableInfo;
-  totalPages: number;
-  totalElements: number;
-  size: number;
+export interface TodayAttendRankInfo extends AttendRankBase {
+  totalAttendance: number;
+  continuousDay?: never;
+}
+
+export interface ContinuousAttendRankInfo extends AttendRankBase {
+  totalAttendance?: never;
+  continuousDay: number;
+}
+
+export type AttendRankInfo = TodayAttendRankInfo | ContinuousAttendRankInfo;
+
+export interface TodayAttendRank extends Page {
+  content: TodayAttendRankInfo[];
 }
 
 export interface PointRankInfo {
@@ -442,17 +441,8 @@ export interface PointRankInfo {
   point: number;
 }
 
-export interface PointRank {
+export interface PointRank extends Page {
   content: PointRankInfo[];
-  empty: boolean;
-  first: boolean;
-  last: boolean;
-  number: number;
-  numberOfElements: number;
-  pageable: PageableInfo;
-  totalPages: number;
-  totalElements: number;
-  size: number;
 }
 
 export interface GameRankInfo {
@@ -624,7 +614,7 @@ export interface FollowInfo {
 
 export interface ProfileInfo {
   id: number;
-  studentId?: number;
+  studentId: string;
   realName: string;
   generation: string;
   birthday: string;
@@ -646,8 +636,8 @@ export interface TodayAttendPoint {
 
 export interface TodayAttendInfo {
   totalAttendance: number;
-  continuousDay: number;
-  todayRank: number;
+  continuousDay: number | null;
+  todayRank: number | null;
   todayPoint: number;
 }
 

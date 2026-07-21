@@ -2,8 +2,8 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import {
-  AttendRankInfo,
   CallenderChartInfo,
+  ContinuousAttendRankInfo,
   PageAndSize,
   TodayAttendInfo,
   TodayAttendPoint,
@@ -69,7 +69,10 @@ const useGetTodayAttendanceRank = ({ page, size = 10 }: PageAndSize) => {
 const useGetContinuousAttendanceRank = () => {
   const fetcher = () => axios.get('/attendances/continuous-rank').then(({ data }) => data);
 
-  return useQuery<AttendRankInfo[]>({ queryKey: attendanceKeys.continuousAttendanceRank(), queryFn: fetcher });
+  return useQuery<ContinuousAttendRankInfo[]>({
+    queryKey: attendanceKeys.continuousAttendanceRank(),
+    queryFn: fetcher,
+  });
 };
 
 export {
