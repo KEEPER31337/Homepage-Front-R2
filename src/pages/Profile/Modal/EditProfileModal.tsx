@@ -54,7 +54,8 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
         <div className="mx-auto my-6 h-52 w-52 rounded-full md:mb-0">
           <ProfileImageUploader
             isEdit
-            thumbnailPath={profileInfo.thumbnailPath ?? undefined}
+            userId={profileInfo.id}
+            thumbnailPath={profileInfo.thumbnailPath}
             setThumbnail={setThumbnail}
             setIsThumbnailChanged={setIsThumbnailChanged}
           />

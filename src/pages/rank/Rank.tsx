@@ -7,7 +7,7 @@ import { useGetPointRank } from '@api/memberApi';
 import usePagination from '@hooks/usePagination';
 import { formatGeneration } from '@utils/converter';
 import { useGetGameRank } from '@pages/Game/Baseball/api/baseballApi';
-import ServerAvatar from '@components/Avatar/ServerAvatar';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardTab from '@components/Tab/StandardTab';
 import StandardTable from '@components/Table/StandardTable';
@@ -18,8 +18,9 @@ interface AttendRankRow {
   id: number;
   rank: number;
   name: {
+    userId: number;
     realName: string;
-    thumbnailPath?: string | null;
+    thumbnailPath: string | null;
   };
   generation: string;
   totalAttendance: number;
@@ -30,8 +31,9 @@ interface PointRankRow {
   id: number;
   rank: number;
   name: {
+    userId: number;
     realName: string;
-    thumbnailPath?: string | null;
+    thumbnailPath: string | null;
   };
   generation: string;
   point: number;
@@ -59,7 +61,11 @@ const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankRow>)
     case 'name':
       return (
         <div className="flex place-items-center">
-          <ServerAvatar className="mr-2 !h-6 !w-6" thumbnailPath={(value as AttendRankRow['name']).thumbnailPath} />
+          <CommonAvatar
+            className="mr-2 !h-6 !w-6"
+            userId={(value as AttendRankRow['name']).userId}
+            thumbnailPath={(value as AttendRankRow['name']).thumbnailPath}
+          />
           {(value as AttendRankRow['name']).realName}
         </div>
       );
@@ -79,8 +85,12 @@ const PointRankChildComponent = ({ key, value }: ChildComponent<PointRankRow>) =
     case 'name':
       return (
         <div className="flex place-items-center">
-          <ServerAvatar className="mr-2 !h-6 !w-6" thumbnailPath={(value as AttendRankRow['name']).thumbnailPath} />
-          {(value as AttendRankRow['name']).realName}
+          <CommonAvatar
+            className="mr-2 !h-6 !w-6"
+            userId={(value as PointRankRow['name']).userId}
+            thumbnailPath={(value as PointRankRow['name']).thumbnailPath}
+          />
+          {(value as PointRankRow['name']).realName}
         </div>
       );
     case 'generation':
@@ -121,6 +131,7 @@ const Rank = () => {
               rows={attendRank.content.map((item, index) => ({
                 id: getRowNumber({ size: attendRank.size, index }),
                 name: {
+                  userId: item.memberId,
                   realName: item.realName,
                   thumbnailPath: item.thumbnailPath,
                 },
@@ -137,6 +148,7 @@ const Rank = () => {
                 id: getRowNumber({ size: pointRank.size, index }),
                 rank: getRowNumber({ size: pointRank.size, index }),
                 name: {
+                  userId: item.memberId,
                   realName: item.realName,
                   thumbnailPath: item.thumbnailPath,
                 },

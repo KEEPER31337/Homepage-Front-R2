@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { TrendingPostInfo } from '@api/dto';
 import { useGetRecentPostsQuery, useGetTrendPostsQuery } from '@api/postApi';
-import ServerAvatar from '@components/Avatar/ServerAvatar';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 import ServerImg from '@components/Image/ServerImg';
 
 const Card = ({ post }: { post: TrendingPostInfo }) => {
@@ -22,7 +22,7 @@ const Card = ({ post }: { post: TrendingPostInfo }) => {
           {post.title}
         </Typography>
         <div className="mt-5 flex flex-row">
-          <ServerAvatar thumbnailPath={post.writerThumbnailPath} className="mr-3 !h-10 !w-10" />
+          <CommonAvatar userId={post.writerId} thumbnailPath={post.writerThumbnailPath} className="mr-3 !h-10 !w-10" />
           <div className="flex flex-col">
             <Typography variant="paragraph">{post.writerName}</Typography>
             <Typography className="!text-[12px] text-subGray">

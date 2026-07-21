@@ -5,6 +5,7 @@ export interface CardMainInfoProps {
 }
 
 export interface CardDetailInfoProps {
+  writerId: number;
   writerThumbnailPath: string | null;
   writerName: string;
   registerTime: string;

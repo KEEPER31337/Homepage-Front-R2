@@ -1,17 +1,22 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import { formatGeneration } from '@utils/converter';
-import ServerAvatar from '@components/Avatar/ServerAvatar';
+import CommonAvatar from '@components/Avatar/CommonAvatar';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface TopCardProps<T extends Record<string, any>> {
+interface TopCardItem {
+  memberId: number;
+  thumbnailPath: string | null;
+  realName: string;
+  generation: string;
+}
+
+interface TopCardProps<T extends TopCardItem> {
   item: T;
   message: string;
   index: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCardProps<T>) => {
+const TopCard = <T extends TopCardItem>({ item, message, index }: TopCardProps<T>) => {
   return (
     <div className="relative flex h-36 place-content-center">
       <div className="absolute z-10 h-28 w-80">
@@ -32,7 +37,7 @@ const TopCard = <T extends Record<string, any>>({ item, message, index }: TopCar
               {message}
             </Typography>
           </div>
-          <ServerAvatar className="my-auto !h-16 !w-16" thumbnailPath={item.thumbnailPath} />
+          <CommonAvatar className="my-auto !h-16 !w-16" userId={item.memberId} thumbnailPath={item.thumbnailPath} />
         </div>
       </div>
       <div className="relative left-2 top-2 h-28 w-80 border-2 border-pointBlue" />
