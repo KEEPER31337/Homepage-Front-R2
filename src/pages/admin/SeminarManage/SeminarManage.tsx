@@ -51,9 +51,9 @@ const SeminarManage = () => {
       return <SeminarAttendStatus status={(value as MemberSeminarAttendance).attendanceStatus} hasIcon={false} />;
     }
     if (key === 'totalCount') {
-      return <p className="text-center">{value}</p>;
+      return <p className="text-center">{value as number}</p>;
     }
-    return value;
+    return typeof value === 'string' || typeof value === 'number' ? value : null;
   };
 
   const onCellClick = ({ cellData }: { cellData: Cell<AttendSeminarInfo> }) => {

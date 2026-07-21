@@ -11,7 +11,7 @@ const SearchPW = () => {
     verificationCode: '',
   });
 
-  const stepInputSection: { [key: number]: JSX.Element } = {
+  const stepInputSection: { [key: number]: React.ReactElement } = {
     1: <SearchPWFirstStep setCurrentStep={setCurrentStep} form={form} setForm={setForm} />,
     2: <SearchPWSecondStep setCurrentStep={setCurrentStep} firstForm={form} />,
     3: <SearchPWThirdStep />,

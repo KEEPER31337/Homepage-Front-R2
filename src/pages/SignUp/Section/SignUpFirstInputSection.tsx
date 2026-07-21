@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
 import { LOGIN_ID } from '@constants/apiResponseMessage';
@@ -22,7 +22,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
   const [loginIdState, setLoginIdState] = useState('');
   const [checkLoginIdDuplicateEnabled, setCheckLoginIdDuplicateEnabled] = useState(false);
   const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
-  const setSignUpPageState = useSetRecoilState(signUpPageState);
+  const setSignUpPageState = useSetAtom(signUpPageState);
 
   const {
     control,

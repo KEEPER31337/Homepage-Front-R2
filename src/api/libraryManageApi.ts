@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import {
@@ -38,10 +38,10 @@ const useGetBookManageListQuery = ({ page, size = 10, searchType, search }: Book
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: ManageBookInfo[]; totalElement: number; size: number }>(
-    libraryManageKeys.bookManageList(params),
-    fetcher,
-  );
+  return useQuery<{ content: ManageBookInfo[]; totalElement: number; size: number }>({
+    queryKey: libraryManageKeys.bookManageList(params),
+    queryFn: fetcher,
+  });
 };
 
 const useAddBookMutation = () => {
@@ -59,7 +59,8 @@ const useAddBookMutation = () => {
     });
   };
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
     },
@@ -70,7 +71,8 @@ const useDeleteBookMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (bookId: number) => axios.delete(`/manage/books/${bookId}`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
     },
@@ -83,7 +85,8 @@ const useEditBookInfoMutation = () => {
   const fetcher = ({ bookId, bookCoreData }: { bookId: number; bookCoreData: BookCoreData }) =>
     axios.put(`/manage/books/${bookId}`, bookCoreData);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
     },
@@ -103,7 +106,8 @@ const useEditBookThumbnailMutation = ({ bookId }: { bookId: number }) => {
       },
     });
   };
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookDetail(bookId) });
     },
@@ -113,7 +117,11 @@ const useEditBookThumbnailMutation = ({ bookId }: { bookId: number }) => {
 const useGetBookDetailQuery = (bookId: number) => {
   const fetcher = () => axios.get(`/manage/books/${bookId}`).then(({ data }) => data);
 
-  return useQuery<ManageBookInfo>(libraryManageKeys.bookDetail(bookId), fetcher, { enabled: bookId !== 0 });
+  return useQuery<ManageBookInfo>({
+    queryKey: libraryManageKeys.bookDetail(bookId),
+    queryFn: fetcher,
+    enabled: bookId !== 0,
+  });
 };
 
 const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowInfoListSearch) => {
@@ -138,10 +146,10 @@ const useGetBorrowInfoListQuery = ({ page, size = 10, status, search }: BorrowIn
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>(
-    libraryManageKeys.borrowInfoList(params),
-    fetcher,
-  );
+  return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>({
+    queryKey: libraryManageKeys.borrowInfoList(params),
+    queryFn: fetcher,
+  });
 };
 
 const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: BorrowInfoListSearch) => {
@@ -162,17 +170,18 @@ const useGetOverdueInfoListQuery = ({ page, size = 10, status = 'overdue' }: Bor
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>(
-    libraryManageKeys.overdueInfoList(params),
-    fetcher,
-  );
+  return useQuery<{ content: BorrowInfo[]; totalElement: number; size: number }>({
+    queryKey: libraryManageKeys.overdueInfoList(params),
+    queryFn: fetcher,
+  });
 };
 
 const useApproveRequestMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-approve`);
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
@@ -182,7 +191,8 @@ const useApproveRequestMutation = () => {
 const useDenyRequestMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/requests-deny`);
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
@@ -192,7 +202,8 @@ const useDenyRequestMutation = () => {
 const useApproveReturnMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-approve`);
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
@@ -202,7 +213,8 @@ const useApproveReturnMutation = () => {
 const useDenyReturnMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (borrowId: number) => axios.post(`/manage/borrow-infos/${borrowId}/return-deny`);
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.borrowInfoList({}) });
     },
@@ -233,10 +245,10 @@ const useGetBorrowLogListQuery = ({ page, size = 10, searchType, search }: Borro
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: BorrowLogInfo[]; totalElement: number; size: number }>(
-    libraryManageKeys.borrowLogList(params),
-    fetcher,
-  );
+  return useQuery<{ content: BorrowLogInfo[]; totalElement: number; size: number }>({
+    queryKey: libraryManageKeys.borrowLogList(params),
+    queryFn: fetcher,
+  });
 };
 export {
   useGetBookManageListQuery,

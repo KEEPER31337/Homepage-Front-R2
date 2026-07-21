@@ -125,8 +125,8 @@
   ```
 - 필요한 패키지 설치 및 실행
   ```
-  npm install
-  npm start
+  pnpm install
+  pnpm start
   ```
 
 ## 💎 라이센스

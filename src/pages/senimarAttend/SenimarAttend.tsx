@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { MemberInfo } from '@api/dto';
 import {
   useGetAvailableSeminarInfoQuery,
@@ -32,8 +32,8 @@ const SeminarAttend = () => {
 
   const { checkIncludeOneOfAuths } = useCheckAuth();
   const authorizedMember = checkIncludeOneOfAuths([MEMBER_ROLE.회장, MEMBER_ROLE.부회장, MEMBER_ROLE.서기]);
-  const startMember: number | undefined = useRecoilValue(starterState);
-  const member: MemberInfo | null = useRecoilValue(memberState);
+  const startMember: number | undefined = useAtomValue(starterState);
+  const member: MemberInfo | null = useAtomValue(memberState);
 
   const isStarterMember = () => {
     if (!availableSeminarData?.id) {

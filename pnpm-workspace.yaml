@@ -1,0 +1,5 @@
+allowBuilds:
+  core-js: true
+minimumReleaseAge: 10080
+overrides:
+  '@react-spring/web': 10.1.2

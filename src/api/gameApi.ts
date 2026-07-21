@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const gameKeys = {
@@ -8,7 +8,10 @@ export const gameKeys = {
 const useGetMyGameInfoQuery = () => {
   const fetcher = () => axios.get(`game/my-info`).then(({ data }) => data);
 
-  return useQuery<{ todayTotalEarnedPoint: number; currentMemberPoint: number }>(gameKeys.myInfo, fetcher);
+  return useQuery<{ todayTotalEarnedPoint: number; currentMemberPoint: number }>({
+    queryKey: gameKeys.myInfo,
+    queryFn: fetcher,
+  });
 };
 
 // eslint-disable-next-line import/prefer-default-export

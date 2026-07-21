@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import memberState from '@recoil/member.recoil';
 import OutlinedButton from '@components/Button/OutlinedButton';
 
 const NavigateProfileButton = () => {
-  const userInfo = useRecoilValue(memberState);
+  const userInfo = useAtomValue(memberState);
   const navigate = useNavigate();
 
   return (

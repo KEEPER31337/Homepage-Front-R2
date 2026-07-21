@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { PageAndSize, MeritLog, MeritType, MembersMerit } from './dto';
 
@@ -21,8 +21,10 @@ const useGetMeritLogQuery = ({ page, size = 10, meritType = 'ALL' }: PageAndSize
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritLog>(meritKeys.meritLog(params), fetcher, {
-    keepPreviousData: true,
+  return useQuery<MeritLog>({
+    queryKey: meritKeys.meritLog(params),
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -36,8 +38,10 @@ const useGetMeritTypeQuery = ({ page, size = 10 }: PageAndSize) => {
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritType>(meritKeys.meritType(params), fetcher, {
-    keepPreviousData: true,
+  return useQuery<MeritType>({
+    queryKey: meritKeys.meritType(params),
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -51,8 +55,10 @@ const useGetMembersMeritQuery = ({ page, size = 10 }: PageAndSize) => {
       })
       .then(({ data }) => data);
 
-  return useQuery<MembersMerit>(meritKeys.membersMerit(params), fetcher, {
-    keepPreviousData: true,
+  return useQuery<MembersMerit>({
+    queryKey: meritKeys.membersMerit(params),
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -66,8 +72,10 @@ const useGetMemberMeritQuery = ({ page, size = 10, memberId }: PageAndSize & { m
       })
       .then(({ data }) => data);
 
-  return useQuery<MeritLog>(meritKeys.memberMerit(memberId, params), fetcher, {
-    keepPreviousData: true,
+  return useQuery<MeritLog>({
+    queryKey: meritKeys.memberMerit(memberId, params),
+    queryFn: fetcher,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -77,7 +85,8 @@ const useAddMeritLogMutation = () => {
   const fetcher = ({ awarderId, meritTypeId }: { awarderId: number; meritTypeId: number }) =>
     axios.post(`/merits`, { awarderId, meritTypeId }).then(({ data }) => data);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: meritKeys.meritLog({ page: 0 }) });
     },
@@ -90,7 +99,8 @@ const useAddMeritTypeMutation = () => {
   const fetcher = ({ score, reason, isMerit }: { score: number; reason: string; isMerit: boolean }) =>
     axios.post(`/merits/types`, { score, reason, isMerit }).then(({ data }) => data);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: meritKeys.meritType({ page: 0 }) });
     },
@@ -112,7 +122,8 @@ const useEditMeritTypeMutation = () => {
     isMerit: boolean;
   }) => axios.put(`/merits/types/${meritTypeId}`, { score, reason, isMerit }).then(({ data }) => data);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: meritKeys.meritType({ page: 0 }) });
     },
@@ -125,7 +136,8 @@ const useDeleteMeritLogMutation = () => {
   const fetcher = ({ meritLogId }: { meritLogId: number }) =>
     axios.delete(`/merits/${meritLogId}`).then(({ data }) => data);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: meritKeys.meritLog({ page: 0 }) });
       queryClient.invalidateQueries({ queryKey: meritKeys.membersMerit({ page: 0 }) });

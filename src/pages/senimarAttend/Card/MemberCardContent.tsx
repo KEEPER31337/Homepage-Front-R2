@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography } from '@mui/material';
 import { AxiosError } from 'axios';
 import { DateTime } from 'luxon';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { SeminarStatus } from '@api/dto';
 import { useAttendSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
 import { MEMBER_CARD } from '@constants/apiResponseMessage';
@@ -29,7 +29,7 @@ const MemberCardContent = ({ seminarId }: { seminarId: number }) => {
   const [excessModalOpen, setExcessModalOpen] = useState(false);
   const [isTransitionTime, setIsTransitionTime] = useState(false);
 
-  const [attendCount, setAttendCount] = useRecoilState(attendCountState);
+  const [attendCount, setAttendCount] = useAtom(attendCountState);
 
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
   const isValidActivityStatus = (value: SeminarStatus) => {

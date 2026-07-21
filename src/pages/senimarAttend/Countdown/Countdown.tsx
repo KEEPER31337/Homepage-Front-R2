@@ -11,7 +11,7 @@ interface countdownProps {
 }
 
 const Countdown = ({ startTime, endTime, isTransitionTime, setIsTransitionTime }: countdownProps) => {
-  const [text, setText] = useState<string | JSX.Element>('--:--');
+  const [text, setText] = useState<string | React.ReactElement>('--:--');
 
   const getRenderCountdownText = () => {
     if (setIsTransitionTime) setIsTransitionTime(false);

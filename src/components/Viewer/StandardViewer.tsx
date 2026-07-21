@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
+import ToastViewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
-import { Viewer } from '@toast-ui/react-editor';
 import Prism from 'prismjs';
 
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
@@ -13,20 +13,35 @@ interface StandardViewerProps {
 }
 
 const StandardViewer = ({ content, className }: StandardViewerProps) => {
-  const viewerRef = useRef<Viewer>(null);
+  const viewerElementRef = useRef<HTMLDivElement>(null);
+  const viewerInstanceRef = useRef<ToastViewer | null>(null);
 
-  useEffect(() => {
-    viewerRef.current?.getInstance().setMarkdown(content);
+  useLayoutEffect(() => {
+    if (!viewerElementRef.current) return undefined;
+
+    const viewerElement = viewerElementRef.current;
+    const viewer = new ToastViewer({
+      el: viewerElement,
+      initialValue: '',
+      theme: 'dark',
+      plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
+    });
+    viewerInstanceRef.current = viewer;
+
+    return () => {
+      viewer.destroy();
+      viewerElement.replaceChildren();
+      viewerInstanceRef.current = null;
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    viewerInstanceRef.current?.setMarkdown(content);
   }, [content]);
 
   return (
     <div className={className}>
-      <Viewer
-        ref={viewerRef}
-        initialValue={content}
-        theme="dark"
-        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
-      />
+      <div ref={viewerElementRef} />
     </div>
   );
 };

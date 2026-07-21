@@ -5,7 +5,7 @@ import useCheckAuth from '@hooks/useCheckAuth';
 import ConfirmModal from '@components/Modal/ConfirmModal';
 
 interface NeedLoginProps {
-  children: JSX.Element;
+  children: React.ReactElement;
   roles?: Role[];
 }
 

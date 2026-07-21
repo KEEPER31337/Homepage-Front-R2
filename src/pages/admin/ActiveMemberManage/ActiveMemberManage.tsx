@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MemberDetailInfo } from '@api/dto';
 import { useGetMembersQuery } from '@api/memberApi';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
@@ -12,11 +12,11 @@ const ActiveMemberManage = () => {
   const [selectedMemberList, setSelectedMemberList] = useState<MultiAutoCompleteValue>([]);
   const [memberList, setMemberList] = useState<MemberDetailInfo[]>([]);
 
-  useGetMembersQuery({
-    onSuccess: (data: MemberDetailInfo[]) => {
-      setMemberList(data);
-    },
-  });
+  const { data: members } = useGetMembersQuery();
+
+  useEffect(() => {
+    if (members) setMemberList(members);
+  }, [members]);
 
   return (
     <div>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, SelectProps } from '@mui/material';
 
-interface SelectorProps extends SelectProps {
+type SelectorProps = Omit<SelectProps, 'onChange' | 'value'> & {
   label?: string;
   value?: string | number;
   onChange: (event: SelectChangeEvent<unknown>) => void;
-  options: { id: string | number; content: string | number | JSX.Element }[];
-}
+  options: { id: string | number; content: React.ReactNode }[];
+};
 
 const Selector = ({ label, value, onChange, options, className, ...selectProps }: SelectorProps) => {
   return (

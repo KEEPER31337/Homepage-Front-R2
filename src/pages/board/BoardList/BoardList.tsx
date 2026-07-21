@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DateTime } from 'luxon';
 import { AiFillLock } from 'react-icons/ai';
 import { VscEye, VscThumbsup } from 'react-icons/vsc';
-import { useRecoilValue } from 'recoil';
 import { BoardSearch } from '@api/dto';
 import { useGetNoticePostListQuery, useGetPostListQuery } from '@api/postApi';
 import usePagination from '@hooks/usePagination';
-import tableViewState from '@recoil/view.recoil';
 import { categoryNameToId } from '@utils/converter';
 import NotFound from '@pages/NotFound/NotFound';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -16,9 +14,20 @@ import TableViewSwitchButton from '@components/Table/Button/TableViewSwitchButto
 import GridTable from '@components/Table/GridTable';
 import StandardTable from '@components/Table/StandardTable';
 
-import { ChildComponent, Column, Row } from '@components/Table/StandardTable.interface';
+import { ChildComponent, Column, Row, TableType } from '@components/Table/StandardTable.interface';
 import PageTitle from '@components/Typography/PageTitle';
 import BoardSearchSection from './SearchSection/BoardSearchSection';
+
+const TABLE_VIEW_STORAGE_KEY = 'tableViewState';
+
+const getInitialTableView = (): TableType => {
+  try {
+    const storedTableView = window.localStorage.getItem(TABLE_VIEW_STORAGE_KEY);
+    return storedTableView === 'List' || storedTableView === 'Grid' ? storedTableView : 'List';
+  } catch {
+    return 'List';
+  }
+};
 
 interface BoardRow {
   no: number | string;
@@ -43,6 +52,7 @@ const boardColumn: Column<BoardRow>[] = [
 const BoardList = () => {
   const { categoryName } = useParams();
   const [searchParams] = useSearchParams();
+  const [tableView, setTableView] = useState<TableType>(getInitialTableView);
   const searchType = searchParams.get('searchType') as BoardSearch['searchType'];
   const search = searchParams.get('search');
 
@@ -56,9 +66,16 @@ const BoardList = () => {
   const navigate = useNavigate();
   const { data: noticePosts } = useGetNoticePostListQuery({ categoryId });
   const { data: posts } = useGetPostListQuery({ categoryId, page, searchType, search });
-  const tableView = useRecoilValue(tableViewState);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(TABLE_VIEW_STORAGE_KEY, tableView);
+    } catch {
+      // The selected view still works for the current session when storage is unavailable.
+    }
+  }, [tableView]);
 
   if (!posts || !noticePosts) {
     return null;
@@ -129,7 +146,7 @@ const BoardList = () => {
       </div>
       <div className="flex items-center justify-between pb-5">
         <BoardSearchSection />
-        <TableViewSwitchButton />
+        <TableViewSwitchButton tableView={tableView} setTableView={setTableView} />
       </div>
       {tableView === 'List' && (
         <StandardTable

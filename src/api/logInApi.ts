@@ -1,7 +1,7 @@
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import memberState from '@recoil/member.recoil';
 import { formatGeneration } from '@utils/converter';
 import { MemberDetailInfo } from './dto';
@@ -11,9 +11,10 @@ const useLoginMutation = () => {
     axios.post(`/sign-in`, { loginId, password }).then(({ data }) => data);
 
   const navigate = useNavigate();
-  const setMemberState = useSetRecoilState(memberState);
+  const setMemberState = useSetAtom(memberState);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: ({
       memberId,
       loginId,

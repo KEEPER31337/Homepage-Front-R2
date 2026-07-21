@@ -7,8 +7,8 @@ interface OutlinedButtonProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   small?: boolean;
-  startIcon?: JSX.Element;
-  endIcon?: JSX.Element;
+  startIcon?: React.ReactElement;
+  endIcon?: React.ReactElement;
   className?: string;
 }
 

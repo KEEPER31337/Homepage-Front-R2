@@ -15,7 +15,7 @@ const SearchID = () => {
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
   const [matchInfoModalOpen, setMatchInfoModalOpen] = useState(false);
 
-  const { mutate: searchId, isLoading: isEmailSendLoading } = useSearchIdMutation();
+  const { mutate: searchId, isPending: isEmailSendLoading } = useSearchIdMutation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 

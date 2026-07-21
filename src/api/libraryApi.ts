@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { BookInfo, BorrowedBookInfo, BookListSearch, PageAndSize } from './dto';
 
@@ -19,7 +19,10 @@ const useGetBookListQuery = ({ page, size = 6, searchType, search }: BookListSea
       return { content, totalElement: data.totalElements, size: data.size };
     });
 
-  return useQuery<{ content: BookInfo[]; totalElement: number; size: number }>(libraryKeys.bookList(params), fetcher);
+  return useQuery<{ content: BookInfo[]; totalElement: number; size: number }>({
+    queryKey: libraryKeys.bookList(params),
+    queryFn: fetcher,
+  });
 };
 
 const useGetBorrowedBookListQuery = ({ page, size }: PageAndSize) => {
@@ -28,14 +31,18 @@ const useGetBorrowedBookListQuery = ({ page, size }: PageAndSize) => {
     axios.get(`/books/book-borrows`, { params }).then(({ data }) => {
       return { content: data.content, totalElement: data.totalElements };
     });
-  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>(libraryKeys.borrowedBookList(params), fetcher);
+  return useQuery<{ content: BorrowedBookInfo[]; totalElement: number }>({
+    queryKey: libraryKeys.borrowedBookList(params),
+    queryFn: fetcher,
+  });
 };
 
 const useRequestBorrowBookMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (selectedBookId: number) => axios.post(`/books/${selectedBookId}/request-borrow`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryKeys.bookList({}) });
       queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList({}) });
@@ -47,7 +54,8 @@ const useRequestReturnBookMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (selectedBookId: number) => axios.patch(`/books/borrows/${selectedBookId}/request-return`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList({}) });
     },
@@ -58,7 +66,8 @@ const useCancelReturnBookMutation = () => {
   const queryClient = useQueryClient();
   const fetcher = (selectedBookId: number) => axios.patch(`/books/borrows/${selectedBookId}/cancel-return`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList({}) });
     },
@@ -70,7 +79,8 @@ const useCancelBorrowBookMutation = () => {
 
   const fetcher = (selectedBookId: number) => axios.delete(`/books/borrows/${selectedBookId}/cancel-borrow`);
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: libraryKeys.borrowedBookList({}) });
     },

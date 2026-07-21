@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import { SEMINAR } from '@constants/apiResponseMessage';
@@ -24,7 +24,7 @@ const useGetSeminarListQuery = () => {
       return transformedData;
     });
 
-  return useQuery<SeminarInfo[]>(seminarKeys.getSeminarList, fetcher);
+  return useQuery<SeminarInfo[]>({ queryKey: seminarKeys.getSeminarList, queryFn: fetcher });
 };
 
 const useGetSeminarInfoQuery = (id: number) => {
@@ -41,25 +41,28 @@ const useGetSeminarInfoQuery = (id: number) => {
       return transformedData;
     });
 
-  return useQuery<SeminarCardInfo>(seminarKeys.getSeminar({ id }), fetcher);
+  return useQuery<SeminarCardInfo>({ queryKey: seminarKeys.getSeminar({ id }), queryFn: fetcher });
 };
 
 const useGetAvailableSeminarInfoQuery = () => {
   const fetcher = () => axios.get('/seminars/available').then(({ data }) => data);
 
-  return useQuery<SeminarInfo>(seminarKeys.getAvailableSeminar, fetcher);
+  return useQuery<SeminarInfo>({ queryKey: seminarKeys.getAvailableSeminar, queryFn: fetcher });
 };
 
 const useGetRecentlyDoneSeminarInfoQuery = () => {
   const fetcher = () => axios.get(`/seminars/recently-done`).then(({ data }) => data);
 
-  return useQuery<{ id: number }>(seminarKeys.getRecentlyDoneSeminar, fetcher);
+  return useQuery<{ id: number }>({ queryKey: seminarKeys.getRecentlyDoneSeminar, queryFn: fetcher });
 };
 
 const useGetRecentlyUpcomingSeminarInfoQuery = () => {
   const fetcher = () => axios.get(`/seminars/recently-upcoming`).then(({ data }) => data);
 
-  return useQuery<[{ id: number }, { id: number }]>(seminarKeys.getRecentlyUpcomingSeminar, fetcher);
+  return useQuery<[{ id: number }, { id: number }]>({
+    queryKey: seminarKeys.getRecentlyUpcomingSeminar,
+    queryFn: fetcher,
+  });
 };
 
 const useStartSeminarMutation = (id: number) => {
@@ -72,7 +75,8 @@ const useStartSeminarMutation = (id: number) => {
     latenessCloseTime: string;
   }) => axios.post(`/seminars/${id}`, { attendanceCloseTime, latenessCloseTime });
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: seminarKeys.getAvailableSeminar });
       queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminar({ id }) });
@@ -84,7 +88,8 @@ const useStartSeminarMutation = (id: number) => {
 const useAttendSeminarMutation = (id: number) => {
   const fetcher = (attendanceCode: string) => axios.patch(`/seminars/${id}/attendances`, { attendanceCode });
 
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: (response) => {
       return response.data;
     },
@@ -96,7 +101,8 @@ const useEditAttendStatusMutation = ({ attendanceId, page }: { attendanceId: num
 
   const fetcher = ({ excuse, statusType }: { excuse: string; statusType: SeminarStatus }) =>
     axios.patch(`/seminars/attendances/${attendanceId}`, { excuse, statusType });
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: seminarKeys.attendSeminarList({ page }) });
       return response.data;
@@ -107,7 +113,9 @@ const useEditAttendStatusMutation = ({ attendanceId, page }: { attendanceId: num
 const useGetAttendSeminarListMutation = ({ page, size }: { page?: number; size?: number }) => {
   const fetcher = () => axios.get(`/seminars/attendances`, { params: { page, size } }).then(({ data }) => data);
 
-  return useQuery<AttendSeminarListInfo>(seminarKeys.attendSeminarList({ page }), fetcher, {
+  return useQuery<AttendSeminarListInfo>({
+    queryKey: seminarKeys.attendSeminarList({ page }),
+    queryFn: fetcher,
     select: (data) => {
       const transformedContent = data.content.map((membersSeminarAttendInfo) => {
         const seminarDateInfo = membersSeminarAttendInfo.attendances.reduce((prev, curr) => {
@@ -155,7 +163,8 @@ const useAddSeminarMutation = ({ setHelperText }: { setHelperText: React.Dispatc
         params: { openDate: openDate.toISODate() },
       })
       .then(({ data }) => data);
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminarList });
       return response;
@@ -168,7 +177,8 @@ const useDeleteSeminarMutation = () => {
   const queryClient = useQueryClient();
 
   const fetcher = (id: number) => axios.delete(`/seminars/${id}`);
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: seminarKeys.getSeminarList });
       return response.data;

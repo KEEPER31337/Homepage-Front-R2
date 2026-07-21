@@ -1,12 +1,5 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+import atomWithRecoilPersist from '@recoil/recoilPersistStorage';
 
-const { persistAtom } = recoilPersist();
-
-const attendCountState = atom<number | 0>({
-  key: 'attendCountState',
-  default: 0,
-  effects_UNSTABLE: [persistAtom],
-});
+const attendCountState = atomWithRecoilPersist('attendCountState', 0);
 
 export default attendCountState;

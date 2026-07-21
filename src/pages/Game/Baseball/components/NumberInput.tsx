@@ -2,7 +2,7 @@ import React from 'react';
 import AuthCode, { AuthCodeRef } from 'react-auth-code-input';
 
 interface NumberInputProps {
-  AuthInputRef: React.RefObject<AuthCodeRef>;
+  AuthInputRef: React.RefObject<AuthCodeRef | null>;
   onChange: (res: string) => void;
   error: boolean;
 }

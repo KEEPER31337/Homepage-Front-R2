@@ -68,7 +68,7 @@ const AttendRankChildComponent = ({ key, value }: ChildComponent<AttendRankRow>)
     case 'totalAttendance':
       return `${value}일`;
     default:
-      return value;
+      return typeof value === 'string' || typeof value === 'number' ? value : null;
   }
 };
 
@@ -86,7 +86,7 @@ const PointRankChildComponent = ({ key, value }: ChildComponent<PointRankRow>) =
     case 'generation':
       return `${formatGeneration(value as string)}기`;
     default:
-      return value;
+      return typeof value === 'string' || typeof value === 'number' ? value : null;
   }
 };
 

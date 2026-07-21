@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import {
-  useGetEachPostQuery,
-  useGetExamPostFilesAccessQuery,
-  useGrantExamPostFilesAccessMutation,
-} from '@api/postApi';
+import { useGetEachPostQuery, useGetExamPostFilesAccessQuery, useGrantExamPostFilesAccessMutation } from '@api/postApi';
 import NotFound from '@pages/NotFound/NotFound';
 import SecretPostModal from './Modal/SecretPostModal';
 import WarningDeductPointModal from './Modal/WarningDeductPointModal';
@@ -38,7 +34,7 @@ const BoardView = () => {
   const isExamPost = postInfo?.categoryName === '시험게시판';
   const isExamRegularPost = Boolean(isExamPost && postInfo && !postInfo.isNotice && postInfo.fileCount > 0);
   const examPostFilesAccessQuery = useGetExamPostFilesAccessQuery(postId, isExamRegularPost);
-  const { mutate: grantExamPostFilesAccess, isLoading: isGrantExamPostFilesAccessLoading } =
+  const { mutate: grantExamPostFilesAccess, isPending: isGrantExamPostFilesAccessLoading } =
     useGrantExamPostFilesAccessMutation();
 
   useEffect(() => {
@@ -100,7 +96,11 @@ const BoardView = () => {
         <>
           <div className="space-y-2">
             <BannerSection postId={postId} post={postInfo} password={password} />
-            <PostSection postId={postId} post={postInfo} canOpenFiles={!isExamRegularPost || hasExamFilesAccess === true} />
+            <PostSection
+              postId={postId}
+              post={postInfo}
+              canOpenFiles={!isExamRegularPost || hasExamFilesAccess === true}
+            />
           </div>
           <AdjacentPostNavSection previousPost={postInfo.previousPost} nextPost={postInfo.nextPost} />
           <CommentSection categoryName={postInfo.categoryName} postId={postId} allowComment={postInfo.allowComment} />

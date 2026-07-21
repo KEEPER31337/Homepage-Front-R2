@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { formatMemberGeneration } from '@utils/converter';
 import { StudyCore, StudyDetail, StudyInfo, UploadStudy } from './dto';
@@ -17,7 +17,8 @@ const useAddStudyMutation = () => {
   };
 
   const queryClient = useQueryClient();
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['studies'] });
     },
@@ -30,7 +31,8 @@ const useDeleteStudyMutation = () => {
   };
 
   const queryClient = useQueryClient();
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['studies'] });
     },
@@ -40,13 +42,15 @@ const useDeleteStudyMutation = () => {
 const useGetStudyListQuery = ({ year, season }: { year: number; season: number }) => {
   const fetcher = () => axios.get('/studies', { params: { year, season } }).then(({ data }) => data.studies);
 
-  return useQuery<StudyInfo[]>(['studies', year, season], fetcher);
+  return useQuery<StudyInfo[]>({ queryKey: ['studies', year, season], queryFn: fetcher });
 };
 
 const useGetStudyQuery = ({ studyId, enabled }: { studyId: number; enabled?: boolean }) => {
   const fetcher = () => axios.get(`/studies/${studyId}`).then(({ data }) => data);
 
-  return useQuery<StudyDetail>(['studies', studyId], fetcher, {
+  return useQuery<StudyDetail>({
+    queryKey: ['studies', studyId],
+    queryFn: fetcher,
     enabled,
     select: (data) => ({
       ...data,
@@ -68,14 +72,14 @@ const useEditStudyThumbnailMutation = () => {
     });
   };
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 const useEditStudyMutation = () => {
   const fetcher = ({ studyId, studyInfo }: { studyId: number; studyInfo: StudyCore }) =>
     axios.put(`/studies/${studyId}`, studyInfo);
 
-  return useMutation(fetcher);
+  return useMutation({ mutationFn: fetcher });
 };
 
 export {

@@ -26,7 +26,7 @@ interface SearchPWFirstStepProps {
 const SearchPWFirstStep = ({ setCurrentStep, form, setForm }: SearchPWFirstStepProps) => {
   const {
     mutate: requestAuthcode,
-    isLoading: isEmailSendLoading,
+    isPending: isEmailSendLoading,
     isSuccess: isEmailSendSuccess,
   } = useRequestAuthCodeMutation();
   const { mutate: checkAuth } = useCheckAuthCodeMutation();

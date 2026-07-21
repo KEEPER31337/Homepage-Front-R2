@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
 import { STUDENT_ID } from '@constants/apiResponseMessage';
 import { COMMON, NAME_MSG } from '@constants/helperText';
@@ -23,7 +23,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
   // REVIEW useForm 사용하는데 별도의 state가 필요한 지 점검 필요
   const [studentIdState, setStudentIdState] = useState('');
   const [checkStudentIdDuplicateEnabled, setCheckStudentIdDuplicateEnabled] = useState(false);
-  const setSignUpPageState = useSetRecoilState(signUpPageState);
+  const setSignUpPageState = useSetAtom(signUpPageState);
 
   const {
     control,

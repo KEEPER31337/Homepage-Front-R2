@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useDropzone } from 'react-dropzone';
+import { FileRejection, useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { Typography } from '@mui/material';
 import { VscNewFile } from 'react-icons/vsc';
@@ -26,7 +26,7 @@ const FileUploader = ({
     setFilesToAdd((prevFiles) => [...prevFiles, ...acceptedFiles]);
   };
 
-  const onDropRejected = (rejectedFiles: { file: File; errors: { code: string }[] }[]) => {
+  const onDropRejected = (rejectedFiles: FileRejection[]) => {
     rejectedFiles.forEach(({ errors }) => {
       errors.forEach((error) => {
         if (error.code === 'file-too-large') {

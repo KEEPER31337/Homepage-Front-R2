@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Collapse, Fab } from '@mui/material';
 import { VscAdd, VscDash } from 'react-icons/vsc';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import memberState from '@recoil/member.recoil';
 import Activity from './Activity';
 import Excellence from './Excellence';
@@ -10,7 +10,7 @@ import Intro from './Intro';
 import Trendings from './Trendings';
 
 const Home = () => {
-  const member = useRecoilValue(memberState);
+  const member = useAtomValue(memberState);
 
   const [isAboutExpended, setIsAboutExpended] = useState(true);
 

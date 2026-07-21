@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { GameRankInfo } from '@api/dto';
 import { gameKeys } from '@api/gameApi';
@@ -17,13 +17,13 @@ export const baseballKeys = {
 const useGetGameInfoQuery = () => {
   const fetcher = () => axios.get('/game/baseball/game-info').then(({ data }) => data);
 
-  return useQuery<GameInfo>(baseballKeys.game_info, fetcher);
+  return useQuery<GameInfo>({ queryKey: baseballKeys.game_info, queryFn: fetcher });
 };
 
 const useGetBaseBallStatusQuery = () => {
   const fetcher = () => axios.get('/game/baseball/status').then(({ data }) => data);
 
-  return useQuery<{ status: GameStatus; baseballPerDay: number }>(baseballKeys.status, fetcher);
+  return useQuery<{ status: GameStatus; baseballPerDay: number }>({ queryKey: baseballKeys.status, queryFn: fetcher });
 };
 
 const useGameStartMutation = () => {
@@ -39,7 +39,8 @@ const useGameStartMutation = () => {
     axios.post('/game/baseball/start', { bettingPoint }).then(({ data }) => data);
 
   const queryClient = useQueryClient();
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: (data) => {
       const myGameInfo: { todayTotalEarnedPoint: number; currentMemberPoint: number } | undefined =
         queryClient.getQueryData(gameKeys.myInfo);
@@ -60,7 +61,8 @@ const useGuessMutation = () => {
     axios.post('/game/baseball/guess', { guessNumber }).then(({ data }) => data);
 
   const queryClient = useQueryClient();
-  return useMutation(fetcher, {
+  return useMutation({
+    mutationFn: fetcher,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: baseballKeys.result });
     },
@@ -69,13 +71,13 @@ const useGuessMutation = () => {
 
 const useGetResultQuery = () => {
   const fetcher = () => axios.get('/game/baseball/result').then(({ data }) => data);
-  return useQuery<GameResultInfo>(baseballKeys.result, fetcher);
+  return useQuery<GameResultInfo>({ queryKey: baseballKeys.result, queryFn: fetcher });
 };
 
 const useGetGameRank = () => {
   const fetcher = () => axios.get('/game/rank').then(({ data }) => data);
 
-  return useQuery<GameRankInfo[]>(baseballKeys.gameRank(), fetcher);
+  return useQuery<GameRankInfo[]>({ queryKey: baseballKeys.gameRank(), queryFn: fetcher });
 };
 
 export {

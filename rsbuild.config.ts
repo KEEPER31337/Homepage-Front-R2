@@ -17,4 +17,16 @@ export default defineConfig({
       root: 'build',
     },
   },
+  server: {
+      proxy: {
+        '/dev-proxy-api': {
+          target: 'https://api.keeper.or.kr',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/dev-proxy-api': '',
+          },
+          cookieDomainRewrite: '',
+        },
+      },
+    },
 });

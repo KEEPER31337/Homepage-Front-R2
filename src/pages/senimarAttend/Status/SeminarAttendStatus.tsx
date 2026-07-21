@@ -8,7 +8,7 @@ interface SeminarAttendStatusProps {
 }
 
 const SeminarAttendStatus = ({ status, hasIcon = true }: SeminarAttendStatusProps) => {
-  const statusInfo: { [key in SeminarStatus]: { text: string; color: string; icon: JSX.Element | null } } = {
+  const statusInfo: { [key in SeminarStatus]: { text: string; color: string; icon: React.ReactElement | null } } = {
     ATTENDANCE: {
       text: '출석',
       color: 'pointBlue',
