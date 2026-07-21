@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Stack } from '@mui/material';
+import { DateTime } from 'luxon';
 import { ProfileInfo } from '@api/dto';
 import { useEditProfileMutation, useEditProfileThumbnailMutation } from '@api/memberApi';
 import { COMMON, NAME_MSG } from '@constants/helperText';
@@ -92,7 +93,7 @@ const EditProfileModal = ({ profileInfo, open, onClose }: EditProfileModalProps)
 
           <Controller
             name="birthday"
-            defaultValue=""
+            defaultValue={profileInfo.birthday ? DateTime.fromISO(profileInfo.birthday) : null}
             control={control}
             render={({ field, fieldState: { error } }) => {
               return (
