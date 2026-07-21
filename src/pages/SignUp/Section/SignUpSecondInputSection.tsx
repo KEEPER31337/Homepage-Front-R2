@@ -134,7 +134,7 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
       />
       <Controller
         name="birthday"
-        defaultValue=""
+        defaultValue={null}
         control={control}
         render={({ field, fieldState: { error } }) => {
           return (
