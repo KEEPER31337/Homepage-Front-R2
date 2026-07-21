@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DateTime } from 'luxon';
 import { SEMINAR } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
-import { AttendSeminarListInfo, SeminarStatus, SeminarInfo, SeminarCardInfo } from './dto';
+import { AttendResponseData, AttendSeminarListInfo, SeminarStatus, SeminarInfo, SeminarCardInfo } from './dto';
 
 const seminarKeys = {
   getSeminarList: ['getSeminar', 'seminarList'] as const,
@@ -86,7 +86,8 @@ const useStartSeminarMutation = (id: number) => {
 };
 
 const useAttendSeminarMutation = (id: number) => {
-  const fetcher = (attendanceCode: string) => axios.patch(`/seminars/${id}/attendances`, { attendanceCode });
+  const fetcher = (attendanceCode: string) =>
+    axios.patch<AttendResponseData>(`/seminars/${id}/attendances`, { attendanceCode });
 
   return useMutation({
     mutationFn: fetcher,

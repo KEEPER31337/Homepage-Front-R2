@@ -1,3 +1,14 @@
+// 서버 동작이 이상함.
+
+// 익명 게시글에는 writerId = 1로 주는데
+// 익명 댓글에는 writerId = null로 줌.
+// 추후 고민해봐야함
+
+// 원래 USER ID = 1은 가상 유저로써 탈퇴한 사용자의 글들을 보존하기 위해 유저 값을 대체하는게 주 용도인데
+// 이게 익명 게시글에도 쓰이는 형태임.
+
+export const ANONYMOUS_OR_VIRTUAL_USER_ID = 1;
+
 export const MEMBER_ROLE_PREFIX = 'ROLE_';
 
 export const MEMBER_ROLE = {

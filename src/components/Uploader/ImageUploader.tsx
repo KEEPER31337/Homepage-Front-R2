@@ -10,7 +10,7 @@ import WarningModal from '@components/Modal/WarningModal';
 interface ImageUploaderProps {
   title?: string;
   isEditMode: boolean;
-  thumbnailPath?: string;
+  thumbnailPath?: string | null;
   setThumbnail: React.Dispatch<Blob | null>;
   setIsThumbnailChanged?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -33,22 +33,25 @@ const ImageUploader = ({
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
   const [openWarning, setOpenWarning] = useState<ImageWarningInfo>({ isOpen: false, type: 'Multiple' });
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (setIsThumbnailChanged) setIsThumbnailChanged(true);
-    setThumbnailBase64('');
-    acceptedFiles.forEach((file: File) => {
-      setThumbnail(file);
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        const base64 = reader.result;
-        if (base64) {
-          const base64Sub = base64.toString();
-          setThumbnailBase64(base64Sub);
-        }
-      };
-    });
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (setIsThumbnailChanged) setIsThumbnailChanged(true);
+      setThumbnailBase64('');
+      acceptedFiles.forEach((file: File) => {
+        setThumbnail(file);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          const base64 = reader.result;
+          if (base64) {
+            const base64Sub = base64.toString();
+            setThumbnailBase64(base64Sub);
+          }
+        };
+      });
+    },
+    [setIsThumbnailChanged, setThumbnail],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -72,10 +75,10 @@ const ImageUploader = ({
   };
 
   useEffect(() => {
-    if (isEditMode && thumbnailPath) {
-      setThumbnailBase64(getServerImgUrl(thumbnailPath));
-    }
-  }, []);
+    if (!isEditMode) return;
+
+    setThumbnailBase64(thumbnailPath ? getServerImgUrl(thumbnailPath) : '');
+  }, [isEditMode, thumbnailPath]);
 
   return (
     <div className="flex h-full flex-col space-y-[10px]">

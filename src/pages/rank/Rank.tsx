@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { useGetContinuousAttendanceRank, useGetTodayAttendanceRank } from '@api/attendanceApi';
-import { AttendRankInfo, GameRankInfo } from '@api/dto';
+import { ContinuousAttendRankInfo, GameRankInfo } from '@api/dto';
 import { useGetPointRank } from '@api/memberApi';
 import usePagination from '@hooks/usePagination';
 import { formatGeneration } from '@utils/converter';
@@ -168,7 +168,7 @@ const Rank = () => {
             {tab === 0 &&
               (continuousAttendRank.length > 0 ? (
                 continuousAttendRank.map((item, index) => (
-                  <TopCard<AttendRankInfo>
+                  <TopCard<ContinuousAttendRankInfo>
                     key={item.rank}
                     item={item}
                     message={`${item.continuousDay}일째 개근`}

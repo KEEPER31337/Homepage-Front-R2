@@ -8,7 +8,7 @@ export const HOME_ACTIVITY_BLOCK: PageBlockInfo = {
     {
       id: 2,
       subtitle: '세미나',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 1,
       staticWriteContents: [
         { id: 1, content: '매주 금요일 마다 정기적으로 운영', displayOrder: 1 },
@@ -19,7 +19,7 @@ export const HOME_ACTIVITY_BLOCK: PageBlockInfo = {
     {
       id: 3,
       subtitle: '스터디 & 멘토링',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 2,
       staticWriteContents: [
         { id: 4, content: '매학기 활동 시작 전 원하는 스터디 개설 및 스터디원 구성', displayOrder: 1 },
@@ -34,7 +34,7 @@ export const HOME_ACTIVITY_BLOCK: PageBlockInfo = {
     {
       id: 4,
       subtitle: '기술문서',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 3,
       staticWriteContents: [
         { id: 7, content: '여름/겨울 방학 기간에 원하는 주제로 사람을 모집하여 기술 문서 작성', displayOrder: 1 },
@@ -53,7 +53,7 @@ export const HOME_EXCELLENCE_BLOCK: PageBlockInfo = {
     {
       id: 1,
       subtitle: '동아리 지원',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 1,
       staticWriteContents: [
         { id: 1, content: '도서 및 기자재 지원', displayOrder: 1 },
@@ -64,14 +64,14 @@ export const HOME_EXCELLENCE_BLOCK: PageBlockInfo = {
     {
       id: 2,
       subtitle: '이벤트',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 2,
       staticWriteContents: [{ id: 4, content: '키퍼 내 CTF 퀴즈 이벤트', displayOrder: 1 }],
     },
     {
       id: 3,
       subtitle: '대외활동',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 3,
       staticWriteContents: [{ id: 5, content: 'CTF 참가', displayOrder: 1 }],
     },
@@ -86,7 +86,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 1,
       subtitle: '2010',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 1,
       staticWriteContents: [
         {
@@ -99,7 +99,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 2,
       subtitle: '2012',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 2,
       staticWriteContents: [
         {
@@ -113,7 +113,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 3,
       subtitle: '2014',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 3,
       staticWriteContents: [
         {
@@ -132,7 +132,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 4,
       subtitle: '2015',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 4,
       staticWriteContents: [
         { id: 5, content: 'KUCIS 사업 참여, MS(MicroSoft) Windows10 서포터즈 1등', displayOrder: 1 },
@@ -141,28 +141,28 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 5,
       subtitle: '2016',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 5,
       staticWriteContents: [{ id: 6, content: 'KUCIS 사업 참여', displayOrder: 1 }],
     },
     {
       id: 6,
       subtitle: '2017',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 6,
       staticWriteContents: [{ id: 7, content: '교내 서비스 취약점 분석', displayOrder: 1 }],
     },
     {
       id: 7,
       subtitle: '2018',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 7,
       staticWriteContents: [{ id: 8, content: 'KUCIS, 시원포럼 경남지역 연합세미나 주최', displayOrder: 1 }],
     },
     {
       id: 8,
       subtitle: '2020',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 8,
       staticWriteContents: [
         { id: 9, content: '암호동아리 지원사업 참가', displayOrder: 1 },
@@ -172,7 +172,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 9,
       subtitle: '2021',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 9,
       staticWriteContents: [
         { id: 11, content: '화이트해커 양성 프로젝트 참여', displayOrder: 1 },
@@ -182,7 +182,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 10,
       subtitle: '2022',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 10,
       staticWriteContents: [
         { id: 13, content: '코드게이트 본선 진출', displayOrder: 1 },
@@ -193,7 +193,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 11,
       subtitle: '2023',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 11,
       staticWriteContents: [
         { id: 16, content: '2023 세종 HackTheon 본선 진출', displayOrder: 1 },
@@ -207,7 +207,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 12,
       subtitle: '2024',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 12,
       staticWriteContents: [
         { id: 24, content: '2024 KOSPO CTF 장려상', displayOrder: 1 },
@@ -221,7 +221,7 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     {
       id: 13,
       subtitle: '2025',
-      thumbnailPath: undefined,
+      thumbnailPath: null,
       displayOrder: 13,
       staticWriteContents: [
         { id: 33, content: '영남권 정보보안 모의해킹대회 공동운영 및 참여', displayOrder: 1 },

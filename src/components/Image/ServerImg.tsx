@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import LogoNeon, { ReactComponent as LogoNeonComponent } from '@assets/logo/logo_neon.svg';
 import { getServerImgUrl } from '@utils/converter';
 
-interface ServerImg {
-  src: string;
+interface ServerImgProps {
+  src?: string | null;
   alt: string;
   className?: string;
   errorClassName?: string;
 }
 
-const ServerImg = ({ src, alt, className, errorClassName }: ServerImg) => {
+const ServerImg = ({ src, alt, className, errorClassName }: ServerImgProps) => {
   const [error, setError] = useState(false);
-  const srcWithServerUrl = getServerImgUrl(src);
+  const srcWithServerUrl = src ? getServerImgUrl(src) : undefined;
 
   const handleImgError: React.ReactEventHandler<HTMLImageElement> = (e) => {
     e.currentTarget.src = LogoNeon;
