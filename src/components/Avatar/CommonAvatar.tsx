@@ -2,7 +2,6 @@ import React from 'react';
 import { Avatar as MuiAvatar } from '@mui/material';
 import BoringAvatars from 'boring-avatars';
 import { ANONYMOUS_OR_VIRTUAL_USER_ID } from '@constants/member';
-import { KEEPER_COLOR } from '@constants/keeperTheme';
 import { getServerImgUrl } from '@utils/converter';
 
 interface CommonAvatarProps {
@@ -12,13 +11,10 @@ interface CommonAvatarProps {
 }
 
 const KEEPER_AVATAR_COLORS = [
-  KEEPER_COLOR.mainBlack,
-  KEEPER_COLOR.middleBlack,
-  KEEPER_COLOR.subBlack,
-  KEEPER_COLOR.pointBlue,
-  KEEPER_COLOR.subGray,
-  KEEPER_COLOR.subRed,
-  KEEPER_COLOR.subOrange,
+  "#4CEEF9",
+  "#575E69",
+  "#fff419",
+  "#f0f9fc",
 ];
 
 const CommonAvatar = ({ userId, thumbnailPath, className }: CommonAvatarProps) => {
