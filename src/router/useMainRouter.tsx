@@ -13,6 +13,7 @@ import DutyManage from '@pages/admin/DutyManage/DutyManage';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
 import MeritManage from '@pages/admin/MeritManage/MeritManage';
 import SeminarManage from '@pages/admin/SeminarManage/SeminarManage';
+import VoteMange from '@pages/admin/VoteMange/VoteMange';
 import BoardList from '@pages/board/BoardList/BoardList';
 import BoardView from '@pages/board/BoardView/BoardView';
 import BoardWrite from '@pages/board/BoardWrite/BoardWrite';
@@ -113,6 +114,14 @@ const useMainRouter = () =>
                   element: (
                     <NeedAuth roles={['ROLE_서기']}>
                       <MeritManage />
+                    </NeedAuth>
+                  ),
+                },
+                {
+                  path: 'voteManage',
+                  element: (
+                    <NeedAuth>
+                      <VoteMange />
                     </NeedAuth>
                   ),
                 },

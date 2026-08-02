@@ -5,7 +5,7 @@ import { VscAdd, VscEdit, VscTrash } from 'react-icons/vsc';
 interface ActionButtonProps {
   mode: 'add' | 'edit' | 'delete';
   children: ReactNode;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   small?: boolean;
