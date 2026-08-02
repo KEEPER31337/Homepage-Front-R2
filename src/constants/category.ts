@@ -101,11 +101,11 @@ const CATEGORIES: Category[] = [
         name: '세미나 출석',
         path: 'seminar',
       },
-      /* {
+      {
         id: 402,
-        name: '임원진 선거',
-        path: 'election',
-      }, */
+        name: '투표',
+        path: 'vote',
+      },
     ],
   },
   {
