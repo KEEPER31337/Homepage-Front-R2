@@ -22,13 +22,13 @@ const Vote = () => {
   const parsedVoteId = Number(voteId);
   const { data: vote, isPending, isError } = useGetVoteQuery({ voteId: parsedVoteId });
   const isMobile = useMediaQuery('(max-width: 767px)');
-  const [currentAgendaIndex, setCurrentAgendaIndex] = useState(0);
+  const [currentAgendaTabIndex, setCurrentAgendaTabIndex] = useState(0);
   const [voteState, voteDispatch] = useVoteState();
   const [receiptToken] = useState(() => crypto.randomUUID());
   const { mutate: participateVote, isPending: isParticipationPending } = useParticipateVoteMutation(parsedVoteId);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setCurrentAgendaIndex(newValue);
+    setCurrentAgendaTabIndex(newValue);
   };
 
   if (isError) {
@@ -54,8 +54,8 @@ const Vote = () => {
     );
   }
 
-  const isFirstAgenda = currentAgendaIndex === 0;
-  const isLastAgenda = currentAgendaIndex === vote.agendas.length - 1;
+  const isFirstAgenda = currentAgendaTabIndex === 0;
+  const isLastAgenda = currentAgendaTabIndex === vote.agendas.length - 1;
   const canSubmit = vote.agendas.every(({ id, minSelect, maxSelect }) => {
     const selectionCount = getSelectedOptionIds(voteState, id).length;
 
@@ -89,21 +89,21 @@ const Vote = () => {
           variant="scrollable"
           scrollButtons="auto"
           allowScrollButtonsMobile
-          value={currentAgendaIndex}
+          value={currentAgendaTabIndex}
           onChange={handleTabChange}
           aria-label="투표 안건"
           className="w-full border-b border-white/20 !bg-subBlack md:w-64 md:shrink-0 md:border-b-0 md:border-r"
         >
-          {vote.agendas.map(({ id, title }, index) => (
+          {vote.agendas.map((agenda, tabIndex) => (
             <Tab
-              key={id}
-              id={`vote-tab-${index}`}
-              aria-controls={`vote-tabpanel-${index}`}
+              key={agenda.id}
+              id={`vote-tab-${tabIndex}`}
+              aria-controls={`vote-tabpanel-${tabIndex}`}
               className="!min-h-16 !min-w-32 !items-start !px-5 !text-left !normal-case !text-white/70 md:!min-w-0"
               label={
                 <span className="w-full">
-                  <span className="block text-xs text-white/50">안건 {index + 1}</span>
-                  <span className="mt-1 block break-keep">{title}</span>
+                  <span className="block text-xs text-white/50">안건 {tabIndex + 1}</span>
+                  <span className="mt-1 block break-keep">{agenda.title}</span>
                 </span>
               }
             />
@@ -111,29 +111,29 @@ const Vote = () => {
         </Tabs>
 
         {/* 접근성을 위해 hidden -> 내부에서는 조건부 렌더링으로 설계 */}
-        {vote.agendas.map((agenda, index) => (
+        {vote.agendas.map((agenda, tabIndex) => (
           <div
             key={agenda.id}
             role="tabpanel"
-            hidden={currentAgendaIndex !== index}
-            id={`vote-tabpanel-${index}`}
-            aria-labelledby={`vote-tab-${index}`}
+            hidden={currentAgendaTabIndex !== tabIndex}
+            id={`vote-tabpanel-${tabIndex}`}
+            aria-labelledby={`vote-tab-${tabIndex}`}
             className="min-w-0 flex-1"
           >
-            {currentAgendaIndex === index && (
+            {currentAgendaTabIndex === tabIndex && (
               <div className="flex h-[430px] flex-col">
                 <VoteAgenda agenda={agenda} voteState={voteState} voteDispatch={voteDispatch} />
 
                 <div className="flex justify-between px-5 pb-5 pt-8 sm:px-8 sm:pb-8">
                   <OutlinedButton
                     disabled={isFirstAgenda}
-                    onClick={() => setCurrentAgendaIndex((currentIndex) => currentIndex - 1)}
+                    onClick={() => setCurrentAgendaTabIndex((currentIndex) => currentIndex - 1)}
                   >
                     이전
                   </OutlinedButton>
                   <OutlinedButton
                     disabled={isLastAgenda}
-                    onClick={() => setCurrentAgendaIndex((currentIndex) => currentIndex + 1)}
+                    onClick={() => setCurrentAgendaTabIndex((currentIndex) => currentIndex + 1)}
                   >
                     다음
                   </OutlinedButton>

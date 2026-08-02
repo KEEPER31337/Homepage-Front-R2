@@ -26,13 +26,13 @@ const VoteAgenda = ({ agenda, voteState, voteDispatch }: VoteAgendaProps) => {
       </div>
 
       <FormGroup className="!mt-8 min-h-0 flex-1 !flex-nowrap gap-3 overflow-y-auto pr-2">
-        {agenda.options.map(({ id, content }) => {
-          const isSelected = selectedOptionIds.includes(id);
+        {agenda.options.map((option) => {
+          const isSelected = selectedOptionIds.includes(option.id);
           const isSelectionLimitReached = selectedOptionIds.length >= agenda.maxSelect;
 
           return (
             <FormControlLabel
-              key={id}
+              key={option.id}
               className="!m-0 shrink-0 rounded-sm border border-white/10 bg-subBlack px-3 py-2 hover:border-pointBlue/60"
               control={
                 <Checkbox
@@ -41,12 +41,12 @@ const VoteAgenda = ({ agenda, voteState, voteDispatch }: VoteAgendaProps) => {
                   onChange={() =>
                     voteDispatch({
                       type: AGENDA_OPTION_TOGGLE,
-                      payload: { agendaId: agenda.id, optionId: id },
+                      payload: { agendaId: agenda.id, optionId: option.id },
                     })
                   }
                 />
               }
-              label={<Typography>{content}</Typography>}
+              label={<Typography>{option.content}</Typography>}
             />
           );
         })}
