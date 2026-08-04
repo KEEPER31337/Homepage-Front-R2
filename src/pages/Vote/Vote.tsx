@@ -4,10 +4,13 @@ import { CircularProgress, Tab, Tabs, Typography, useMediaQuery } from '@mui/mat
 import { DateTime } from 'luxon';
 
 import { useGetVoteQuery, useParticipateVoteMutation } from '@api/voteApi';
+import { VoteParticipationResponse } from '@api/voteDto';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import PageTitle from '@components/Typography/PageTitle';
 import VoteAgenda from './VoteAgenda';
+import VoteReceipt from './VoteReceipt';
+import VoteSubmitModal from './VoteSubmitModal';
 import useVoteState, { getSelectedOptionIds } from './useVoteState';
 
 const formatVoteDateTime = (dateTime: string) => {
@@ -23,8 +26,9 @@ const Vote = () => {
   const { data: vote, isPending, isError } = useGetVoteQuery({ voteId: parsedVoteId });
   const isMobile = useMediaQuery('(max-width: 767px)');
   const [currentAgendaTabIndex, setCurrentAgendaTabIndex] = useState(0);
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+  const [receipt, setReceipt] = useState<VoteParticipationResponse | null>(null);
   const [voteState, voteDispatch] = useVoteState();
-  const [receiptToken] = useState(() => crypto.randomUUID());
   const { mutate: participateVote, isPending: isParticipationPending } = useParticipateVoteMutation(parsedVoteId);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -63,14 +67,28 @@ const Vote = () => {
   });
 
   const handleSubmit = () => {
-    participateVote({
-      receipt_token: receiptToken,
-      selections: vote.agendas.map(({ id }) => ({
-        agenda_id: id,
-        option_ids: [...getSelectedOptionIds(voteState, id)],
-      })),
-    });
+    participateVote(
+      {
+        selections: vote.agendas.map(({ id }) => ({
+          agenda_id: id,
+          option_ids: [...getSelectedOptionIds(voteState, id)],
+        })),
+      },
+      {
+        onSuccess: (participationResponse) => {
+          setIsSubmitModalOpen(false);
+          setReceipt(participationResponse);
+        },
+        onError: () => {
+          // TODO: 여기 에러 처리 보강
+        },
+      },
+    );
   };
+
+  if (receipt) {
+    return <VoteReceipt voteTitle={vote.title} receipt={receipt} onBackToList={() => navigate('/vote')} />;
+  }
 
   return (
     <div className="px-2 md:px-0">
@@ -145,10 +163,19 @@ const Vote = () => {
       </div>
 
       <div className="mt-5 flex justify-end">
-        <FilledButton disabled={!canSubmit || isParticipationPending} onClick={handleSubmit}>
-          {isParticipationPending ? '제출 중...' : '제출하기'}
+        <FilledButton disabled={!canSubmit || isParticipationPending} onClick={() => setIsSubmitModalOpen(true)}>
+          제출하기
         </FilledButton>
       </div>
+
+      <VoteSubmitModal
+        open={isSubmitModalOpen}
+        vote={vote}
+        voteState={voteState}
+        isSubmitting={isParticipationPending}
+        onClose={() => setIsSubmitModalOpen(false)}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 };

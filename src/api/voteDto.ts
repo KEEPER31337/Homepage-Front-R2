@@ -36,11 +36,26 @@ interface VoteDetail {
 }
 
 interface VoteParticipationRequest {
-  receipt_token: string;
   selections: {
     agenda_id: number;
     option_ids: number[];
   }[];
+}
+
+interface VoteParticipationOption {
+  optionId: number;
+  content: string;
+}
+
+interface VoteParticipationSelection {
+  agendaId: number;
+  agendaTitle: string;
+  options: VoteParticipationOption[];
+}
+
+interface VoteParticipationResponse {
+  receiptToken: string;
+  selections: VoteParticipationSelection[];
 }
 
 export type {
@@ -49,6 +64,9 @@ export type {
   VoteDetail,
   VoteListItem,
   VoteOptionInfo,
+  VoteParticipationOption,
   VoteParticipationRequest,
+  VoteParticipationResponse,
+  VoteParticipationSelection,
   VoteParticipationStatus,
 };

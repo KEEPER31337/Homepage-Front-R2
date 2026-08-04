@@ -1,5 +1,12 @@
 import { DateTime } from 'luxon';
-import { GetVotesResponse, VoteAgendaInfo, VoteDetail, VoteListItem, VoteParticipationRequest } from '@api/voteDto';
+import {
+  GetVotesResponse,
+  VoteAgendaInfo,
+  VoteDetail,
+  VoteListItem,
+  VoteParticipationRequest,
+  VoteParticipationResponse,
+} from '@api/voteDto';
 
 const CURRENT_YEAR = DateTime.now().year;
 const formatApiDateTime = (dateTime: DateTime) => dateTime.toFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -197,14 +204,35 @@ const getVoteMock = async (voteId: number): Promise<VoteDetail> => {
   throw createVoteMockError(404, `[voteId] ${voteId}: 존재하지 않는 투표입니다.`);
 };
 
-const participateVoteMock = async (voteId: number, _request: VoteParticipationRequest): Promise<void> => {
+const participateVoteMock = async (
+  voteId: number,
+  request: VoteParticipationRequest,
+): Promise<VoteParticipationResponse> => {
   const vote = voteList.find(({ id }) => id === voteId);
+  const voteDetail = voteDetails.find(({ id }) => id === voteId);
 
-  if (!vote) {
+  if (!vote || !voteDetail) {
     throw createVoteMockError(404, `[voteId] ${voteId}: 존재하지 않는 투표입니다.`);
   }
 
+  const response: VoteParticipationResponse = {
+    receiptToken: crypto.randomUUID(),
+    selections: voteDetail.agendas.map((agenda) => {
+      const selectedOptionIds = request.selections.find(({ agenda_id }) => agenda_id === agenda.id)?.option_ids ?? [];
+
+      return {
+        agendaId: agenda.id,
+        agendaTitle: agenda.title,
+        options: agenda.options
+          .filter(({ id }) => selectedOptionIds.includes(id))
+          .map(({ id, content }) => ({ optionId: id, content })),
+      };
+    }),
+  };
+
   vote.participated = 3;
+
+  return response;
 };
 
 export { getVoteMock, getVotesMock, participateVoteMock };
