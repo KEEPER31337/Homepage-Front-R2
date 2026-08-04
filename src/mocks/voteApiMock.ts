@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon';
 import {
+  AdminVoteListItem,
+  GetAdminVotesResponse,
   GetVotesResponse,
   VoteAgendaInfo,
   VoteDetail,
@@ -80,6 +82,26 @@ const voteList: VoteListItem[] = [
     participated: 4,
   },
 ];
+
+const adminVoteMetadata = new Map<number, Pick<AdminVoteListItem, 'permitByUserIds' | 'participantCount'>>([
+  [1, { permitByUserIds: [16381, 26381, 169151, 46381, 56381], participantCount: 3 }],
+  [2, { permitByUserIds: [16381, 26381, 36381], participantCount: 2 }],
+  [4, { permitByUserIds: [], participantCount: 0 }],
+  [3, { permitByUserIds: [16381, 26381], participantCount: 2 }],
+  [103, { permitByUserIds: [16381, 26381, 36381, 46381], participantCount: 4 }],
+  [102, { permitByUserIds: [16381, 26381, 36381], participantCount: 3 }],
+  [101, { permitByUserIds: [169151], participantCount: 1 }],
+]);
+
+const compareVotesByNewest = (
+  firstVote: Pick<VoteListItem, 'id' | 'startAt'>,
+  secondVote: Pick<VoteListItem, 'id' | 'startAt'>,
+) => {
+  const startAtDifference =
+    DateTime.fromISO(secondVote.startAt).toMillis() - DateTime.fromISO(firstVote.startAt).toMillis();
+
+  return startAtDifference || secondVote.id - firstVote.id;
+};
 
 const createVoteDetail = (voteId: number, agendas: VoteAgendaInfo[]): VoteDetail => {
   const vote = voteList.find(({ id }) => id === voteId);
@@ -180,14 +202,21 @@ const voteDetails: VoteDetail[] = [
 ];
 
 const getVotesMock = async (year: number): Promise<GetVotesResponse> => ({
+  votes: voteList.filter(({ startAt }) => DateTime.fromISO(startAt).year === year).toSorted(compareVotesByNewest),
+});
+
+const getAdminVotesMock = async (year: number): Promise<GetAdminVotesResponse> => ({
   votes: voteList
     .filter(({ startAt }) => DateTime.fromISO(startAt).year === year)
-    .toSorted((firstVote, secondVote) => {
-      const startAtDifference =
-        DateTime.fromISO(secondVote.startAt).toMillis() - DateTime.fromISO(firstVote.startAt).toMillis();
-
-      return startAtDifference || secondVote.id - firstVote.id;
-    }),
+    .map(({ id, title, description, startAt, endAt }) => ({
+      id,
+      title,
+      description,
+      startAt,
+      endAt,
+      ...(adminVoteMetadata.get(id) ?? { permitByUserIds: [], participantCount: 0 }),
+    }))
+    .toSorted(compareVotesByNewest),
 });
 
 const getVoteMock = async (voteId: number): Promise<VoteDetail> => {
@@ -235,4 +264,4 @@ const participateVoteMock = async (
   return response;
 };
 
-export { getVoteMock, getVotesMock, participateVoteMock };
+export { getAdminVotesMock, getVoteMock, getVotesMock, participateVoteMock };

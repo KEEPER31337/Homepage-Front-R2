@@ -1,11 +1,11 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useMemo, useState } from 'react';
 import { InputLabel, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 
-import { Role } from '@api/dto';
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import ActionButton from '@components/Button/ActionButton';
 import FilledButton from '@components/Button/FilledButton';
+import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
 import StandardDateTimePicker from '@components/DatePicker/StandardDateTimePicker';
 import AutoComplete, { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
@@ -14,21 +14,7 @@ import VoteAgendaInput, { VoteAgendaDraft, VoteAgendaPatch, VoteOptionDraft } fr
 
 const TITLE_MAX_LENGTH = 500;
 const DESCRIPTION_MAX_LENGTH = 16_383;
-
-const roleOptions: { value: Role; label: string }[] = [
-  { value: 'ROLE_회장', label: '회장' },
-  { value: 'ROLE_부회장', label: '부회장' },
-  { value: 'ROLE_대외부장', label: '대외부장' },
-  { value: 'ROLE_학술부장', label: '학술부장' },
-  { value: 'ROLE_FRONT_전산관리자', label: 'FRONT 전산관리자' },
-  { value: 'ROLE_서기', label: '서기' },
-  { value: 'ROLE_총무', label: '총무' },
-  { value: 'ROLE_사서', label: '사서' },
-  { value: 'ROLE_회원', label: '회원' },
-  { value: 'ROLE_출제자', label: '출제자' },
-  { value: 'ROLE_BACK_전산관리자', label: 'BACK 전산관리자' },
-  { value: 'ROLE_INFRA_전산관리자', label: 'INFRA 전산관리자' },
-];
+const BULK_MEMBER_ENTRY_PATTERN = /^(\d+(?:\.\d+)?)기_(.+)$/;
 
 let draftId = 0;
 
@@ -58,6 +44,44 @@ interface VoteCreationProps {
   onCancel: () => void;
 }
 
+interface MemberOption {
+  value: number;
+  label: string;
+  group: string;
+}
+
+interface BulkMemberIssue {
+  entry: string;
+  message: string;
+}
+
+interface BulkMemberResult {
+  addedCount: number;
+  issues: BulkMemberIssue[];
+}
+
+const normalizeGeneration = (generation: string) => {
+  const parsedGeneration = Number(generation.trim());
+
+  return Number.isFinite(parsedGeneration) ? parsedGeneration.toString() : generation.trim();
+};
+
+const normalizeMemberName = (name: string) => name.trim().normalize('NFC');
+
+const createMemberLookupKey = (generation: string, name: string) =>
+  `${normalizeGeneration(generation)}\u0000${normalizeMemberName(name)}`;
+
+const parseBulkMemberEntry = (entry: string) => {
+  const match = BULK_MEMBER_ENTRY_PATTERN.exec(entry);
+
+  if (!match) return null;
+
+  return {
+    generation: normalizeGeneration(match[1]),
+    name: normalizeMemberName(match[2]),
+  };
+};
+
 const VoteCreation = ({ onCancel }: VoteCreationProps) => {
   const { data: members, isPending: isMembersPending, isError: isMembersError } = useGetMemberInfoQuery();
 
@@ -65,27 +89,70 @@ const VoteCreation = ({ onCancel }: VoteCreationProps) => {
   const [description, setDescription] = useState('');
   const [startAt, setStartAt] = useState<DateTime | null>(null);
   const [endAt, setEndAt] = useState<DateTime | null>(null);
-  const [permittedRoles, setPermittedRoles] = useState<MultiAutoCompleteValue>([]);
   const [permittedMembers, setPermittedMembers] = useState<MultiAutoCompleteValue>([]);
+  const [isBulkMemberInputOpen, setIsBulkMemberInputOpen] = useState(false);
+  const [bulkMemberText, setBulkMemberText] = useState('');
+  const [bulkMemberResult, setBulkMemberResult] = useState<BulkMemberResult | null>(null);
   const [agendas, setAgendas] = useState<VoteAgendaDraft[]>(() => [createAgendaDraft()]);
 
-  const memberOptions = (members ?? [])
-    .map((member) => ({
-      value: member.memberId,
-      label: `${member.realName} (${member.generation})`,
-      group: member.generation,
-    }))
-    .toSorted(
-      (firstMember, secondMember) =>
-        Number.parseFloat(firstMember.group) - Number.parseFloat(secondMember.group) ||
-        firstMember.label.localeCompare(secondMember.label),
-    );
+  const { memberOptions, memberLookup } = useMemo(() => {
+    const options: MemberOption[] = [];
+    const lookup = new Map<string, MemberOption[]>();
+
+    (members ?? []).forEach((member) => {
+      const option = {
+        value: member.memberId,
+        label: `${member.realName} (${member.generation})`,
+        group: member.generation,
+      };
+      const lookupKey = createMemberLookupKey(member.generation, member.realName);
+      const matchingOptions = lookup.get(lookupKey);
+
+      options.push(option);
+
+      if (matchingOptions) {
+        matchingOptions.push(option);
+      } else {
+        lookup.set(lookupKey, [option]);
+      }
+    });
+
+    return {
+      memberOptions: options.toSorted(
+        (firstMember, secondMember) =>
+          Number.parseFloat(firstMember.group) - Number.parseFloat(secondMember.group) ||
+          firstMember.label.localeCompare(secondMember.label),
+      ),
+      memberLookup: lookup,
+    };
+  }, [members]);
+
+  const bulkMemberEntries = [
+    ...new Set(
+      bulkMemberText
+        .split(/\r?\n/)
+        .map((entry) => entry.trim())
+        .filter(Boolean),
+    ),
+  ];
+  const canAddBulkMembers = Boolean(members && bulkMemberEntries.length > 0);
 
   const hasInvalidPeriod = Boolean(startAt && endAt && endAt.toMillis() <= startAt.toMillis());
   const hasValidPeriod = Boolean(startAt?.isValid && endAt?.isValid && endAt.toMillis() > startAt.toMillis());
-  const hasValidAgendas = agendas.every(
-    (agenda) => agenda.title.trim() && agenda.options.every((option) => option.content.trim()),
-  );
+  const hasValidAgendas = agendas.every((agenda) => {
+    const minSelect = Number(agenda.minSelect);
+    const maxSelect = Number(agenda.maxSelect);
+    const hasValidSelectionRange =
+      Number.isInteger(minSelect) &&
+      Number.isInteger(maxSelect) &&
+      minSelect >= 1 &&
+      minSelect <= maxSelect &&
+      maxSelect <= agenda.options.length;
+
+    return Boolean(
+      agenda.title.trim() && agenda.options.every((option) => option.content.trim()) && hasValidSelectionRange,
+    );
+  });
   const canCreateVote = Boolean(title.trim() && hasValidPeriod && hasValidAgendas);
 
   const handleAgendaChange = (agendaId: number, patch: VoteAgendaPatch) => {
@@ -147,6 +214,61 @@ const VoteCreation = ({ onCancel }: VoteCreationProps) => {
         };
       }),
     );
+  };
+
+  const closeBulkMemberInput = () => {
+    setIsBulkMemberInputOpen(false);
+    setBulkMemberText('');
+    setBulkMemberResult(null);
+  };
+
+  const handleBulkMembersAdd = () => {
+    if (!canAddBulkMembers) return;
+
+    const selectedMemberIds = new Set(permittedMembers.map(({ value }) => value));
+    const memberIdsToAdd = new Set<number>();
+    const membersToAdd: MemberOption[] = [];
+    const issues: BulkMemberIssue[] = [];
+
+    bulkMemberEntries.forEach((entry) => {
+      const parsedEntry = parseBulkMemberEntry(entry);
+
+      if (!parsedEntry) {
+        issues.push({ entry, message: '16기_이름 형식으로 입력해 주세요.' });
+        return;
+      }
+
+      const matchingMembers = memberLookup.get(createMemberLookupKey(parsedEntry.generation, parsedEntry.name)) ?? [];
+
+      if (matchingMembers.length === 0) {
+        issues.push({ entry, message: '일치하는 회원을 찾지 못했습니다.' });
+        return;
+      }
+
+      if (matchingMembers.length > 1) {
+        issues.push({ entry, message: '같은 기수와 이름의 회원이 여러 명입니다. 직접 선택해 주세요.' });
+        return;
+      }
+
+      const [matchingMember] = matchingMembers;
+
+      if (selectedMemberIds.has(matchingMember.value) || memberIdsToAdd.has(matchingMember.value)) return;
+
+      memberIdsToAdd.add(matchingMember.value);
+      membersToAdd.push(matchingMember);
+    });
+
+    if (membersToAdd.length > 0) {
+      setPermittedMembers((currentMembers) => [...currentMembers, ...membersToAdd]);
+    }
+
+    if (issues.length === 0) {
+      closeBulkMemberInput();
+      return;
+    }
+
+    setBulkMemberText(issues.map(({ entry }) => entry).join('\n'));
+    setBulkMemberResult({ addedCount: membersToAdd.length, issues });
   };
 
   return (
@@ -230,40 +352,81 @@ const VoteCreation = ({ onCancel }: VoteCreationProps) => {
               참여 권한
             </Typography>
             <Typography className="!mt-1 !text-sm text-white/50">
-              선택한 역할에 속하거나 아래에서 직접 지정된 회원에게 투표 참여 권한이 부여됩니다.
+              직접 지정된 회원에게 투표 참여 권한이 부여됩니다.
             </Typography>
           </div>
 
-          <div className="space-y-6">
-            <div>
-              <InputLabel className="!font-semibold">역할로 허용</InputLabel>
-              <AutoComplete
-                className="w-full"
-                multiple
-                value={permittedRoles}
-                items={roleOptions}
-                placeholder="참여를 허용할 역할을 선택해 주세요."
-                onChange={setPermittedRoles}
-              />
+          <div>
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <InputLabel className="!font-semibold">회원별 허용</InputLabel>
+              <OutlinedButton
+                type="button"
+                small
+                onClick={() => (isBulkMemberInputOpen ? closeBulkMemberInput() : setIsBulkMemberInputOpen(true))}
+              >
+                {isBulkMemberInputOpen ? '일괄 입력 닫기' : '한 번에 추가'}
+              </OutlinedButton>
             </div>
 
-            <div>
-              <InputLabel className="!font-semibold">회원별 허용</InputLabel>
-              <AutoComplete
-                className="w-full"
-                multiple
-                grouped
-                value={permittedMembers}
-                items={memberOptions}
-                placeholder={
-                  isMembersPending ? '회원 목록을 불러오는 중입니다.' : '참여를 허용할 회원을 선택해 주세요.'
-                }
-                onChange={setPermittedMembers}
-              />
-              {isMembersError && (
-                <Typography className="!mt-2 !text-sm text-subRed">회원 목록을 불러오지 못했습니다.</Typography>
-              )}
-            </div>
+            {isBulkMemberInputOpen && (
+              <div className="mb-5 rounded-sm border border-pointBlue/30 bg-subBlack/60 p-4">
+                <StandardInput
+                  className="w-full"
+                  value={bulkMemberText}
+                  multiline
+                  minRows={4}
+                  placeholder={'16기_최재원\n16기_최재투'}
+                  onChange={(event) => {
+                    setBulkMemberText(event.target.value);
+                    setBulkMemberResult(null);
+                  }}
+                />
+
+                {bulkMemberResult && (
+                  <div className="mt-3 space-y-1 text-sm">
+                    {bulkMemberResult.addedCount > 0 && (
+                      <Typography className="!text-sm text-pointBlue">
+                        {bulkMemberResult.addedCount}명을 회원별 허용에 추가했습니다.
+                      </Typography>
+                    )}
+                    <ul className="list-disc space-y-1 pl-5 text-subRed">
+                      {bulkMemberResult.issues.map(({ entry, message }) => (
+                        <li key={entry}>
+                          {entry}: {message}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <Typography className="!text-sm text-white/50">
+                    한 줄에 한 명씩 16기_이름 형식으로 입력해 주세요.
+                  </Typography>
+                  <div className="flex shrink-0 justify-end gap-1">
+                    <TextButton type="button" small onClick={closeBulkMemberInput}>
+                      취소
+                    </TextButton>
+                    <FilledButton type="button" small disabled={!canAddBulkMembers} onClick={handleBulkMembersAdd}>
+                      목록에 추가
+                    </FilledButton>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <AutoComplete
+              className="w-full"
+              multiple
+              grouped
+              value={permittedMembers}
+              items={memberOptions}
+              placeholder={isMembersPending ? '회원 목록을 불러오는 중입니다.' : '참여를 허용할 회원을 선택해 주세요.'}
+              onChange={setPermittedMembers}
+            />
+            {isMembersError && (
+              <Typography className="!mt-2 !text-sm text-subRed">회원 목록을 불러오지 못했습니다.</Typography>
+            )}
           </div>
         </section>
 

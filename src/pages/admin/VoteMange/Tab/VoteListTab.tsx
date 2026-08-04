@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -10,7 +10,10 @@ import {
 import { DateTime } from 'luxon';
 import { VscChevronDown } from 'react-icons/vsc';
 
-import { useGetVoteListQuery } from '@api/voteApi';
+import { useGetMemberInfoQuery } from '@api/dutyManageApi';
+import { useGetAdminVoteListQuery } from '@api/voteApi';
+import ActionButton from '@components/Button/ActionButton';
+import MemberChip from '@components/Chip/MemberChip';
 import Selector from '@components/Selector/Selector';
 import { formatVoteDateTime } from '@utils/date';
 
@@ -22,11 +25,32 @@ const yearList = Array.from({ length: 5 }, (_, index) => ({
 }));
 
 const VoteListTab = () => {
-  const [currentYear, setCurrentYear] = useState(CURRENT_YEAR);
-  const { data: votes = [], isPending, isError } = useGetVoteListQuery(currentYear);
+  const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR);
+  const { data: votes = [], isPending, isError } = useGetAdminVoteListQuery(selectedYear);
+  const { data: members, isPending: isMembersPending, isError: isMembersError } = useGetMemberInfoQuery();
+  const membersById = useMemo(() => new Map((members ?? []).map((member) => [member.memberId, member])), [members]);
 
   const handleYearChange = (event: SelectChangeEvent<unknown>) => {
-    setCurrentYear(Number(event.target.value));
+    setSelectedYear(Number(event.target.value));
+  };
+
+  const renderPermittedMembers = (voteId: number, memberIds: number[]) => {
+    if (memberIds.length === 0) return <Typography>참여가 허용된 회원이 없습니다.</Typography>;
+    if (isMembersPending) return <Typography>회원 정보를 불러오는 중입니다.</Typography>;
+    if (isMembersError) return <Typography>회원 정보를 불러오지 못했습니다.</Typography>;
+
+    return (
+      <div className="flex flex-wrap gap-2">
+        {memberIds.map((memberId, memberIndex) => {
+          const member = membersById.get(memberId);
+          const label = member
+            ? `${member.generation}기_${member.realName} (ID_${memberId})`
+            : `조회 없음 (ID_${memberId})`;
+
+          return <MemberChip className="!rounded" key={`${voteId}-${memberId}-${memberIndex}`} label={label} />;
+        })}
+      </div>
+    );
   };
 
   let content: React.ReactNode;
@@ -68,11 +92,32 @@ const VoteListTab = () => {
           </div>
         </AccordionSummary>
         <AccordionDetails className="!bg-middleBlack !px-[41px] !py-[30px] !text-white">
-          <div className="space-y-2">
-            <Typography className="font-semibold">투표 안내</Typography>
-            <Typography className="border-l-2 border-pointBlue px-2">
-              {vote.description ?? '등록된 투표 안내가 없습니다.'}
-            </Typography>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Typography className="font-semibold">투표 안내</Typography>
+              <Typography className="border-l-2 border-pointBlue px-2">
+                {vote.description ?? '등록된 투표 안내가 없습니다.'}
+              </Typography>
+            </div>
+
+            <div className="space-y-2">
+              <Typography className="font-semibold">참여자 수</Typography>
+              <Typography className="border-l-2 border-pointBlue px-2">{vote.participantCount}명</Typography>
+            </div>
+
+            <div className="space-y-2">
+              <Typography className="font-semibold">참여 허용 회원</Typography>
+              <div className="border-l-2 border-pointBlue px-2">
+                <Typography>{vote.permitByUserIds.length}명</Typography>
+                <div className="mt-2">{renderPermittedMembers(vote.id, vote.permitByUserIds)}</div>
+              </div>
+            </div>
+
+            <div className="flex justify-end border-t border-white/10 pt-6">
+              <ActionButton mode="delete" type="button">
+                삭제하기
+              </ActionButton>
+            </div>
           </div>
         </AccordionDetails>
       </Accordion>
@@ -82,7 +127,7 @@ const VoteListTab = () => {
   return (
     <div>
       <div className="mb-8 flex items-center">
-        <Selector className="w-28" name="year" options={yearList} value={currentYear} onChange={handleYearChange} />
+        <Selector className="w-28" name="year" options={yearList} value={selectedYear} onChange={handleYearChange} />
       </div>
 
       {content}

@@ -13,6 +13,15 @@ interface GetVotesResponse {
   votes: VoteListItem[];
 }
 
+interface AdminVoteListItem extends Omit<VoteListItem, 'participated'> {
+  permitByUserIds: number[];
+  participantCount: number;
+}
+
+interface GetAdminVotesResponse {
+  votes: AdminVoteListItem[];
+}
+
 interface VoteOptionInfo {
   id: number;
   content: string;
@@ -59,6 +68,8 @@ interface VoteParticipationResponse {
 }
 
 export type {
+  AdminVoteListItem,
+  GetAdminVotesResponse,
   GetVotesResponse,
   VoteAgendaInfo,
   VoteDetail,
