@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CircularProgress, Tab, Tabs, Typography, useMediaQuery } from '@mui/material';
+import { isAxiosError } from 'axios';
 import { DateTime } from 'luxon';
+import { toast } from 'react-hot-toast';
 
 import { useGetVoteQuery, useParticipateVoteMutation } from '@api/voteApi';
 import { VoteParticipationResponse } from '@api/voteDto';
@@ -12,6 +14,24 @@ import VoteAgenda from './VoteAgenda';
 import VoteReceipt from './VoteReceipt';
 import VoteSubmitModal from './VoteSubmitModal';
 import useVoteState, { getSelectedOptionIds } from './useVoteState';
+
+interface VoteErrorResponse {
+  response?: {
+    data?: {
+      message?: unknown;
+    };
+  };
+}
+
+const getVoteErrorMessage = (error: unknown) => {
+  if (isAxiosError(error) && !error.response) {
+    return '네트워크 문제가 발생했습니다. (제출 상태 확인 불가)';
+  }
+
+  const message = (error as VoteErrorResponse)?.response?.data?.message;
+
+  return typeof message === 'string' && message.trim() ? message : '투표 제출에 실패했습니다.';
+};
 
 const formatVoteDateTime = (dateTime: string) => {
   const parsedDateTime = DateTime.fromISO(dateTime);
@@ -34,6 +54,10 @@ const Vote = () => {
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setCurrentAgendaTabIndex(newValue);
   };
+
+  if (receipt && vote) {
+    return <VoteReceipt voteTitle={vote.title} receipt={receipt} onBackToList={() => navigate('/vote')} />;
+  }
 
   if (isError) {
     return (
@@ -79,16 +103,13 @@ const Vote = () => {
           setIsSubmitModalOpen(false);
           setReceipt(participationResponse);
         },
-        onError: () => {
-          // TODO: 여기 에러 처리 보강
+        onError: (error) => {
+          toast.error(getVoteErrorMessage(error));
+          navigate('/vote');
         },
       },
     );
   };
-
-  if (receipt) {
-    return <VoteReceipt voteTitle={vote.title} receipt={receipt} onBackToList={() => navigate('/vote')} />;
-  }
 
   return (
     <div className="px-2 md:px-0">
@@ -115,6 +136,7 @@ const Vote = () => {
           {vote.agendas.map((agenda, tabIndex) => (
             <Tab
               key={agenda.id}
+              value={tabIndex}
               id={`vote-tab-${tabIndex}`}
               aria-controls={`vote-tabpanel-${tabIndex}`}
               className="!min-h-16 !min-w-32 !items-start !px-5 !text-left !normal-case !text-white/70 md:!min-w-0"

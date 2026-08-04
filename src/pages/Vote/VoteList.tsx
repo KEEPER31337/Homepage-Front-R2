@@ -17,6 +17,7 @@ import { VoteParticipationStatus } from '@api/voteDto';
 import FilledButton from '@components/Button/FilledButton';
 import Selector from '@components/Selector/Selector';
 import PageTitle from '@components/Typography/PageTitle';
+import { formatVoteDateTime } from '@utils/date';
 
 const CURRENT_YEAR = DateTime.now().year;
 
@@ -30,12 +31,6 @@ const participationLabels: Record<VoteParticipationStatus, string> = {
   2: '참여 권한 없음',
   3: '이미 참여한 투표',
   4: '투표 기간이 아님',
-};
-
-const formatVoteDateTime = (dateTime: string) => {
-  const parsedDateTime = DateTime.fromISO(dateTime);
-
-  return parsedDateTime.isValid ? parsedDateTime.toFormat('yyyy.MM.dd HH:mm') : dateTime;
 };
 
 const VoteList = () => {

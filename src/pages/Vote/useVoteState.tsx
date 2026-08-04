@@ -27,17 +27,24 @@ const voteReducer = (state: VoteState, action: VoteAction): VoteState => {
         return [...state, { agendaId, optionIds: [optionId] }];
       }
 
-      const optionAlreadySelected = agendaSelection.optionIds.includes(optionId);
-      const nextOptionIds = optionAlreadySelected
-        ? agendaSelection.optionIds.filter((id) => id !== optionId)
-        : [...agendaSelection.optionIds, optionId];
+      const isOptionAlreadySelected = agendaSelection.optionIds.includes(optionId);
+      
+      if (isOptionAlreadySelected) {
+        const excludedOptionIds = agendaSelection.optionIds.filter((id) => id !== optionId);
 
-      if (nextOptionIds.length === 0) {
-        return state.filter((selection) => selection.agendaId !== agendaId);
+        if (excludedOptionIds.length === 0) {
+          return state.filter((selection) => selection.agendaId !== agendaId);
+        }
+
+        return state.map((selection) =>
+          selection.agendaId === agendaId ? { ...selection, optionIds: excludedOptionIds } : selection,
+        );
       }
+      
+      const includedOptionIds = [...agendaSelection.optionIds, optionId];
 
       return state.map((selection) =>
-        selection.agendaId === agendaId ? { ...selection, optionIds: nextOptionIds } : selection,
+        selection.agendaId === agendaId ? { ...selection, optionIds: includedOptionIds } : selection,
       );
     }
   }

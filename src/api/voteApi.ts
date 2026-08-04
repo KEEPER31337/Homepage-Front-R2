@@ -4,7 +4,8 @@ import { VoteDetail, VoteListItem, VoteParticipationRequest } from './voteDto';
 
 const voteKeys = {
   base: ['votes'] as const,
-  list: (year: number) => [...voteKeys.base, 'list', year] as const,
+  listAll: () => [...voteKeys.base, 'list'] as const,
+   list: (year: number) => [...voteKeys.base, 'list', year] as const,
   detail: (voteId: number) => [...voteKeys.base, 'detail', voteId] as const,
 };
 
@@ -34,7 +35,7 @@ const useParticipateVoteMutation = (voteId: number) => {
   return useMutation({
     mutationFn: fetcher,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: voteKeys.base });
+      queryClient.invalidateQueries({ queryKey: voteKeys.listAll() });
     },
   });
 };

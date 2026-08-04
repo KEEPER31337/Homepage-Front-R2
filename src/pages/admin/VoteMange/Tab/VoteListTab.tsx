@@ -12,6 +12,7 @@ import { VscChevronDown } from 'react-icons/vsc';
 
 import { useGetVoteListQuery } from '@api/voteApi';
 import Selector from '@components/Selector/Selector';
+import { formatVoteDateTime } from '@utils/date';
 
 const CURRENT_YEAR = DateTime.now().year;
 
@@ -19,12 +20,6 @@ const yearList = Array.from({ length: 5 }, (_, index) => ({
   id: CURRENT_YEAR - index,
   content: `${CURRENT_YEAR - index}년`,
 }));
-
-const formatVoteDateTime = (dateTime: string) => {
-  const parsedDateTime = DateTime.fromISO(dateTime);
-
-  return parsedDateTime.isValid ? parsedDateTime.toFormat('yyyy.MM.dd HH:mm') : dateTime;
-};
 
 const VoteListTab = () => {
   const [currentYear, setCurrentYear] = useState(CURRENT_YEAR);
