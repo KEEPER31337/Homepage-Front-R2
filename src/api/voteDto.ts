@@ -46,8 +46,8 @@ interface VoteDetail {
 
 interface VoteParticipationRequest {
   selections: {
-    agenda_id: number;
-    option_ids: number[];
+    agendaId: number;
+    optionIds: number[];
   }[];
 }
 

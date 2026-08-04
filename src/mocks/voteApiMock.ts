@@ -247,7 +247,7 @@ const participateVoteMock = async (
   const response: VoteParticipationResponse = {
     receiptToken: crypto.randomUUID(),
     selections: voteDetail.agendas.map((agenda) => {
-      const selectedOptionIds = request.selections.find(({ agenda_id }) => agenda_id === agenda.id)?.option_ids ?? [];
+      const selectedOptionIds = request.selections.find(({ agendaId }) => agendaId === agenda.id)?.optionIds ?? [];
 
       return {
         agendaId: agenda.id,

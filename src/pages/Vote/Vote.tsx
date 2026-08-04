@@ -94,8 +94,8 @@ const Vote = () => {
     participateVote(
       {
         selections: vote.agendas.map(({ id }) => ({
-          agenda_id: id,
-          option_ids: [...getSelectedOptionIds(voteState, id)],
+          agendaId: id,
+          optionIds: [...getSelectedOptionIds(voteState, id)],
         })),
       },
       {
