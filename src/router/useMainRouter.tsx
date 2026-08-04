@@ -6,8 +6,8 @@ import NotFound from '@pages/NotFound/NotFound';
 import Profile from '@pages/Profile/Profile';
 import SignUp from '@pages/SignUp/SignUp';
 import Study from '@pages/Study/Study';
-import Vote from '@pages/Vote/Vote';
 import VoteList from '@pages/Vote/VoteList';
+import VotePageContainer from '@pages/Vote/VotePageContainer';
 import ActiveMemberManage from '@pages/admin/ActiveMemberManage/ActiveMemberManage';
 import DutyManage from '@pages/admin/DutyManage/DutyManage';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
@@ -192,7 +192,7 @@ const useMainRouter = () =>
               path: 'vote/:voteId',
               element: (
                 <NeedLogin>
-                  <Vote />
+                  <VotePageContainer />
                 </NeedLogin>
               ),
             },
