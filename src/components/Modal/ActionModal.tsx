@@ -11,6 +11,7 @@ interface ActionModalProps {
   startAdornment?: React.ReactNode;
   endAdornment?: React.ReactNode;
   children: React.ReactNode;
+  cancelButtonDisabled?: boolean;
   actionButtonDisabled?: boolean;
   actionButtonName: string;
   onActionButonClick: () => void;
@@ -25,6 +26,7 @@ const ActionModal = ({
   startAdornment,
   endAdornment,
   children,
+  cancelButtonDisabled = false,
   actionButtonDisabled = false,
   actionButtonName,
   onActionButonClick,
@@ -53,7 +55,9 @@ const ActionModal = ({
       </DialogTitle>
       <DialogContent className="sm:min-h-[80px] sm:min-w-[350px]">{children}</DialogContent>
       <DialogActions>
-        <TextButton onClick={onClose}>취소</TextButton>
+        <TextButton disabled={cancelButtonDisabled} onClick={onClose}>
+          취소
+        </TextButton>
         <FilledButton disabled={actionButtonDisabled} onClick={onActionButonClick}>
           {actionButtonName}
         </FilledButton>

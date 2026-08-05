@@ -101,11 +101,11 @@ const CATEGORIES: Category[] = [
         name: '세미나 출석',
         path: 'seminar',
       },
-      /* {
+      {
         id: 402,
-        name: '임원진 선거',
-        path: 'election',
-      }, */
+        name: '투표',
+        path: 'vote',
+      },
     ],
   },
   {
@@ -209,6 +209,12 @@ const CATEGORIES: Category[] = [
         name: '상벌점관리',
         path: 'meritManage',
         roles: [MEMBER_ROLE.회장, MEMBER_ROLE.부회장, MEMBER_ROLE.서기],
+      },
+      {
+        id: 707,
+        name: '투표관리',
+        path: 'voteManage',
+        roles: [MEMBER_ROLE.회장, MEMBER_ROLE.부회장],
       },
     ],
   },

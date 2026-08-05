@@ -6,11 +6,15 @@ import NotFound from '@pages/NotFound/NotFound';
 import Profile from '@pages/Profile/Profile';
 import SignUp from '@pages/SignUp/SignUp';
 import Study from '@pages/Study/Study';
+import VoteList from '@pages/Vote/VoteList';
+import VotePageContainer from '@pages/Vote/VotePageContainer';
+import VoteResult from '@pages/Vote/VoteResult';
 import ActiveMemberManage from '@pages/admin/ActiveMemberManage/ActiveMemberManage';
 import DutyManage from '@pages/admin/DutyManage/DutyManage';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
 import MeritManage from '@pages/admin/MeritManage/MeritManage';
 import SeminarManage from '@pages/admin/SeminarManage/SeminarManage';
+import VoteMange from '@pages/admin/VoteMange/VoteMange';
 import BoardList from '@pages/board/BoardList/BoardList';
 import BoardView from '@pages/board/BoardView/BoardView';
 import BoardWrite from '@pages/board/BoardWrite/BoardWrite';
@@ -114,6 +118,14 @@ const useMainRouter = () =>
                     </NeedAuth>
                   ),
                 },
+                {
+                  path: 'voteManage',
+                  element: (
+                    <NeedAuth>
+                      <VoteMange />
+                    </NeedAuth>
+                  ),
+                },
               ],
             },
             {
@@ -169,10 +181,30 @@ const useMainRouter = () =>
                 </NeedLogin>
               ),
             },
-            /* {
-              path: 'election',
-              element: <div />,
-            }, */
+            {
+              path: 'vote',
+              element: (
+                <NeedLogin>
+                  <VoteList />
+                </NeedLogin>
+              ),
+            },
+            {
+              path: 'vote/:voteId',
+              element: (
+                <NeedLogin>
+                  <VotePageContainer />
+                </NeedLogin>
+              ),
+            },
+            {
+              path: 'vote/:voteId/result',
+              element: (
+                <NeedLogin>
+                  <VoteResult />
+                </NeedLogin>
+              ),
+            },
             {
               path: 'rank',
               element: (

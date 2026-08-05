@@ -174,7 +174,7 @@ const StandardTable = <T extends Record<string, any>>({
           </TableBody>
         </Table>
       </Box>
-      <StandardTablePagination {...paginationOption} />
+      {paginationOption && <StandardTablePagination {...paginationOption} />}
     </div>
   );
 };
