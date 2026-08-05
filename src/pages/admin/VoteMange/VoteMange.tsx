@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import StandardTab from '@components/Tab/StandardTab';
-import VoteCreation from './Creation/VoteCreation';
+import VoteCreation from './Tab/Creation/VoteCreation';
 import VoteListTab from './Tab/VoteListTab';
 
 const voteManageTabs = [

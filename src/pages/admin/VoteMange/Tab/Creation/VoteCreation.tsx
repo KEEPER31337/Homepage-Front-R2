@@ -1,8 +1,11 @@
 import React, { FormEvent, useMemo, useState } from 'react';
 import { InputLabel, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
+import { toast } from 'react-hot-toast';
 
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
+import { useCreateVoteMutation } from '@api/voteApi';
+import { VoteCreationRequest } from '@api/voteDto';
 import ActionButton from '@components/Button/ActionButton';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -36,12 +39,16 @@ const createAgendaDraft = (): VoteAgendaDraft => ({
   options: [createOptionDraft(), createOptionDraft()],
 });
 
-const preventFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-};
-
 interface VoteCreationProps {
   onCancel: () => void;
+}
+
+interface VoteCreationErrorResponse {
+  response?: {
+    data?: {
+      message?: unknown;
+    };
+  };
 }
 
 interface MemberOption {
@@ -82,8 +89,17 @@ const parseBulkMemberEntry = (entry: string) => {
   };
 };
 
+const formatVoteRequestDateTime = (dateTime: DateTime) => dateTime.toFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+const getVoteCreationErrorMessage = (error: unknown) => {
+  const message = (error as VoteCreationErrorResponse)?.response?.data?.message;
+
+  return typeof message === 'string' && message.trim() ? message : '투표 생성에 실패했습니다.';
+};
+
 const VoteCreation = ({ onCancel }: VoteCreationProps) => {
   const { data: members, isPending: isMembersPending, isError: isMembersError } = useGetMemberInfoQuery();
+  const { mutate: createVote, isPending: isVoteCreationPending } = useCreateVoteMutation();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -153,7 +169,7 @@ const VoteCreation = ({ onCancel }: VoteCreationProps) => {
       agenda.title.trim() && agenda.options.every((option) => option.content.trim()) && hasValidSelectionRange,
     );
   });
-  const canCreateVote = Boolean(title.trim() && hasValidPeriod && hasValidAgendas);
+  const canCreateVote = Boolean(title.trim() && hasValidPeriod && hasValidAgendas && !isVoteCreationPending);
 
   const handleAgendaChange = (agendaId: number, patch: VoteAgendaPatch) => {
     setAgendas((currentAgendas) =>
@@ -271,9 +287,41 @@ const VoteCreation = ({ onCancel }: VoteCreationProps) => {
     setBulkMemberResult({ addedCount: membersToAdd.length, issues });
   };
 
+  const handleVoteCreate = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!canCreateVote || !startAt || !endAt) return;
+
+    const request: VoteCreationRequest = {
+      title: title.trim(),
+      description: description.trim() || null,
+      permitByUserIds: permittedMembers
+        .map(({ value }) => value)
+        .filter((memberId): memberId is number => typeof memberId === 'number'),
+      startAt: formatVoteRequestDateTime(startAt),
+      endAt: formatVoteRequestDateTime(endAt),
+      agendas: agendas.map((agenda) => ({
+        title: agenda.title.trim(),
+        minSelect: Number(agenda.minSelect),
+        maxSelect: Number(agenda.maxSelect),
+        options: agenda.options.map((option) => ({ content: option.content.trim() })),
+      })),
+    };
+
+    createVote(request, {
+      onSuccess: () => {
+        toast.success('투표를 생성했습니다.');
+        onCancel();
+      },
+      onError: (error) => {
+        toast.error(getVoteCreationErrorMessage(error));
+      },
+    });
+  };
+
   return (
     <div className="mx-auto max-w-4xl">
-      <form className="space-y-8" onSubmit={preventFormSubmit}>
+      <form className="space-y-8" onSubmit={handleVoteCreate}>
         <section className="rounded-sm border border-white/10 bg-middleBlack p-5 sm:p-7">
           <div className="mb-6">
             <Typography variant="h3" className="!font-semibold text-pointBlue">
@@ -468,11 +516,11 @@ const VoteCreation = ({ onCancel }: VoteCreationProps) => {
         </section>
 
         <div className="flex justify-end gap-2">
-          <TextButton type="button" onClick={onCancel}>
+          <TextButton type="button" disabled={isVoteCreationPending} onClick={onCancel}>
             취소
           </TextButton>
           <FilledButton type="submit" disabled={!canCreateVote}>
-            투표 생성
+            {isVoteCreationPending ? '생성 중...' : '투표 생성'}
           </FilledButton>
         </div>
       </form>

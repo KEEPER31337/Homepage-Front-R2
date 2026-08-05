@@ -4,6 +4,8 @@ import {
   GetAdminVotesResponse,
   GetVotesResponse,
   VoteAgendaInfo,
+  VoteCreationRequest,
+  VoteCreationResponse,
   VoteDetail,
   VoteListItem,
   VoteParticipationRequest,
@@ -18,7 +20,7 @@ const formatApiDateTime = (dateTime: DateTime) => dateTime.toFormat("yyyy-MM-dd'
 const currentMonthStart = DateTime.now().startOf('month').set({ hour: 9 });
 const currentMonthEnd = DateTime.now().endOf('month').set({ millisecond: 0 });
 
-const createVoteMockError = (status: 403 | 404 | 409, message: string) =>
+const createVoteMockError = (status: 400 | 403 | 404 | 409, message: string) =>
   Object.assign(new Error(message), {
     response: {
       status,
@@ -260,6 +262,12 @@ const voteDetails: VoteDetail[] = [
   ]),
 ];
 
+let nextVoteId = Math.max(0, ...voteList.map(({ id }) => id)) + 1;
+let nextAgendaId = Math.max(0, ...voteDetails.flatMap((vote) => vote.agendas.map(({ id }) => id))) + 1;
+let nextOptionId =
+  Math.max(0, ...voteDetails.flatMap((vote) => vote.agendas.flatMap((agenda) => agenda.options.map(({ id }) => id)))) +
+  1;
+
 const voteResultParticipantPool: VoteResultParticipation[] = [
   { realName: '강키퍼', generation: '17.5' },
   { realName: '김키퍼', generation: '18.0' },
@@ -287,6 +295,118 @@ const getAdminVotesMock = async (year: number): Promise<GetAdminVotesResponse> =
     }))
     .toSorted(compareVotesByNewest),
 });
+
+const validateVoteCreationRequest = (request: VoteCreationRequest) => {
+  const startAt = DateTime.fromISO(request.startAt);
+  const endAt = DateTime.fromISO(request.endAt);
+
+  if (!request.title.trim()) {
+    throw createVoteMockError(400, '투표 제목을 입력해 주세요.');
+  }
+
+  if (request.title.length > 500) {
+    throw createVoteMockError(400, '투표 제목은 최대 500자까지 입력할 수 있습니다.');
+  }
+
+  if (request.description && request.description.length > 16_383) {
+    throw createVoteMockError(400, '투표 설명은 최대 16,383자까지 입력할 수 있습니다.');
+  }
+
+  if (!startAt.isValid || !endAt.isValid || startAt.toMillis() >= endAt.toMillis()) {
+    throw createVoteMockError(400, '투표 시작 시각은 종료 시각보다 빨라야 합니다.');
+  }
+
+  if (request.permitByUserIds.some((memberId) => !Number.isInteger(memberId) || memberId <= 0)) {
+    throw createVoteMockError(400, '참여 허용 회원 ID는 양수여야 합니다.');
+  }
+
+  if (request.agendas.length === 0) {
+    throw createVoteMockError(400, '안건을 하나 이상 입력해 주세요.');
+  }
+
+  request.agendas.forEach((agenda) => {
+    if (!agenda.title.trim() || agenda.title.length > 500) {
+      throw createVoteMockError(400, '안건 제목을 1자 이상 500자 이하로 입력해 주세요.');
+    }
+
+    if (agenda.options.length === 0) {
+      throw createVoteMockError(400, '각 안건에 선택지를 하나 이상 입력해 주세요.');
+    }
+
+    if (agenda.options.some((option) => !option.content.trim() || option.content.length > 500)) {
+      throw createVoteMockError(400, '선택지 내용을 1자 이상 500자 이하로 입력해 주세요.');
+    }
+
+    const hasValidSelectionRange =
+      Number.isInteger(agenda.minSelect) &&
+      Number.isInteger(agenda.maxSelect) &&
+      agenda.minSelect >= 1 &&
+      agenda.minSelect <= agenda.maxSelect &&
+      agenda.maxSelect <= agenda.options.length;
+
+    if (!hasValidSelectionRange) {
+      throw createVoteMockError(400, '최소 선택 수는 최대 선택 수 이하이고, 최대 선택 수는 선택지 수 이하여야 합니다.');
+    }
+  });
+};
+
+const createVoteMock = async (request: VoteCreationRequest): Promise<VoteCreationResponse> => {
+  validateVoteCreationRequest(request);
+
+  const voteId = nextVoteId;
+  nextVoteId += 1;
+
+  const agendas: VoteAgendaInfo[] = request.agendas.map((agenda) => ({
+    id: nextAgendaId++,
+    title: agenda.title,
+    minSelect: agenda.minSelect,
+    maxSelect: agenda.maxSelect,
+    options: agenda.options.map((option) => ({ id: nextOptionId++, content: option.content })),
+  }));
+  const now = DateTime.now().toMillis();
+  const isVotingPeriod =
+    DateTime.fromISO(request.startAt).toMillis() <= now && now < DateTime.fromISO(request.endAt).toMillis();
+
+  voteList.push({
+    id: voteId,
+    title: request.title,
+    description: request.description,
+    startAt: request.startAt,
+    endAt: request.endAt,
+    participated: isVotingPeriod ? (request.permitByUserIds.length > 0 ? 1 : 2) : 4,
+  });
+  adminVoteMetadata.set(voteId, {
+    permitByUserIds: [...request.permitByUserIds],
+    participantCount: 0,
+  });
+  voteDetails.push({
+    id: voteId,
+    title: request.title,
+    description: request.description,
+    startAt: request.startAt,
+    endAt: request.endAt,
+    agendas,
+  });
+
+  return { id: voteId };
+};
+
+const deleteVoteMock = async (voteId: number): Promise<void> => {
+  const voteIndex = voteList.findIndex(({ id }) => id === voteId);
+
+  if (voteIndex === -1) {
+    throw createVoteMockError(404, `[voteId] ${voteId}: 존재하지 않는 투표입니다.`);
+  }
+
+  voteList.splice(voteIndex, 1);
+  adminVoteMetadata.delete(voteId);
+
+  const voteDetailIndex = voteDetails.findIndex(({ id }) => id === voteId);
+
+  if (voteDetailIndex !== -1) {
+    voteDetails.splice(voteDetailIndex, 1);
+  }
+};
 
 const getVoteMock = async (voteId: number): Promise<VoteDetail> => {
   const vote = voteDetails.find(({ id }) => id === voteId);
@@ -363,4 +483,12 @@ const participateVoteMock = async (
   return response;
 };
 
-export { getAdminVotesMock, getVoteMock, getVoteResultMock, getVotesMock, participateVoteMock };
+export {
+  createVoteMock,
+  deleteVoteMock,
+  getAdminVotesMock,
+  getVoteMock,
+  getVoteResultMock,
+  getVotesMock,
+  participateVoteMock,
+};

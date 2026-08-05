@@ -12,10 +12,12 @@ import { VscChevronDown } from 'react-icons/vsc';
 
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import { useGetAdminVoteListQuery } from '@api/voteApi';
+import { AdminVoteListItem } from '@api/voteDto';
 import ActionButton from '@components/Button/ActionButton';
 import MemberChip from '@components/Chip/MemberChip';
 import Selector from '@components/Selector/Selector';
 import { formatVoteDateTime } from '@utils/date';
+import DeleteVoteModal from '../Modal/DeleteVoteModal';
 
 const CURRENT_YEAR = DateTime.now().year;
 
@@ -26,6 +28,7 @@ const yearList = Array.from({ length: 5 }, (_, index) => ({
 
 const VoteListTab = () => {
   const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR);
+  const [voteToDelete, setVoteToDelete] = useState<AdminVoteListItem | null>(null);
   const { data: votes = [], isPending, isError } = useGetAdminVoteListQuery(selectedYear);
   const { data: members, isPending: isMembersPending, isError: isMembersError } = useGetMemberInfoQuery();
   const membersById = useMemo(() => new Map((members ?? []).map((member) => [member.memberId, member])), [members]);
@@ -114,7 +117,7 @@ const VoteListTab = () => {
             </div>
 
             <div className="flex justify-end border-t border-white/10 pt-6">
-              <ActionButton mode="delete" type="button">
+              <ActionButton mode="delete" type="button" onClick={() => setVoteToDelete(vote)}>
                 삭제하기
               </ActionButton>
             </div>
@@ -131,6 +134,8 @@ const VoteListTab = () => {
       </div>
 
       {content}
+
+      <DeleteVoteModal vote={voteToDelete} onClose={() => setVoteToDelete(null)} />
     </div>
   );
 };

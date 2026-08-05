@@ -1,17 +1,28 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  createVoteMock,
+  deleteVoteMock,
   getAdminVotesMock,
   getVoteMock,
   getVoteResultMock,
   getVotesMock,
   participateVoteMock,
 } from '@mocks/voteApiMock';
-import { AdminVoteListItem, VoteDetail, VoteListItem, VoteParticipationRequest, VoteResultResponse } from './voteDto';
+import {
+  AdminVoteListItem,
+  VoteCreationRequest,
+  VoteCreationResponse,
+  VoteDetail,
+  VoteListItem,
+  VoteParticipationRequest,
+  VoteResultResponse,
+} from './voteDto';
 
 const voteKeys = {
   base: ['votes'] as const,
   listAll: () => [...voteKeys.base, 'list'] as const,
   list: (year: number) => [...voteKeys.base, 'list', year] as const,
+  adminListAll: () => [...voteKeys.base, 'admin', 'list'] as const,
   adminList: (year: number) => [...voteKeys.base, 'admin', 'list', year] as const,
   detail: (voteId: number) => [...voteKeys.base, 'detail', voteId] as const,
   result: (voteId: number) => [...voteKeys.base, 'result', voteId] as const,
@@ -55,6 +66,30 @@ const useGetVoteResultQuery = ({ voteId, enabled = true }: { voteId: number; ena
   });
 };
 
+const useCreateVoteMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<VoteCreationResponse, Error, VoteCreationRequest>({
+    mutationFn: createVoteMock,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: voteKeys.listAll() });
+      queryClient.invalidateQueries({ queryKey: voteKeys.adminListAll() });
+    },
+  });
+};
+
+const useDeleteVoteMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, number>({
+    mutationFn: deleteVoteMock,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: voteKeys.listAll() });
+      queryClient.invalidateQueries({ queryKey: voteKeys.adminListAll() });
+    },
+  });
+};
+
 const useParticipateVoteMutation = (voteId: number) => {
   const queryClient = useQueryClient();
   const fetcher = (request: VoteParticipationRequest) => participateVoteMock(voteId, request);
@@ -68,6 +103,8 @@ const useParticipateVoteMutation = (voteId: number) => {
 };
 
 export {
+  useCreateVoteMutation,
+  useDeleteVoteMutation,
   useGetAdminVoteListQuery,
   useGetVoteListQuery,
   useGetVoteQuery,

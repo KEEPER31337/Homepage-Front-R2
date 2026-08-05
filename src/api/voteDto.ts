@@ -22,6 +22,26 @@ interface GetAdminVotesResponse {
   votes: AdminVoteListItem[];
 }
 
+interface VoteCreationRequest {
+  title: string;
+  description: string | null;
+  permitByUserIds: number[];
+  startAt: string;
+  endAt: string;
+  agendas: {
+    title: string;
+    minSelect: number;
+    maxSelect: number;
+    options: {
+      content: string;
+    }[];
+  }[];
+}
+
+interface VoteCreationResponse {
+  id: number;
+}
+
 interface VoteOptionInfo {
   id: number;
   content: string;
@@ -93,6 +113,8 @@ export type {
   GetAdminVotesResponse,
   GetVotesResponse,
   VoteAgendaInfo,
+  VoteCreationRequest,
+  VoteCreationResponse,
   VoteDetail,
   VoteListItem,
   VoteOptionInfo,
