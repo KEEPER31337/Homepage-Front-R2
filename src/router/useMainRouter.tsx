@@ -119,11 +119,11 @@ const useMainRouter = () =>
                   ),
                 },
                 {
-                  path: 'voteManage' /* todo: 추후 변경 NeedLogin -> NeedAuth */,
+                  path: 'voteManage',
                   element: (
-                    <NeedLogin>
+                    <NeedAuth>
                       <VoteMange />
-                    </NeedLogin>
+                    </NeedAuth>
                   ),
                 },
               ],
