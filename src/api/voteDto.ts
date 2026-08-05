@@ -44,6 +44,27 @@ interface VoteDetail {
   agendas: VoteAgendaInfo[];
 }
 
+interface VoteResultParticipation {
+  realName: string;
+  generation: string;
+}
+
+interface VoteResultChoice {
+  agendaId: number;
+  optionIds: number[];
+}
+
+interface VoteResultReceiptTokenChoice {
+  receiptToken: string;
+  choices: VoteResultChoice[];
+}
+
+interface VoteResultResponse {
+  participations: VoteResultParticipation[];
+  receiptTokenChoices: VoteResultReceiptTokenChoice[];
+  vote: VoteDetail;
+}
+
 interface VoteParticipationRequest {
   selections: {
     agendaId: number;
@@ -80,4 +101,8 @@ export type {
   VoteParticipationResponse,
   VoteParticipationSelection,
   VoteParticipationStatus,
+  VoteResultChoice,
+  VoteResultParticipation,
+  VoteResultReceiptTokenChoice,
+  VoteResultResponse,
 };

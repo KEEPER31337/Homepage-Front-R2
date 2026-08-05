@@ -8,6 +8,8 @@ import {
   VoteListItem,
   VoteParticipationRequest,
   VoteParticipationResponse,
+  VoteResultParticipation,
+  VoteResultResponse,
 } from '@api/voteDto';
 
 const CURRENT_YEAR = DateTime.now().year;
@@ -16,7 +18,7 @@ const formatApiDateTime = (dateTime: DateTime) => dateTime.toFormat("yyyy-MM-dd'
 const currentMonthStart = DateTime.now().startOf('month').set({ hour: 9 });
 const currentMonthEnd = DateTime.now().endOf('month').set({ millisecond: 0 });
 
-const createVoteMockError = (status: 403 | 404, message: string) =>
+const createVoteMockError = (status: 403 | 404 | 409, message: string) =>
   Object.assign(new Error(message), {
     response: {
       status,
@@ -198,8 +200,75 @@ const voteDetails: VoteDetail[] = [
         { id: 14, content: '최키퍼' },
       ],
     },
+    {
+      id: 7,
+      title: '회칙 개정안',
+      minSelect: 1,
+      maxSelect: 1,
+      options: [
+        { id: 25, content: '찬성' },
+        { id: 26, content: '반대' },
+        { id: 27, content: '기권' },
+      ],
+    },
+    {
+      id: 8,
+      title: '하반기 행사 방식',
+      minSelect: 1,
+      maxSelect: 1,
+      options: [
+        { id: 28, content: '오프라인' },
+        { id: 29, content: '온라인' },
+      ],
+    },
+  ]),
+  createVoteDetail(103, [
+    {
+      id: 1031,
+      title: '회장단 선출',
+      minSelect: 1,
+      maxSelect: 1,
+      options: [
+        { id: 10301, content: '김키퍼·이키퍼 후보' },
+        { id: 10302, content: '박키퍼·최키퍼 후보' },
+      ],
+    },
+  ]),
+  createVoteDetail(102, [
+    {
+      id: 1021,
+      title: '회장단 선출',
+      minSelect: 1,
+      maxSelect: 1,
+      options: [
+        { id: 10201, content: '정키퍼·한키퍼 후보' },
+        { id: 10202, content: '윤키퍼·장키퍼 후보' },
+      ],
+    },
+  ]),
+  createVoteDetail(101, [
+    {
+      id: 1011,
+      title: '회장단 선출',
+      minSelect: 1,
+      maxSelect: 1,
+      options: [
+        { id: 10101, content: '임키퍼·조키퍼 후보' },
+        { id: 10102, content: '신키퍼·오키퍼 후보' },
+      ],
+    },
   ]),
 ];
+
+const voteResultParticipantPool: VoteResultParticipation[] = [
+  { realName: '강키퍼', generation: '17.5' },
+  { realName: '김키퍼', generation: '18.0' },
+  { realName: '이키퍼', generation: '18.0' },
+  { realName: '홍키퍼', generation: '17.5' },
+];
+
+const createReceiptToken = (voteId: number, index: number) =>
+  `${voteId.toString(16).padStart(8, '0')}-0000-4000-8000-${String(index + 1).padStart(12, '0')}`;
 
 const getVotesMock = async (year: number): Promise<GetVotesResponse> => ({
   votes: voteList.filter(({ startAt }) => DateTime.fromISO(startAt).year === year).toSorted(compareVotesByNewest),
@@ -233,6 +302,36 @@ const getVoteMock = async (voteId: number): Promise<VoteDetail> => {
   throw createVoteMockError(404, `[voteId] ${voteId}: 존재하지 않는 투표입니다.`);
 };
 
+const getVoteResultMock = async (voteId: number): Promise<VoteResultResponse> => {
+  const vote = voteList.find(({ id }) => id === voteId);
+
+  if (!vote) {
+    throw createVoteMockError(404, `[voteId] ${voteId}: 존재하지 않는 투표입니다.`);
+  }
+
+  if (DateTime.now().toMillis() < DateTime.fromISO(vote.endAt).toMillis()) {
+    throw createVoteMockError(409, `[voteId] ${voteId}: 투표가 종료된 후 결과를 조회할 수 있습니다.`);
+  }
+
+  const voteDetail = voteDetails.find(({ id }) => id === voteId);
+
+  if (!voteDetail) {
+    throw createVoteMockError(404, `[voteId] ${voteId}: 존재하지 않는 투표입니다.`);
+  }
+
+  const participantCount = adminVoteMetadata.get(voteId)?.participantCount ?? 0;
+  const participations = voteResultParticipantPool.slice(0, participantCount);
+  const receiptTokenChoices = participations.map((_, participantIndex) => ({
+    receiptToken: createReceiptToken(voteId, participantIndex),
+    choices: voteDetail.agendas.map((agenda) => ({
+      agendaId: agenda.id,
+      optionIds: agenda.options.length === 0 ? [] : [agenda.options[participantIndex % agenda.options.length].id],
+    })),
+  }));
+
+  return { participations, receiptTokenChoices, vote: voteDetail };
+};
+
 const participateVoteMock = async (
   voteId: number,
   request: VoteParticipationRequest,
@@ -264,4 +363,4 @@ const participateVoteMock = async (
   return response;
 };
 
-export { getAdminVotesMock, getVoteMock, getVotesMock, participateVoteMock };
+export { getAdminVotesMock, getVoteMock, getVoteResultMock, getVotesMock, participateVoteMock };

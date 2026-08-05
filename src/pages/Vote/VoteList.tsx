@@ -33,6 +33,12 @@ const participationLabels: Record<VoteParticipationStatus, string> = {
   4: '투표 기간이 아님',
 };
 
+const isVoteEnded = (endAt: string) => {
+  const parsedEndAt = DateTime.fromISO(endAt);
+
+  return parsedEndAt.isValid && DateTime.now().toMillis() >= parsedEndAt.toMillis();
+};
+
 const VoteList = () => {
   const navigate = useNavigate();
   const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR);
@@ -102,13 +108,17 @@ const VoteList = () => {
               </Typography>
             </div>
             <div className="flex justify-end">
-              <FilledButton
-                className="disabled:!bg-subGray disabled:!text-white/60"
-                disabled={vote.participated !== 1}
-                onClick={() => navigate(`/vote/${vote.id}`)}
-              >
-                투표하기
-              </FilledButton>
+              {isVoteEnded(vote.endAt) ? (
+                <FilledButton onClick={() => navigate(`/votes/${vote.id}/result`)}>결과 보기</FilledButton>
+              ) : (
+                <FilledButton
+                  className="disabled:!bg-subGray disabled:!text-white/60"
+                  disabled={vote.participated !== 1}
+                  onClick={() => navigate(`/vote/${vote.id}`)}
+                >
+                  투표하기
+                </FilledButton>
+              )}
             </div>
           </div>
         </AccordionDetails>

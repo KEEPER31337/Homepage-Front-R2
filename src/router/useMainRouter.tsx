@@ -8,6 +8,7 @@ import SignUp from '@pages/SignUp/SignUp';
 import Study from '@pages/Study/Study';
 import VoteList from '@pages/Vote/VoteList';
 import VotePageContainer from '@pages/Vote/VotePageContainer';
+import VoteResult from '@pages/Vote/VoteResult';
 import ActiveMemberManage from '@pages/admin/ActiveMemberManage/ActiveMemberManage';
 import DutyManage from '@pages/admin/DutyManage/DutyManage';
 import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
@@ -118,11 +119,11 @@ const useMainRouter = () =>
                   ),
                 },
                 {
-                  path: 'voteManage',
+                  path: 'voteManage' /* todo: 추후 변경 NeedLogin -> NeedAuth */,
                   element: (
-                    <NeedAuth>
+                    <NeedLogin>
                       <VoteMange />
-                    </NeedAuth>
+                    </NeedLogin>
                   ),
                 },
               ],
@@ -193,6 +194,14 @@ const useMainRouter = () =>
               element: (
                 <NeedLogin>
                   <VotePageContainer />
+                </NeedLogin>
+              ),
+            },
+            {
+              path: 'votes/:voteId/result',
+              element: (
+                <NeedLogin>
+                  <VoteResult />
                 </NeedLogin>
               ),
             },

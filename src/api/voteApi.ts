@@ -1,6 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getAdminVotesMock, getVoteMock, getVotesMock, participateVoteMock } from '@mocks/voteApiMock';
-import { AdminVoteListItem, VoteDetail, VoteListItem, VoteParticipationRequest } from './voteDto';
+import {
+  getAdminVotesMock,
+  getVoteMock,
+  getVoteResultMock,
+  getVotesMock,
+  participateVoteMock,
+} from '@mocks/voteApiMock';
+import { AdminVoteListItem, VoteDetail, VoteListItem, VoteParticipationRequest, VoteResultResponse } from './voteDto';
 
 const voteKeys = {
   base: ['votes'] as const,
@@ -8,6 +14,7 @@ const voteKeys = {
   list: (year: number) => [...voteKeys.base, 'list', year] as const,
   adminList: (year: number) => [...voteKeys.base, 'admin', 'list', year] as const,
   detail: (voteId: number) => [...voteKeys.base, 'detail', voteId] as const,
+  result: (voteId: number) => [...voteKeys.base, 'result', voteId] as const,
 };
 
 const useGetVoteListQuery = (year: number) => {
@@ -38,6 +45,16 @@ const useGetVoteQuery = ({ voteId, enabled = true }: { voteId: number; enabled?:
   });
 };
 
+const useGetVoteResultQuery = ({ voteId, enabled = true }: { voteId: number; enabled?: boolean }) => {
+  const fetcher = () => getVoteResultMock(voteId);
+
+  return useQuery<VoteResultResponse>({
+    queryKey: voteKeys.result(voteId),
+    queryFn: fetcher,
+    enabled,
+  });
+};
+
 const useParticipateVoteMutation = (voteId: number) => {
   const queryClient = useQueryClient();
   const fetcher = (request: VoteParticipationRequest) => participateVoteMock(voteId, request);
@@ -50,4 +67,11 @@ const useParticipateVoteMutation = (voteId: number) => {
   });
 };
 
-export { useGetAdminVoteListQuery, useGetVoteListQuery, useGetVoteQuery, useParticipateVoteMutation, voteKeys };
+export {
+  useGetAdminVoteListQuery,
+  useGetVoteListQuery,
+  useGetVoteQuery,
+  useGetVoteResultQuery,
+  useParticipateVoteMutation,
+  voteKeys,
+};
