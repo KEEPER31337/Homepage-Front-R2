@@ -109,7 +109,7 @@ const VoteList = () => {
             </div>
             <div className="flex justify-end">
               {isVoteEnded(vote.endAt) ? (
-                <FilledButton onClick={() => navigate(`/votes/${vote.id}/result`)}>결과 보기</FilledButton>
+                <FilledButton onClick={() => navigate(`/vote/${vote.id}/result`)}>결과 보기</FilledButton>
               ) : (
                 <FilledButton
                   className="disabled:!bg-subGray disabled:!text-white/60"

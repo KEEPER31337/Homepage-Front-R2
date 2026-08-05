@@ -210,6 +210,12 @@ const CATEGORIES: Category[] = [
         path: 'meritManage',
         roles: [MEMBER_ROLE.회장, MEMBER_ROLE.부회장, MEMBER_ROLE.서기],
       },
+      {
+        id: 707,
+        name: '투표관리',
+        path: 'voteManage',
+        roles: [MEMBER_ROLE.회장, MEMBER_ROLE.부회장],
+      },
     ],
   },
 ];

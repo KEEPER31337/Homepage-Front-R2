@@ -198,7 +198,7 @@ const useMainRouter = () =>
               ),
             },
             {
-              path: 'votes/:voteId/result',
+              path: 'vote/:voteId/result',
               element: (
                 <NeedLogin>
                   <VoteResult />
