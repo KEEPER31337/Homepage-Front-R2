@@ -230,9 +230,9 @@ const useGetExamPostFilesAccessQuery = (postId: number, enabled: boolean) => {
       default: () => undefined,
     },
   });
-  const fetcher = () => axios.get(`/posts/${postId}/exam-files-access`).then(() => undefined);
+  const fetcher = () => axios.get(`/posts/${postId}/exam-files-access`).then(() => true);
 
-  const query = useQuery<void>({
+  const query = useQuery<boolean>({
     queryKey: postKeys.examFilesAccess(postId),
     queryFn: fetcher,
     enabled,
