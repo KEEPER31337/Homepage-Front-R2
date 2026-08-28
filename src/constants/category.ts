@@ -79,6 +79,11 @@ const CATEGORIES: Category[] = [
         name: '회계부',
         path: 'board/회계부',
       },
+      {
+        id: 205,
+        name: '운영진',
+        path: 'duty',
+      },
     ],
   },
   {

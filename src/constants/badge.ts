@@ -22,6 +22,12 @@ const roles = [
   { name: MEMBER_ROLE.FRONT_전산관리자, img: ITManagerBadge },
   { name: MEMBER_ROLE.BACK_전산관리자, img: ITManagerBadge },
   { name: MEMBER_ROLE.INFRA_전산관리자, img: ITManagerBadge },
+  { name: MEMBER_ROLE.대외부원, img: externalManagerBadge },
+  { name: MEMBER_ROLE.학술부원, img: studyManagerBadge },
+  { name: MEMBER_ROLE.전산관리부원, img: ITManagerBadge },
+  { name: MEMBER_ROLE.사서부원, img: librarianBadge },
+  { name: MEMBER_ROLE.서기부원, img: clerkBadge },
+  { name: MEMBER_ROLE.총무부원, img: administratorBadge },
 ];
 
 const types: { [key: string]: string } = { 정회원: regularBadge, 졸업: graduateBadge, 휴면회원: sleepBadge };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Typography } from '@mui/material';
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
+import { ExecutiveInfo } from '@api/dto';
 import { MEMBER_ROLE } from '@constants/member';
 import muiTheme from '@constants/muiTheme';
 import { convertJobName } from '@mocks/DutyManageApi';
@@ -10,12 +11,24 @@ interface DutyProfileButtonProps {
   badgeImage?: string;
   setTooltipOpen: (open: boolean) => void;
   toggleModalOpen: () => void;
+  executiveInfo?: ExecutiveInfo | null;
+  emptyRoleName?: string;
 }
 
-const DutyProfileButton = ({ jobName, badgeImage, setTooltipOpen, toggleModalOpen }: DutyProfileButtonProps) => {
+const DutyProfileButton = ({
+  jobName,
+  badgeImage,
+  setTooltipOpen,
+  toggleModalOpen,
+  executiveInfo: explicitExecutiveInfo,
+  emptyRoleName,
+}: DutyProfileButtonProps) => {
   const { data: executiveInfos } = useGetExecutiveInfoQuery();
-  const roleName = convertJobName.find((data) => data.JobName === jobName)?.roleName;
-  const executiveInfo = executiveInfos?.find((role) => role.jobName === jobName);
+  const roleName = convertJobName.find((data) => data.JobName === jobName)?.roleName ?? emptyRoleName;
+  const executiveInfo =
+    explicitExecutiveInfo === undefined
+      ? executiveInfos?.find((role) => role.jobName === jobName)
+      : explicitExecutiveInfo;
 
   const handleCreateRoleModalButtonClick = () => {
     setTooltipOpen(false);
@@ -50,7 +63,13 @@ const DutyProfileButton = ({ jobName, badgeImage, setTooltipOpen, toggleModalOpe
       <Typography variant="h3" sx={{ fontWeight: 600, color: 'white' }}>
         {roleName}
       </Typography>
-      <img className="h-[100px] w-[100px]" alt={jobName} src={badgeImage} />
+      {badgeImage ? (
+        <img className="h-[100px] w-[100px]" alt={jobName} src={badgeImage} />
+      ) : (
+        <div className="flex h-[80px] w-[80px] p-4 m-4 items-center justify-center rounded border border-dashed border-subGray text-subGray">
+          미배정
+        </div>
+      )}
       <div className="flex h-12 flex-col justify-center">
         {executiveInfo && (
           <Typography sx={{ fontWeight: 600, color: 'white', display: 'flex', gap: '4px' }}>
