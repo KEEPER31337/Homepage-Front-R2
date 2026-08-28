@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Collapse, Fab } from '@mui/material';
 import { VscAdd, VscDash } from 'react-icons/vsc';
 import { useAtomValue } from 'jotai';
+import backgroundGalaxyImage from '@assets/home/background_galaxy.png';
 import memberState from '@recoil/member.recoil';
 import Activity from './Activity';
 import Excellence from './Excellence';
@@ -36,7 +37,11 @@ const Home = () => {
   }, [member]);
 
   return (
-    <div ref={mainStartRef} className="-mt-14 w-full bg-galaxy bg-contain bg-repeat sm:-mt-header">
+    <div
+      ref={mainStartRef}
+      className="-mt-14 w-full bg-contain bg-repeat sm:-mt-header"
+      style={{ backgroundImage: `url(${backgroundGalaxyImage})` }}
+    >
       <Intro />
       <Collapse ref={aboutStartRef} in={isAboutExpended}>
         <Activity />

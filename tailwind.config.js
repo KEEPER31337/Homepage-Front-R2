@@ -33,9 +33,6 @@ export const theme = {
     minWidth: {
       sidebar: KEEPER_WIDTH.sidebar,
     },
-    backgroundImage: {
-      galaxy: "url('/public/img/background_galaxy.png')",
-    },
     keyframes: {
       typing: {
         '0%': {
