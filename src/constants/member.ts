@@ -23,6 +23,14 @@ export const MEMBER_ROLE = {
   FRONT_전산관리자: `${MEMBER_ROLE_PREFIX}FRONT_전산관리자`,
   BACK_전산관리자: `${MEMBER_ROLE_PREFIX}BACK_전산관리자`,
   INFRA_전산관리자: `${MEMBER_ROLE_PREFIX}INFRA_전산관리자`,
+  대외부원: `${MEMBER_ROLE_PREFIX}대외부원`,
+  학술부원: `${MEMBER_ROLE_PREFIX}학술부원`,
+  전산관리부원: `${MEMBER_ROLE_PREFIX}전산관리부원`,
+  사서부원: `${MEMBER_ROLE_PREFIX}사서부원`,
+  서기부원: `${MEMBER_ROLE_PREFIX}서기부원`,
+  총무부원: `${MEMBER_ROLE_PREFIX}총무부원`,
   회원: `${MEMBER_ROLE_PREFIX}회원`,
   출제자: `${MEMBER_ROLE_PREFIX}출제자`,
 } as const;
+
+export const isJuniorExecutiveRole = (role: string) => role.startsWith(MEMBER_ROLE_PREFIX) && role.endsWith('부원');

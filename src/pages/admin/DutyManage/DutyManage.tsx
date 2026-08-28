@@ -1,6 +1,8 @@
-import React from 'react';
-import { MEMBER_ROLE } from '@constants/member';
+import React, { useMemo } from 'react';
+import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
 import PageTitle from '@components/Typography/PageTitle';
+import { isJuniorExecutiveRole, MEMBER_ROLE } from '@constants/member';
+import JuniorMemberProfileCard from './Button/JuniorMemberProfileCard';
 import DutyProfileTooltip from './Tooltip/DutyProfileTooltip';
 
 const jobNameArray = [
@@ -54,6 +56,48 @@ const ItBar = () => {
   );
 };
 
+const JuniorMemberBar = () => {
+  const { data: executiveInfos } = useGetExecutiveInfoQuery();
+  const juniorAssignments = useMemo(
+    () =>
+      (executiveInfos ?? [])
+        .filter((info) => isJuniorExecutiveRole(info.jobName))
+        .sort((a, b) => a.jobId - b.jobId || a.memberId - b.memberId),
+    [executiveInfos],
+  );
+  const visibleAssignments = juniorAssignments.slice(0, jobNameArray.length);
+
+  return (
+    <div className="mt-16 w-full">
+      <div className="mb-4 text-center text-xl font-semibold text-white">부원</div>
+
+      <div className="relative w-full">
+        <div className="absolute bottom-1/2 right-[8.8%] h-0 w-[83%] translate-y-1/2 border-2 border-pointBlue" />
+        <div className="flex w-full flex-row justify-around">
+          {jobNameArray.map((content) => (
+            <div
+              key={content.key}
+              className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-pointBlue bg-subBlack"
+            >
+              <div className="h-4 w-4 rounded-full bg-pointBlue" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-2 flex w-full flex-row items-start justify-around">
+        {jobNameArray.map((content, index) => (
+          <JuniorMemberProfileCard
+            key={content.key}
+            assignment={visibleAssignments[index]}
+            juniorAssignments={juniorAssignments}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const ViceChairman = () => {
   return (
     <div className="relative w-full">
@@ -97,6 +141,8 @@ const DutyManage = () => {
             ))}
           </div>
         </div>
+
+        <JuniorMemberBar />
       </div>
     </div>
   );

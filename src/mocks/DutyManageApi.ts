@@ -93,6 +93,12 @@ const roles = [
   { name: MEMBER_ROLE.서기, img: clerkBadge },
   { name: MEMBER_ROLE.총무, img: administratorBadge },
   { name: MEMBER_ROLE.사서, img: librarianBadge },
+  { name: MEMBER_ROLE.대외부원, img: externalManagerBadge },
+  { name: MEMBER_ROLE.학술부원, img: studyManagerBadge },
+  { name: MEMBER_ROLE.전산관리부원, img: ITManagerBadge },
+  { name: MEMBER_ROLE.사서부원, img: librarianBadge },
+  { name: MEMBER_ROLE.서기부원, img: clerkBadge },
+  { name: MEMBER_ROLE.총무부원, img: administratorBadge },
 ];
 
 export type JobInfoType = {
@@ -112,6 +118,12 @@ const convertJobName: Array<JobInfoType> = [
   { JobName: 'ROLE_사서', roleName: '사서' },
   { JobName: 'ROLE_INFRA_전산관리자', roleName: 'INFRA' },
   { JobName: 'ROLE_전산관리자', roleName: '전산관리자' },
+  { JobName: 'ROLE_대외부원', roleName: '대외부원' },
+  { JobName: 'ROLE_학술부원', roleName: '학술부원' },
+  { JobName: 'ROLE_전산관리부원', roleName: '전산관리부원' },
+  { JobName: 'ROLE_사서부원', roleName: '사서부원' },
+  { JobName: 'ROLE_서기부원', roleName: '서기부원' },
+  { JobName: 'ROLE_총무부원', roleName: '총무부원' },
 ];
 
 export { roleDutyListInfo, roles, convertJobName };

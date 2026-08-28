@@ -13,6 +13,12 @@ export type Role =
   | 'ROLE_FRONT_전산관리자'
   | 'ROLE_BACK_전산관리자'
   | 'ROLE_INFRA_전산관리자'
+  | 'ROLE_대외부원'
+  | 'ROLE_학술부원'
+  | 'ROLE_전산관리부원'
+  | 'ROLE_사서부원'
+  | 'ROLE_서기부원'
+  | 'ROLE_총무부원'
   | 'ROLE_회원'
   | 'ROLE_출제자';
 
