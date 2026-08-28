@@ -4,7 +4,9 @@ import { pluginSvgr } from '@rsbuild/plugin-svgr';
 
 export default defineConfig({
   plugins: [
-    pluginReact(),
+    pluginReact({
+      reactCompiler: true,
+    }),
     pluginSvgr({
       mixedImport: true,
     }),
@@ -18,15 +20,17 @@ export default defineConfig({
     },
   },
   server: {
-      proxy: {
-        '/dev-proxy-api': {
-          target: 'https://api.keeper.or.kr',
-          changeOrigin: true,
-          pathRewrite: {
-            '^/dev-proxy-api': '',
-          },
-          cookieDomainRewrite: '',
+    proxy: {
+      '/dev-proxy-api': {
+        target: 'https://api.keeper.or.kr',
+        headers: {
+          origin: 'https://api.keeper.or.kr',
         },
+        pathRewrite: {
+          '^/dev-proxy-api': '',
+        },
+        cookieDomainRewrite: '',
       },
     },
+  },
 });
