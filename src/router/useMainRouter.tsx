@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRoutes } from 'react-router-dom';
+import Duty from '@pages/Duty/Duty';
 import Game from '@pages/Game/Game';
 import Library from '@pages/Library/Library';
 import NotFound from '@pages/NotFound/NotFound';
@@ -162,6 +163,14 @@ const useMainRouter = () =>
               element: (
                 <NeedLogin>
                   <Study />
+                </NeedLogin>
+              ),
+            },
+            {
+              path: 'duty',
+              element: (
+                <NeedLogin>
+                  <Duty />
                 </NeedLogin>
               ),
             },
