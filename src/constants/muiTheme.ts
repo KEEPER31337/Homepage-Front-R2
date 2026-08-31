@@ -28,6 +28,13 @@ const muiTheme = createTheme({
     },
   },
   components: {
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          fontFamily: 'system-ui, sans-serif',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
