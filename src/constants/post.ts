@@ -1,0 +1,1 @@
+export const POST_PASSWORD_MAX_LENGTH = 16;
