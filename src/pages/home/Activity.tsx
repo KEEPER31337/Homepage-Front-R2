@@ -1,9 +1,9 @@
 import React from 'react';
 // import { useGetBlockListQuery } from '@api/aboutApi';
 import { SubTitleImagesInfo } from '@api/dto';
-import activityStudyImage from '@assets/home/activity_study.png';
-import activitySeminarImage from '@assets/home/activity_seminar.png';
-import activityDocsImage from '@assets/home/activity_docs.png';
+import activityStudyImage from '@assets/home/activity_study.jpg';
+import activitySeminarImage from '@assets/home/activity_seminar.jpg';
+import activityDocsImage from '@assets/home/activity_docs.jpg';
 import LogoNeon from '@assets/logo/logo_neon.svg';
 import { HOME_ACTIVITY_BLOCK } from '@constants/homeAbout';
 

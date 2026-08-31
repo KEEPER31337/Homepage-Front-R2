@@ -3,11 +3,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { Checkbox, FormControlLabel, FormGroup, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { UploadPostSettings, PostInfo } from '@api/dto';
 import { COMMON } from '@constants/helperText';
+import { POST_PASSWORD_MAX_LENGTH } from '@constants/post';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 import ImageUploader from '@components/Uploader/ImageUploader';
-
-export const POST_PASSWORD_MAX_LENGTH = 16;
 
 interface SettingUploadModalProps {
   editMode: {
@@ -66,7 +65,7 @@ const SettingUploadModal = ({
     if (!postSettingInfo.isSecret) return;
 
     setPostSettingInfo((prev) => ({ ...prev, password }));
-  }, [password]);
+  }, [password, postSettingInfo.isSecret, setPostSettingInfo]);
 
   return (
     <ActionModal

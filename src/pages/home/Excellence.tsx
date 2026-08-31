@@ -1,6 +1,6 @@
 import React from 'react';
 // import { useGetBlockListQuery } from '@api/aboutApi';
-import excellenceImage from '@assets/home/excellence.png';
+import excellenceImage from '@assets/home/excellence.jpg';
 import { HOME_EXCELLENCE_BLOCK } from '@constants/homeAbout';
 
 const Excellence = () => {

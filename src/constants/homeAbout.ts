@@ -131,42 +131,20 @@ export const HOME_HISTORY_BLOCK: PageBlockInfo = {
     },
     {
       id: 4,
-      subtitle: '2015',
+      subtitle: '2015 ~ 2020',
       thumbnailPath: null,
       displayOrder: 4,
       staticWriteContents: [
-        { id: 5, content: 'KUCIS 사업 참여, MS(MicroSoft) Windows10 서포터즈 1등', displayOrder: 1 },
-      ],
-    },
-    {
-      id: 5,
-      subtitle: '2016',
-      thumbnailPath: null,
-      displayOrder: 5,
-      staticWriteContents: [{ id: 6, content: 'KUCIS 사업 참여', displayOrder: 1 }],
-    },
-    {
-      id: 6,
-      subtitle: '2017',
-      thumbnailPath: null,
-      displayOrder: 6,
-      staticWriteContents: [{ id: 7, content: '교내 서비스 취약점 분석', displayOrder: 1 }],
-    },
-    {
-      id: 7,
-      subtitle: '2018',
-      thumbnailPath: null,
-      displayOrder: 7,
-      staticWriteContents: [{ id: 8, content: 'KUCIS, 시원포럼 경남지역 연합세미나 주최', displayOrder: 1 }],
-    },
-    {
-      id: 8,
-      subtitle: '2020',
-      thumbnailPath: null,
-      displayOrder: 8,
-      staticWriteContents: [
-        { id: 9, content: '암호동아리 지원사업 참가', displayOrder: 1 },
-        { id: 10, content: '제6회 동서발전 정보보안 온라인 경진대회 우수상', displayOrder: 2 },
+        {
+          id: 5,
+          content: '2015: KUCIS 사업 참여, MS(MicroSoft) Windows10 서포터즈 1등',
+          displayOrder: 1,
+        },
+        { id: 6, content: '2016: KUCIS 사업 참여', displayOrder: 2 },
+        { id: 7, content: '2017: 교내 서비스 취약점 분석', displayOrder: 3 },
+        { id: 8, content: '2018: KUCIS, 시원포럼 경남지역 연합세미나 주최', displayOrder: 4 },
+        { id: 9, content: '2020: 암호동아리 지원사업 참가', displayOrder: 5 },
+        { id: 10, content: '2020: 제6회 동서발전 정보보안 온라인 경진대회 우수상', displayOrder: 6 },
       ],
     },
     {

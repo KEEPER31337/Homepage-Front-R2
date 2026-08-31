@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Duty from '@pages/Duty/Duty';
-import Game from '@pages/Game/Game';
 import Library from '@pages/Library/Library';
 import NotFound from '@pages/NotFound/NotFound';
 import Profile from '@pages/Profile/Profile';
@@ -10,15 +9,8 @@ import Study from '@pages/Study/Study';
 import VoteList from '@pages/Vote/VoteList';
 import VotePageContainer from '@pages/Vote/VotePageContainer';
 import VoteResult from '@pages/Vote/VoteResult';
-import ActiveMemberManage from '@pages/admin/ActiveMemberManage/ActiveMemberManage';
-import DutyManage from '@pages/admin/DutyManage/DutyManage';
-import LibraryManage from '@pages/admin/LibraryManage/LibraryManage';
-import MeritManage from '@pages/admin/MeritManage/MeritManage';
-import SeminarManage from '@pages/admin/SeminarManage/SeminarManage';
-import VoteMange from '@pages/admin/VoteMange/VoteMange';
 import BoardList from '@pages/board/BoardList/BoardList';
 import BoardView from '@pages/board/BoardView/BoardView';
-import BoardWrite from '@pages/board/BoardWrite/BoardWrite';
 import Home from '@pages/home/Home';
 import Login from '@pages/login/Login';
 import SearchAccount from '@pages/login/SearchAccount';
@@ -29,6 +21,27 @@ import FullContainer from '@components/Layout/Container/FullContainer';
 import MainLayout from '@components/Layout/MainLayout';
 import NeedAuth from '@components/NeedAuth/NeedAuth';
 import NeedLogin from '@components/NeedAuth/NeedLogin';
+
+const Game = React.lazy(() => import('@pages/Game/Game'));
+const BoardWrite = React.lazy(() => import('@pages/board/BoardWrite/BoardWrite'));
+const ActiveMemberManage = React.lazy(() => import('@pages/admin/ActiveMemberManage/ActiveMemberManage'));
+const DutyManage = React.lazy(() => import('@pages/admin/DutyManage/DutyManage'));
+const LibraryManage = React.lazy(() => import('@pages/admin/LibraryManage/LibraryManage'));
+const MeritManage = React.lazy(() => import('@pages/admin/MeritManage/MeritManage'));
+const SeminarManage = React.lazy(() => import('@pages/admin/SeminarManage/SeminarManage'));
+const VoteMange = React.lazy(() => import('@pages/admin/VoteMange/VoteMange'));
+
+const SuspendedPage = ({ children }: React.PropsWithChildren) => (
+  <React.Suspense
+    fallback={
+      <output className="flex min-h-[50vh] items-center justify-center" aria-live="polite">
+        페이지를 불러오는 중입니다.
+      </output>
+    }
+  >
+    {children}
+  </React.Suspense>
+);
 
 const useMainRouter = () =>
   useRoutes([
@@ -79,7 +92,9 @@ const useMainRouter = () =>
                   path: 'dutyManage',
                   element: (
                     <NeedAuth>
-                      <DutyManage />
+                      <SuspendedPage>
+                        <DutyManage />
+                      </SuspendedPage>
                     </NeedAuth>
                   ),
                 },
@@ -91,7 +106,9 @@ const useMainRouter = () =>
                   path: 'libraryManage/*',
                   element: (
                     <NeedAuth roles={['ROLE_사서']}>
-                      <LibraryManage />
+                      <SuspendedPage>
+                        <LibraryManage />
+                      </SuspendedPage>
                     </NeedAuth>
                   ),
                 },
@@ -99,7 +116,9 @@ const useMainRouter = () =>
                   path: 'seminarManage',
                   element: (
                     <NeedAuth roles={['ROLE_서기']}>
-                      <SeminarManage />
+                      <SuspendedPage>
+                        <SeminarManage />
+                      </SuspendedPage>
                     </NeedAuth>
                   ),
                 },
@@ -107,7 +126,9 @@ const useMainRouter = () =>
                   path: 'activeMemberManage',
                   element: (
                     <NeedAuth roles={['ROLE_서기']}>
-                      <ActiveMemberManage />
+                      <SuspendedPage>
+                        <ActiveMemberManage />
+                      </SuspendedPage>
                     </NeedAuth>
                   ),
                 },
@@ -115,7 +136,9 @@ const useMainRouter = () =>
                   path: 'meritManage',
                   element: (
                     <NeedAuth roles={['ROLE_서기']}>
-                      <MeritManage />
+                      <SuspendedPage>
+                        <MeritManage />
+                      </SuspendedPage>
                     </NeedAuth>
                   ),
                 },
@@ -123,7 +146,9 @@ const useMainRouter = () =>
                   path: 'voteManage',
                   element: (
                     <NeedAuth>
-                      <VoteMange />
+                      <SuspendedPage>
+                        <VoteMange />
+                      </SuspendedPage>
                     </NeedAuth>
                   ),
                 },
@@ -144,7 +169,9 @@ const useMainRouter = () =>
                   path: 'write/:categoryName',
                   element: (
                     <NeedLogin>
-                      <BoardWrite />
+                      <SuspendedPage>
+                        <BoardWrite />
+                      </SuspendedPage>
                     </NeedLogin>
                   ),
                 },
@@ -226,7 +253,9 @@ const useMainRouter = () =>
               path: 'game',
               element: (
                 <NeedLogin>
-                  <Game />
+                  <SuspendedPage>
+                    <Game />
+                  </SuspendedPage>
                 </NeedLogin>
               ),
             },

@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { BOARD_MSG, COMMON } from '@constants/helperText';
-import { POST_PASSWORD_MAX_LENGTH } from '@pages/board/BoardWrite/Modal/SettingUploadModal';
+import { POST_PASSWORD_MAX_LENGTH } from '@constants/post';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 
