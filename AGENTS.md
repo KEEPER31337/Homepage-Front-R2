@@ -1,0 +1,2 @@
+- npm 대신에 pnpm을 사용하세요. 또한 해당 프로젝트의 minimumReleaseAge 설정을 우회하지마세요.
+- 작업이 끝나고 전체 lint, formatter는 실행하지 말고, 수정한 파일들에 대해서만 lint 및 formatter를 실행하세요.
