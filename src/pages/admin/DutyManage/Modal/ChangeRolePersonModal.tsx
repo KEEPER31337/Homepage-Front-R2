@@ -6,7 +6,7 @@ import {
   useCreateExecutiveJobMutation,
   useDeleteExecutiveJobMutation,
 } from '@api/dutyManageApi';
-import { convertJobName, JobInfoType } from '@mocks/DutyManageApi';
+import { convertJobName } from '@mocks/DutyManageApi';
 import AutoComplete, { SingleAutoCompleteValue } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
 
@@ -39,8 +39,6 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     label: '',
     group: '',
   });
-  const [jobInfo, setJobInfo] = useState<JobInfoType>();
-
   useEffect(() => {
     const executiveInfo = executiveInfos?.find((data) => data.jobName === jobName);
 
@@ -51,17 +49,20 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     };
 
     setPrevInfo(currentInfo);
-    setJobInfo(convertJobName.find((data) => data.JobName === jobName));
     setValue(currentInfo);
-  }, [executiveInfos]);
+  }, [executiveInfos, jobName]);
 
   const actionButtionClick = () => {
-    const jobId = jobList?.find((data) => data.jobName === jobInfo?.JobName)?.jobId;
+    const jobId =
+      executiveInfos?.find((data) => data.jobName === jobName)?.jobId ??
+      jobList?.find((data) => data.jobName === jobName)?.jobId;
+
+    if (jobId === undefined) return;
 
     if (value === null && prevInfo.value !== -1) {
       const deleteThing = {
         memberId: prevInfo.value,
-        jobId: jobId !== undefined ? jobId : -1,
+        jobId,
       };
       deleteJob(deleteThing);
     }
@@ -70,7 +71,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
       if (prevInfo.value !== -1) {
         const deleteThing = {
           memberId: prevInfo.value,
-          jobId: jobId !== undefined ? jobId : -1,
+          jobId,
         };
         deleteJob(deleteThing);
       }
@@ -78,7 +79,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
       const createMember = memberList?.find((data) => data.memberId === value.value);
       const createThing = {
         memberId: createMember?.memberId ? createMember?.memberId : -1,
-        jobId: jobId !== undefined ? jobId : -1,
+        jobId,
       };
       createJob(createThing);
     }
