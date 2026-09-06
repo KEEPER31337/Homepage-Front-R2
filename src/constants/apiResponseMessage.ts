@@ -38,14 +38,6 @@ export const EMAIL = {
   },
 } as const;
 
-export const MEMBER_CARD = {
-  success: {},
-  error: {
-    noSubmissionsLeft: '남은 제출 횟수가 없습니다.',
-    mismatchWithCount: (min: number) => `출석코드가 틀렸습니다. (남은 제출횟수 ${min}회)` as const,
-  },
-} as const;
-
 export const LOGIN_ID = {
   success: {},
   error: {

@@ -237,7 +237,7 @@ export interface SignUpInfo {
   email: string;
   realName: string;
   authCode: string;
-  birthday: string;
+  birthday: string | null;
   studentId: string;
   password: string;
 }

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import StepProgress from '@components/Progress/StepProgress';
+import { SignUpInfo } from '@api/dto';
 import SignUpFirstInputSection from './Section/SignUpFirstInputSection';
 import SignUpSecondInputSection from './Section/SignUpSecondInputSection';
 import SignUpThirdInputSection from './Section/SignUpThirdInputSection';
@@ -16,11 +17,32 @@ const STEP_INFO_MESSAGE = {
 
 const SignUp = () => {
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
+  const [signUpData, setSignUpData] = useState<Omit<SignUpInfo, 'email' | 'authCode'>>({
+    loginId: '',
+    password: '',
+    realName: '',
+    studentId: '',
+    birthday: null,
+  });
 
   const stepInputSection = {
-    1: <SignUpFirstInputSection setCurrentStep={setCurrentStep} />,
-    2: <SignUpSecondInputSection setCurrentStep={setCurrentStep} />,
-    3: <SignUpThirdInputSection />,
+    1: (
+      <SignUpFirstInputSection
+        onNext={(data) => {
+          setSignUpData((prev) => ({ ...prev, ...data }));
+          setCurrentStep(2);
+        }}
+      />
+    ),
+    2: (
+      <SignUpSecondInputSection
+        onNext={(data) => {
+          setSignUpData((prev) => ({ ...prev, ...data }));
+          setCurrentStep(3);
+        }}
+      />
+    ),
+    3: <SignUpThirdInputSection signUpData={signUpData} />,
   };
 
   return (
