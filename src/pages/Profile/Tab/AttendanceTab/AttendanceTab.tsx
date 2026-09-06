@@ -1,13 +1,12 @@
 import React from 'react';
 import { Stack } from '@mui/material';
-import { useAtomValue } from 'jotai';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import AttendanceChartSection from './Section/AttendanceChartSection';
 import AttendanceGuideSection from './Section/AttendanceGuideSection';
 import AttendanceInfoSection from './Section/AttendanceInfoSection';
 
 const AttendanceTab = () => {
-  const member = useAtomValue(memberState);
+  const { data: member } = useMeQuery();
 
   if (!member) return null;
   return (

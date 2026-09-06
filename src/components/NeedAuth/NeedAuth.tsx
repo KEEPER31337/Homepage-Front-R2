@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Role } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
 import ConfirmModal from '@components/Modal/ConfirmModal';
+import NeedLogin from './NeedLogin';
 
 interface NeedLoginProps {
   children: React.ReactElement;
@@ -18,12 +19,14 @@ const NeedAuth = ({ children, roles = [] }: NeedLoginProps) => {
   };
 
   if (checkIncludeOneOfAuths([...roles, 'ROLE_회장', 'ROLE_부회장'])) {
-    return children;
+    return <NeedLogin>{children}</NeedLogin>;
   }
   return (
-    <ConfirmModal open onClose={onClose} title="권한이 필요한 서비스입니다">
-      <p>접근 권한이 없습니다</p>
-    </ConfirmModal>
+    <NeedLogin>
+      <ConfirmModal open onClose={onClose} title="권한이 필요한 서비스입니다">
+        <p>접근 권한이 없습니다</p>
+      </ConfirmModal>
+    </NeedLogin>
   );
 };
 

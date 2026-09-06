@@ -1,13 +1,12 @@
 import { useCallback } from 'react';
-import { useAtomValue } from 'jotai';
-import { MemberInfo, Role } from '@api/dto';
-import memberState from '@recoil/member.recoil';
+import { Role } from '@api/dto';
+import { useMeQuery } from '@api/meApi';
 
 const useCheckAuth = () => {
-  const member: MemberInfo | null = useAtomValue(memberState);
+  const { data: member } = useMeQuery();
 
   const checkLogin = useCallback(() => {
-    return member !== null;
+    return Boolean(member);
   }, [member]);
 
   const checkAuth = useCallback(

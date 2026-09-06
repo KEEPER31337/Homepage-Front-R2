@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 import { useAtomValue } from 'jotai';
-import { MemberInfo } from '@api/dto';
 import {
   useGetAvailableSeminarInfoQuery,
   useGetRecentlyDoneSeminarInfoQuery,
@@ -10,7 +9,7 @@ import {
 } from '@api/seminarApi';
 import { MEMBER_ROLE } from '@constants/member';
 import useCheckAuth from '@hooks/useCheckAuth';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import starterState from '@recoil/seminarStarter.recoil';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BossCardContent from './Card/BossCardContent';
@@ -33,7 +32,7 @@ const SeminarAttend = () => {
   const { checkIncludeOneOfAuths } = useCheckAuth();
   const authorizedMember = checkIncludeOneOfAuths([MEMBER_ROLE.회장, MEMBER_ROLE.부회장, MEMBER_ROLE.서기]);
   const startMember: number | undefined = useAtomValue(starterState);
-  const member: MemberInfo | null = useAtomValue(memberState);
+  const { data: member } = useMeQuery();
 
   const isStarterMember = () => {
     if (!availableSeminarData?.id) {

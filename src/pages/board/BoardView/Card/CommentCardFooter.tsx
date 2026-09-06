@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CardActions, Typography } from '@mui/material';
-import { useAtomValue } from 'jotai';
 import { useCreateCommentMutation } from '@api/commentApi';
 import { CommentInfo } from '@api/dto';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
 import CommentWriteCardAction from './CommentWriteCardAction';
 
@@ -19,7 +18,7 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
   const [replyOpen, setReplyOpen] = useState(false);
   const [replyContent, setReplyContent] = useState('');
 
-  const member = useAtomValue(memberState);
+  const { data: member } = useMeQuery();
   const { mutate: createReply } = useCreateCommentMutation();
 
   const handleReplyClick = () => {

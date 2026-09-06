@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { formatMemberGeneration } from '@utils/converter';
 import { ExecutiveInfo, JobList, MemberDetailInfo } from './dto';
+import { meKey } from './meApi';
 
 const dutyManageKeys = {
   executiveInfo: ['executiveInfo'] as const,
@@ -31,7 +32,9 @@ const useCreateExecutiveJobMutation = () => {
 
   return useMutation({
     mutationFn: fetcher,
-    onSuccess: () => {
+    onSuccess: (_, { memberId }) => {
+      const me = queryClient.getQueryData<MemberDetailInfo | null>(meKey);
+      if (me?.memberId === memberId) void queryClient.invalidateQueries({ queryKey: meKey, exact: true });
       queryClient.invalidateQueries({ queryKey: dutyManageKeys.executiveInfo });
     },
   });
@@ -45,7 +48,9 @@ const useDeleteExecutiveJobMutation = () => {
 
   return useMutation({
     mutationFn: fetcher,
-    onSuccess: () => {
+    onSuccess: (_, { memberId }) => {
+      const me = queryClient.getQueryData<MemberDetailInfo | null>(meKey);
+      if (me?.memberId === memberId) void queryClient.invalidateQueries({ queryKey: meKey, exact: true });
       queryClient.invalidateQueries({ queryKey: dutyManageKeys.executiveInfo });
     },
   });

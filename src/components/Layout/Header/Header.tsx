@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 import { VscAccount, VscGithubInverted, VscThreeBars } from 'react-icons/vsc';
-import { useAtomValue } from 'jotai';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { KEEPER_HEIGHT, KEEPER_COLOR } from '@constants/keeperTheme';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import FilledButton from '@components/Button/FilledButton';
 import AccountMenu from './Menu/AccountMenu';
 
@@ -15,7 +14,7 @@ interface HeaderProps {
 
 const Header = ({ setMobileSidebarOpen }: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const userInfo = useAtomValue(memberState);
+  const { data: userInfo } = useMeQuery();
   const profileMenuOpen = Boolean(anchorEl);
 
   const handleDrawerToggle = () => {

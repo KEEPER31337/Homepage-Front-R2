@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CircularProgress, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { MemberInfo } from '@api/dto';
+import { useSetAtom } from 'jotai';
 import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import starterState from '@recoil/seminarStarter.recoil';
 import FilledButton from '@components/Button/FilledButton';
 import Countdown from '../Countdown/Countdown';
@@ -22,7 +21,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
   const [isTransitionTime, setIsTransitionTime] = useState(false);
   const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
   const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
-  const member: MemberInfo | null = useAtomValue(memberState);
+  const { data: member } = useMeQuery();
 
   const handleOnStartSeminar = () => {
     setStartTime(DateTime.now());

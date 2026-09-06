@@ -1,11 +1,10 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { InputLabel } from '@mui/material';
-import { useAtomValue } from 'jotai';
 import { useGetProfileQuery } from '@api/memberApi';
 import { useSendPointMutation } from '@api/pointApi';
 import { COMMON, SEND_POINT_MSG } from '@constants/helperText';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 
@@ -18,7 +17,7 @@ interface SendPointModalProps {
 }
 
 const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
-  const userInfo = useAtomValue(memberState);
+  const { data: userInfo } = useMeQuery();
   const {
     control,
     getValues,

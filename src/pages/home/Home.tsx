@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Collapse, Fab } from '@mui/material';
 import { VscAdd, VscDash } from 'react-icons/vsc';
-import { useAtomValue } from 'jotai';
 import backgroundGalaxyImage from '@assets/home/background_galaxy.png';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import Activity from './Activity';
 import Excellence from './Excellence';
 import History from './History';
@@ -11,7 +10,7 @@ import Intro from './Intro';
 import Trendings from './Trendings';
 
 const Home = () => {
-  const member = useAtomValue(memberState);
+  const { data: member } = useMeQuery();
 
   const [isAboutExpended, setIsAboutExpended] = useState(true);
 
