@@ -28,6 +28,7 @@ import ConfirmModal from '@components/Modal/ConfirmModal';
 const EditEmailSection = () => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [requestedEmail, setRequestedEmail] = useState('');
 
   const {
     control,
@@ -39,8 +40,8 @@ const EditEmailSection = () => {
   } = useForm({ mode: 'onBlur' });
 
   const { data: isEmailDuplicate, isSuccess: checkEmailDuplicationSuccess } = useCheckEmailDuplicationQuery({
-    email: getValues('email'),
-    enabled: isEmailSent,
+    email: requestedEmail,
+    enabled: isEmailSent && Boolean(requestedEmail),
   });
   const {
     mutate: newEmailAuth,
@@ -50,6 +51,7 @@ const EditEmailSection = () => {
   const { mutate: editEmail } = useEditEmailMutation();
 
   const handleRequestVerificationCode = () => {
+    setRequestedEmail(getValues('email'));
     setIsEmailSent(true);
   };
 
@@ -60,6 +62,7 @@ const EditEmailSection = () => {
         onSuccess: () => {
           toast.success(EMAIL.success.changed);
           setIsEmailSent(false);
+          setRequestedEmail('');
           reset();
         },
       },
@@ -67,7 +70,7 @@ const EditEmailSection = () => {
   };
 
   useEffect(() => {
-    if (!checkEmailDuplicationSuccess) return;
+    if (!isEmailSent || !requestedEmail || !checkEmailDuplicationSuccess) return;
 
     if (isEmailDuplicate.duplicate === true) {
       setError('email', { message: EMAIL.error.existing });
@@ -75,13 +78,13 @@ const EditEmailSection = () => {
       return;
     }
 
-    newEmailAuth(getValues('email'), {
+    newEmailAuth(requestedEmail, {
       onSuccess: () => {
         setExpirationTime(DateTime.now().plus({ seconds: 300 }));
         // TODO 유효시간 받아오기 setExpirationTime(DateTime.now().plus({ seconds: expiredSeconds }));
       },
     });
-  }, [checkEmailDuplicationSuccess]);
+  }, [isEmailSent, requestedEmail, checkEmailDuplicationSuccess, isEmailDuplicate, newEmailAuth, setError]);
 
   return (
     <Stack
