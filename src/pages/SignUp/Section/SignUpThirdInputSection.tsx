@@ -18,6 +18,7 @@ import signUpPageState from '../SignUp.recoil';
 const SignUpThirdInputSection = () => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [requestedEmail, setRequestedEmail] = useState('');
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
 
   const signUpParams = useAtomValue(signUpPageState);
@@ -32,14 +33,15 @@ const SignUpThirdInputSection = () => {
   } = useForm({ mode: 'onBlur' });
 
   const { data: isEmailDuplicate, isSuccess: checkEmailDuplicationSuccess } = useCheckEmailDuplicationQuery({
-    email: getValues('email'),
-    enabled: isEmailSent,
+    email: requestedEmail,
+    enabled: isEmailSent && Boolean(requestedEmail),
   });
 
   const { mutate: emailAuth, isPending: isEmailSendLoading, isSuccess: isEmailSendSuccess } = useEmailAuthMutation();
   const { mutate: signUp } = useSignUpMutation();
 
   const handleRequestVerificationCode = () => {
+    setRequestedEmail(getValues('email'));
     setIsEmailSent(true);
   };
 
@@ -57,12 +59,13 @@ const SignUpThirdInputSection = () => {
   const handleOtherEmailButtonClick = () => {
     setMailAuthenticationModalOpen(false);
     setIsEmailSent(false);
+    setRequestedEmail('');
     setExpirationTime(null);
     reset();
   };
 
   const handleResendMailButtonClick = () => {
-    emailAuth(getValues('email'), {
+    emailAuth(requestedEmail, {
       onSuccess: ({ expiredSeconds }) => {
         setExpirationTime(DateTime.now().plus({ seconds: expiredSeconds }));
         setMailAuthenticationModalOpen(false);
@@ -71,7 +74,7 @@ const SignUpThirdInputSection = () => {
   };
 
   useEffect(() => {
-    if (!checkEmailDuplicationSuccess) return;
+    if (!isEmailSent || !requestedEmail || !checkEmailDuplicationSuccess) return;
 
     if (isEmailDuplicate.duplicate === true) {
       setError('email', { message: EMAIL.error.existing });
@@ -79,12 +82,12 @@ const SignUpThirdInputSection = () => {
       return;
     }
 
-    emailAuth(getValues('email'), {
+    emailAuth(requestedEmail, {
       onSuccess: ({ expiredSeconds }) => {
         setExpirationTime(DateTime.now().plus({ seconds: expiredSeconds }));
       },
     });
-  }, [checkEmailDuplicationSuccess]);
+  }, [isEmailSent, requestedEmail, checkEmailDuplicationSuccess, isEmailDuplicate, emailAuth, setError]);
 
   return (
     <Stack component="form" spacing={2} onSubmit={handleSubmit(handleThirdStepFormSubmit)}>
