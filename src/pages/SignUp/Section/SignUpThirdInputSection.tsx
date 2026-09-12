@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
+import { toast } from 'react-hot-toast';
 
 import { DateTime } from 'luxon';
 import { SignUpInfo } from '@api/dto';
@@ -52,6 +53,7 @@ const SignUpThirdInputSection = ({ signUpData }: SignUpThirdInputSectionProps) =
       { ...signUpData, email, authCode },
       {
         onSuccess: () => {
+          toast.success('가입 신청이 완료되었습니다. 관리자 승인 후 로그인할 수 있습니다.', { duration: 6000 });
           navigate('/login');
         },
       },

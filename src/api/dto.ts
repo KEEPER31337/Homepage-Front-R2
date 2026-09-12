@@ -24,7 +24,7 @@ export type Role =
 
 export type borrowStatus = '대출대기' | '반납대기' | '대출반려' | '대출중' | '반납완료';
 
-export type MemberType = '비회원' | '정회원' | '휴면회원' | '졸업' | '탈퇴';
+export type MemberType = '비회원' | '정회원' | '휴면회원' | '졸업' | '가입대기';
 
 export interface PageAndSize {
   page?: number;
