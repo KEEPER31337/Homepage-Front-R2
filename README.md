@@ -6,7 +6,8 @@
 
 > 키퍼 홈페이지 프론트엔드 리뉴얼2
 >
-> 개발기간 : 2023. 11. 11. ~ 2023. 10. 15.
+> 개발기간 : 2023. 11. 11. ~ 2023. 10. 15.  
+> 유지보수 : 2024 ~ 현재
 
 ## 목차
 
@@ -22,7 +23,7 @@
 
 > 운영 서버 주소 : https://keeper.or.kr/
 >
-> 개발 서버 주소 : https://dev.keeper.or.kr/
+> 개발 서버 주소 : https://dev.keeper.or.kr/ (현재 미운영)
 
 ## 👨‍💻 구성원
 
@@ -44,6 +45,7 @@
 </table>
 
 ### 🛠️ 유지 보수 담당자
+> 2025년 이후 유지 보수는 키퍼 전산관리자가 주 담당
 
 <table>
   <tr>
@@ -106,7 +108,7 @@
 
 ### 🛠 Skill & Tool
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-0769AD?style=flat-square&logo=TypeScript&logoColor=white" /> <img src="https://img.shields.io/badge/ReactQuery-FF4154?style=flat-square&logo=ReactQuery&logoColor=white" /> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=Recoil&logoColor=white" /> <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white" />
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-0769AD?style=flat-square&logo=TypeScript&logoColor=white" /> <img src="https://img.shields.io/badge/ReactQuery-FF4154?style=flat-square&logo=ReactQuery&logoColor=white" /> <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white" />
 
 ### 🧩 Communication Tool
 
