@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Divider, Stack, Typography } from '@mui/material';
+import { isAxiosError } from 'axios';
 import useLoginMutation from '@api/logInApi';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -11,7 +12,7 @@ const Login = () => {
     id: '',
     password: '',
   });
-  const [loginError, setLoginError] = useState(false);
+  const [loginError, setLoginError] = useState('');
   const { id, password } = form;
   const { mutate: login } = useLoginMutation();
 
@@ -21,7 +22,7 @@ const Login = () => {
       ...form,
       [name]: value,
     });
-    setLoginError(false);
+    setLoginError('');
   };
 
   const handleLoginClick: React.FormEventHandler<HTMLFormElement> = (e) => {
@@ -31,8 +32,18 @@ const Login = () => {
       login(
         { loginId: form.id, password: form.password },
         {
-          onError: () => {
-            setLoginError(true);
+          onError: (error) => {
+            if (
+              isAxiosError(error) &&
+              error.response?.status === 403 &&
+              error.response.data?.message === '[memberType] 가입대기: 가입 승인 대기 중입니다.'
+            ) {
+              setLoginError('가입 승인 대기 중입니다. 관리자의 승인 후 로그인할 수 있습니다.');
+            } else if (isAxiosError(error) && [400, 404].includes(error.response?.status ?? 0)) {
+              setLoginError('아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.');
+            } else {
+              setLoginError('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
+            }
           },
         },
       );
@@ -66,8 +77,8 @@ const Login = () => {
             onChange={handleChange}
           />
           {loginError && (
-            <Typography variant="small" className="!mt-4 text-center text-subRed brightness-125">
-              아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.
+            <Typography role="alert" variant="small" className="!mt-4 text-center text-subRed brightness-125">
+              {loginError}
             </Typography>
           )}
         </Stack>

@@ -32,7 +32,7 @@ const BadgeSection = ({ memberType, memberJobs }: FollowListProps) => {
           <img src={job.img} alt="" className="h-8 w-8 md:h-10 md:w-10" />
         </Tooltip>
       ))}
-      {memberType !== '비회원' && (
+      {types[memberType] && (
         <Tooltip title={memberType} placement="top">
           <img src={types[memberType]} alt="" className="h-8 w-8 md:h-10 md:w-10" />
         </Tooltip>

@@ -3,12 +3,12 @@ import { List, ListItem, ListItemText, Typography } from '@mui/material';
 import { useEditMemberTypeMutation, useDeleteMemberMutation } from '@api/memberApi';
 import { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
-import memberTypes from '../memberTypes';
+import type { MemberManagementAction } from '../memberTypes';
 
 interface MemberTypeChangeModalProps {
   open: boolean;
   onClose: () => void;
-  typeId: number;
+  action: MemberManagementAction;
   selectedMemberList: MultiAutoCompleteValue;
   setSelectedMemberList: React.Dispatch<React.SetStateAction<MultiAutoCompleteValue>>;
 }
@@ -16,30 +16,24 @@ interface MemberTypeChangeModalProps {
 const MemberTypeChangeModal = ({
   open,
   onClose,
-  typeId,
+  action,
   selectedMemberList,
   setSelectedMemberList,
 }: MemberTypeChangeModalProps) => {
-  const { mutate: editMemberTypeMutation } = useEditMemberTypeMutation();
-  const { mutate: deleteMemberMutation } = useDeleteMemberMutation();
-
-  const renderTypeName = () => {
-    return memberTypes.find((memberType) => memberType.typeId === typeId)?.renderType;
-  };
-
-  const isQuitType = () => {
-    if (renderTypeName() === '탈퇴') return true;
-    return false;
-  };
+  const { mutate: editMemberTypeMutation, isPending: isTypeChangePending } = useEditMemberTypeMutation();
+  const { mutate: deleteMemberMutation, isPending: isDeletePending } = useDeleteMemberMutation();
+  const isDeleting = action.kind === 'delete';
+  const isPending = isTypeChangePending || isDeletePending;
 
   const handleMutationSuccess = () => {
     onClose();
     setSelectedMemberList([]);
   };
   const handleButtonClick = () => {
+    if (isPending || selectedMemberList.length === 0) return;
     const memberIds = selectedMemberList.map((item) => item.value as number);
 
-    if (isQuitType()) {
+    if (action.kind === 'delete') {
       deleteMemberMutation(
         {
           memberIds,
@@ -52,7 +46,7 @@ const MemberTypeChangeModal = ({
       editMemberTypeMutation(
         {
           memberIds,
-          typeId,
+          typeId: action.memberType.typeId,
         },
         {
           onSuccess: handleMutationSuccess,
@@ -65,21 +59,23 @@ const MemberTypeChangeModal = ({
     <ActionModal
       open={open}
       onClose={onClose}
-      title={`${isQuitType() ? '회원 탈퇴' : '회원 타입 변경'} `}
-      actionButtonName={`${isQuitType() ? '탈퇴' : '변경'} `}
+      title={isDeleting ? '회원 탈퇴' : '회원 타입 변경'}
+      actionButtonName={isDeleting ? '탈퇴' : '변경'}
+      cancelButtonDisabled={isPending}
+      actionButtonDisabled={isPending || selectedMemberList.length === 0}
       onActionButonClick={handleButtonClick}
     >
       <div className="space-y-5">
         <Typography>
-          총 <span className={`${isQuitType() ? 'text-subRed' : 'text-pointBlue'}`}>{selectedMemberList.length}</span>
+          총 <span className={isDeleting ? 'text-subRed' : 'text-pointBlue'}>{selectedMemberList.length}</span>
           명을{' '}
-          {isQuitType() ? (
+          {action.kind === 'delete' ? (
             <>
               <span className="text-subRed">탈퇴(삭제)</span> 처리 하시겠습니까?
             </>
           ) : (
             <>
-              <span className="text-pointBlue">{renderTypeName()}</span> 타입으로 변경하시겠습니까?
+              <span className="text-pointBlue">{action.memberType.renderType}</span> 타입으로 변경하시겠습니까?
             </>
           )}
         </Typography>
