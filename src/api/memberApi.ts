@@ -5,6 +5,8 @@ import { PASSWORD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import { formatGeneration } from '@utils/converter';
 import { ProfileInfo, MemberDetailInfo, PageAndSize, PointRank } from './dto';
+import { meKey } from './meApi';
+import { clearAuthSession } from './authApi';
 
 const memberKeys = {
   base: ['member'] as const,
@@ -89,6 +91,7 @@ const useEditProfileMutation = (memberId: number) => {
   return useMutation({
     mutationFn: fetcher,
     onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: meKey, exact: true });
       queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
     },
   });
@@ -111,6 +114,7 @@ const useEditProfileThumbnailMutation = (memberId: number) => {
   return useMutation({
     mutationFn: fetcher,
     onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: meKey, exact: true });
       queryClient.invalidateQueries({ queryKey: profileKeys.profileInfo(memberId) });
     },
   });
@@ -123,6 +127,7 @@ const useNewEmailAuthMutation = () => {
 };
 
 const useEditEmailMutation = () => {
+  const queryClient = useQueryClient();
   const { handleError } = useApiError({
     400: {
       default: () => {
@@ -134,7 +139,11 @@ const useEditEmailMutation = () => {
   const fetcher = ({ email, auth, password }: { email: string; auth: string; password: string }) =>
     axios.patch('/members/email', { email, auth, password }).then(({ data }) => data);
 
-  return useMutation({ mutationFn: fetcher, onError: (err) => handleError(err, 400) });
+  return useMutation({
+    mutationFn: fetcher,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: meKey, exact: true }),
+    onError: (err) => handleError(err, 400),
+  });
 };
 
 const useEditPasswordMutation = () => {
@@ -158,6 +167,7 @@ const useEditPasswordMutation = () => {
 };
 
 const useWithdrawalMutation = () => {
+  const queryClient = useQueryClient();
   const { handleError } = useApiError({
     400: {
       default: () => {
@@ -168,7 +178,11 @@ const useWithdrawalMutation = () => {
   const fetcher = ({ rawPassword }: { rawPassword: string }) =>
     axios.delete('/members', { data: { rawPassword } }).then(({ data }) => data);
 
-  return useMutation({ mutationFn: fetcher, onError: (err) => handleError(err, 400) });
+  return useMutation({
+    mutationFn: fetcher,
+    onSuccess: () => clearAuthSession(queryClient),
+    onError: (err) => handleError(err, 400),
+  });
 };
 
 const useEditMemberTypeMutation = () => {
@@ -178,7 +192,9 @@ const useEditMemberTypeMutation = () => {
 
   return useMutation({
     mutationFn: fetcher,
-    onSuccess: () => {
+    onSuccess: (_, { memberIds }) => {
+      const me = queryClient.getQueryData<MemberDetailInfo | null>(meKey);
+      if (me && memberIds.includes(me.memberId)) void queryClient.invalidateQueries({ queryKey: meKey, exact: true });
       queryClient.invalidateQueries({ queryKey: memberKeys.memberList() });
     },
   });
@@ -190,7 +206,9 @@ const useDeleteMemberMutation = () => {
 
   return useMutation({
     mutationFn: fetcher,
-    onSuccess: () => {
+    onSuccess: (_, { memberIds }) => {
+      const me = queryClient.getQueryData<MemberDetailInfo | null>(meKey);
+      if (me && memberIds.includes(me.memberId)) void queryClient.invalidateQueries({ queryKey: meKey, exact: true });
       queryClient.invalidateQueries({ queryKey: memberKeys.memberList() });
     },
   });

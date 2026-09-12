@@ -3,7 +3,7 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import { useQueryClient } from '@tanstack/react-query';
 import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
-import { useSetAtom } from 'jotai';
+import { SignUpInfo } from '@api/dto';
 
 import { signUpKeys, useCheckLoginIdDuplicationQuery } from '@api/signUpApi';
 import { LOGIN_ID } from '@constants/apiResponseMessage';
@@ -11,18 +11,16 @@ import { COMMON, LOGIN_ID_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperTex
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardInput from '@components/Input/StandardInput';
-import signUpPageState from '../SignUp.recoil';
 
 interface SignUpFirstInputSectionProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<1 | 2 | 3>>;
+  onNext: (data: Pick<SignUpInfo, 'loginId' | 'password'>) => void;
 }
 
-const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProps) => {
+const SignUpFirstInputSection = ({ onNext }: SignUpFirstInputSectionProps) => {
   // REVIEW useForm 사용하는데 별도의 state가 필요한 지 점검 필요
   const [loginIdState, setLoginIdState] = useState('');
   const [checkLoginIdDuplicateEnabled, setCheckLoginIdDuplicateEnabled] = useState(false);
   const [passwordConfirmSuccessMsg, setPasswordConfirmSuccessMsg] = useState<string>('');
-  const setSignUpPageState = useSetAtom(signUpPageState);
 
   const {
     control,
@@ -40,8 +38,7 @@ const SignUpFirstInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProp
   });
 
   const handleFirstStepFormSubmit: SubmitHandler<FieldValues> = ({ loginId, password }) => {
-    setSignUpPageState((prev) => ({ ...prev, loginId, password }));
-    setCurrentStep(2);
+    onNext({ loginId, password });
   };
 
   const handleCheckLoginIdDuplicateClick = () => {

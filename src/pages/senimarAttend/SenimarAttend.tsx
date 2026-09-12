@@ -1,49 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { CircularProgress, Typography } from '@mui/material';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
-import { useAtomValue } from 'jotai';
-import { MemberInfo } from '@api/dto';
 import {
-  useGetAvailableSeminarInfoQuery,
+  useGetSeminarInfoQuery,
   useGetRecentlyDoneSeminarInfoQuery,
   useGetRecentlyUpcomingSeminarInfoQuery,
 } from '@api/seminarApi';
 import { MEMBER_ROLE } from '@constants/member';
 import useCheckAuth from '@hooks/useCheckAuth';
-import memberState from '@recoil/member.recoil';
-import starterState from '@recoil/seminarStarter.recoil';
+import { useMeQuery } from '@api/meApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import BossCardContent from './Card/BossCardContent';
 import MemberCardContent from './Card/MemberCardContent';
 import SeminarCard from './Card/SeminarCard';
 
-const SeminarAttend = () => {
-  const [visibleSeminars, setVisibleSeminars] = useState<{ order: number; id?: number }[]>([
-    { order: 1 },
-    { order: 2 },
-    { order: 3 },
-  ]);
+const SeminarCardContent = ({ seminarId }: { seminarId: number }) => {
+  const { data: seminarData, isLoading } = useGetSeminarInfoQuery(seminarId);
+  const { data: member } = useMeQuery();
+  const { checkIncludeOneOfAuths } = useCheckAuth();
+  const authorizedMember = checkIncludeOneOfAuths([MEMBER_ROLE.회장, MEMBER_ROLE.부회장, MEMBER_ROLE.서기]);
 
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
+  const showBossCard =
+    seminarData && authorizedMember && (!seminarData.attendanceStartTime || seminarData.starterId === member?.memberId);
+
+  return showBossCard ? <BossCardContent seminarId={seminarId} /> : <MemberCardContent seminarId={seminarId} />;
+};
+
+const SeminarAttend = () => {
   const { data: recentlyDoneSeminarId, isSuccess: isGetRecentlyDoneSeminarIdSuccess } =
     useGetRecentlyDoneSeminarInfoQuery();
   const { data: twoUpcomingSeminarIds, isSuccess: isGetRecentlyUpcomingSeminarIdsSuccess } =
     useGetRecentlyUpcomingSeminarInfoQuery();
-  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
-
-  const { checkIncludeOneOfAuths } = useCheckAuth();
-  const authorizedMember = checkIncludeOneOfAuths([MEMBER_ROLE.회장, MEMBER_ROLE.부회장, MEMBER_ROLE.서기]);
-  const startMember: number | undefined = useAtomValue(starterState);
-  const member: MemberInfo | null = useAtomValue(memberState);
-
-  const isStarterMember = () => {
-    if (!availableSeminarData?.id) {
-      return authorizedMember;
-    }
-    if (authorizedMember && member?.memberId === startMember) {
-      return true;
-    }
-    return false;
-  };
 
   const [currentCardIndex, setCurrentCardIndex] = useState(1);
 
@@ -55,15 +46,14 @@ const SeminarAttend = () => {
     setCurrentCardIndex(currentCardIndex - 1);
   };
 
-  useEffect(() => {
-    if (isGetRecentlyDoneSeminarIdSuccess && isGetRecentlyUpcomingSeminarIdsSuccess) {
-      setVisibleSeminars([
-        { order: 1, id: twoUpcomingSeminarIds.at(1)?.id },
-        { order: 2, id: twoUpcomingSeminarIds.at(0)?.id },
-        { order: 3, id: recentlyDoneSeminarId.id },
-      ]);
-    }
-  }, [isGetRecentlyDoneSeminarIdSuccess, isGetRecentlyUpcomingSeminarIdsSuccess]);
+  const visibleSeminars: { order: number; id?: number }[] =
+    isGetRecentlyDoneSeminarIdSuccess && isGetRecentlyUpcomingSeminarIdsSuccess
+      ? [
+          { order: 1, id: twoUpcomingSeminarIds.at(1)?.id },
+          { order: 2, id: twoUpcomingSeminarIds.at(0)?.id },
+          { order: 3, id: recentlyDoneSeminarId.id },
+        ]
+      : [{ order: 1 }, { order: 2 }, { order: 3 }];
 
   return (
     <div className="flex flex-col items-center space-y-4">
@@ -77,11 +67,7 @@ const SeminarAttend = () => {
               <SeminarCard>
                 {visibleSeminar.id !== undefined ? (
                   <div className="h-full">
-                    {isStarterMember() ? (
-                      <BossCardContent seminarId={visibleSeminar.id} />
-                    ) : (
-                      <MemberCardContent seminarId={visibleSeminar.id} />
-                    )}
+                    <SeminarCardContent seminarId={visibleSeminar.id} />
                   </div>
                 ) : (
                   <Typography className="!mt-[16px] text-center !text-h3 !font-bold text-pointBlue opacity-50">

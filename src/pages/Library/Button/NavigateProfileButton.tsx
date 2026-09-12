@@ -1,11 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAtomValue } from 'jotai';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import OutlinedButton from '@components/Button/OutlinedButton';
 
 const NavigateProfileButton = () => {
-  const userInfo = useAtomValue(memberState);
+  const { data: userInfo } = useMeQuery();
   const navigate = useNavigate();
 
   return (

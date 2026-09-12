@@ -6,7 +6,6 @@ import { Button, Divider, Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
 import { VscSignOut } from 'react-icons/vsc';
-import { useSetAtom } from 'jotai';
 import {
   useEditEmailMutation,
   useEditPasswordMutation,
@@ -16,7 +15,6 @@ import {
 import { useCheckEmailDuplicationQuery } from '@api/signUpApi';
 import { EMAIL } from '@constants/apiResponseMessage';
 import { COMMON, EMAIL_MSG, CONFIRM_PASSWORD_MSG } from '@constants/helperText';
-import memberState from '@recoil/member.recoil';
 import { emailRegex } from '@utils/validateEmail';
 import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -295,7 +293,6 @@ interface EditAccountModalProps {
 
 const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
   const [startWithdrawal, setStartWithdrawal] = useState(false);
-  const setMemberState = useSetAtom(memberState);
 
   const {
     control,
@@ -311,7 +308,6 @@ const EditAccountModal = ({ open, onClose }: EditAccountModalProps) => {
       { rawPassword },
       {
         onSuccess: () => {
-          setMemberState(null);
           navigate('/');
         },
       },

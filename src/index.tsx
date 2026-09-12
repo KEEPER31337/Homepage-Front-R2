@@ -10,6 +10,7 @@ import axios from 'axios';
 import './tailwind.css';
 import muiTheme from '@constants/muiTheme';
 import App from './App';
+import { subscribeToMe } from '@api/meApi';
 
 axios.defaults.baseURL = import.meta.env.PUBLIC_API_URL;
 axios.defaults.withCredentials = true;
@@ -17,10 +18,13 @@ axios.defaults.withCredentials = true;
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      retry: false,
       refetchOnWindowFocus: false,
     },
   },
 });
+
+subscribeToMe(queryClient);
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

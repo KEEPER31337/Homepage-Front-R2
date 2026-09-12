@@ -1,39 +1,20 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSetAtom } from 'jotai';
-import memberState from '@recoil/member.recoil';
-import { formatGeneration } from '@utils/converter';
-import { MemberDetailInfo } from './dto';
+import { cancelMe, normalizeMe, setMe } from './meApi';
+import type { MemberDetailInfo } from './dto';
 
 const useLoginMutation = () => {
-  const fetcher = ({ loginId, password }: { loginId: string; password: string }) =>
-    axios.post(`/sign-in`, { loginId, password }).then(({ data }) => data);
-
   const navigate = useNavigate();
-  const setMemberState = useSetAtom(memberState);
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: fetcher,
-    onSuccess: ({
-      memberId,
-      loginId,
-      emailAddress,
-      realName,
-      thumbnailPath,
-      memberJobs,
-      generation,
-    }: MemberDetailInfo) => {
+    mutationFn: ({ loginId, password }: { loginId: string; password: string }) =>
+      axios.post<MemberDetailInfo>('/sign-in', { loginId, password }).then(({ data }) => data),
+    onMutate: () => cancelMe(queryClient),
+    onSuccess: async (member) => {
+      await setMe(queryClient, normalizeMe(member));
       navigate('/');
-      setMemberState({
-        memberId,
-        loginId,
-        emailAddress,
-        realName,
-        thumbnailPath,
-        memberJobs,
-        generation: formatGeneration(generation),
-      });
     },
   });
 };

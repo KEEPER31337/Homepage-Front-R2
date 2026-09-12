@@ -3,7 +3,7 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import { useQueryClient } from '@tanstack/react-query';
 import { Stack } from '@mui/material';
 import { VscCheck } from 'react-icons/vsc';
-import { useSetAtom } from 'jotai';
+import { SignUpInfo } from '@api/dto';
 import { signUpKeys, useCheckStudentIdDuplicationQuery } from '@api/signUpApi';
 import { STUDENT_ID } from '@constants/apiResponseMessage';
 import { COMMON, NAME_MSG } from '@constants/helperText';
@@ -11,19 +11,17 @@ import FilledButton from '@components/Button/FilledButton';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardDatePicker from '@components/DatePicker/StandardDatePicker';
 import StandardInput from '@components/Input/StandardInput';
-import signUpPageState from '../SignUp.recoil';
 
 const NAME_MAX_LENGTH = 20;
 
-interface SignUpFirstInputSectionProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<1 | 2 | 3>>;
+interface SignUpSecondInputSectionProps {
+  onNext: (data: Pick<SignUpInfo, 'realName' | 'studentId' | 'birthday'>) => void;
 }
 
-const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionProps) => {
+const SignUpSecondInputSection = ({ onNext }: SignUpSecondInputSectionProps) => {
   // REVIEW useForm 사용하는데 별도의 state가 필요한 지 점검 필요
   const [studentIdState, setStudentIdState] = useState('');
   const [checkStudentIdDuplicateEnabled, setCheckStudentIdDuplicateEnabled] = useState(false);
-  const setSignUpPageState = useSetAtom(signUpPageState);
 
   const {
     control,
@@ -41,13 +39,11 @@ const SignUpSecondInputSection = ({ setCurrentStep }: SignUpFirstInputSectionPro
   });
 
   const handleSecondStepFormSubmit: SubmitHandler<FieldValues> = ({ realName, studentId, birthday }) => {
-    setSignUpPageState((prev) => ({
-      ...prev,
+    onNext({
       realName,
       studentId,
       birthday: birthday ? birthday.toFormat('yyyy.MM.dd') : null,
-    }));
-    setCurrentStep(3);
+    });
   };
 
   const handleCheckStudentIdDuplicateClick = () => {

@@ -2,8 +2,8 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { useSetAtom } from 'jotai';
-import memberState from '@recoil/member.recoil';
+import { useQueryClient } from '@tanstack/react-query';
+import { clearAuthSession } from '@api/authApi';
 
 type ErrorHandler = (error?: unknown) => void;
 
@@ -36,7 +36,7 @@ interface DefaultHttpStatusHandlers extends DefaultHandler {
 
 const useApiError = (handlers?: HttpStatusHandlers) => {
   const navigate = useNavigate();
-  const setMemberState = useSetAtom(memberState);
+  const queryClient = useQueryClient();
 
   const defaultHandlers: DefaultHttpStatusHandlers = useMemo(
     () => ({
@@ -49,8 +49,8 @@ const useApiError = (handlers?: HttpStatusHandlers) => {
         },
       },
       401: {
-        default: () => {
-          setMemberState(null);
+        default: async () => {
+          await clearAuthSession(queryClient);
           navigate('/login');
         },
       },
@@ -70,7 +70,7 @@ const useApiError = (handlers?: HttpStatusHandlers) => {
         },
       },
     }),
-    [navigate, setMemberState],
+    [navigate, queryClient],
   );
 
   const handleError = useCallback(

@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CircularProgress, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { MemberInfo } from '@api/dto';
-import { useStartSeminarMutation, useGetAvailableSeminarInfoQuery, useGetSeminarInfoQuery } from '@api/seminarApi';
-import memberState from '@recoil/member.recoil';
-import starterState from '@recoil/seminarStarter.recoil';
+import { useStartSeminarMutation, useGetSeminarInfoQuery } from '@api/seminarApi';
 import FilledButton from '@components/Button/FilledButton';
 import Countdown from '../Countdown/Countdown';
 import SeminarInput from '../Input/SeminarInput';
@@ -13,34 +9,19 @@ import SeminarSelector from '../Selector/SeminarSelector';
 import SeminarAttendStatus from '../Status/SeminarAttendStatus';
 
 const BossCardContent = ({ seminarId }: { seminarId: number }) => {
-  const [seminarStart, setSeminarStart] = useState(false);
-  const setStartMember = useSetAtom(starterState);
-  const { data: seminarData, isLoading } = useGetSeminarInfoQuery(seminarId);
+  const { data: seminarData, isLoading, isFetching } = useGetSeminarInfoQuery(seminarId);
   const [attendValue, setAttendValue] = useState<number>(5);
   const [lateAttendValue, setLateAttendValue] = useState<number>(5);
-  const [startTime, setStartTime] = useState(DateTime.now());
   const [isTransitionTime, setIsTransitionTime] = useState(false);
-  const { mutate: setSeminarTime } = useStartSeminarMutation(seminarId);
-  const { data: availableSeminarData } = useGetAvailableSeminarInfoQuery();
-  const member: MemberInfo | null = useAtomValue(memberState);
+  const { mutate: setSeminarTime, isPending } = useStartSeminarMutation(seminarId);
 
   const handleOnStartSeminar = () => {
-    setStartTime(DateTime.now());
-    setSeminarStart(true);
-    setStartMember(member?.memberId);
+    const startTime = DateTime.now();
     setSeminarTime({
       attendanceCloseTime: startTime.plus({ minutes: attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
       latenessCloseTime: startTime.plus({ minutes: lateAttendValue + attendValue }).toFormat('yyyy-MM-dd HH:mm:ss'),
     });
   };
-
-  useEffect(() => {
-    if (!seminarData || !availableSeminarData) return;
-
-    if (availableSeminarData.id === seminarData.id) {
-      setSeminarStart(true);
-    }
-  }, [seminarData, availableSeminarData]);
 
   return isLoading ? (
     <div className="flex h-full items-center">
@@ -54,7 +35,7 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
         disabled
         helperText="ㅤ"
         setInputCode={() => null}
-        inputCode={seminarStart && seminarData && seminarData?.attendanceCode ? seminarData?.attendanceCode : ''}
+        inputCode={seminarData?.attendanceStartTime ? (seminarData.attendanceCode ?? '') : ''}
       />
       <div className="mx-auto mt-[20px] flex h-[60px] w-[146px] justify-between">
         <div className="grid content-between">
@@ -87,8 +68,10 @@ const BossCardContent = ({ seminarId }: { seminarId: number }) => {
         </div>
       </div>
       <div className="mt-[39px] flex justify-center">
-        {!seminarStart && seminarData && !seminarData.attendanceStartTime ? (
-          <FilledButton onClick={handleOnStartSeminar}>시작</FilledButton>
+        {seminarData && !seminarData.attendanceStartTime ? (
+          <FilledButton onClick={handleOnStartSeminar} disabled={isPending || isFetching}>
+            시작
+          </FilledButton>
         ) : (
           seminarData && <SeminarAttendStatus status={seminarData?.statusType} />
         )}

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 
 import { DateTime } from 'luxon';
-import { useAtomValue } from 'jotai';
+import { SignUpInfo } from '@api/dto';
 import { useCheckEmailDuplicationQuery, useEmailAuthMutation, useSignUpMutation } from '@api/signUpApi';
 import { EMAIL } from '@constants/apiResponseMessage';
 import { COMMON, EMAIL_MSG } from '@constants/helperText';
@@ -13,15 +13,17 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import EmailAuthInput from '@components/Input/EmailAuthInput';
 import TimerInput from '@components/Input/TimerInput';
 import MailAuthenticationModal from '@components/Modal/MailAuthenticationModal';
-import signUpPageState from '../SignUp.recoil';
 
-const SignUpThirdInputSection = () => {
+interface SignUpThirdInputSectionProps {
+  signUpData: Omit<SignUpInfo, 'email' | 'authCode'>;
+}
+
+const SignUpThirdInputSection = ({ signUpData }: SignUpThirdInputSectionProps) => {
   const [expirationTime, setExpirationTime] = useState<DateTime | null>(null);
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [requestedEmail, setRequestedEmail] = useState('');
   const [mailAuthenticationModalOpen, setMailAuthenticationModalOpen] = useState(false);
 
-  const signUpParams = useAtomValue(signUpPageState);
   const navigate = useNavigate();
   const {
     control,
@@ -47,7 +49,7 @@ const SignUpThirdInputSection = () => {
 
   const handleThirdStepFormSubmit: SubmitHandler<FieldValues> = ({ email, authCode }) => {
     signUp(
-      { ...signUpParams, email, authCode },
+      { ...signUpData, email, authCode },
       {
         onSuccess: () => {
           navigate('/login');

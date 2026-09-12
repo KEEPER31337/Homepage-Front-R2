@@ -6,7 +6,6 @@ import { InputLabel, Stack, Typography, useMediaQuery, useTheme } from '@mui/mat
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
-import { useAtomValue } from 'jotai';
 import { PeriodicInfo, StudyInfo } from '@api/dto';
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import {
@@ -16,7 +15,7 @@ import {
   useGetStudyQuery,
 } from '@api/studyApi';
 import { COMMON, STUDY_MSG } from '@constants/helperText';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import AutoComplete, { MultiAutoCompleteValue } from '@components/Input/AutoComplete';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
@@ -40,7 +39,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
   const [linkError, setLinkError] = useState(false);
   const [etcLinkError, setEtcLinkError] = useState(false);
 
-  const headMemberInfo = useAtomValue(memberState);
+  const { data: headMemberInfo } = useMeQuery();
   const isEditMode = Boolean(selectedStudyInfo);
 
   const {

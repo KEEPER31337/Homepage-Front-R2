@@ -1,26 +1,33 @@
-import { useMutation } from '@tanstack/react-query';
+import { matchQuery, useMutation, useQueryClient, type QueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSetAtom } from 'jotai';
-import memberState from '@recoil/member.recoil';
+import { toast } from 'react-hot-toast';
+import { cancelMe, meKey } from './meApi';
+
+const clearAuthSession = async (client: QueryClient) => {
+  await client.cancelQueries();
+
+  // localStorage는 쿼리 구독에 의해서 자동으로 비워짐.
+  client.setQueryData(meKey, null);
+  client.removeQueries({ predicate: (query) => !matchQuery({ queryKey: meKey, exact: true }, query) });
+};
 
 const useSignOutMutation = () => {
   const navigate = useNavigate();
-  const setMemberState = useSetAtom(memberState);
-
-  const fetcher = () => axios.post(`/sign-out`);
-  const signOut = () => {
-    navigate('/');
-    setMemberState(null);
-  };
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: fetcher,
-    onSettled: () => {
-      signOut();
+    mutationFn: () => axios.post('/sign-out'),
+    meta: { skipGlobalErrorHandler: true },
+    onMutate: () => cancelMe(queryClient),
+    onSuccess: async () => {
+      await clearAuthSession(queryClient);
+      navigate('/');
+    },
+    onError: () => {
+      toast.error('로그아웃에 실패했습니다. 다시 시도해주세요.');
     },
   });
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { useSignOutMutation };
+export { clearAuthSession, useSignOutMutation };

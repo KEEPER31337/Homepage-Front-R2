@@ -1,11 +1,10 @@
 import React from 'react';
-import { useAtomValue } from 'jotai';
-import memberState from '@recoil/member.recoil';
+import { useMeQuery } from '@api/meApi';
 import MemberBoardTable from './Table/MemberBoardTable';
 import TempBoardTable from './Table/TempBoardTable';
 
 const MyBoardTab = () => {
-  const userInfo = useAtomValue(memberState);
+  const { data: userInfo } = useMeQuery();
 
   return (
     <div className="gird-cols-2 grid h-full w-full">
