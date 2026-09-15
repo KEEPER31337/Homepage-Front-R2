@@ -56,7 +56,7 @@ const ProfileSection = () => {
       <div className="flex w-1/2 flex-col items-center space-y-2 xl:w-full">
         <CommonAvatar
           className="!h-40 !w-40 lg:!h-60 lg:!w-60"
-          userId={profileInfo?.id ?? otherMemberId}
+          userId={profileInfo?.id ?? (otherMemberId || null)}
           thumbnailPath={profileInfo?.thumbnailPath ?? null}
         />
         <div className="flex h-fit w-full justify-between space-x-2">

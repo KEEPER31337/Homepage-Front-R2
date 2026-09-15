@@ -6,6 +6,7 @@ import { useControlCommentLikesMutation, useControlCommentDislikesMutation } fro
 import { CommentInfo } from '@api/dto';
 import useCheckAuth from '@hooks/useCheckAuth';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
+import ProfileLink from '@components/Link/ProfileLink';
 import CommentMenu from '../Menu/CommentMenu';
 
 interface CommentCardHeaderProps {
@@ -32,11 +33,18 @@ const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
   return !commentInfo.isDeleted ? (
     <CardHeader
       avatar={
-        <CommonAvatar
-          className="!h-7 !w-7"
-          userId={commentInfo.writerId}
-          thumbnailPath={commentInfo.writerThumbnailPath}
-        />
+        <ProfileLink
+          memberId={commentInfo.writerId}
+          underline={false}
+          aria-label={`${commentInfo.writerName} 프로필`}
+          className="block"
+        >
+          <CommonAvatar
+            className="!h-7 !w-7"
+            userId={commentInfo.writerId}
+            thumbnailPath={commentInfo.writerThumbnailPath}
+          />
+        </ProfileLink>
       }
       action={
         <div className="mr-1 space-x-2">
@@ -69,7 +77,7 @@ const CommentCardHeader = ({ commentInfo }: CommentCardHeaderProps) => {
           {checkIsMyId(commentInfo.writerId) && <CommentMenu commentId={commentInfo.commentId} />}
         </div>
       }
-      title={commentInfo.writerName}
+      title={<ProfileLink memberId={commentInfo.writerId}>{commentInfo.writerName}</ProfileLink>}
       subheader={undefined /* TODO 경과 시간 */}
     />
   ) : (

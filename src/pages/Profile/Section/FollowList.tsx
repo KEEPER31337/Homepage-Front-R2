@@ -1,26 +1,23 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { List, ListItemIcon, ListItem, ListItemButton, Typography } from '@mui/material';
+import { List, ListItemIcon, ListItem, Typography } from '@mui/material';
 import { FollowInfo } from '@api/dto';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
+import ProfileLink from '@components/Link/ProfileLink';
 
 interface FollowListProps {
   followlist: FollowInfo[];
 }
 
 const FollowList = ({ followlist }: FollowListProps) => {
-  const navigate = useNavigate();
-
   return (
     <List className="flex flex-col !p-0">
       <ListItem className="flex flex-col" disablePadding>
         {followlist.map((followInfo) => (
-          <ListItemButton
+          <ProfileLink
             key={followInfo.id}
-            className="w-full !p-0"
-            onClick={() => {
-              navigate(`/profile/${followInfo.id}`);
-            }}
+            memberId={followInfo.id}
+            underline={false}
+            className="flex w-full items-center hover:bg-white/[0.08]"
           >
             <ListItemIcon className="items-center">
               <CommonAvatar
@@ -29,10 +26,13 @@ const FollowList = ({ followlist }: FollowListProps) => {
                 thumbnailPath={followInfo.thumbnailPath}
               />
               <Typography className="!text-small sm:!text-paragraph">
-                {followInfo.generation}기 {followInfo.name}
+                {followInfo.generation}기{' '}
+                <span className="group-hover/profile:underline group-focus-visible/profile:underline">
+                  {followInfo.name}
+                </span>
               </Typography>
             </ListItemIcon>
-          </ListItemButton>
+          </ProfileLink>
         ))}
       </ListItem>
     </List>

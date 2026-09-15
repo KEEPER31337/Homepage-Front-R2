@@ -1,9 +1,11 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
+import { ExecutiveInfo } from '@api/dto';
+import ProfileLink from '@components/Link/ProfileLink';
 
 interface BorrowStatusProps {
-  librarian: string;
+  librarian: Pick<ExecutiveInfo, 'memberId' | 'realName'> | undefined;
   borrowedBookCount: number;
   maxBorrowableBooks: number;
 }
@@ -15,7 +17,11 @@ const BorrowStatus = ({ librarian, borrowedBookCount, maxBorrowableBooks }: Borr
     </Typography>
   ) : (
     <Tooltip
-      title={`사서(${librarian})에게 반납해주세요.`}
+      title={
+        <>
+          사서(<ProfileLink memberId={librarian?.memberId}>{librarian?.realName ?? ''}</ProfileLink>)에게 반납해주세요.
+        </>
+      }
       componentsProps={{
         tooltip: {
           sx: {

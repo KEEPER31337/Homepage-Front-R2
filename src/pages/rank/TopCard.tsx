@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import { formatGeneration } from '@utils/converter';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
+import ProfileLink from '@components/Link/ProfileLink';
 
 interface TopCardItem {
   memberId: number;
@@ -27,7 +28,7 @@ const TopCard = <T extends TopCardItem>({ item, message, index }: TopCardProps<T
                 {index + 1}
               </Typography>
               <Typography variant="h3" fontWeight="semibold" marginY="auto" marginLeft={1}>
-                {item.realName}
+                <ProfileLink memberId={item.memberId}>{item.realName}</ProfileLink>
               </Typography>
               <Typography variant="small" marginY="auto" marginLeft={1}>
                 {formatGeneration(item.generation as string)}기
@@ -37,7 +38,14 @@ const TopCard = <T extends TopCardItem>({ item, message, index }: TopCardProps<T
               {message}
             </Typography>
           </div>
-          <CommonAvatar className="my-auto !h-16 !w-16" userId={item.memberId} thumbnailPath={item.thumbnailPath} />
+          <ProfileLink
+            memberId={item.memberId}
+            underline={false}
+            aria-label={`${item.realName} 프로필`}
+            className="my-auto shrink-0"
+          >
+            <CommonAvatar className="!h-16 !w-16" userId={item.memberId} thumbnailPath={item.thumbnailPath} />
+          </ProfileLink>
         </div>
       </div>
       <div className="relative left-2 top-2 h-28 w-80 border-2 border-pointBlue" />

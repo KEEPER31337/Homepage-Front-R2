@@ -29,7 +29,7 @@ const Library = () => {
   const { data: executiveInfos } = useGetExecutiveInfoQuery();
   const { mutate: RequestBorrowBook } = useRequestBorrowBookMutation();
 
-  const librarian = executiveInfos?.find((role) => role.jobName === MEMBER_ROLE.사서)?.realName || '';
+  const librarian = executiveInfos?.find((role) => role.jobName === MEMBER_ROLE.사서);
 
   const handleRequestBook = (bookId: number) => {
     RequestBorrowBook(bookId, {

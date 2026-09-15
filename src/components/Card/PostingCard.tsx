@@ -6,6 +6,7 @@ import { VscComment, VscEye, VscThumbsup } from 'react-icons/vsc';
 import { ReactComponent as Logo } from '@assets/logo/logo_neon.svg';
 import { getServerImgUrl } from '@utils/converter';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
+import ProfileLink from '@components/Link/ProfileLink';
 import { Row } from '@components/Table/StandardTable.interface';
 import { CardDetailInfoProps, CardMainInfoProps, InteractionScoreProps } from './PostingCard.interface';
 
@@ -35,10 +36,17 @@ export const CardDetailInfo = ({ writerId, writerThumbnailPath, writerName, regi
 
   return (
     <div className="flex">
-      <CommonAvatar className="mr-2 !h-6 !w-6" userId={writerId} thumbnailPath={writerThumbnailPath} />
+      <ProfileLink
+        memberId={writerId}
+        underline={false}
+        aria-label={`${writerName} 프로필`}
+        className="mr-2 h-fit shrink-0"
+      >
+        <CommonAvatar className="!h-6 !w-6" userId={writerId} thumbnailPath={writerThumbnailPath} />
+      </ProfileLink>
       <Stack>
         <Typography className="font-medium" variant="small">
-          {writerName}
+          <ProfileLink memberId={writerId}>{writerName}</ProfileLink>
         </Typography>
         <Typography className="font-semibold text-subGray" variant="small">
           {formattedRegisterTime}

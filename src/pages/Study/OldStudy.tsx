@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useGetPostListQuery } from '@api/postApi';
 import usePagination from '@hooks/usePagination';
 import StandardTable from '@components/Table/StandardTable';
+import ProfileLink from '@components/Link/ProfileLink';
 import { ChildComponent, Column, Row } from '@components/Table/StandardTable.interface';
 
 interface BoardRow {
   no: number | string;
   title: string;
+  writerId: number;
   writerName: string;
   registerTime: string;
   visitCount: number;
@@ -40,6 +42,8 @@ const OldStudy = () => {
 
   const childComponent = ({ key, value, rowData }: ChildComponent<BoardRow>) => {
     switch (key) {
+      case 'writerName':
+        return <ProfileLink memberId={rowData.writerId}>{rowData.writerName}</ProfileLink>;
       case 'title':
         return (
           <div className="flex items-center">

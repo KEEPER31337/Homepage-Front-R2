@@ -7,6 +7,7 @@ import { PostInfo } from '@api/dto';
 import { useDeletePostMutation } from '@api/postApi';
 import useCheckAuth from '@hooks/useCheckAuth';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
+import ProfileLink from '@components/Link/ProfileLink';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ServerImg from '@components/Image/ServerImg';
 import ActionModal from '@components/Modal/ActionModal';
@@ -36,7 +37,7 @@ const BannerSection = ({ postId, post, password }: BannerSectionProps) => {
   return (
     <>
       <div className="relative bg-mainBlack px-6 py-2">
-        <div className="opacity-10">
+        <div className="pointer-events-none opacity-10">
           <ServerImg
             src={post.thumbnailPath}
             alt="post thumbnail"
@@ -51,12 +52,15 @@ const BannerSection = ({ postId, post, password }: BannerSectionProps) => {
           </Typography>
           <div className="flex items-center justify-center gap-2 text-small leading-8 text-gray-300">
             <div className="flex items-center justify-center">
-              <CommonAvatar
-                className="mr-1 !h-4 !w-4"
-                userId={post.writerId}
-                thumbnailPath={post.writerThumbnailPath}
-              />
-              {post.writerName}
+              <ProfileLink
+                memberId={post.writerId}
+                underline={false}
+                aria-label={`${post.writerName} 프로필`}
+                className="mr-1 shrink-0"
+              >
+                <CommonAvatar className="!h-4 !w-4" userId={post.writerId} thumbnailPath={post.writerThumbnailPath} />
+              </ProfileLink>
+              <ProfileLink memberId={post.writerId}>{post.writerName}</ProfileLink>
             </div>
             <div className="flex items-center justify-center">
               <VscCalendar className="mr-1 h-4 w-4" />

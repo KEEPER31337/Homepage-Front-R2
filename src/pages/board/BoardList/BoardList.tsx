@@ -16,6 +16,7 @@ import StandardTable from '@components/Table/StandardTable';
 
 import { ChildComponent, Column, Row, TableType } from '@components/Table/StandardTable.interface';
 import PageTitle from '@components/Typography/PageTitle';
+import ProfileLink from '@components/Link/ProfileLink';
 import BoardSearchSection from './SearchSection/BoardSearchSection';
 
 const TABLE_VIEW_STORAGE_KEY = 'tableViewState';
@@ -32,6 +33,7 @@ const getInitialTableView = (): TableType => {
 interface BoardRow {
   no: number | string;
   title: string;
+  writerId: number;
   writerName: string;
   registerTime: string;
   visitCount: number;
@@ -118,7 +120,7 @@ const BoardList = () => {
             {isMobile && (
               <div className="flex items-end justify-between">
                 <Typography variant="small">
-                  {rowData.writerName} | {formattedRegisterTime}
+                  <ProfileLink memberId={rowData.writerId}>{rowData.writerName}</ProfileLink> | {formattedRegisterTime}
                 </Typography>
                 <div className="flex items-end">
                   <VscEye className="mr-0.5 fill-pointBlue" size={12} />
@@ -131,6 +133,8 @@ const BoardList = () => {
             )}
           </>
         );
+      case 'writerName':
+        return <ProfileLink memberId={rowData.writerId}>{rowData.writerName}</ProfileLink>;
       case 'registerTime':
         return DateTime.fromFormat(value as string, 'yyyy-MM-dd HH:mm:ss').toFormat('yyyy-MM-dd');
       default:
