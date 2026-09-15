@@ -10,6 +10,7 @@ import {
 import { MEMBER_ROLE } from '@constants/member';
 import BookCard from './Card/BookCard';
 import BookGuide from './Guide/BookGuide';
+import ProfileLink from '@components/Link/ProfileLink';
 
 const MAX_BORROWABLE_BOOKS = 5;
 
@@ -21,7 +22,7 @@ const BookTab = () => {
   const { mutate: cancelReturnBookMutation } = useCancelReturnBookMutation();
   const { mutate: cancelBorrowBookMutation } = useCancelBorrowBookMutation();
 
-  const librarian = executiveInfos?.find((role) => role.jobName === MEMBER_ROLE.사서)?.realName || '';
+  const librarian = executiveInfos?.find((role) => role.jobName === MEMBER_ROLE.사서);
 
   const borrowLength = borrowedBookListData?.content?.filter((bookInfo) => bookInfo.status === '대출대기').length;
   const returnLength = borrowedBookListData?.content?.filter((bookInfo) => bookInfo.status === '반납대기').length;
@@ -60,7 +61,11 @@ const BookTab = () => {
           대출기간은 승인된 대출일자로 부터 <span className="text-pointBlue">14</span>일간 입니다.
         </BookGuide>
         <BookGuide>
-          도서 관련 문의는 사서(<span className="text-pointBlue">{librarian}</span>)에게 문의 가능합니다.
+          도서 관련 문의는 사서(
+          <span className="text-pointBlue">
+            <ProfileLink memberId={librarian?.memberId}>{librarian?.realName ?? ''}</ProfileLink>
+          </span>
+          )에게 문의 가능합니다.
         </BookGuide>
       </div>
       <div className="flex flex-col space-y-4 overflow-y-auto">

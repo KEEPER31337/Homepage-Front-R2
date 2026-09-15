@@ -47,7 +47,7 @@ const CommentCardFooter = ({ commentInfo }: CommentCardFooterProps) => {
         <div className="flex w-full items-center justify-between gap-2">
           <CommonAvatar
             className="!h-7 !w-7"
-            userId={member?.memberId ?? 0}
+            userId={member?.memberId ?? null}
             thumbnailPath={member?.thumbnailPath ?? null}
           />
           <button

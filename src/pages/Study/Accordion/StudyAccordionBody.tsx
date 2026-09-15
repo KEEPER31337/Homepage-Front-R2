@@ -5,6 +5,7 @@ import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { useGetStudyQuery } from '@api/studyApi';
 import MemberChip from '@components/Chip/MemberChip';
+import ProfileLink from '@components/Link/ProfileLink';
 
 interface StudyAccordionBodyProps {
   studyId: number;
@@ -29,9 +30,16 @@ const StudyAccordionBody = ({ studyId }: StudyAccordionBodyProps) => {
       <div className="space-y-2">
         <Typography className="font-semibold">스터디원</Typography>
         <div className="flex space-x-2">
-          <MemberChip className="!rounded" label={studyInfo.headMember.realName} />
+          <MemberChip
+            className="!rounded"
+            label={<ProfileLink memberId={studyInfo.headMember.memberId}>{studyInfo.headMember.realName}</ProfileLink>}
+          />
           {studyInfo.members.map(({ memberId, realName }) => (
-            <MemberChip className="!rounded" key={memberId} label={realName} />
+            <MemberChip
+              className="!rounded"
+              key={memberId}
+              label={<ProfileLink memberId={memberId}>{realName}</ProfileLink>}
+            />
           ))}
         </div>
       </div>

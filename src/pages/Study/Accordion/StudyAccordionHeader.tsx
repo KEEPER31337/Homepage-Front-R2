@@ -2,6 +2,7 @@ import React from 'react';
 import { Divider, Typography } from '@mui/material';
 import { StudyInfo } from '@api/dto';
 import MemberChip from '@components/Chip/MemberChip';
+import ProfileLink from '@components/Link/ProfileLink';
 import ServerImg from '@components/Image/ServerImg';
 
 interface StudyAccordionHeaderProps {
@@ -26,7 +27,7 @@ const StudyAccordionHeader = ({ study }: StudyAccordionHeaderProps) => {
       </div>
       <div className="flex items-center space-x-2">
         <Typography>스터디장</Typography>
-        <MemberChip className="!rounded" label={study.headName} />
+        <MemberChip className="!rounded" label={<ProfileLink memberId={study.headId}>{study.headName}</ProfileLink>} />
         <Divider variant="middle" className="!border-white" orientation="vertical" flexItem />
         <Typography>
           현재 인원 <span className="font-semibold">{study.memberCount}명</span>

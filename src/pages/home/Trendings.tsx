@@ -6,10 +6,16 @@ import { TrendingPostInfo } from '@api/dto';
 import { useGetRecentPostsQuery, useGetTrendPostsQuery } from '@api/postApi';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
 import ServerImg from '@components/Image/ServerImg';
+import ProfileLink from '@components/Link/ProfileLink';
 
 const Card = ({ post }: { post: TrendingPostInfo }) => {
   return (
-    <Link to={`/board/view/${post.id}`} className="h-80 w-72 bg-black sm:h-[320px] sm:w-[300px]">
+    <div className="relative h-80 w-72 bg-black sm:h-[320px] sm:w-[300px]">
+      <Link
+        to={`/board/view/${post.id}`}
+        aria-label={post.title}
+        className="absolute inset-0 z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-pointBlue"
+      />
       <ServerImg
         alt="thumbnail"
         className="h-44 w-full bg-middleBlack brightness-150"
@@ -21,17 +27,26 @@ const Card = ({ post }: { post: TrendingPostInfo }) => {
         <Typography variant="h3" className="mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
           {post.title}
         </Typography>
-        <div className="mt-5 flex flex-row">
-          <CommonAvatar userId={post.writerId} thumbnailPath={post.writerThumbnailPath} className="mr-3 !h-10 !w-10" />
+        <div className="mt-5 flex flex-row [&_a]:relative [&_a]:z-20">
+          <ProfileLink
+            memberId={post.writerId}
+            underline={false}
+            aria-label={`${post.writerName} 프로필`}
+            className="mr-3 h-fit shrink-0"
+          >
+            <CommonAvatar userId={post.writerId} thumbnailPath={post.writerThumbnailPath} className="!h-10 !w-10" />
+          </ProfileLink>
           <div className="flex flex-col">
-            <Typography variant="paragraph">{post.writerName}</Typography>
+            <Typography variant="paragraph">
+              <ProfileLink memberId={post.writerId}>{post.writerName}</ProfileLink>
+            </Typography>
             <Typography className="!text-[12px] text-subGray">
               {DateTime.fromSQL(post.registerTime).toRelative()} • {post.visitCount} watch
             </Typography>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

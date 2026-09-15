@@ -5,6 +5,7 @@ import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
 import { ExecutiveInfo } from '@api/dto';
 import { MEMBER_ROLE } from '@constants/member';
 import muiTheme from '@constants/muiTheme';
+import ProfileLink from '@components/Link/ProfileLink';
 import { convertJobName, roleDutyListInfo, roles } from '@mocks/DutyManageApi';
 import DescriptionRoleDutyTooltip from '@pages/admin/DutyManage/Tooltip/DescriptionRoleDutyTooltip';
 
@@ -73,7 +74,8 @@ const DutyProfile = ({ jobName, executiveInfo: explicitExecutiveInfo, showDescri
       <div className="flex h-12 flex-col justify-center">
         {executiveInfo && (
           <Typography sx={{ fontWeight: 600, color: 'white', display: 'flex', gap: '4px' }}>
-            {executiveInfo.generation}기 {executiveInfo.realName}
+            {executiveInfo.generation}기{' '}
+            <ProfileLink memberId={executiveInfo.memberId}>{executiveInfo.realName}</ProfileLink>
           </Typography>
         )}
       </div>

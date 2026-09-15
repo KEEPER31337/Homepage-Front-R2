@@ -10,16 +10,10 @@ interface CommonAvatarProps {
   className?: string;
 }
 
-const KEEPER_AVATAR_COLORS = [
-  "#4CEEF9",
-  "#575E69",
-  "#fff419",
-  "#f0f9fc",
-];
+const KEEPER_AVATAR_COLORS = ['#4CEEF9', '#575E69', '#fff419', '#f0f9fc'];
 
 const CommonAvatar = ({ userId, thumbnailPath, className }: CommonAvatarProps) => {
-  const canIdentifyUser =
-    typeof userId === 'number' && Number.isInteger(userId) && userId > 0 && userId !== ANONYMOUS_OR_VIRTUAL_USER_ID;
+  const canIdentifyUser = userId != null && userId !== ANONYMOUS_OR_VIRTUAL_USER_ID;
 
   // MUI Avatar는 src -> children -> default 이미지 순으로 fall back함.
 
