@@ -29,7 +29,7 @@ const Profile = () => {
     { path: 'board', element: <MyBoardTab /> },
     { path: 'book', element: <BookTab /> },
     { path: 'point', element: <PointTab /> },
-    { path: '*', element: <Navigate to="attendance" /> },
+    { path: '*', element: <Navigate to="attendance" replace /> },
   ]);
 
   const [tab, setTab] = useState(0);
