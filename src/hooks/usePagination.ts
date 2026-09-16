@@ -16,9 +16,9 @@ const usePagination = (pageKey = 'page') => {
 
   useEffect(() => {
     if (!searchParams.get(pageKey)) {
-      setSearchParams({ ...Object.fromEntries(searchParams), [pageKey]: String(1) });
+      setSearchParams({ ...Object.fromEntries(searchParams), [pageKey]: String(1) }, { replace: true });
     }
-  }, [page]);
+  }, [pageKey, searchParams, setSearchParams]);
 
   return { page, getRowNumber, setPage };
 };
