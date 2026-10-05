@@ -39,6 +39,12 @@ const Login = () => {
               error.response.data?.message === '[memberType] 가입대기: 가입 승인 대기 중입니다.'
             ) {
               setLoginError('가입 승인 대기 중입니다. 관리자의 승인 후 로그인할 수 있습니다.');
+            } else if (
+              isAxiosError(error) &&
+              error.response?.status === 403 &&
+              error.response.data?.message === '[memberType] 비회원: 로그인할 수 없는 회원 유형입니다.'
+            ) {
+              setLoginError('로그인할 수 없는 비회원 계정입니다. 관리자에게 문의해주세요.');
             } else if (isAxiosError(error) && [400, 404].includes(error.response?.status ?? 0)) {
               setLoginError('아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.');
             } else {
