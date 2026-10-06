@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { List, ListItem, Typography } from '@mui/material';
 import { VscSearch } from 'react-icons/vsc';
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
@@ -24,34 +24,31 @@ const DutyProfile = ({ jobName, executiveInfo: explicitExecutiveInfo, showDescri
       ? executiveInfos?.find((role) => role.jobName === jobName)
       : explicitExecutiveInfo;
   const badgeImage = roles.find((role) => role.name === jobName)?.img;
-  const tooltipContent = useMemo(
-    () => (
-      <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
-        {roleDutyListInfo
-          .filter((duty) => duty.jobName === jobName)
-          .flatMap((data) => data.roleDuty)
-          .map((duty) => (
-            <ListItem key={duty.key} sx={{ px: '0px', py: '0px' }}>
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  color: 'white',
-                  alignItems: 'start',
-                  listStyleType: 'circle',
-                  display: 'list-item',
-                  '&::marker': {
-                    color: muiTheme.palette.primary.main,
-                    fontSize: '20px',
-                  },
-                }}
-              >
-                {duty.content}
-              </Typography>
-            </ListItem>
-          ))}
-      </List>
-    ),
-    [jobName],
+  const tooltipContent = (
+    <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
+      {roleDutyListInfo
+        .filter((duty) => duty.jobName === jobName)
+        .flatMap((data) => data.roleDuty)
+        .map((duty) => (
+          <ListItem key={duty.key} sx={{ px: '0px', py: '0px' }}>
+            <Typography
+              sx={{
+                fontWeight: 600,
+                color: 'white',
+                alignItems: 'start',
+                listStyleType: 'circle',
+                display: 'list-item',
+                '&::marker': {
+                  color: muiTheme.palette.primary.main,
+                  fontSize: '20px',
+                },
+              }}
+            >
+              {duty.content}
+            </Typography>
+          </ListItem>
+        ))}
+    </List>
   );
 
   if (jobName === MEMBER_ROLE.전산관리자) {

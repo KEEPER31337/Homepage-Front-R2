@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useMemo } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -15,37 +15,33 @@ interface DutyProfileTooltipProps {
   jobName: string;
 }
 
-const tooltipContent = (jobName?: string) =>
-  useMemo(
-    () => (
-      <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
-        {roleDutyListInfo
-          .filter((duty) => duty.jobName === jobName)
-          .map((data) =>
-            data.roleDuty.map((duty) => (
-              <ListItem key={duty.key} sx={{ px: '0px', py: '0px' }}>
-                <Typography
-                  sx={{
-                    fontWeight: 600,
-                    color: 'white',
-                    alignItems: 'start',
-                    listStyleType: 'circle',
-                    display: 'list-item',
-                    '&::marker': {
-                      color: muiTheme.palette.primary.main,
-                      fontSize: '20px',
-                    },
-                  }}
-                >
-                  {duty.content}
-                </Typography>
-              </ListItem>
-            )),
-          )}
-      </List>
-    ),
-    [jobName],
-  );
+const tooltipContent = (jobName?: string) => (
+  <List sx={{ pl: '20px', pr: '8px', py: '2px' }}>
+    {roleDutyListInfo
+      .filter((duty) => duty.jobName === jobName)
+      .map((data) =>
+        data.roleDuty.map((duty) => (
+          <ListItem key={duty.key} sx={{ px: '0px', py: '0px' }}>
+            <Typography
+              sx={{
+                fontWeight: 600,
+                color: 'white',
+                alignItems: 'start',
+                listStyleType: 'circle',
+                display: 'list-item',
+                '&::marker': {
+                  color: muiTheme.palette.primary.main,
+                  fontSize: '20px',
+                },
+              }}
+            >
+              {duty.content}
+            </Typography>
+          </ListItem>
+        )),
+      )}
+  </List>
+);
 
 const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useGetExecutiveInfoQuery } from '@api/dutyManageApi';
 import PageTitle from '@components/Typography/PageTitle';
 import { isJuniorExecutiveRole, MEMBER_ROLE } from '@constants/member';
@@ -52,14 +52,10 @@ const ItBar = () => (
 
 const JuniorMemberBar = () => {
   const { data: executiveInfos } = useGetExecutiveInfoQuery();
-  const juniorAssignments = useMemo(
-    () =>
-      (executiveInfos ?? [])
-        .filter((info) => isJuniorExecutiveRole(info.jobName))
-        .toSorted((a, b) => a.jobId - b.jobId || a.memberId - b.memberId)
-        .slice(0, jobNameArray.length),
-    [executiveInfos],
-  );
+  const juniorAssignments = (executiveInfos ?? [])
+    .filter((info) => isJuniorExecutiveRole(info.jobName))
+    .toSorted((a, b) => a.jobId - b.jobId || a.memberId - b.memberId)
+    .slice(0, jobNameArray.length);
 
   return (
     <div className="mt-16 w-full">

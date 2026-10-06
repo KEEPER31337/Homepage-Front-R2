@@ -1,4 +1,4 @@
-import React, { FormEvent, useMemo, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { InputLabel, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { toast } from 'react-hot-toast';
@@ -97,6 +97,38 @@ const getVoteCreationErrorMessage = (error: unknown) => {
   return typeof message === 'string' && message.trim() ? message : '투표 생성에 실패했습니다.';
 };
 
+const buildMemberOptions = (members: ReturnType<typeof useGetMemberInfoQuery>['data']) => {
+  const options: MemberOption[] = [];
+  const lookup = new Map<string, MemberOption[]>();
+
+  (members ?? []).forEach((member) => {
+    const option = {
+      value: member.memberId,
+      label: `${member.realName} (${member.generation})`,
+      group: member.generation,
+    };
+    const lookupKey = createMemberLookupKey(member.generation, member.realName);
+    const matchingOptions = lookup.get(lookupKey);
+
+    options.push(option);
+
+    if (matchingOptions) {
+      matchingOptions.push(option);
+    } else {
+      lookup.set(lookupKey, [option]);
+    }
+  });
+
+  return {
+    memberOptions: options.toSorted(
+      (firstMember, secondMember) =>
+        Number.parseFloat(firstMember.group) - Number.parseFloat(secondMember.group) ||
+        firstMember.label.localeCompare(secondMember.label),
+    ),
+    memberLookup: lookup,
+  };
+};
+
 const VoteCreation = ({ onCancel }: VoteCreationProps) => {
   const { data: members, isPending: isMembersPending, isError: isMembersError } = useGetMemberInfoQuery();
   const { mutate: createVote, isPending: isVoteCreationPending } = useCreateVoteMutation();
@@ -111,37 +143,7 @@ const VoteCreation = ({ onCancel }: VoteCreationProps) => {
   const [bulkMemberResult, setBulkMemberResult] = useState<BulkMemberResult | null>(null);
   const [agendas, setAgendas] = useState<VoteAgendaDraft[]>(() => [createAgendaDraft()]);
 
-  const { memberOptions, memberLookup } = useMemo(() => {
-    const options: MemberOption[] = [];
-    const lookup = new Map<string, MemberOption[]>();
-
-    (members ?? []).forEach((member) => {
-      const option = {
-        value: member.memberId,
-        label: `${member.realName} (${member.generation})`,
-        group: member.generation,
-      };
-      const lookupKey = createMemberLookupKey(member.generation, member.realName);
-      const matchingOptions = lookup.get(lookupKey);
-
-      options.push(option);
-
-      if (matchingOptions) {
-        matchingOptions.push(option);
-      } else {
-        lookup.set(lookupKey, [option]);
-      }
-    });
-
-    return {
-      memberOptions: options.toSorted(
-        (firstMember, secondMember) =>
-          Number.parseFloat(firstMember.group) - Number.parseFloat(secondMember.group) ||
-          firstMember.label.localeCompare(secondMember.label),
-      ),
-      memberLookup: lookup,
-    };
-  }, [members]);
+  const { memberOptions, memberLookup } = buildMemberOptions(members);
 
   const bulkMemberEntries = [
     ...new Set(

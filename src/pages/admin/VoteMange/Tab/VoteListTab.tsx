@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -31,7 +31,7 @@ const VoteListTab = () => {
   const [voteToDelete, setVoteToDelete] = useState<AdminVoteListItem | null>(null);
   const { data: votes = [], isPending, isError } = useGetAdminVoteListQuery(selectedYear);
   const { data: members, isPending: isMembersPending, isError: isMembersError } = useGetMemberInfoQuery();
-  const membersById = useMemo(() => new Map((members ?? []).map((member) => [member.memberId, member])), [members]);
+  const membersById = new Map((members ?? []).map((member) => [member.memberId, member]));
 
   const handleYearChange = (event: SelectChangeEvent<unknown>) => {
     setSelectedYear(Number(event.target.value));
