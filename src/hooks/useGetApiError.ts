@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
@@ -38,67 +37,61 @@ const useApiError = (handlers?: HttpStatusHandlers) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const defaultHandlers: DefaultHttpStatusHandlers = useMemo(
-    () => ({
-      default: () => {
-        console.log('알 수 없는 에러가 발생하였습니다.');
-      },
-      400: {
-        default: () => {
-          console.log('400 에러 발생');
-        },
-      },
-      401: {
-        default: async () => {
-          await clearAuthSession(queryClient);
-          navigate('/login');
-        },
-      },
-      403: {
-        default: () => {
-          console.log('403 에러 발생');
-        },
-      },
-      409: {
-        default: () => {
-          console.log('409 에러 발생');
-        },
-      },
-      500: {
-        default: () => {
-          console.log('500 에러 발생');
-        },
-      },
-    }),
-    [navigate, queryClient],
-  );
-
-  const handleError = useCallback(
-    (error: unknown, serviceCode?: number) => {
-      const httpStatus = (error as AxiosError).response?.status;
-      if (!httpStatus) {
-        defaultHandlers.default();
-        return;
-      }
-      if (handlers && serviceCode !== undefined && handlers[httpStatus]?.[serviceCode]) {
-        // 우선순위 1. 컴포넌트에서 (HTTP Status, 서비스 표준 에러 Code) Key 조합으로 재정의한 핸들러
-        handlers[httpStatus][serviceCode]();
-      } else if (handlers && handlers[httpStatus]) {
-        // 우선순위 2. 컴포넌트에서 (HTTP Status) Key로 재정의한 핸들러
-        handlers[httpStatus].default?.();
-      } else if (serviceCode !== undefined && defaultHandlers[httpStatus] && defaultHandlers[httpStatus][serviceCode]) {
-        // 우선순위 3. Hook에서 (HTTP Status, 서비스 표준 에러 Code) Key 조합으로 정의한 핸들러
-        defaultHandlers[httpStatus][serviceCode]();
-      } else if (defaultHandlers[httpStatus]) {
-        // 우선순위 4. Hook에서 (HTTP Status) Key로 정의한 핸들러
-        defaultHandlers[httpStatus].default();
-      } else {
-        // 우선순위 5. 어디에서도 정의되지 못한 에러를 처리하는 핸들러
-        defaultHandlers.default();
-      }
+  const defaultHandlers: DefaultHttpStatusHandlers = {
+    default: () => {
+      console.log('알 수 없는 에러가 발생하였습니다.');
     },
-    [defaultHandlers, handlers],
-  );
+    400: {
+      default: () => {
+        console.log('400 에러 발생');
+      },
+    },
+    401: {
+      default: async () => {
+        await clearAuthSession(queryClient);
+        navigate('/login');
+      },
+    },
+    403: {
+      default: () => {
+        console.log('403 에러 발생');
+      },
+    },
+    409: {
+      default: () => {
+        console.log('409 에러 발생');
+      },
+    },
+    500: {
+      default: () => {
+        console.log('500 에러 발생');
+      },
+    },
+  };
+
+  const handleError = (error: unknown, serviceCode?: number) => {
+    const httpStatus = (error as AxiosError).response?.status;
+    if (!httpStatus) {
+      defaultHandlers.default();
+      return;
+    }
+    if (handlers && serviceCode !== undefined && handlers[httpStatus]?.[serviceCode]) {
+      // 우선순위 1. 컴포넌트에서 (HTTP Status, 서비스 표준 에러 Code) Key 조합으로 재정의한 핸들러
+      handlers[httpStatus][serviceCode]();
+    } else if (handlers && handlers[httpStatus]) {
+      // 우선순위 2. 컴포넌트에서 (HTTP Status) Key로 재정의한 핸들러
+      handlers[httpStatus].default?.();
+    } else if (serviceCode !== undefined && defaultHandlers[httpStatus] && defaultHandlers[httpStatus][serviceCode]) {
+      // 우선순위 3. Hook에서 (HTTP Status, 서비스 표준 에러 Code) Key 조합으로 정의한 핸들러
+      defaultHandlers[httpStatus][serviceCode]();
+    } else if (defaultHandlers[httpStatus]) {
+      // 우선순위 4. Hook에서 (HTTP Status) Key로 정의한 핸들러
+      defaultHandlers[httpStatus].default();
+    } else {
+      // 우선순위 5. 어디에서도 정의되지 못한 에러를 처리하는 핸들러
+      defaultHandlers.default();
+    }
+  };
 
   return { handleError };
 };

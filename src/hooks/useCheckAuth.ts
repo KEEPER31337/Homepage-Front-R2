@@ -1,24 +1,16 @@
-import { useCallback } from 'react';
 import { Role } from '@api/dto';
 import { useMeQuery } from '@api/meApi';
 
 const useCheckAuth = () => {
   const { data: member } = useMeQuery();
 
-  const checkLogin = useCallback(() => {
-    return Boolean(member);
-  }, [member]);
+  const checkLogin = () => Boolean(member);
 
-  const checkAuth = useCallback(
-    (requiredRole: Role) => {
-      return member?.memberJobs?.includes(requiredRole);
-    },
-    [member],
-  );
+  const checkAuth = (requiredRole: Role) => member?.memberJobs?.includes(requiredRole);
 
-  const checkIncludeOneOfAuths = useCallback((roles: Role[]) => roles.some((role) => checkAuth(role)), [checkAuth]);
+  const checkIncludeOneOfAuths = (roles: Role[]) => roles.some((role) => checkAuth(role));
 
-  const checkIsMyId = useCallback((id: number | null) => id !== null && member?.memberId === id, [member]);
+  const checkIsMyId = (id: number | null) => id !== null && member?.memberId === id;
 
   return { checkLogin, checkAuth, checkIncludeOneOfAuths, checkIsMyId };
 };

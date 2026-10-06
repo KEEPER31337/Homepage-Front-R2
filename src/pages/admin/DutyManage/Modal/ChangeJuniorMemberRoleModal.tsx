@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   useCreateExecutiveJobMutation,
   useDeleteExecutiveJobMutation,
@@ -29,27 +29,19 @@ const ChangeJuniorMemberRoleModal = ({
   const { mutateAsync: createJob, isPending: isCreating } = useCreateExecutiveJobMutation();
   const { mutateAsync: deleteJob, isPending: isDeleting } = useDeleteExecutiveJobMutation();
 
-  const memberOptions = useMemo(
-    () =>
-      (memberList ?? [])
-        .map((member) => ({
-          value: member.memberId,
-          label: member.realName,
-          group: member.generation,
-        }))
-        .sort((a, b) => parseFloat(a.group) - parseFloat(b.group) || a.label.localeCompare(b.label)),
-    [memberList],
-  );
-  const roleOptions = useMemo(
-    () =>
-      (jobList ?? [])
-        .filter((job) => isJuniorExecutiveRole(job.jobName))
-        .map((job) => ({
-          value: job.jobId,
-          label: job.jobName.replace(MEMBER_ROLE_PREFIX, ''),
-        })),
-    [jobList],
-  );
+  const memberOptions = (memberList ?? [])
+    .map((member) => ({
+      value: member.memberId,
+      label: member.realName,
+      group: member.generation,
+    }))
+    .sort((a, b) => parseFloat(a.group) - parseFloat(b.group) || a.label.localeCompare(b.label));
+  const roleOptions = (jobList ?? [])
+    .filter((job) => isJuniorExecutiveRole(job.jobName))
+    .map((job) => ({
+      value: job.jobId,
+      label: job.jobName.replace(MEMBER_ROLE_PREFIX, ''),
+    }));
 
   const [memberValue, setMemberValue] = useState<SingleAutoCompleteValue>(null);
   const [roleValue, setRoleValue] = useState<SingleAutoCompleteValue>(null);

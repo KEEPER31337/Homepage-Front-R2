@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Avatar, Typography } from '@mui/material';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
@@ -33,25 +33,22 @@ const ProfileImageUploader = ({
   const [thumbnailBase64, setThumbnailBase64] = useState<string>();
   const [openWarning, setOpenWarning] = useState<ImageWarningInfo>({ isOpen: false, type: 'Multiple' });
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (setIsThumbnailChanged) setIsThumbnailChanged(true);
-      setThumbnailBase64('');
-      acceptedFiles.forEach((file: File) => {
-        setThumbnail(file);
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          const base64 = reader.result;
-          if (base64) {
-            const base64Sub = base64.toString();
-            setThumbnailBase64(base64Sub);
-          }
-        };
-      });
-    },
-    [setIsThumbnailChanged, setThumbnail],
-  );
+  const onDrop = (acceptedFiles: File[]) => {
+    if (setIsThumbnailChanged) setIsThumbnailChanged(true);
+    setThumbnailBase64('');
+    acceptedFiles.forEach((file: File) => {
+      setThumbnail(file);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        const base64 = reader.result;
+        if (base64) {
+          const base64Sub = base64.toString();
+          setThumbnailBase64(base64Sub);
+        }
+      };
+    });
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
