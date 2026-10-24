@@ -51,7 +51,8 @@ const BoardWrite = () => {
   const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
   const [fileIdsToDelete, setFileIdsToDelete] = useState<number[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
-  const [hasContent, setHasContent] = useState(false);
+
+  const [hasContent, setHasContent] = useState(Boolean(editMode?.post.content?.trim()));
   const [contentErrMsg, setContentErrMsg] = useState('');
 
   const { data: userInfo } = useMeQuery();
@@ -77,10 +78,10 @@ const BoardWrite = () => {
     }, [filesInfo]);
   }
 
-  const handleEditorBlur = () => {
+  const handleEditorChange = () => {
     const content = editorRef.current?.getInstance().getMarkdown();
 
-    if (!content || content.length < 0) {
+    if (!content?.trim()) {
       setHasContent(false);
       setContentErrMsg(COMMON.error.required);
       return;
@@ -203,7 +204,7 @@ const BoardWrite = () => {
           height="470px"
           initialValue={editMode?.post.content}
           forwardedRef={editorRef}
-          onChange={handleEditorBlur}
+          onChange={handleEditorChange}
         />
         <Typography variant="small" className="text-subRed">
           {!hasContent && contentErrMsg}
