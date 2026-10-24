@@ -15,7 +15,7 @@ import { VscTrash } from 'react-icons/vsc';
 import { formatFileSize } from '@utils/converter';
 
 interface FileUploadListTableProps {
-  files: (File & { fileId?: number })[];
+  files: { name: string; size: number; fileId?: number }[];
   onDeleteButtonClick: (fileName: string, fileId?: number) => void;
 }
 
