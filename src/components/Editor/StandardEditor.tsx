@@ -54,9 +54,10 @@ const findToastUiToolbarIconSprite = () => {
 const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: StandardEditorProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // 화면 폭이 바뀔 때마다 에디터를 재생성하면 작성 중인 본문이 사라지므로 마운트 시점 값으로 고정
+  const [initIsMobile] = React.useState(isMobile);
   const editorWrapperRef = React.useRef<HTMLDivElement>(null);
   const editorElementRef = React.useRef<HTMLDivElement>(null);
-  const editorInstanceRef = React.useRef<ToastEditor | null>(null);
   const onChangeRef = React.useRef(onChange);
   onChangeRef.current = onChange;
 
@@ -71,7 +72,7 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
   }, []);
 
   const handleImageUpload = React.useCallback<NonNullable<HookMap['addImageBlobHook']>>(
-    (blob) => {
+    (blob, callback) => {
       if (blob.size > MAX_FILE_SIZE) {
         toast.error(FILE.error.exceedFileSize, {
           style: {
@@ -81,29 +82,14 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
         return;
       }
 
-      const editor = editorInstanceRef.current;
-      if (!editor) return;
-
-      const [startPos] = editor.getSelection();
-
-      const IMAGE_MARKDOWN_LOADING_MSG = `![Uploading image...]()`;
-      editor.insertText(`${IMAGE_MARKDOWN_LOADING_MSG}\n`);
-
-      // selection 타입을 명확히 하여 마크다운 위치 계산
-      const [startLinePos, startCharPos] = startPos as Exclude<typeof startPos, number>;
-      const endPos = [startLinePos, startCharPos + IMAGE_MARKDOWN_LOADING_MSG.length] as Exclude<
-        typeof startPos,
-        number
-      >;
-
+      // getSelection 위치 형식이 모드마다 달라 직접 삽입하지 않고, 현재 모드에 맞게 삽입해주는 callback 사용
       uploadPostImageMutation(
         { file: blob },
         {
           onSuccess: ({ fileName, filePath }) => {
-            editor.replaceSelection(`![${fileName}](${getServerImgUrl(filePath)})`, startPos, endPos);
+            callback(getServerImgUrl(filePath), fileName);
           },
           onError: () => {
-            editor.deleteSelection(startPos, endPos);
             toast.error(FILE.error.uploadFail);
           },
         },
@@ -125,27 +111,25 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
       events: {
         change: () => onChangeRef.current?.(),
       },
-      previewStyle: isMobile ? 'tab' : 'vertical',
+      previewStyle: initIsMobile ? 'tab' : 'vertical',
       height,
       minHeight: '300px',
-      initialEditType: isMobile ? 'wysiwyg' : 'markdown',
+      initialEditType: initIsMobile ? 'wysiwyg' : 'markdown',
       language: 'ko',
       theme: 'dark',
       autofocus: false,
       plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
     });
 
-    editorInstanceRef.current = editor;
     if (forwardedRef) {
       forwardedRef.current = { getInstance: () => editor };
     }
 
     return () => {
       editor.destroy();
-      editorInstanceRef.current = null;
       if (forwardedRef) forwardedRef.current = null;
     };
-  }, [forwardedRef, handleImageUpload, height, initialValue, isMobile]);
+  }, [forwardedRef, handleImageUpload, height, initialValue, initIsMobile]);
 
   return (
     <div ref={editorWrapperRef} data-standard-editor>
