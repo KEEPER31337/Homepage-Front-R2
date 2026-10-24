@@ -54,6 +54,8 @@ const findToastUiToolbarIconSprite = () => {
 const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: StandardEditorProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // 화면 폭이 바뀔 때마다 에디터를 재생성하면 작성 중인 본문이 사라지므로 마운트 시점 값으로 고정
+  const [initIsMobile] = React.useState(isMobile);
   const editorWrapperRef = React.useRef<HTMLDivElement>(null);
   const editorElementRef = React.useRef<HTMLDivElement>(null);
   const onChangeRef = React.useRef(onChange);
@@ -109,10 +111,10 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
       events: {
         change: () => onChangeRef.current?.(),
       },
-      previewStyle: isMobile ? 'tab' : 'vertical',
+      previewStyle: initIsMobile ? 'tab' : 'vertical',
       height,
       minHeight: '300px',
-      initialEditType: isMobile ? 'wysiwyg' : 'markdown',
+      initialEditType: initIsMobile ? 'wysiwyg' : 'markdown',
       language: 'ko',
       theme: 'dark',
       autofocus: false,
@@ -127,7 +129,7 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
       editor.destroy();
       if (forwardedRef) forwardedRef.current = null;
     };
-  }, [forwardedRef, handleImageUpload, height, initialValue, isMobile]);
+  }, [forwardedRef, handleImageUpload, height, initialValue, initIsMobile]);
 
   return (
     <div ref={editorWrapperRef} data-standard-editor>
