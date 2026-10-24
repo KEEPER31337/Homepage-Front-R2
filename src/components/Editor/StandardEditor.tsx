@@ -56,7 +56,6 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const editorWrapperRef = React.useRef<HTMLDivElement>(null);
   const editorElementRef = React.useRef<HTMLDivElement>(null);
-  const editorInstanceRef = React.useRef<ToastEditor | null>(null);
   const onChangeRef = React.useRef(onChange);
   onChangeRef.current = onChange;
 
@@ -71,7 +70,7 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
   }, []);
 
   const handleImageUpload = React.useCallback<NonNullable<HookMap['addImageBlobHook']>>(
-    (blob) => {
+    (blob, callback) => {
       if (blob.size > MAX_FILE_SIZE) {
         toast.error(FILE.error.exceedFileSize, {
           style: {
@@ -81,29 +80,14 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
         return;
       }
 
-      const editor = editorInstanceRef.current;
-      if (!editor) return;
-
-      const [startPos] = editor.getSelection();
-
-      const IMAGE_MARKDOWN_LOADING_MSG = `![Uploading image...]()`;
-      editor.insertText(`${IMAGE_MARKDOWN_LOADING_MSG}\n`);
-
-      // selection 타입을 명확히 하여 마크다운 위치 계산
-      const [startLinePos, startCharPos] = startPos as Exclude<typeof startPos, number>;
-      const endPos = [startLinePos, startCharPos + IMAGE_MARKDOWN_LOADING_MSG.length] as Exclude<
-        typeof startPos,
-        number
-      >;
-
+      // getSelection 위치 형식이 모드마다 달라 직접 삽입하지 않고, 현재 모드에 맞게 삽입해주는 callback 사용
       uploadPostImageMutation(
         { file: blob },
         {
           onSuccess: ({ fileName, filePath }) => {
-            editor.replaceSelection(`![${fileName}](${getServerImgUrl(filePath)})`, startPos, endPos);
+            callback(getServerImgUrl(filePath), fileName);
           },
           onError: () => {
-            editor.deleteSelection(startPos, endPos);
             toast.error(FILE.error.uploadFail);
           },
         },
@@ -135,14 +119,12 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
       plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
     });
 
-    editorInstanceRef.current = editor;
     if (forwardedRef) {
       forwardedRef.current = { getInstance: () => editor };
     }
 
     return () => {
       editor.destroy();
-      editorInstanceRef.current = null;
       if (forwardedRef) forwardedRef.current = null;
     };
   }, [forwardedRef, handleImageUpload, height, initialValue, isMobile]);
