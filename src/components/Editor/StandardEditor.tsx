@@ -58,8 +58,8 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
   const [initIsMobile] = React.useState(isMobile);
   const editorWrapperRef = React.useRef<HTMLDivElement>(null);
   const editorElementRef = React.useRef<HTMLDivElement>(null);
-  const onChangeRef = React.useRef(onChange);
-  onChangeRef.current = onChange;
+  // 콜백이 바뀔 때 에디터를 재생성하지 않도록 최신 onChange를 effect event로 참조
+  const onEditorChange = React.useEffectEvent(() => onChange?.());
 
   const { mutate: uploadPostImageMutation } = useUploadPostImageMutation();
 
@@ -109,7 +109,7 @@ const StandardEditor = ({ forwardedRef, height, initialValue = '', onChange }: S
         addImageBlobHook: handleImageUpload,
       },
       events: {
-        change: () => onChangeRef.current?.(),
+        change: () => onEditorChange(),
       },
       previewStyle: initIsMobile ? 'tab' : 'vertical',
       height,

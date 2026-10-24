@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
@@ -20,12 +20,17 @@ import type { StandardEditorHandle } from '@components/Editor/StandardEditor';
 import StandardInput from '@components/Input/StandardInput';
 import PageTitle from '@components/Typography/PageTitle';
 import FileUploader from '@components/Uploader/FileUploader';
+import NotFound from '@pages/NotFound/NotFound';
 import SettingUploadModal from './Modal/SettingUploadModal';
 
 const POST_TITLE_MAX_LENGTH = 50;
 
-const BoardWrite = () => {
-  const { categoryName } = useParams();
+interface BoardWriteFormProps {
+  categoryName: string;
+  categoryId: number;
+}
+
+const BoardWriteForm = ({ categoryName, categoryId }: BoardWriteFormProps) => {
   const {
     state: editMode,
   }: {
@@ -36,18 +41,23 @@ const BoardWrite = () => {
     } | null;
   } = useLocation();
 
-  const categoryId = categoryName ? categoryNameToId(categoryName) : null;
-  if (!categoryId) return null;
-
-  const [postSettingInfo, setPostSettingInfo] = useState<UploadPostSettings>({
-    isNotice: false,
-    isSecret: false,
-    isTemp: false,
-    allowComment: true,
-  });
+  const [postSettingInfo, setPostSettingInfo] = useState<UploadPostSettings>(() =>
+    editMode
+      ? {
+          isNotice: editMode.post.isNotice,
+          isSecret: editMode.post.isSecret,
+          isTemp: editMode.post.isTemp,
+          allowComment: editMode.post.allowComment,
+        }
+      : {
+          isNotice: false,
+          isSecret: false,
+          isTemp: false,
+          allowComment: true,
+        },
+  );
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
-  const [existingFiles, setExistingFiles] = useState<(File & { fileId: number })[]>([]);
   const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
   const [fileIdsToDelete, setFileIdsToDelete] = useState<number[]>([]);
   const [settingModalOpen, setSettingModalOpen] = useState(false);
@@ -69,14 +79,8 @@ const BoardWrite = () => {
     formState: { isValid },
   } = useForm({ mode: 'onBlur' });
 
-  if (editMode) {
-    const { data: filesInfo } = useGetPostFilesQuery(editMode?.postId, true, editMode?.password);
-    useEffect(() => {
-      if (!filesInfo) return;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      setExistingFiles(filesInfo as any);
-    }, [filesInfo]);
-  }
+  const { data: filesInfo } = useGetPostFilesQuery(editMode?.postId ?? -1, Boolean(editMode), editMode?.password);
+  const existingFiles = (filesInfo ?? []).filter(({ fileId }) => !fileIdsToDelete.includes(fileId));
 
   const handleEditorChange = () => {
     const content = editorRef.current?.getInstance().getMarkdown();
@@ -149,16 +153,6 @@ const BoardWrite = () => {
     setSettingModalOpen(false);
   };
 
-  useEffect(() => {
-    if (!editMode) return;
-    setPostSettingInfo({
-      isNotice: editMode.post.isNotice,
-      isSecret: editMode.post.isSecret,
-      isTemp: editMode.post.isTemp,
-      allowComment: editMode.post.allowComment,
-    });
-  }, []);
-
   return (
     <div>
       <div className="flex">
@@ -216,7 +210,6 @@ const BoardWrite = () => {
       <div className="mb-5">
         <FileUploader
           existingFiles={existingFiles}
-          setExistingFiles={setExistingFiles}
           files={filesToAdd}
           setFiles={setFilesToAdd}
           setFileIdsToDelete={setFileIdsToDelete}
@@ -244,6 +237,15 @@ const BoardWrite = () => {
       />
     </div>
   );
+};
+
+const BoardWrite = () => {
+  const { categoryName } = useParams();
+
+  const categoryId = categoryName ? categoryNameToId(categoryName) : null;
+  if (!categoryName || !categoryId) return <NotFound from="Board" />;
+
+  return <BoardWriteForm categoryName={categoryName} categoryId={categoryId} />;
 };
 
 export default BoardWrite;

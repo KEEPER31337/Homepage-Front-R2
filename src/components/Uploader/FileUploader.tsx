@@ -4,12 +4,12 @@ import { FileRejection, useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { Typography } from '@mui/material';
 import { VscNewFile } from 'react-icons/vsc';
+import { FileInfo } from '@api/dto';
 import { FILE, MAX_FILE_SIZE } from '@constants/apiResponseMessage';
 import FileUploadListTable from './FileUploadList';
 
 interface FileUploaderProps {
-  existingFiles?: (File & { fileId: number })[];
-  setExistingFiles?: React.Dispatch<React.SetStateAction<(File & { fileId: number })[]>>;
+  existingFiles?: FileInfo[];
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   setFileIdsToDelete?: React.Dispatch<React.SetStateAction<number[]>>;
@@ -17,7 +17,6 @@ interface FileUploaderProps {
 
 const FileUploader = ({
   existingFiles = [],
-  setExistingFiles,
   files: filesToAdd,
   setFiles: setFilesToAdd,
   setFileIdsToDelete,
@@ -67,9 +66,8 @@ const FileUploader = ({
   });
 
   const handleDeleteUploadFileClick = (fileName: string, fileId?: number) => {
-    if (fileId && setFileIdsToDelete && setExistingFiles) {
+    if (fileId && setFileIdsToDelete) {
       setFileIdsToDelete((prevFileIds) => [...prevFileIds, fileId]);
-      setExistingFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
       return;
     }
 
