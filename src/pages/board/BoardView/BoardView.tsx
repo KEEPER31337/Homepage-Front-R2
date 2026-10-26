@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { useGetEachPostQuery, useGetExamPostFilesAccessQuery, useGrantExamPostFilesAccessMutation } from '@api/postApi';
+import {
+  POST_SERVICE_CODE,
+  getPostServiceCode,
+  useGetEachPostQuery,
+  useGetExamPostFilesAccessQuery,
+  useGrantExamPostFilesAccessMutation,
+} from '@api/postApi';
 import NotFound from '@pages/NotFound/NotFound';
 import SecretPostModal from './Modal/SecretPostModal';
 import WarningDeductPointModal from './Modal/WarningDeductPointModal';
@@ -13,24 +19,17 @@ import PostSection from './Section/PostSection';
 const BoardView = () => {
   const { postId: postIdStr } = useParams();
   const postId = Number(postIdStr);
-  const {
-    state: isSecret,
-  }: {
-    state: boolean | null;
-  } = useLocation();
 
   const [secretPostModalOpen, setSecretPostModalOpen] = useState(false);
-  const [isSecretPasswordSubmited, setIsSecretPasswordSubmited] = useState(false);
   const [password, setPassword] = useState<string>();
   const [warningDeductPointModalOpen, setWarningDeductPointModalOpen] = useState(false);
   const [hasExamFilesAccess, setHasExamFilesAccess] = useState<boolean | null>(null);
   const navigate = useNavigate();
 
-  const {
-    data: postInfo,
-    isSuccess,
-    error,
-  } = useGetEachPostQuery(postId, isSecret, isSecretPasswordSubmited, password);
+  const { data: postInfo, isSuccess, error } = useGetEachPostQuery(postId, password);
+  const postServiceCode = getPostServiceCode(error);
+  const isSecretPost =
+    postServiceCode === POST_SERVICE_CODE.passwordRequired || postServiceCode === POST_SERVICE_CODE.passwordMismatch;
   const isExamPost = postInfo?.categoryName === '시험게시판';
   const isExamRegularPost = Boolean(isExamPost && postInfo && !postInfo.isNotice && postInfo.fileCount > 0);
   const examPostFilesAccessQuery = useGetExamPostFilesAccessQuery(postId, isExamRegularPost);
@@ -38,17 +37,15 @@ const BoardView = () => {
     useGrantExamPostFilesAccessMutation();
 
   useEffect(() => {
-    setIsSecretPasswordSubmited(false);
-
     if (!isSuccess) return;
     setSecretPostModalOpen(false);
   }, [isSuccess]);
 
   useEffect(() => {
-    if (!isSecret) return;
+    if (!isSecretPost) return;
 
     setSecretPostModalOpen(true);
-  }, [isSecret]);
+  }, [isSecretPost]);
 
   useEffect(() => {
     return () => {
@@ -122,12 +119,7 @@ const BoardView = () => {
           )}
         </>
       )}
-      <SecretPostModal
-        setPassword={setPassword}
-        setIsSecretPasswordSubmited={setIsSecretPasswordSubmited}
-        open={secretPostModalOpen}
-        setOpen={setSecretPostModalOpen}
-      />
+      <SecretPostModal setPassword={setPassword} open={secretPostModalOpen} setOpen={setSecretPostModalOpen} />
     </div>
   );
 };
