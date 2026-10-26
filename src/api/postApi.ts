@@ -1,8 +1,8 @@
 import hotToast from 'react-hot-toast';
 import { useEffect, useRef } from 'react';
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
+import axios, { isAxiosError } from 'axios';
 import { BOARD } from '@constants/apiResponseMessage';
 import { useApiError } from '@hooks/useGetApiError';
 import {
@@ -165,13 +165,28 @@ const useDeleteFilesMutation = () => {
   return useMutation({ mutationFn: fetcher });
 };
 
-const useGetEachPostQuery = (
-  postId: number,
-  isSecret: boolean | null,
-  setIsSecretPasswordSubmited: boolean,
-  password?: string,
-) => {
-  const location = useLocation();
+const POST_SERVICE_CODE = {
+  passwordMismatch: 40301,
+  passwordRequired: 40302,
+  inaccessible: 40303,
+} as const;
+
+// 백엔드가 서비스 코드를 주지 않아 403 메시지 "[필드명] 입력값:" 로 코드를 판단
+// 추후 helper 제거하고, 실제로 40301, 40302, 40303을 백엔드에서 주도록 수정하는게 좋을 듯함.
+const getPostServiceCode = (error: unknown) => {
+  if (!isAxiosError<{ message?: string }>(error) || error.response?.status !== 403) return undefined;
+
+  const message = error.response.data?.message ?? '';
+
+  if (message.startsWith('[password] null:')) return POST_SERVICE_CODE.passwordRequired;
+  if (message.startsWith('[password]')) return POST_SERVICE_CODE.passwordMismatch;
+  if (message.startsWith('[postId]')) return POST_SERVICE_CODE.inaccessible;
+
+  return undefined;
+};
+
+const useGetEachPostQuery = (postId: number, password?: string) => {
+  const navigate = useNavigate();
 
   const { handleError } = useApiError({
     400: {
@@ -181,12 +196,14 @@ const useGetEachPostQuery = (
       },
     },
     403: {
-      40301: () => {
+      [POST_SERVICE_CODE.passwordMismatch]: () => {
         hotToast.error(BOARD.error.mismatchPassword);
       },
-      40302: () => {
-        // 비밀글 여부 true로 변경
-        location.state = true;
+      // 비밀번호 모달은 BoardView에서 연다
+      [POST_SERVICE_CODE.passwordRequired]: () => undefined,
+      [POST_SERVICE_CODE.inaccessible]: () => {
+        hotToast.error(BOARD.error.inaccessible);
+        navigate(-1);
       },
     },
   });
@@ -195,7 +212,6 @@ const useGetEachPostQuery = (
   const query = useQuery<PostInfo>({
     queryKey: ['post', postId, password],
     queryFn: fetcher,
-    enabled: !isSecret || Boolean(isSecret && setIsSecretPasswordSubmited),
   });
   const handledErrorUpdatedAt = useRef(0);
 
@@ -203,17 +219,8 @@ const useGetEachPostQuery = (
     if (!query.isError || query.errorUpdatedAt <= handledErrorUpdatedAt.current) return;
 
     handledErrorUpdatedAt.current = query.errorUpdatedAt;
-    const err = query.error;
-    if ((err as AxiosError)?.response?.status === 403) {
-      if (isSecret === null) {
-        handleError(err, 40302);
-        return;
-      }
-      handleError(err, 40301);
-      return;
-    }
-    handleError(err);
-  }, [handleError, isSecret, query.error, query.errorUpdatedAt, query.isError]);
+    handleError(query.error, getPostServiceCode(query.error));
+  }, [handleError, query.error, query.errorUpdatedAt, query.isError]);
 
   return query;
 };
@@ -340,6 +347,8 @@ const useGetMemberTempPostsQuery = ({ page, size = 10 }: PageAndSize) => {
 };
 
 export {
+  POST_SERVICE_CODE,
+  getPostServiceCode,
   useUploadPostMutation,
   useUploadPostImageMutation,
   useGetPostListQuery,

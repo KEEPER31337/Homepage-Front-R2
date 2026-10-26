@@ -9,12 +9,11 @@ import ActionModal from '@components/Modal/ActionModal';
 
 interface SecretPostModalProps {
   setPassword: Dispatch<SetStateAction<string | undefined>>;
-  setIsSecretPasswordSubmited: Dispatch<SetStateAction<boolean>>;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SecretPostModal = ({ setPassword, setIsSecretPasswordSubmited, open, setOpen }: SecretPostModalProps) => {
+const SecretPostModal = ({ setPassword, open, setOpen }: SecretPostModalProps) => {
   const navigate = useNavigate();
 
   const { control, getValues, reset } = useForm({ mode: 'onBlur' });
@@ -22,7 +21,6 @@ const SecretPostModal = ({ setPassword, setIsSecretPasswordSubmited, open, setOp
   const handlePasswordConfirmClick = () => {
     setPassword(getValues('password'));
     reset();
-    setIsSecretPasswordSubmited(true);
   };
 
   const handleActionEnterKeyUp = () => {

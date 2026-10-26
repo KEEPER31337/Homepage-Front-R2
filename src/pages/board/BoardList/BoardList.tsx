@@ -90,7 +90,7 @@ const BoardList = () => {
   const handlePostRowClick = ({ rowData }: { rowData: Row<BoardRow> }) => {
     if (!rowData.id) return;
 
-    navigate(`/board/view/${rowData.id}`, { state: rowData.isSecret });
+    navigate(`/board/view/${rowData.id}`);
   };
 
   const childComponent = ({ key, value, rowData }: ChildComponent<BoardRow>) => {
