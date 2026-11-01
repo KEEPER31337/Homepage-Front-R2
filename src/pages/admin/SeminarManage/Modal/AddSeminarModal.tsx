@@ -6,24 +6,19 @@ import ActionModal from '@components/Modal/ActionModal';
 
 interface AddSeminarModalProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
 }
 
-const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
+const AddSeminarModal = ({ open, onClose }: AddSeminarModalProps) => {
   const [seminarDate, setSeminarDate] = useState<DateTime>(DateTime.now());
   const [helperText, setHelperText] = useState('');
 
   const { mutate: addSeminar } = useAddSeminarMutation({ setHelperText });
 
-  const handleClose = () => {
-    setOpen(false);
-    setSeminarDate(DateTime.now());
-  };
-
   const handleAddSeminarButtonClick = () => {
     addSeminar(seminarDate, {
       onSuccess: () => {
-        handleClose();
+        onClose();
       },
     });
   };
@@ -38,9 +33,7 @@ const AddSeminarModal = ({ open, setOpen }: AddSeminarModalProps) => {
   return (
     <ActionModal
       open={open}
-      onClose={() => {
-        handleClose();
-      }}
+      onClose={onClose}
       title="세미나 추가"
       actionButtonName="추가"
       onActionButonClick={handleAddSeminarButtonClick}

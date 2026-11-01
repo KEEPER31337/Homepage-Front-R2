@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AttendanceStatus } from '@api/dto';
 import { useEditAttendStatusMutation } from '@api/seminarApi';
 import usePagination from '@hooks/usePagination';
@@ -6,13 +6,13 @@ import StatusTypeSelector from '@pages/admin/SeminarManage/Selector/StatusTypeSe
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 
-interface AddSeminarModalProps {
+interface EditSeminarAttendanceModalProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
   attendanceStatus: AttendanceStatus;
 }
 
-const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSeminarModalProps) => {
+const EditSeminarAttendanceModal = ({ open, onClose, attendanceStatus }: EditSeminarAttendanceModalProps) => {
   const [statusType, setStatusType] = useState(attendanceStatus.attendanceStatus);
   const [excuse, setExcuse] = useState(attendanceStatus.excuse || '');
   const [isValidExcuse, setIsValidExcuse] = useState(false);
@@ -42,10 +42,6 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
     setExcuse('');
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleBookInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setExcuse(e.target.value);
   };
@@ -56,26 +52,17 @@ const EditSeminarAttendanceModal = ({ open, setOpen, attendanceStatus }: AddSemi
         { statusType, excuse: excuse.trim() },
         {
           onSuccess: () => {
-            handleClose();
+            onClose();
           },
         },
       );
     }
   };
 
-  useEffect(() => {
-    if (attendanceStatus) {
-      setStatusType(attendanceStatus.attendanceStatus);
-      setExcuse(attendanceStatus.excuse || '');
-    }
-  }, [attendanceStatus]);
-
   return (
     <ActionModal
       open={open}
-      onClose={() => {
-        handleClose();
-      }}
+      onClose={onClose}
       title={`${attendanceStatus.attendDate.substring(5).replaceAll('-', '.')} ${
         attendanceStatus.memberName
       } 출석 상태 변경`}

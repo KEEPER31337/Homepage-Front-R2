@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 import { useDeleteSeminarMutation, useGetSeminarListQuery } from '@api/seminarApi';
 import ActionModal from '@components/Modal/ActionModal';
@@ -6,40 +6,33 @@ import Selector from '@components/Selector/Selector';
 
 interface DeleteSeminarModalProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
 }
 
-const DeleteSeminarModal = ({ open, setOpen }: DeleteSeminarModalProps) => {
+const DeleteSeminarModal = ({ open, onClose }: DeleteSeminarModalProps) => {
   const { data: seminarList } = useGetSeminarListQuery();
   const { mutate: deleteSeminar } = useDeleteSeminarMutation();
-  const [seminarId, setSeminarId] = useState(0);
+  const [selectedSeminarId, setSelectedSeminarId] = useState<number | null>(null);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // 사용자가 직접 선택하기 전까지는 목록의 첫 번째 세미나를 기본값으로 사용합니다.
+  const seminarId = selectedSeminarId ?? Number(seminarList?.[0]?.id ?? 0);
 
   const handleDeleteSeminarButtonClick = () => {
     deleteSeminar(seminarId, {
       onSuccess: () => {
-        handleClose();
+        onClose();
       },
     });
   };
 
   const handleSeminarChange = (event: SelectChangeEvent<unknown>) => {
-    setSeminarId(Number(event.target.value));
+    setSelectedSeminarId(Number(event.target.value));
   };
-
-  useEffect(() => {
-    if (seminarList && seminarList.length > 0) {
-      setSeminarId(Number(seminarList[0].id));
-    }
-  }, [seminarList]);
 
   return (
     <ActionModal
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       title="세미나 삭제"
       actionButtonName="삭제"
       onActionButonClick={handleDeleteSeminarButtonClick}
