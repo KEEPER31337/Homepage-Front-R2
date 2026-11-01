@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   useGetExecutiveInfoQuery,
   useGetMemberInfoQuery,
@@ -6,19 +6,20 @@ import {
   useCreateExecutiveJobMutation,
   useDeleteExecutiveJobMutation,
 } from '@api/dutyManageApi';
-import { convertJobName, JobInfoType } from '@mocks/DutyManageApi';
+import { convertJobName } from '@mocks/DutyManageApi';
 import AutoComplete, { SingleAutoCompleteValue } from '@components/Input/AutoComplete';
 import ActionModal from '@components/Modal/ActionModal';
 
 interface ChangeRolePersonModalProps {
   open: boolean;
-  toggleOpen: () => void;
+  onClose: () => void;
   jobName?: string;
   badgeImage?: string;
 }
 
-const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: ChangeRolePersonModalProps) => {
-  const roleName = convertJobName.find((data) => data.JobName === jobName)?.roleName;
+const ChangeRolePersonModal = ({ open, onClose, jobName, badgeImage }: ChangeRolePersonModalProps) => {
+  const jobInfo = convertJobName.find((data) => data.JobName === jobName);
+  const roleName = jobInfo?.roleName;
   const restOfTitle = ' 담당자 변경';
 
   const { data: executiveInfos } = useGetExecutiveInfoQuery();
@@ -33,27 +34,16 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
     (a, b) => parseFloat(a.group) - parseFloat(b.group) || a.label.localeCompare(b.label),
   );
 
-  const [value, setValue] = useState<SingleAutoCompleteValue>(null);
-  const [prevInfo, setPrevInfo] = useState<{ value: number; label: string; group: string }>({
-    value: -1,
-    label: '',
-    group: '',
-  });
-  const [jobInfo, setJobInfo] = useState<JobInfoType>();
+  const executiveInfo = executiveInfos?.find((data) => data.jobName === jobName);
+  const prevInfo = {
+    value: executiveInfo?.memberId ? executiveInfo.memberId : -1,
+    label: executiveInfo?.realName ? executiveInfo.realName : '',
+    group: executiveInfo?.generation ? executiveInfo.generation : '',
+  };
 
-  useEffect(() => {
-    const executiveInfo = executiveInfos?.find((data) => data.jobName === jobName);
-
-    const currentInfo = {
-      value: executiveInfo?.memberId ? executiveInfo.memberId : -1,
-      label: executiveInfo?.realName ? executiveInfo.realName : '',
-      group: executiveInfo?.generation ? executiveInfo.generation : '',
-    };
-
-    setPrevInfo(currentInfo);
-    setJobInfo(convertJobName.find((data) => data.JobName === jobName));
-    setValue(currentInfo);
-  }, [executiveInfos]);
+  // 사용자가 직접 선택하기 전까지는 현재 담당자를 선택값으로 사용합니다.
+  const [selectedValue, setSelectedValue] = useState<SingleAutoCompleteValue | undefined>(undefined);
+  const value = selectedValue === undefined ? (prevInfo.value === -1 ? null : prevInfo) : selectedValue;
 
   const actionButtionClick = () => {
     const jobId = jobList?.find((data) => data.jobName === jobInfo?.JobName)?.jobId;
@@ -83,14 +73,14 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
       createJob(createThing);
     }
 
-    toggleOpen();
+    onClose();
   };
 
   return (
     <ActionModal
       modalWidth="sm"
       open={open}
-      onClose={toggleOpen}
+      onClose={onClose}
       title={roleName + restOfTitle}
       actionButtonName="변경"
       onActionButonClick={actionButtionClick}
@@ -102,7 +92,7 @@ const ChangeRolePersonModal = ({ open, toggleOpen, jobName, badgeImage }: Change
           items={sortedOptions}
           value={value}
           grouped
-          onChange={(v) => setValue(v)}
+          onChange={(v) => setSelectedValue(v)}
         />
       </div>
     </ActionModal>

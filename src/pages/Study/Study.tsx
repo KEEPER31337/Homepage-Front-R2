@@ -4,6 +4,7 @@ import { SelectChangeEvent, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { StudyInfo } from '@api/dto';
 import { useGetStudyListQuery } from '@api/studyApi';
+import useModal from '@hooks/useModal';
 import { getCurrentSeasonNumber } from '@utils/getPeriodic';
 import ActionButton from '@components/Button/ActionButton';
 import Selector from '@components/Selector/Selector';
@@ -31,8 +32,7 @@ const seasonList = [
 
 const Study = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ year: DateTime.now().year, season: getCurrentSeasonNumber() });
-  const [studyModalOpen, setStudyModalOpen] = useState(false);
-  const [selectedStudyInfo, setSelectedStudyInfo] = useState<StudyInfo | null>(null);
+  const studyModal = useModal<StudyInfo>();
   const isAfterOldYearBound = Number(currentPeriod.year) >= OLD_YEAR_BOUND;
 
   const { data: studyList } = useGetStudyListQuery({ year: currentPeriod.year, season: currentPeriod.season });
@@ -43,7 +43,7 @@ const Study = () => {
   };
 
   const handleStudyCreateButtonClick = () => {
-    setStudyModalOpen(true);
+    studyModal.open();
   };
 
   return (
@@ -77,12 +77,7 @@ const Study = () => {
         <div>
           {studyList && studyList.length > 0 ? (
             studyList.map((study) => (
-              <StudyAccordion
-                key={study.studyId}
-                study={study}
-                setStudyModalOpen={setStudyModalOpen}
-                setSelectedStudyInfo={setSelectedStudyInfo}
-              />
+              <StudyAccordion key={study.studyId} study={study} onEdit={() => studyModal.open(study)} />
             ))
           ) : (
             <Typography marginY={15} paddingY={8} textAlign="center" className="border-y border-pointBlue/70">
@@ -94,13 +89,15 @@ const Study = () => {
       ) : (
         <OldStudy />
       )}
-      <StudyModal
-        open={studyModalOpen}
-        setOpen={setStudyModalOpen}
-        selectedStudyInfo={selectedStudyInfo}
-        setSelectedStudyInfo={setSelectedStudyInfo}
-        currentPeriod={currentPeriod}
-      />
+      {studyModal.isMounted && (
+        <StudyModal
+          key={studyModal.key}
+          open={studyModal.isOpen}
+          onClose={studyModal.close}
+          selectedStudy={studyModal.data}
+          currentPeriod={currentPeriod}
+        />
+      )}
     </div>
   );
 };

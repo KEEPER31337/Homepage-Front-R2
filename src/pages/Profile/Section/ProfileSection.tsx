@@ -4,6 +4,7 @@ import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FollowInfo } from '@api/dto';
 import { useGetProfileQuery, useFollowMemberMutation, useUnFollowMemberMutation } from '@api/memberApi';
 import useCheckAuth from '@hooks/useCheckAuth';
+import useModal from '@hooks/useModal';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import TextButton from '@components/Button/TextButton';
@@ -15,9 +16,9 @@ import SendPointModal from '../Modal/SendPointModal';
 
 const ProfileSection = () => {
   const [followState, setFollowState] = useState('none');
-  const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
-  const [editAccountModalOpen, setEditAccountModalOpen] = useState(false);
-  const [sendPointModalOpen, setSendPointModalOpen] = useState(false);
+  const editProfileModal = useModal();
+  const editAccountModal = useModal();
+  const sendPointModal = useModal();
 
   const { memberId } = useParams();
   const { checkIsMyId } = useCheckAuth();
@@ -123,10 +124,10 @@ const ProfileSection = () => {
         <div className="flex flex-col space-y-2">
           {profileInfo && checkIsMyId(profileInfo.id) ? (
             <>
-              <OutlinedButton small={isMobile} className="w-full" onClick={() => setEditProfileModalOpen(true)}>
+              <OutlinedButton small={isMobile} className="w-full" onClick={() => editProfileModal.open()}>
                 프로필 수정
               </OutlinedButton>
-              <OutlinedButton small={isMobile} className="w-full" onClick={() => setEditAccountModalOpen(true)}>
+              <OutlinedButton small={isMobile} className="w-full" onClick={() => editAccountModal.open()}>
                 계정 정보 수정
               </OutlinedButton>
             </>
@@ -135,7 +136,7 @@ const ProfileSection = () => {
               <OutlinedButton small={isMobile} className="w-full" onClick={handleFollowButtonClick}>
                 {isFollowed() ? '언팔로우' : '팔로우'}
               </OutlinedButton>
-              <OutlinedButton onClick={() => setSendPointModalOpen(true)} small={isMobile} className="w-full">
+              <OutlinedButton onClick={() => sendPointModal.open()} small={isMobile} className="w-full">
                 포인트 선물
               </OutlinedButton>
             </>
@@ -144,18 +145,28 @@ const ProfileSection = () => {
       </div>
       {profileInfo && checkIsMyId(profileInfo.id) && (
         <>
-          <EditProfileModal
-            profileInfo={profileInfo}
-            open={editProfileModalOpen}
-            onClose={() => setEditProfileModalOpen(false)}
-          />
-          <EditAccountModal open={editAccountModalOpen} onClose={() => setEditAccountModalOpen(false)} />
+          {editProfileModal.isMounted && (
+            <EditProfileModal
+              key={editProfileModal.key}
+              profileInfo={profileInfo}
+              open={editProfileModal.isOpen}
+              onClose={editProfileModal.close}
+            />
+          )}
+          {editAccountModal.isMounted && (
+            <EditAccountModal
+              key={editAccountModal.key}
+              open={editAccountModal.isOpen}
+              onClose={editAccountModal.close}
+            />
+          )}
         </>
       )}
-      {profileInfo && !checkIsMyId(profileInfo.id) && (
+      {profileInfo && !checkIsMyId(profileInfo.id) && sendPointModal.isMounted && (
         <SendPointModal
-          open={sendPointModalOpen}
-          onClose={() => setSendPointModalOpen(false)}
+          key={sendPointModal.key}
+          open={sendPointModal.isOpen}
+          onClose={sendPointModal.close}
           sendTo={profileInfo.id}
         />
       )}

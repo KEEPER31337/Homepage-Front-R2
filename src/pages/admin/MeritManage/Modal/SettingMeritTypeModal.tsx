@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import { useAddMeritTypeMutation, useEditMeritTypeMutation } from '@api/meritApi';
 import RadioButton from '@components/Input/RadioButton';
@@ -44,14 +44,12 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
   status,
   onClose,
 }: SettingMeritTypeModalProps<Edit>) => {
-  const [meritTypeInfo, setMeritTypeInfo] = useState<MeritTypeModalInfo>({ ...baseMeritTypeInfo });
+  const [meritTypeInfo, setMeritTypeInfo] = useState<MeritTypeModalInfo>(() =>
+    edit && status ? status : { ...baseMeritTypeInfo },
+  );
 
   const { mutate: addMeritTypeMutation } = useAddMeritTypeMutation();
   const { mutate: editMeritTypeMutation } = useEditMeritTypeMutation();
-
-  const reset = () => {
-    setMeritTypeInfo({ ...baseMeritTypeInfo });
-  };
 
   const validate = () => {
     if (meritTypeInfo.score === 0 || meritTypeInfo.reason === '') return false;
@@ -66,7 +64,6 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
     if (isValid) {
       const onSuccess = () => {
         onClose();
-        reset();
       };
 
       if (!edit) {
@@ -95,12 +92,6 @@ const SettingMeritTypeModal = <Edit extends boolean | undefined = false>({
       }
     }
   };
-
-  useEffect(() => {
-    if (edit && status) {
-      setMeritTypeInfo(status);
-    }
-  }, [status]);
 
   return (
     <ActionModal

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   useCreateExecutiveJobMutation,
   useDeleteExecutiveJobMutation,
@@ -13,14 +13,14 @@ import { roles } from '@mocks/DutyManageApi';
 
 interface ChangeJuniorMemberRoleModalProps {
   open: boolean;
-  toggleOpen: () => void;
+  onClose: () => void;
   currentAssignment?: ExecutiveInfo;
   juniorAssignments: ExecutiveInfo[];
 }
 
 const ChangeJuniorMemberRoleModal = ({
   open,
-  toggleOpen,
+  onClose,
   currentAssignment,
   juniorAssignments,
 }: ChangeJuniorMemberRoleModalProps) => {
@@ -43,30 +43,24 @@ const ChangeJuniorMemberRoleModal = ({
       label: job.jobName.replace(MEMBER_ROLE_PREFIX, ''),
     }));
 
-  const [memberValue, setMemberValue] = useState<SingleAutoCompleteValue>(null);
-  const [roleValue, setRoleValue] = useState<SingleAutoCompleteValue>(null);
-
-  useEffect(() => {
-    if (!open) return;
-
-    setMemberValue(
-      currentAssignment
-        ? (memberOptions.find((option) => option.value === currentAssignment.memberId) ?? {
-            value: currentAssignment.memberId,
-            label: currentAssignment.realName,
-            group: currentAssignment.generation,
-          })
-        : null,
-    );
-    setRoleValue(
-      currentAssignment
-        ? (roleOptions.find((option) => option.value === currentAssignment.jobId) ?? {
-            value: currentAssignment.jobId,
-            label: currentAssignment.jobName.replace(MEMBER_ROLE_PREFIX, ''),
-          })
-        : null,
-    );
-  }, [currentAssignment, memberOptions, open, roleOptions]);
+  // AutoComplete는 value 기준으로 항목을 비교하므로, 옵션 목록이 아직 로드되지 않았어도 현재 담당자를 초기값으로 둘 수 있습니다.
+  const [memberValue, setMemberValue] = useState<SingleAutoCompleteValue>(() =>
+    currentAssignment
+      ? {
+          value: currentAssignment.memberId,
+          label: currentAssignment.realName,
+          group: currentAssignment.generation,
+        }
+      : null,
+  );
+  const [roleValue, setRoleValue] = useState<SingleAutoCompleteValue>(() =>
+    currentAssignment
+      ? {
+          value: currentAssignment.jobId,
+          label: currentAssignment.jobName.replace(MEMBER_ROLE_PREFIX, ''),
+        }
+      : null,
+  );
 
   const selectedMemberId = memberValue ? Number(memberValue.value) : null;
   const selectedJobId = roleValue ? Number(roleValue.value) : null;
@@ -94,7 +88,7 @@ const ChangeJuniorMemberRoleModal = ({
     try {
       if (currentAssignment && memberValue === null) {
         await deleteJob({ memberId: currentAssignment.memberId, jobId: currentAssignment.jobId });
-        toggleOpen();
+        onClose();
         return;
       }
 
@@ -104,7 +98,7 @@ const ChangeJuniorMemberRoleModal = ({
         await deleteJob({ memberId: currentAssignment.memberId, jobId: currentAssignment.jobId });
       }
       await createJob({ memberId: selectedMemberId, jobId: selectedJobId });
-      toggleOpen();
+      onClose();
     } catch {
       // API 오류는 전역 mutation 오류 처리기에서 안내한다.
     }
@@ -114,7 +108,7 @@ const ChangeJuniorMemberRoleModal = ({
     <ActionModal
       modalWidth="sm"
       open={open}
-      onClose={toggleOpen}
+      onClose={onClose}
       title={currentAssignment ? '부원 담당자 변경' : '부원 담당자 추가'}
       actionButtonName={currentAssignment ? '변경' : '추가'}
       actionButtonDisabled={actionButtonDisabled}

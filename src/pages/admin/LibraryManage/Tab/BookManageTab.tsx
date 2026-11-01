@@ -1,9 +1,10 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { VscTrash } from 'react-icons/vsc';
 import { BookListSearch, ManageBookInfo } from '@api/dto';
 import { useGetBookManageListQuery, useGetBookDetailQuery } from '@api/libraryManageApi';
+import useModal from '@hooks/useModal';
 import usePagination from '@hooks/usePagination';
 import LibrarySearchSection from '@pages/Library/SearchSection/LibrarySearchSection';
 import ActionButton from '@components/Button/ActionButton';
@@ -42,18 +43,15 @@ const BookManageTab = () => {
   const searchType = searchParams.get('searchType') as BookListSearch['searchType'];
   const search = searchParams.get('search') as BookListSearch['search'];
 
-  const [addBookModalOpen, setAddBookModalOpen] = useState(false);
-  const [deleteBookModalOpen, setDeleteBookModalOpen] = useState(false);
-  const [deleteBook, setDeleteBook] = useState<ManageBookInfo>();
-
-  const [editBookModalOpen, setEditBookModalOpen] = useState(false);
-  const [editBookId, setEditBookId] = useState(0);
+  const addBookModal = useModal();
+  const editBookModal = useModal<number>();
+  const deleteBookModal = useModal<ManageBookInfo>();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { data: bookManageListData } = useGetBookManageListQuery({ page, searchType, search });
-  const { data: bookDetail } = useGetBookDetailQuery(editBookId);
+  const { data: bookDetail } = useGetBookDetailQuery(editBookModal.data ?? 0);
 
   const childComponent = ({ key, value }: ChildComponent<libraryManageRow>) => {
     switch (key) {
@@ -65,13 +63,11 @@ const BookManageTab = () => {
   };
 
   const handleBookRowClick = ({ rowData }: { rowData: Row<libraryManageRow> }) => {
-    setEditBookId(rowData.id);
-    setEditBookModalOpen(true);
+    editBookModal.open(rowData.id);
   };
 
   const handleDeleteButtonClick = (book: ManageBookInfo) => {
-    setDeleteBook(book);
-    setDeleteBookModalOpen(true);
+    deleteBookModal.open(book);
   };
 
   return (
@@ -79,11 +75,13 @@ const BookManageTab = () => {
       <div className="mb-2 flex w-full flex-col items-start justify-between sm:mb-5 sm:flex-row sm:items-center">
         <LibrarySearchSection />
         <div className="items-ends mt-2 flex w-full justify-end space-x-4 sm:mt-0">
-          <ActionButton className="w-fit" small={isMobile} mode="add" onClick={() => setAddBookModalOpen(true)}>
+          <ActionButton className="w-fit" small={isMobile} mode="add" onClick={() => addBookModal.open()}>
             추가
           </ActionButton>
         </div>
-        <UploadBookModal open={addBookModalOpen} onClose={() => setAddBookModalOpen(false)} />
+        {addBookModal.isMounted && (
+          <UploadBookModal key={addBookModal.key} open={addBookModal.isOpen} onClose={addBookModal.close} />
+        )}
       </div>
       <StandardTable
         columns={libraryManageColumn}
@@ -114,14 +112,20 @@ const BookManageTab = () => {
         paginationOption={{ rowsPerPage: bookManageListData?.size, totalItems: bookManageListData?.totalElement }}
         onRowClick={handleBookRowClick}
       />
-      {bookDetail && (
-        <UploadBookModal open={editBookModalOpen} onClose={() => setEditBookModalOpen(false)} bookDetail={bookDetail} />
+      {editBookModal.isMounted && bookDetail && (
+        <UploadBookModal
+          key={editBookModal.key}
+          open={editBookModal.isOpen}
+          onClose={editBookModal.close}
+          bookDetail={bookDetail}
+        />
       )}
-      {deleteBook && (
+      {deleteBookModal.isMounted && deleteBookModal.data && (
         <DeleteBookModal
-          open={deleteBookModalOpen}
-          onClose={() => setDeleteBookModalOpen(false)}
-          deleteBook={deleteBook}
+          key={deleteBookModal.key}
+          open={deleteBookModal.isOpen}
+          onClose={deleteBookModal.close}
+          deleteBook={deleteBookModal.data}
         />
       )}
     </>

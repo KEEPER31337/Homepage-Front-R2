@@ -26,13 +26,6 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
   const { data: meritTypes } = useGetMeritTypeQuery({ page: 0 });
   const { mutate: addMeritMutation } = useAddMeritLogMutation();
 
-  const reset = () => {
-    setMeritInfo({
-      awarders: [],
-      meritTypeId: 0,
-    });
-  };
-
   const validate = () => {
     return meritInfo.awarders.length > 0 && meritInfo.meritTypeId !== 0;
   };
@@ -49,7 +42,6 @@ const AddMeritModal = ({ open, onClose }: AddMeritModalProps) => {
         ),
       ).then(() => {
         onClose();
-        reset();
       });
     }
   };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Typography, Tooltip } from '@mui/material';
 import { ManageBookInfo } from '@api/dto';
 import { useAddBookMutation, useEditBookInfoMutation, useEditBookThumbnailMutation } from '@api/libraryManageApi';
@@ -16,11 +16,11 @@ interface SelectorProps {
 
 const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
   const [bookInfo, setBookInfo] = useState({
-    title: '',
-    author: '',
+    title: bookDetail?.title ?? '',
+    author: bookDetail?.author ?? '',
   });
   const { title, author } = bookInfo;
-  const [totalQuantity, setTotalQuantity] = useState(1);
+  const [totalQuantity, setTotalQuantity] = useState(bookDetail?.totalQuantity ?? 1);
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
 
@@ -60,14 +60,6 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
     return titleTrim !== '' && authorTrim !== '' && titleTrim.length <= 200 && authorTrim.length <= 30;
   };
 
-  const resetBookInfo = () => {
-    setBookInfo({
-      title: '',
-      author: '',
-    });
-    setTotalQuantity(1);
-  };
-
   const resetValidation = () => {
     setIsInvalidTitle(false);
     setIsInvalidAuthor(false);
@@ -95,7 +87,6 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
           },
           onSettled: () => {
             setIsDisabledButton(false);
-            resetBookInfo();
             resetValidation();
           },
         },
@@ -118,16 +109,6 @@ const UploadBookModal = ({ open, onClose, bookDetail }: SelectorProps) => {
       );
     }
   };
-
-  useEffect(() => {
-    if (bookDetail) {
-      setBookInfo({
-        title: bookDetail.title,
-        author: bookDetail.author,
-      });
-      setTotalQuantity(bookDetail.totalQuantity);
-    }
-  }, [bookDetail]);
 
   return (
     <ActionModal

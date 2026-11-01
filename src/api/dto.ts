@@ -194,10 +194,10 @@ export interface BorrowLogInfo {
 }
 
 export interface StudyLinks {
-  gitLink?: string;
-  notionLink?: string;
-  etcTitle?: string;
-  etcLink?: string;
+  gitLink?: string | null;
+  notionLink?: string | null;
+  etcTitle?: string | null;
+  etcLink?: string | null;
 }
 
 export interface StudyCore extends StudyLinks, PeriodicInfo {

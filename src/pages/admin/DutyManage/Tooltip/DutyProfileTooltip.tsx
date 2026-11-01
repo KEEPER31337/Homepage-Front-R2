@@ -1,10 +1,11 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { VscSearch } from 'react-icons/vsc';
 import { MEMBER_ROLE } from '@constants/member';
 import muiTheme from '@constants/muiTheme';
+import useModal from '@hooks/useModal';
 import { roleDutyListInfo, roles } from '@mocks/DutyManageApi';
 
 import DescriptionRoleDutyTooltip from './DescriptionRoleDutyTooltip';
@@ -45,7 +46,7 @@ const tooltipContent = (jobName?: string) => (
 
 const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  const [modalOpen, toggleModalOpen] = useReducer((prev) => !prev, false);
+  const changeRoleModal = useModal();
 
   const badgeImage = roles.find((role) => role.name === jobName)?.img;
   // NOTE jobName으로는 "ROLE_전산관리자" 내려오지만, roles에는 존재하지 않습니다! 세부적인 전산관리자(프론트, 백, 인프라)만 존재합니다
@@ -55,7 +56,7 @@ const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
         jobName={jobName}
         badgeImage={badgeImage}
         setTooltipOpen={setTooltipOpen}
-        toggleModalOpen={toggleModalOpen}
+        toggleModalOpen={() => changeRoleModal.open()}
       />
       {jobName !== MEMBER_ROLE.전산관리자 && (
         <>
@@ -70,12 +71,15 @@ const DutyProfileTooltip = ({ jobName }: DutyProfileTooltipProps) => {
               <VscSearch size={12} className="w-full" />
             </div>
           </DescriptionRoleDutyTooltip>
-          <ChangeRolePersonModal
-            open={modalOpen}
-            toggleOpen={toggleModalOpen}
-            jobName={jobName}
-            badgeImage={badgeImage}
-          />
+          {changeRoleModal.isMounted && (
+            <ChangeRolePersonModal
+              key={changeRoleModal.key}
+              open={changeRoleModal.isOpen}
+              onClose={changeRoleModal.close}
+              jobName={jobName}
+              badgeImage={badgeImage}
+            />
+          )}
         </>
       )}
     </div>

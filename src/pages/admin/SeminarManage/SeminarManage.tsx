@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { AttendSeminarInfo, MemberSeminarAttendance, AttendanceStatus } from '@api/dto';
 import { useGetAttendSeminarListMutation, useGetSeminarListQuery } from '@api/seminarApi';
+import useModal from '@hooks/useModal';
 import usePagination from '@hooks/usePagination';
 import { getCurrentSeasonText } from '@utils/getPeriodic';
 import SeminarAttendStatus from '@pages/senimarAttend/Status/SeminarAttendStatus';
@@ -26,11 +27,10 @@ const SeminarManage = () => {
     year: DateTime.now().year,
     season: getCurrentSeasonText(),
   };
-  const [openAddSeminarModal, setOpenAddSeminarModal] = useState(false);
-  const [openDeleteSeminarModal, setOpenDeleteSeminarModal] = useState(false);
-  const [openEditAttendanceStatusModal, setOpenEditAttendanceStatusModal] = useState(false);
+  const addSeminarModal = useModal();
+  const deleteSeminarModal = useModal();
+  const editAttendanceStatusModal = useModal<AttendanceStatus>();
   const [dynamicColumn, setDynamicColumn] = useState<Column<AttendSeminarInfo>[]>([]);
-  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceStatus>();
 
   const { page } = usePagination();
   const { data: seminarList } = useGetSeminarListQuery();
@@ -57,8 +57,7 @@ const SeminarManage = () => {
   };
 
   const onCellClick = ({ cellData }: { cellData: Cell<AttendSeminarInfo> }) => {
-    setAttendanceStatus(cellData as AttendanceStatus);
-    setOpenEditAttendanceStatusModal(true);
+    editAttendanceStatusModal.open(cellData as AttendanceStatus);
   };
 
   return (
@@ -69,10 +68,10 @@ const SeminarManage = () => {
           *시간 만료로 인한 결석은 23시 50분에 일괄 결석으로 처리됩니다.
         </Typography>
         <div className="flex space-x-2">
-          <ActionButton mode="add" onClick={() => setOpenAddSeminarModal(true)}>
+          <ActionButton mode="add" onClick={() => addSeminarModal.open()}>
             추가
           </ActionButton>
-          <ActionButton mode="delete" onClick={() => setOpenDeleteSeminarModal(true)}>
+          <ActionButton mode="delete" onClick={() => deleteSeminarModal.open()}>
             삭제
           </ActionButton>
         </div>
@@ -89,13 +88,22 @@ const SeminarManage = () => {
         }
         paginationOption={{ rowsPerPage: attendSeminarList?.size, totalItems: attendSeminarList?.totalElements }}
       />
-      <AddSeminarModal open={openAddSeminarModal} setOpen={setOpenAddSeminarModal} />
-      <DeleteSeminarModal open={openDeleteSeminarModal} setOpen={setOpenDeleteSeminarModal} />
-      {attendanceStatus && (
+      {addSeminarModal.isMounted && (
+        <AddSeminarModal key={addSeminarModal.key} open={addSeminarModal.isOpen} onClose={addSeminarModal.close} />
+      )}
+      {deleteSeminarModal.isMounted && (
+        <DeleteSeminarModal
+          key={deleteSeminarModal.key}
+          open={deleteSeminarModal.isOpen}
+          onClose={deleteSeminarModal.close}
+        />
+      )}
+      {editAttendanceStatusModal.isMounted && editAttendanceStatusModal.data && (
         <EditSeminarAttendanceModal
-          open={openEditAttendanceStatusModal}
-          setOpen={setOpenEditAttendanceStatusModal}
-          attendanceStatus={attendanceStatus}
+          key={editAttendanceStatusModal.key}
+          open={editAttendanceStatusModal.isOpen}
+          onClose={editAttendanceStatusModal.close}
+          attendanceStatus={editAttendanceStatusModal.data}
         />
       )}
     </div>

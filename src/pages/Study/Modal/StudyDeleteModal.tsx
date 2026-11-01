@@ -6,23 +6,19 @@ import ActionModal from '@components/Modal/ActionModal';
 
 interface StudyDeleteModalProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
   study: StudyInfo;
 }
 
-const StudyDeleteModal = ({ study, open, setOpen }: StudyDeleteModalProps) => {
+const StudyDeleteModal = ({ study, open, onClose }: StudyDeleteModalProps) => {
   const { mutate: deleteStudy } = useDeleteStudyMutation();
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleDeleteStudy = () => {
     deleteStudy(
       { studyId: study.studyId },
       {
         onSuccess: () => {
-          handleClose();
+          onClose();
         },
       },
     );
@@ -31,13 +27,13 @@ const StudyDeleteModal = ({ study, open, setOpen }: StudyDeleteModalProps) => {
   return (
     <ActionModal
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       title="스터디 삭제"
       modalWidth="xs"
       actionButtonName="삭제"
       onActionButonClick={handleDeleteStudy}
     >
-      <Typography>{study?.title} 스터디를 삭제하시겠습니까?</Typography>
+      <Typography>{study.title} 스터디를 삭제하시겠습니까?</Typography>
     </ActionModal>
   );
 };
