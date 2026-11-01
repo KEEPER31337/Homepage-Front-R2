@@ -13,6 +13,7 @@ import {
 } from '@api/postApi';
 import { COMMON } from '@constants/helperText';
 import { useMeQuery } from '@api/meApi';
+import useModal from '@hooks/useModal';
 import { categoryNameToId } from '@utils/converter';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardEditor from '@components/Editor/StandardEditor';
@@ -60,7 +61,7 @@ const BoardWriteForm = ({ categoryName, categoryId }: BoardWriteFormProps) => {
   const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
   const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
   const [fileIdsToDelete, setFileIdsToDelete] = useState<number[]>([]);
-  const [settingModalOpen, setSettingModalOpen] = useState(false);
+  const settingUploadModal = useModal();
 
   const [hasContent, setHasContent] = useState(Boolean(editMode?.post.content?.trim()));
   const [contentErrMsg, setContentErrMsg] = useState('');
@@ -142,7 +143,7 @@ const BoardWriteForm = ({ categoryName, categoryId }: BoardWriteFormProps) => {
   };
 
   const handleSaveButtonClick = ({ isTemp }: { isTemp: boolean }) => {
-    setSettingModalOpen(true);
+    settingUploadModal.open();
     setPostSettingInfo((prev) => ({
       ...prev,
       isTemp,
@@ -150,7 +151,10 @@ const BoardWriteForm = ({ categoryName, categoryId }: BoardWriteFormProps) => {
   };
 
   const handleSettingModalClose = () => {
-    setSettingModalOpen(false);
+    settingUploadModal.close();
+    // 썸네일 상태는 모달이 아니라 이 컴포넌트가 들고 있으므로, 취소 시 모달 미리보기와 함께 되돌립니다.
+    setThumbnail(null);
+    setIsThumbnailChanged(false);
   };
 
   return (
@@ -225,16 +229,19 @@ const BoardWriteForm = ({ categoryName, categoryId }: BoardWriteFormProps) => {
           {editMode ? '수정하기' : '작성완료'}
         </OutlinedButton>
       </div>
-      <SettingUploadModal
-        editMode={editMode}
-        open={settingModalOpen}
-        onClose={handleSettingModalClose}
-        onUploadButonClick={handleUploadButonClick}
-        postSettingInfo={postSettingInfo}
-        setPostSettingInfo={setPostSettingInfo}
-        setThumbnail={setThumbnail}
-        setIsThumbnailChanged={setIsThumbnailChanged}
-      />
+      {settingUploadModal.isMounted && (
+        <SettingUploadModal
+          key={settingUploadModal.key}
+          editMode={editMode}
+          open={settingUploadModal.isOpen}
+          onClose={handleSettingModalClose}
+          onUploadButonClick={handleUploadButonClick}
+          postSettingInfo={postSettingInfo}
+          setPostSettingInfo={setPostSettingInfo}
+          setThumbnail={setThumbnail}
+          setIsThumbnailChanged={setIsThumbnailChanged}
+        />
+      )}
     </div>
   );
 };
