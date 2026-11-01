@@ -1,5 +1,6 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import { ExecutiveInfo } from '@api/dto';
+import useModal from '@hooks/useModal';
 import { roles } from '@mocks/DutyManageApi';
 import ChangeJuniorMemberRoleModal from '../Modal/ChangeJuniorMemberRoleModal';
 import DutyProfileButton from './DutyProfileButton';
@@ -10,7 +11,7 @@ interface JuniorMemberProfileCardProps {
 }
 
 const JuniorMemberProfileCard = ({ assignment, juniorAssignments }: JuniorMemberProfileCardProps) => {
-  const [modalOpen, toggleModalOpen] = useReducer((prev) => !prev, false);
+  const changeRoleModal = useModal();
   const badgeImage = roles.find((role) => role.name === assignment?.jobName)?.img;
 
   return (
@@ -19,16 +20,19 @@ const JuniorMemberProfileCard = ({ assignment, juniorAssignments }: JuniorMember
         jobName={assignment?.jobName}
         badgeImage={badgeImage}
         setTooltipOpen={() => undefined}
-        toggleModalOpen={toggleModalOpen}
+        toggleModalOpen={() => changeRoleModal.open()}
         executiveInfo={assignment ?? null}
         emptyRoleName="부원"
       />
-      <ChangeJuniorMemberRoleModal
-        open={modalOpen}
-        toggleOpen={toggleModalOpen}
-        currentAssignment={assignment}
-        juniorAssignments={juniorAssignments}
-      />
+      {changeRoleModal.isMounted && (
+        <ChangeJuniorMemberRoleModal
+          key={changeRoleModal.key}
+          open={changeRoleModal.isOpen}
+          onClose={changeRoleModal.close}
+          currentAssignment={assignment}
+          juniorAssignments={juniorAssignments}
+        />
+      )}
     </div>
   );
 };
