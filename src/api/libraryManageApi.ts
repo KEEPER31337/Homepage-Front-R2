@@ -97,8 +97,9 @@ const useEditBookInfoMutation = () => {
 
   return useMutation({
     mutationFn: fetcher,
-    onSuccess: () => {
+    onSuccess: (_, { bookId }) => {
       queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookManageList({}) });
+      queryClient.invalidateQueries({ queryKey: libraryManageKeys.bookDetail(bookId) });
     },
   });
 };
