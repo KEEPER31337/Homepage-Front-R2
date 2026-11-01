@@ -21,16 +21,10 @@ const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
   const {
     control,
     getValues,
-    reset,
     formState: { isValid },
   } = useForm({ mode: 'onBlur' });
   const { data: profileInfo } = useGetProfileQuery(userInfo?.memberId || 0);
   const { mutate: sendPoint } = useSendPointMutation();
-
-  const superOnClose = () => {
-    reset();
-    onClose();
-  };
 
   const handleSendActionButtonClick = () => {
     if (isValid) {
@@ -42,7 +36,7 @@ const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
         },
         {
           onSuccess: () => {
-            superOnClose();
+            onClose();
           },
         },
       );
@@ -52,7 +46,7 @@ const SendPointModal = ({ open, onClose, sendTo }: SendPointModalProps) => {
   return (
     <ActionModal
       open={open}
-      onClose={superOnClose}
+      onClose={onClose}
       title="포인트 선물"
       modalWidth="sm"
       actionButtonName="선물"
