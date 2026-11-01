@@ -3,6 +3,7 @@ import { IconButton, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { VscTrash } from 'react-icons/vsc';
 import { useGetMeritLogQuery } from '@api/meritApi';
+import useModal from '@hooks/useModal';
 import usePagination from '@hooks/usePagination';
 import ActionButton from '@components/Button/ActionButton';
 import Selector from '@components/Selector/Selector';
@@ -51,8 +52,8 @@ const MeritLogChildComponent = ({ key, value, rowData }: ChildComponent<MeritLog
 type ScoreType = 'MERIT' | 'DEMERIT' | 'ALL';
 
 const MeritLogTab = () => {
-  const [addMeritOpen, setAddMeritOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState({ open: false, meritLogId: 0 });
+  const addMeritModal = useModal();
+  const deleteMeritLogModal = useModal<number>();
   const [scoreType, setScoreType] = useState<ScoreType>('ALL');
   const { page, getRowNumber } = usePagination();
 
@@ -61,7 +62,7 @@ const MeritLogTab = () => {
   if (!meritLog) return null;
 
   const handleMeritLogClick = (meritLogId: number) => {
-    setDeleteModalOpen({ open: true, meritLogId });
+    deleteMeritLogModal.open(meritLogId);
   };
 
   return (
@@ -80,7 +81,7 @@ const MeritLogTab = () => {
             { id: 'DEMERIT', content: '벌점' },
           ]}
         />
-        <ActionButton mode="add" onClick={() => setAddMeritOpen(true)}>
+        <ActionButton mode="add" onClick={() => addMeritModal.open()}>
           추가
         </ActionButton>
       </div>
@@ -105,12 +106,17 @@ const MeritLogTab = () => {
         childComponent={MeritLogChildComponent}
         paginationOption={{ rowsPerPage: meritLog.size, totalItems: meritLog.totalElements }}
       />
-      <AddMeritModal open={addMeritOpen} onClose={() => setAddMeritOpen(false)} />
-      <DeleteMeritLogModal
-        open={deleteModalOpen.open}
-        onClose={() => setDeleteModalOpen({ open: false, meritLogId: 0 })}
-        meritLogId={deleteModalOpen.meritLogId}
-      />
+      {addMeritModal.isMounted && (
+        <AddMeritModal key={addMeritModal.key} open={addMeritModal.isOpen} onClose={addMeritModal.close} />
+      )}
+      {deleteMeritLogModal.isMounted && deleteMeritLogModal.data !== null && (
+        <DeleteMeritLogModal
+          key={deleteMeritLogModal.key}
+          open={deleteMeritLogModal.isOpen}
+          onClose={deleteMeritLogModal.close}
+          meritLogId={deleteMeritLogModal.data}
+        />
+      )}
     </div>
   );
 };

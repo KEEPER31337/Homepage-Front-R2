@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography } from '@mui/material';
 import { useGetMeritTypeQuery } from '@api/meritApi';
+import useModal from '@hooks/useModal';
 import usePagination from '@hooks/usePagination';
 import ActionButton from '@components/Button/ActionButton';
 import StandardTable from '@components/Table/StandardTable';
@@ -30,8 +31,8 @@ const MeritTypeChildComponent = ({ value, rowData }: ChildComponent<MeritTypeRow
 const MeritTypeTab = () => {
   const { page } = usePagination();
 
-  const [addMeritTypeOpen, setAddMeritTypeOpen] = useState(false);
-  const [editMeritType, setEditMeritType] = useState<MeritTypeModalInfo | undefined>();
+  const addMeritTypeModal = useModal();
+  const editMeritTypeModal = useModal<MeritTypeModalInfo>();
 
   const { data: meritType } = useGetMeritTypeQuery({ page });
 
@@ -40,7 +41,7 @@ const MeritTypeTab = () => {
   return (
     <div className="flex w-full flex-col">
       <div className="my-5 flex h-12 w-full justify-end">
-        <ActionButton mode="add" onClick={() => setAddMeritTypeOpen(true)}>
+        <ActionButton mode="add" onClick={() => addMeritTypeModal.open()}>
           추가
         </ActionButton>
       </div>
@@ -50,7 +51,7 @@ const MeritTypeTab = () => {
         childComponent={MeritTypeChildComponent}
         onRowClick={({ rowData }) =>
           meritTypeChangeEnable(rowData.id) &&
-          setEditMeritType({
+          editMeritTypeModal.open({
             id: rowData.id,
             isMerit: rowData.isMerit,
             score: rowData.score,
@@ -59,13 +60,22 @@ const MeritTypeTab = () => {
         }
         paginationOption={{ rowsPerPage: meritType.size, totalItems: meritType.totalElements }}
       />
-      <SettingMeritTypeModal open={addMeritTypeOpen} onClose={() => setAddMeritTypeOpen(false)} />
-      <SettingMeritTypeModal
-        edit
-        open={editMeritType !== undefined}
-        status={editMeritType}
-        onClose={() => setEditMeritType(undefined)}
-      />
+      {addMeritTypeModal.isMounted && (
+        <SettingMeritTypeModal
+          key={addMeritTypeModal.key}
+          open={addMeritTypeModal.isOpen}
+          onClose={addMeritTypeModal.close}
+        />
+      )}
+      {editMeritTypeModal.isMounted && editMeritTypeModal.data && (
+        <SettingMeritTypeModal
+          key={editMeritTypeModal.key}
+          edit
+          open={editMeritTypeModal.isOpen}
+          status={editMeritTypeModal.data}
+          onClose={editMeritTypeModal.close}
+        />
+      )}
     </div>
   );
 };
