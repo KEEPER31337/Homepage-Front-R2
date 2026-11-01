@@ -6,7 +6,7 @@ import { InputLabel, Stack, Typography, useMediaQuery, useTheme } from '@mui/mat
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 
-import { PeriodicInfo, StudyInfo } from '@api/dto';
+import { MemberDetailInfo, PeriodicInfo, StudyDetail, StudyInfo, StudyLinkInfo } from '@api/dto';
 import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import {
   useAddStudyMutation,
@@ -24,31 +24,69 @@ import ImageUploader from '@components/Uploader/ImageUploader';
 const STUDY_TITLE_MAX_LENGTH = 45;
 const STUDY_CONTENT_MAX_LENGTH = 100;
 
-interface StudyModalProps {
+interface StudyFormValues {
+  studyTitle: string;
+  studyInformation: string;
+  gitLink: string;
+  notionLink: string;
+  etcTitle: string;
+  etcLink: string;
+}
+
+const isEtcLink = (link: StudyLinkInfo) => link.title !== 'Notion' && link.title !== 'Github';
+
+const getDefaultFormValues = (selectedStudy: StudyInfo | null, studyDetail?: StudyDetail): StudyFormValues => {
+  const etcLink = studyDetail?.links.find(isEtcLink);
+
+  return {
+    studyTitle: selectedStudy?.title ?? '',
+    studyInformation: studyDetail?.information ?? '',
+    gitLink: studyDetail?.links.find((link) => link.title === 'Github')?.content ?? '',
+    notionLink: studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? '',
+    etcTitle: etcLink?.title ?? '',
+    etcLink: etcLink?.content ?? '',
+  };
+};
+
+const toMemberInfo = (member: Pick<MemberDetailInfo, 'memberId' | 'generation' | 'realName'>) => ({
+  value: member.memberId,
+  label: `${member.realName} (${member.generation})`,
+  group: member.generation,
+});
+
+interface StudyModalFormProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedStudyInfo: StudyInfo | null;
-  setSelectedStudyInfo: React.Dispatch<React.SetStateAction<StudyInfo | null>>;
+  onClose: () => void;
+  selectedStudy: StudyInfo | null;
+  studyDetail?: StudyDetail;
+  headMemberInfo: MemberDetailInfo;
   currentPeriod: PeriodicInfo;
 }
 
-const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, currentPeriod }: StudyModalProps) => {
+const StudyModalForm = ({
+  open,
+  onClose,
+  selectedStudy,
+  studyDetail,
+  headMemberInfo,
+  currentPeriod,
+}: StudyModalFormProps) => {
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [isThumbnailChanged, setIsThumbnailChanged] = useState(false);
-  const [memberInfos, setMemberInfos] = useState<MultiAutoCompleteValue>([]);
+  const [memberInfos, setMemberInfos] = useState<MultiAutoCompleteValue>(() => [
+    { ...toMemberInfo(headMemberInfo), fixed: true },
+    ...(studyDetail?.members.map(toMemberInfo) ?? []),
+  ]);
   const [linkError, setLinkError] = useState(false);
   const [etcLinkError, setEtcLinkError] = useState(false);
 
-  const { data: headMemberInfo } = useMeQuery();
-  const isEditMode = Boolean(selectedStudyInfo);
+  const isEditMode = Boolean(selectedStudy);
 
   const {
     control,
     getValues,
-    reset,
     formState: { isValid },
-  } = useForm({ mode: 'onBlur' });
-  const { data: studyDetail } = useGetStudyQuery({ studyId: selectedStudyInfo?.studyId ?? -1, enabled: isEditMode });
+  } = useForm<StudyFormValues>({ mode: 'onBlur', defaultValues: getDefaultFormValues(selectedStudy, studyDetail) });
   const { mutate: addStudy } = useAddStudyMutation();
   const { mutate: editStudy } = useEditStudyMutation();
   const { mutate: editStudyThumbnail } = useEditStudyThumbnailMutation();
@@ -57,12 +95,6 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleClose = () => {
-    setOpen(false);
-    reset();
-    setSelectedStudyInfo(null);
-  };
 
   const handleAddActionButtonClick = () => {
     if (!(getValues('gitLink') || getValues('notionLink') || getValues('etcLink'))) {
@@ -88,20 +120,20 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
       etcLink: getValues('etcLink') || null,
       year: currentPeriod.year,
       season: currentPeriod.season,
-      memberIds: memberInfos?.map((v) => v.value as number),
+      memberIds: memberInfos.map((v) => v.value as number),
     };
 
-    if (isEditMode && selectedStudyInfo) {
+    if (selectedStudy) {
       editStudy(
         {
-          studyId: selectedStudyInfo.studyId,
+          studyId: selectedStudy.studyId,
           studyInfo: newStudyInfo,
         },
         {
           onSuccess: () => {
             if (isThumbnailChanged) {
               editStudyThumbnail(
-                { studyId: selectedStudyInfo.studyId, thumbnail },
+                { studyId: selectedStudy.studyId, thumbnail },
                 {
                   onSuccess: () => {
                     queryClient.invalidateQueries({ queryKey: ['studies'] });
@@ -111,7 +143,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
             } else {
               queryClient.invalidateQueries({ queryKey: ['studies'] });
             }
-            handleClose();
+            onClose();
           },
         },
       );
@@ -124,38 +156,16 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
       },
       {
         onSuccess: () => {
-          setOpen(false);
+          onClose();
         },
       },
     );
   };
 
-  useEffect(() => {
-    reset();
-    if (open && headMemberInfo) {
-      setMemberInfos([
-        {
-          value: headMemberInfo.memberId,
-          label: `${headMemberInfo.realName} (${headMemberInfo.generation})`,
-          group: headMemberInfo.generation,
-          fixed: true,
-        },
-        ...(studyDetail?.members.map((member) => ({
-          value: member.memberId,
-          label: `${member.realName} (${member.generation})`,
-          group: member.generation,
-        })) || []),
-      ]);
-    } else if (open && !headMemberInfo) {
-      toast.error(COMMON.error.requiredLogin);
-      setOpen(false);
-    }
-  }, [open, headMemberInfo]);
-
   return (
     <ActionModal
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       modalWidth={isMobile ? 'xs' : undefined}
       title={isEditMode ? '스터디 수정' : '스터디 추가'}
       actionButtonName={isEditMode ? '수정' : '추가'}
@@ -168,7 +178,6 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               <InputLabel className="!font-semibold">스터디명</InputLabel>
               <Controller
                 name="studyTitle"
-                defaultValue={selectedStudyInfo?.title ?? ''}
                 control={control}
                 rules={{
                   required: COMMON.error.required,
@@ -194,7 +203,6 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               <InputLabel className="!font-semibold">스터디 소개</InputLabel>
               <Controller
                 name="studyInformation"
-                defaultValue={studyDetail?.information ?? ''}
                 control={control}
                 rules={{
                   required: COMMON.error.required,
@@ -222,7 +230,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
           <div className="h-40 w-32 self-center sm:self-start">
             <ImageUploader
               isEditMode
-              thumbnailPath={selectedStudyInfo?.thumbnailPath}
+              thumbnailPath={selectedStudy?.thumbnailPath}
               setThumbnail={setThumbnail}
               setIsThumbnailChanged={setIsThumbnailChanged}
             />
@@ -231,7 +239,7 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
         <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:gap-2">
           <div className="w-36 space-y-2">
             <InputLabel className="!font-semibold">스터디장</InputLabel>
-            <StandardInput value={headMemberInfo?.realName || ''} readOnly />
+            <StandardInput value={headMemberInfo.realName} readOnly />
           </div>
           <div className="w-full space-y-2">
             <InputLabel className="!font-semibold">스터디원</InputLabel>
@@ -241,10 +249,8 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               grouped
               value={memberInfos}
               items={members?.map((member) => ({
-                value: member.memberId,
-                label: `${member.realName} (${member.generation})`,
-                group: member.generation,
-                fixed: member.memberId === headMemberInfo?.memberId,
+                ...toMemberInfo(member),
+                fixed: member.memberId === headMemberInfo.memberId,
               }))}
               onChange={(v) => {
                 setMemberInfos(v);
@@ -263,7 +269,6 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               <Typography className="w-24 text-center">Github</Typography>
               <Controller
                 name="gitLink"
-                defaultValue={studyDetail?.links.find((link) => link.title === 'Github')?.content ?? ''}
                 control={control}
                 rules={{
                   pattern: {
@@ -294,7 +299,6 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               <Typography className="w-24 text-center">Notion</Typography>
               <Controller
                 name="notionLink"
-                defaultValue={studyDetail?.links.find((link) => link.title === 'Notion')?.content ?? ''}
                 control={control}
                 rules={{
                   pattern: {
@@ -320,9 +324,6 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               <VscLink size={25} className="fill-pointBlue" />
               <Controller
                 name="etcTitle"
-                defaultValue={
-                  studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.title ?? ''
-                }
                 control={control}
                 render={({ field, fieldState: { error } }) => {
                   return (
@@ -343,9 +344,6 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
               />
               <Controller
                 name="etcLink"
-                defaultValue={
-                  studyDetail?.links.find((link) => link.title !== 'Notion' && link.title !== 'Github')?.content ?? ''
-                }
                 control={control}
                 rules={{
                   pattern: {
@@ -381,6 +379,46 @@ const StudyModal = ({ open, setOpen, selectedStudyInfo, setSelectedStudyInfo, cu
         </div>
       </Stack>
     </ActionModal>
+  );
+};
+
+interface StudyModalProps {
+  open: boolean;
+  onClose: () => void;
+  selectedStudy: StudyInfo | null;
+  currentPeriod: PeriodicInfo;
+}
+
+/**
+ * 폼 초기값에 필요한 데이터(로그인 회원, 수정 대상 스터디 상세)가 준비된 뒤에 폼을 마운트합니다.
+ * 모달은 열릴 때마다 새로 마운트되므로(useModal) 폼 상태는 마운트 시점의 초기값으로 시작합니다.
+ */
+const StudyModal = ({ open, onClose, selectedStudy, currentPeriod }: StudyModalProps) => {
+  const { data: headMemberInfo } = useMeQuery();
+  const { data: studyDetail } = useGetStudyQuery({
+    studyId: selectedStudy?.studyId ?? -1,
+    enabled: Boolean(selectedStudy),
+  });
+
+  useEffect(() => {
+    if (headMemberInfo !== null) return;
+
+    toast.error(COMMON.error.requiredLogin);
+    onClose();
+  }, [headMemberInfo, onClose]);
+
+  if (!headMemberInfo) return null;
+  if (selectedStudy && !studyDetail) return null;
+
+  return (
+    <StudyModalForm
+      open={open}
+      onClose={onClose}
+      selectedStudy={selectedStudy}
+      studyDetail={studyDetail}
+      headMemberInfo={headMemberInfo}
+      currentPeriod={currentPeriod}
+    />
   );
 };
 

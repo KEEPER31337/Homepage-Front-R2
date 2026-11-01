@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '@mui/material';
 import { VscChevronDown } from 'react-icons/vsc';
 
 import useCheckAuth from '@hooks/useCheckAuth';
+import useModal from '@hooks/useModal';
 import ActionButton from '@components/Button/ActionButton';
 import StudyAccordionBody from './StudyAccordionBody';
 import StudyAccordionHeader from './StudyAccordionHeader';
@@ -11,21 +12,19 @@ import type { StudyInfo } from '@api/dto';
 
 interface StudyAccordionProps {
   study: StudyInfo;
-  setStudyModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedStudyInfo: React.Dispatch<React.SetStateAction<StudyInfo | null>>;
+  onEdit: () => void;
 }
 
-const StudyAccordion = ({ study, setStudyModalOpen, setSelectedStudyInfo }: StudyAccordionProps) => {
+const StudyAccordion = ({ study, onEdit }: StudyAccordionProps) => {
   const { checkIsMyId } = useCheckAuth();
-  const [studyDeleteModalOpen, setStudyDeleteModalOpen] = useState(false);
+  const studyDeleteModal = useModal();
 
   const handleStudyEditButtonClick = () => {
-    setStudyModalOpen(true);
-    setSelectedStudyInfo(study);
+    onEdit();
   };
 
   const handleStudyDeleteButtonClick = () => {
-    setStudyDeleteModalOpen(true);
+    studyDeleteModal.open();
   };
 
   return (
@@ -49,7 +48,14 @@ const StudyAccordion = ({ study, setStudyModalOpen, setSelectedStudyInfo }: Stud
           </ActionButton>
         </AccordionActions>
       )}
-      {study && <StudyDeleteModal study={study} open={studyDeleteModalOpen} setOpen={setStudyDeleteModalOpen} />}
+      {studyDeleteModal.isMounted && (
+        <StudyDeleteModal
+          key={studyDeleteModal.key}
+          study={study}
+          open={studyDeleteModal.isOpen}
+          onClose={studyDeleteModal.close}
+        />
+      )}
     </Accordion>
   );
 };
