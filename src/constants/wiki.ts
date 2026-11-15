@@ -1,0 +1,6 @@
+export const WIKI_LIMITS = {
+  TITLE_MAX: 250,
+  CONTENT_MAX: 200_000,
+  EDIT_SUMMARY_MAX: 250,
+  PAGE_SIZE_MAX: 100,
+} as const;
