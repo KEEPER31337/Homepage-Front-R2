@@ -111,6 +111,11 @@ const CATEGORIES: Category[] = [
         name: '투표',
         path: 'vote',
       },
+      {
+        id: 403,
+        name: '위키',
+        path: 'wiki',
+      },
     ],
   },
   {

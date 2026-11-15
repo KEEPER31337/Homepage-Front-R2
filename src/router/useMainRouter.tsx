@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 import Duty from '@pages/Duty/Duty';
 import Library from '@pages/Library/Library';
 import NotFound from '@pages/NotFound/NotFound';
@@ -16,6 +16,9 @@ import Login from '@pages/login/Login';
 import SearchAccount from '@pages/login/SearchAccount';
 import Rank from '@pages/rank/Rank';
 import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
+import WikiHistory from '@pages/wiki/WikiHistory/WikiHistory';
+import WikiList from '@pages/wiki/WikiList/WikiList';
+import WikiView from '@pages/wiki/WikiView/WikiView';
 import FitContainer from '@components/Layout/Container/FitContainer';
 import FullContainer from '@components/Layout/Container/FullContainer';
 import MainLayout from '@components/Layout/MainLayout';
@@ -24,6 +27,7 @@ import NeedLogin from '@components/NeedAuth/NeedLogin';
 
 const Game = React.lazy(() => import('@pages/Game/Game'));
 const BoardWrite = React.lazy(() => import('@pages/board/BoardWrite/BoardWrite'));
+const WikiWrite = React.lazy(() => import('@pages/wiki/WikiWrite/WikiWrite'));
 const ActiveMemberManage = React.lazy(() => import('@pages/admin/ActiveMemberManage/ActiveMemberManage'));
 const DutyManage = React.lazy(() => import('@pages/admin/DutyManage/DutyManage'));
 const LibraryManage = React.lazy(() => import('@pages/admin/LibraryManage/LibraryManage'));
@@ -240,6 +244,75 @@ const useMainRouter = () =>
                   <VoteResult />
                 </NeedLogin>
               ),
+            },
+            {
+              path: 'wiki',
+              children: [
+                {
+                  index: true,
+                  element: <Navigate to="/wiki/home" replace />,
+                },
+                {
+                  path: 'home',
+                  element: (
+                    <NeedLogin>
+                      <WikiList wikiView="Front" />
+                    </NeedLogin>
+                  ),
+                },
+                {
+                  path: 'list',
+                  element: (
+                    <NeedLogin>
+                      <WikiList wikiView="List" />
+                    </NeedLogin>
+                  ),
+                },
+                {
+                  path: 'write',
+                  element: (
+                    <NeedLogin>
+                      <SuspendedPage>
+                        <WikiWrite />
+                      </SuspendedPage>
+                    </NeedLogin>
+                  ),
+                },
+                {
+                  path: 'write/:docId',
+                  element: (
+                    <NeedLogin>
+                      <SuspendedPage>
+                        <WikiWrite />
+                      </SuspendedPage>
+                    </NeedLogin>
+                  ),
+                },
+                {
+                  path: 'view/:docId',
+                  element: (
+                    <NeedLogin>
+                      <WikiView />
+                    </NeedLogin>
+                  ),
+                },
+                {
+                  path: 'view/:docId/revisions',
+                  element: (
+                    <NeedLogin>
+                      <WikiHistory />
+                    </NeedLogin>
+                  ),
+                },
+                {
+                  path: 'view/:docId/revisions/:revisionNo',
+                  element: (
+                    <NeedLogin>
+                      <WikiView />
+                    </NeedLogin>
+                  ),
+                },
+              ],
             },
             {
               path: 'rank',
