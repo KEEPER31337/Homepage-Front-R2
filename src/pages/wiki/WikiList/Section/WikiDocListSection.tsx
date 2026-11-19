@@ -5,7 +5,6 @@ import { DateTime } from 'luxon';
 import { useGetWikiDocListQuery } from '@api/wikiApi';
 import { WikiDocumentSummary, WikiSearchType } from '@api/wikiDto';
 import usePagination from '@hooks/usePagination';
-import { formatWikiDateTime, formatWikiRelativeDateTime, parseWikiDateTime } from '@utils/date';
 import ProfileLink from '@components/Link/ProfileLink';
 import StandardTable from '@components/Table/StandardTable';
 import { ChildComponent, Column, Row } from '@components/Table/StandardTable.interface';
@@ -53,10 +52,11 @@ const WikiDocListSection = () => {
   };
 
   const childComponent = ({ key, value, rowData }: ChildComponent<WikiDocumentSummary>) => {
+    const updatedAt = DateTime.fromSQL(rowData.updatedAt);
+
     switch (key) {
       case 'title': {
-        const isRecentlyUpdated =
-          parseWikiDateTime(rowData.updatedAt) >= DateTime.now().plus({ days: -1 }).startOf('day');
+        const isRecentlyUpdated = updatedAt >= DateTime.now().plus({ days: -1 }).startOf('day');
 
         return (
           <>
@@ -70,10 +70,8 @@ const WikiDocListSection = () => {
               <div className="flex items-end">
                 <Typography variant="small">
                   <ProfileLink memberId={rowData.lastEditorId}>{rowData.lastEditorName}</ProfileLink> |{' '}
-                  <span title={formatWikiDateTime(rowData.updatedAt)}>
-                    {formatWikiRelativeDateTime(rowData.updatedAt)}
-                  </span>{' '}
-                  · r{rowData.revisionNo}
+                  <span title={updatedAt.toFormat('yyyy-MM-dd HH:mm')}>{updatedAt.toRelative()}</span> · r
+                  {rowData.revisionNo}
                 </Typography>
               </div>
             )}
@@ -83,9 +81,7 @@ const WikiDocListSection = () => {
       case 'lastEditorName':
         return <ProfileLink memberId={rowData.lastEditorId}>{rowData.lastEditorName}</ProfileLink>;
       case 'updatedAt':
-        return (
-          <span title={formatWikiDateTime(rowData.updatedAt)}>{formatWikiRelativeDateTime(rowData.updatedAt)}</span>
-        );
+        return <span title={updatedAt.toFormat('yyyy-MM-dd HH:mm')}>{updatedAt.toRelative()}</span>;
       case 'revisionNo':
         return `r${rowData.revisionNo}`;
       default:

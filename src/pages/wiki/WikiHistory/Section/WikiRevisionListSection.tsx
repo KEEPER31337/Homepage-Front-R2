@@ -1,18 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { DateTime } from 'luxon';
 import { VscEyeClosed } from 'react-icons/vsc';
 import { WikiPage, WikiRevisionSummary } from '@api/wikiDto';
-import { parseWikiDateTime } from '@utils/date';
 import ProfileLink from '@components/Link/ProfileLink';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
-
-/* NOTE luxon 기본 로케일이 설정되어 있지 않아, 요일이 브라우저 언어를 따라가지 않도록 ko로 고정합니다. */
-const formatRevisionDateTime = (dateTime: string) => {
-  const parsedDateTime = parseWikiDateTime(dateTime);
-
-  return parsedDateTime.isValid ? parsedDateTime.setLocale('ko').toFormat('yyyy년 M월 d일 (ccc) HH:mm') : dateTime;
-};
 
 interface WikiRevisionItemProps {
   docId: number;
@@ -23,7 +16,8 @@ interface WikiRevisionItemProps {
 const WikiRevisionItem = ({ docId, revision, isCurrent }: WikiRevisionItemProps) => {
   const { revisionNo, editSummary, writerId, writerName, createdAt, hidden } = revision;
   const isFirstRevision = revisionNo === 1;
-  const dateTime = formatRevisionDateTime(createdAt);
+  /* NOTE luxon 기본 로케일이 설정되어 있지 않아, 요일이 브라우저 언어를 따라가지 않도록 ko로 고정합니다. */
+  const dateTime = DateTime.fromSQL(createdAt).setLocale('ko').toFormat('yyyy년 M월 d일 (ccc) HH:mm');
 
   const renderSummary = () => {
     if (hidden) {

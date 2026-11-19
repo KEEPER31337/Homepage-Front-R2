@@ -16,7 +16,6 @@ import { AdminVoteListItem } from '@api/voteDto';
 import ActionButton from '@components/Button/ActionButton';
 import MemberChip from '@components/Chip/MemberChip';
 import Selector from '@components/Selector/Selector';
-import { formatVoteDateTime } from '@utils/date';
 import DeleteVoteModal from '../Modal/DeleteVoteModal';
 
 const CURRENT_YEAR = DateTime.now().year;
@@ -89,7 +88,8 @@ const VoteListTab = () => {
                 {vote.title}
               </Typography>
               <Typography className="!text-sm text-white/60">
-                {formatVoteDateTime(vote.startAt)} ~ {formatVoteDateTime(vote.endAt)}
+                {DateTime.fromISO(vote.startAt).toFormat('yyyy.MM.dd HH:mm')} ~{' '}
+                {DateTime.fromISO(vote.endAt).toFormat('yyyy.MM.dd HH:mm')}
               </Typography>
             </div>
           </div>

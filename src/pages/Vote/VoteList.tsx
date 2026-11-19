@@ -17,7 +17,6 @@ import { VoteParticipationStatus } from '@api/voteDto';
 import FilledButton from '@components/Button/FilledButton';
 import Selector from '@components/Selector/Selector';
 import PageTitle from '@components/Typography/PageTitle';
-import { formatVoteDateTime } from '@utils/date';
 
 const CURRENT_YEAR = DateTime.now().year;
 
@@ -81,7 +80,8 @@ const VoteList = () => {
                 {vote.title}
               </Typography>
               <Typography className="!text-sm text-white/60">
-                {formatVoteDateTime(vote.startAt)} ~ {formatVoteDateTime(vote.endAt)}
+                {DateTime.fromISO(vote.startAt).toFormat('yyyy.MM.dd HH:mm')} ~{' '}
+                {DateTime.fromISO(vote.endAt).toFormat('yyyy.MM.dd HH:mm')}
               </Typography>
             </div>
             {vote.participated !== 4 && (

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chip, Typography } from '@mui/material';
+import { DateTime } from 'luxon';
 import { VscCalendar, VscHistory } from 'react-icons/vsc';
-import { formatWikiDateTime } from '@utils/date';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ProfileLink from '@components/Link/ProfileLink';
@@ -37,7 +37,7 @@ const WikiBannerSection = ({ view, isRevisionMode }: WikiBannerSectionProps) => 
           </div>
           <div className="flex items-center justify-center">
             <VscCalendar className="mr-1 h-4 w-4" />
-            {formatWikiDateTime(view.editedAt)}
+            {DateTime.fromSQL(view.editedAt).toFormat('yyyy-MM-dd HH:mm')}
           </div>
           <div className="flex items-center justify-center">
             <VscHistory className="mr-1 h-4 w-4" />

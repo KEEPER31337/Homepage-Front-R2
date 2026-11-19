@@ -12,6 +12,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { DateTime } from 'luxon';
 import { VscChevronDown } from 'react-icons/vsc';
 
 import { useGetVoteResultQuery } from '@api/voteApi';
@@ -20,7 +21,6 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 import StandardTable from '@components/Table/StandardTable';
 import { Column } from '@components/Table/StandardTable.interface';
 import PageTitle from '@components/Typography/PageTitle';
-import { formatVoteDateTime } from '@utils/date';
 import { createCsvFileName, downloadCsv } from './csvDownload';
 
 interface VoteResultErrorResponse {
@@ -158,7 +158,8 @@ const VoteResult = () => {
           </Typography>
           <Typography className="!mt-2 text-white/70">{vote.description ?? '등록된 투표 안내가 없습니다.'}</Typography>
           <Typography className="!mt-2 !text-sm text-white/50">
-            {formatVoteDateTime(vote.startAt)} ~ {formatVoteDateTime(vote.endAt)}
+            {DateTime.fromISO(vote.startAt).toFormat('yyyy.MM.dd HH:mm')} ~{' '}
+            {DateTime.fromISO(vote.endAt).toFormat('yyyy.MM.dd HH:mm')}
           </Typography>
         </div>
 
@@ -168,7 +169,9 @@ const VoteResult = () => {
               <Typography component="h2" className="!font-semibold text-pointBlue">
                 안건별 결과
               </Typography>
-              <Typography className="!text-xs text-white/50">득표율은 집계 영수증 수를 기준으로 합니다. (중복 선택 허용 시 100%를 초과할 수 있음)</Typography>
+              <Typography className="!text-xs text-white/50">
+                득표율은 집계 영수증 수를 기준으로 합니다. (중복 선택 허용 시 100%를 초과할 수 있음)
+              </Typography>
             </div>
 
             <div className="mt-3 max-h-[65vh] space-y-6 overflow-y-auto pr-1">
