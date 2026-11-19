@@ -21,17 +21,19 @@ const WikiHistoryBannerSection = ({ docId, title, totalRevisions, canEdit }: Wik
         <Typography variant="h3" className="flex min-h-12 items-center justify-center break-all !font-semibold">
           {title}
         </Typography>
-        <div className="flex items-center justify-center text-small leading-8 text-gray-300">
+      </div>
+      <div className="sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-x-4">
+        <div className="flex items-center justify-center text-small leading-8 text-gray-300 sm:col-start-2">
           <VscHistory className="mr-1 h-4 w-4" />
           <span>
             문서 기록
             {totalRevisions !== undefined && ` · 리비전 ${totalRevisions.toLocaleString()}개`}
           </span>
         </div>
-      </div>
-      <div className="flex justify-end space-x-2">
-        <OutlinedButton onClick={() => navigate(`/wiki/view/${docId}`)}>본문</OutlinedButton>
-        {canEdit && <OutlinedButton onClick={() => navigate(`/wiki/write/${docId}`)}>편집</OutlinedButton>}
+        <div className="flex justify-end space-x-2">
+          {canEdit && <OutlinedButton onClick={() => navigate(`/wiki/write/${docId}`)}>편집</OutlinedButton>}
+          <OutlinedButton onClick={() => navigate(`/wiki/view/${docId}`)}>본문</OutlinedButton>
+        </div>
       </div>
     </div>
   );

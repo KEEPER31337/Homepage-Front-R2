@@ -23,7 +23,9 @@ const WikiBannerSection = ({ view, isRevisionMode }: WikiBannerSectionProps) => 
         <Typography variant="h3" className="flex min-h-12 items-center justify-center break-all !font-semibold">
           {view.title}
         </Typography>
-        <div className="flex flex-wrap items-center justify-center gap-x-2 text-small leading-8 text-gray-300">
+      </div>
+      <div className="sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-x-4">
+        <div className="flex flex-wrap items-center justify-center gap-x-2 text-small leading-8 text-gray-300 sm:col-start-2">
           <div className="flex items-center justify-center">
             <ProfileLink
               memberId={view.editorId}
@@ -44,10 +46,12 @@ const WikiBannerSection = ({ view, isRevisionMode }: WikiBannerSectionProps) => 
             <span>r{view.revisionNo}</span>
           </div>
         </div>
-      </div>
-      <div className="flex justify-end space-x-2">
-        <OutlinedButton onClick={() => navigate(`/wiki/view/${view.docId}/revisions`)}>기록</OutlinedButton>
-        {!isRevisionMode && <OutlinedButton onClick={() => navigate(`/wiki/write/${view.docId}`)}>편집</OutlinedButton>}
+        <div className="flex justify-end space-x-2">
+          {!isRevisionMode && (
+            <OutlinedButton onClick={() => navigate(`/wiki/write/${view.docId}`)}>편집</OutlinedButton>
+          )}
+          <OutlinedButton onClick={() => navigate(`/wiki/view/${view.docId}/revisions`)}>기록</OutlinedButton>
+        </div>
       </div>
     </div>
   );
