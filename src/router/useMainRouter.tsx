@@ -17,6 +17,8 @@ import SearchAccount from '@pages/login/SearchAccount';
 import Rank from '@pages/rank/Rank';
 import SeminarAttend from '@pages/senimarAttend/SenimarAttend';
 import WikiHistory from '@pages/wiki/WikiHistory/WikiHistory';
+import WikiHome from '@pages/wiki/WikiHome/WikiHome';
+import WikiLayout from '@pages/wiki/WikiLayout/WikiLayout';
 import WikiList from '@pages/wiki/WikiList/WikiList';
 import WikiView from '@pages/wiki/WikiView/WikiView';
 import FitContainer from '@components/Layout/Container/FitContainer';
@@ -258,20 +260,21 @@ const useMainRouter = () =>
                   element: <Navigate to="/wiki/home" replace />,
                 },
                 {
-                  path: 'home',
                   element: (
                     <NeedLogin>
-                      <WikiList wikiView="Hero" />
+                      <WikiLayout />
                     </NeedLogin>
                   ),
-                },
-                {
-                  path: 'list',
-                  element: (
-                    <NeedLogin>
-                      <WikiList wikiView="List" />
-                    </NeedLogin>
-                  ),
+                  children: [
+                    {
+                      path: 'home',
+                      element: <WikiHome />,
+                    },
+                    {
+                      path: 'list',
+                      element: <WikiList />,
+                    },
+                  ],
                 },
                 {
                   path: 'write',
