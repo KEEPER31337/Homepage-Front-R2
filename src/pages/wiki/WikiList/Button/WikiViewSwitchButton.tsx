@@ -2,7 +2,7 @@ import React from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { MdOutlineHome, MdOutlineViewHeadline } from 'react-icons/md';
 
-export type WikiViewType = 'Front' | 'List';
+export type WikiViewType = 'Hero' | 'List';
 
 interface WikiViewSwitchButtonProps {
   wikiView: WikiViewType;
@@ -17,7 +17,7 @@ const WikiViewSwitchButton = ({ wikiView, setWikiView }: WikiViewSwitchButtonPro
 
   return (
     <ToggleButtonGroup exclusive size="small" value={wikiView} onChange={handleWikiView}>
-      <ToggleButton value="Front" aria-label="대문">
+      <ToggleButton value="Hero" aria-label="대문">
         <MdOutlineHome size="20" />
       </ToggleButton>
       <ToggleButton value="List" aria-label="목록">

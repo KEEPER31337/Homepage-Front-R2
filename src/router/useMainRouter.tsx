@@ -261,7 +261,7 @@ const useMainRouter = () =>
                   path: 'home',
                   element: (
                     <NeedLogin>
-                      <WikiList wikiView="Front" />
+                      <WikiList wikiView="Hero" />
                     </NeedLogin>
                   ),
                 },

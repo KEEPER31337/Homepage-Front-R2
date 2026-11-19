@@ -5,10 +5,10 @@ import PageTitle from '@components/Typography/PageTitle';
 import WikiViewSwitchButton, { WikiViewType } from './Button/WikiViewSwitchButton';
 import WikiSearchSection from './SearchSection/WikiSearchSection';
 import WikiDocListSection from './Section/WikiDocListSection';
-import WikiFrontSection from './Section/WikiFrontSection';
+import WikiHeroSection from './Section/WikiHeroSection';
 
 const WIKI_VIEW_PATH: Record<WikiViewType, string> = {
-  Front: '/wiki/home',
+  Hero: '/wiki/home',
   List: '/wiki/list',
 };
 
@@ -38,7 +38,7 @@ const WikiList = ({ wikiView }: WikiListProps) => {
         <WikiSearchSection key={wikiView} />
         <WikiViewSwitchButton wikiView={wikiView} setWikiView={changeWikiView} />
       </div>
-      {wikiView === 'Front' && <WikiFrontSection />}
+      {wikiView === 'Hero' && <WikiHeroSection />}
       {wikiView === 'List' && <WikiDocListSection />}
     </div>
   );
