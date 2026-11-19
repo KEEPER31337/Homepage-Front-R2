@@ -34,7 +34,7 @@ const WikiDocListSection = () => {
   const { data: docs, isError } = useGetWikiDocListQuery({
     searchType,
     search,
-    page: Number.isInteger(page) && page >= 0 ? page : 0,
+    page,
   });
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

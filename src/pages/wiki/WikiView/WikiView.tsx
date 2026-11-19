@@ -5,7 +5,6 @@ import { getWikiErrorStatus, useGetWikiDocQuery, useGetWikiRevisionQuery } from 
 import { WikiDocument, WikiRevision } from '@api/wikiDto';
 import NotFound from '@pages/NotFound/NotFound';
 import WikiHidden from '@pages/wiki/WikiHidden/WikiHidden';
-import { parseWikiIdParam } from '@pages/wiki/wikiParam';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import WikiBannerSection from './Section/WikiBannerSection';
 import WikiContentSection from './Section/WikiContentSection';
@@ -96,19 +95,13 @@ const WikiRevisionView = ({ docId, revisionNo }: WikiRevisionViewProps) => {
 };
 
 /* NOTE /wiki/view/:docId 는 현재 문서, /wiki/view/:docId/revisions/:revisionNo 는 과거 리비전을 보여줍니다.
-  잘못된 ID로 요청이 나가지 않도록 쿼리 훅을 쓰는 컴포넌트를 분리했습니다. */
+  두 경우 쓰는 쿼리 훅이 달라 컴포넌트를 분리했습니다. */
 const WikiView = () => {
-  const { docId: docIdParam, revisionNo: revisionNoParam } = useParams();
+  const { docId, revisionNo } = useParams();
 
-  const docId = parseWikiIdParam(docIdParam);
-  if (docId === null) return <NotFound from="Wiki" />;
+  if (revisionNo === undefined) return <WikiDocView docId={Number(docId)} />;
 
-  if (revisionNoParam === undefined) return <WikiDocView docId={docId} />;
-
-  const revisionNo = parseWikiIdParam(revisionNoParam);
-  if (revisionNo === null) return <NotFound from="Wiki" />;
-
-  return <WikiRevisionView docId={docId} revisionNo={revisionNo} />;
+  return <WikiRevisionView docId={Number(docId)} revisionNo={Number(revisionNo)} />;
 };
 
 export default WikiView;
