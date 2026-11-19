@@ -22,7 +22,7 @@ import type { StandardEditorHandle } from '@components/Editor/StandardEditor';
 import StandardInput from '@components/Input/StandardInput';
 import PageTitle from '@components/Typography/PageTitle';
 import NotFound from '@pages/NotFound/NotFound';
-import WikiHidden from '@pages/wiki/WikiHidden/WikiHidden';
+import WikiHidden from '@pages/wiki/WikiHidden';
 import WikiEditSummaryModal from './Modal/WikiEditSummaryModal';
 
 /* NOTE 위키 에러 응답의 message에는 사용자 입력값(본문 전체일 수도 있음)이 그대로 담기므로 화면에 띄우지 않고,

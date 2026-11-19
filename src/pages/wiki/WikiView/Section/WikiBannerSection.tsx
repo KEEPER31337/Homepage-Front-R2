@@ -6,7 +6,7 @@ import { VscCalendar, VscHistory } from 'react-icons/vsc';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ProfileLink from '@components/Link/ProfileLink';
-import { WikiViewModel } from '../WikiView.interface';
+import type { WikiViewModel } from '../WikiView';
 
 interface WikiBannerSectionProps {
   view: WikiViewModel;

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import PageTitle from '@components/Typography/PageTitle';
 import WikiViewSwitchButton, { WikiViewType } from './Button/WikiViewSwitchButton';
-import WikiSearchSection from './SearchSection/WikiSearchSection';
+import WikiSearchSection from './Section/WikiSearchSection';
 import WikiDocListSection from './Section/WikiDocListSection';
 import WikiHeroSection from './Section/WikiHeroSection';
 
