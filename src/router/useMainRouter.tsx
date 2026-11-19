@@ -223,27 +223,32 @@ const useMainRouter = () =>
             },
             {
               path: 'vote',
-              element: (
-                <NeedLogin>
-                  <VoteList />
-                </NeedLogin>
-              ),
-            },
-            {
-              path: 'vote/:voteId',
-              element: (
-                <NeedLogin>
-                  <VotePageContainer />
-                </NeedLogin>
-              ),
-            },
-            {
-              path: 'vote/:voteId/result',
-              element: (
-                <NeedLogin>
-                  <VoteResult />
-                </NeedLogin>
-              ),
+              children: [
+                {
+                  index: true,
+                  element: (
+                    <NeedLogin>
+                      <VoteList />
+                    </NeedLogin>
+                  ),
+                },
+                {
+                  path: ':voteId',
+                  element: (
+                    <NeedLogin>
+                      <VotePageContainer />
+                    </NeedLogin>
+                  ),
+                },
+                {
+                  path: ':voteId/result',
+                  element: (
+                    <NeedLogin>
+                      <VoteResult />
+                    </NeedLogin>
+                  ),
+                },
+              ],
             },
             {
               path: 'wiki',
