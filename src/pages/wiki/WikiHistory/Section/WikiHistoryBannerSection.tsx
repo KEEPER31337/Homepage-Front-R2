@@ -6,7 +6,6 @@ import OutlinedButton from '@components/Button/OutlinedButton';
 
 interface WikiHistoryBannerSectionProps {
   docId: number;
-  /** 문서 상세를 불러오지 못했으면(숨김 403 등) undefined */
   title?: string;
   totalRevisions?: number;
   canEdit: boolean;

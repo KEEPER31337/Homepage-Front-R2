@@ -16,7 +16,6 @@ interface WikiRevisionItemProps {
 const WikiRevisionItem = ({ docId, revision, isCurrent }: WikiRevisionItemProps) => {
   const { revisionNo, editSummary, writerId, writerName, createdAt, hidden } = revision;
   const isFirstRevision = revisionNo === 1;
-  /* NOTE luxon 기본 로케일이 설정되어 있지 않아, 요일이 브라우저 언어를 따라가지 않도록 ko로 고정합니다. */
   const dateTime = DateTime.fromSQL(createdAt).setLocale('ko').toFormat('yyyy년 M월 d일 (ccc) HH:mm');
 
   const renderSummary = () => {
@@ -45,7 +44,6 @@ const WikiRevisionItem = ({ docId, revision, isCurrent }: WikiRevisionItemProps)
   return (
     <li className="ml-6 py-1">
       <span className="mr-2 inline-block min-w-[4ch] font-mono text-gray-400">r{revisionNo}</span>
-      {/* NOTE 숨겨진 리비전은 상세 조회가 403이므로 링크를 걸지 않습니다. */}
       {hidden ? (
         <time dateTime={createdAt} className="whitespace-nowrap text-gray-500 line-through">
           {dateTime}
@@ -102,7 +100,6 @@ const WikiRevisionListSection = ({ docId, revisions, isError }: WikiRevisionList
                 key={revision.revisionNo}
                 docId={docId}
                 revision={revision}
-                /* NOTE 목록은 최신순이므로 첫 페이지의 첫 항목이 현재 리비전입니다. URL이 아닌 응답의 페이지 정보로 판단합니다. */
                 isCurrent={revisions.first && index === 0}
               />
             ))}

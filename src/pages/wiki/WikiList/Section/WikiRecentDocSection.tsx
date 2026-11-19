@@ -4,7 +4,6 @@ import { useGetWikiDocListQuery } from '@api/wikiApi';
 
 const RECENT_DOC_COUNT = 10;
 
-/* NOTE 위아래 StandardViewer(toastui)의 본문과 같은 서체로 보이도록 toastui-editor-contents의 font-family를 그대로 씁니다. */
 const TOASTUI_VIEWER_FONT_FAMILY =
   "'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', '나눔바른고딕', 'Nanum Barun Gothic', '맑은고딕', 'Malgun Gothic', sans-serif";
 
@@ -40,7 +39,6 @@ const WikiRecentDocSection = () => {
     );
   };
 
-  /* NOTE 제목 스타일은 StandardViewer(toastui 다크 테마)의 h2와 맞췄습니다. */
   return (
     <section className="my-6" style={{ fontFamily: TOASTUI_VIEWER_FONT_FAMILY }}>
       <h2 className="mb-[13px] border-b border-white pb-[7px] text-[22px] font-bold leading-[23px] text-white">

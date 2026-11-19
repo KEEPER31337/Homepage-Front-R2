@@ -19,7 +19,6 @@ export interface WikiViewModel {
   editorId: number;
   editorName: string;
   editorThumbnailPath: string | null;
-  /** "yyyy-MM-dd HH:mm:ss". 문서는 마지막 수정 시각, 리비전은 저장 시각 */
   editedAt: string;
 }
 
@@ -47,7 +46,6 @@ const revisionToViewModel = (revision: WikiRevision): WikiViewModel => ({
 
 interface WikiViewPageProps {
   docId: number;
-  /** 아직 불러오는 중이거나 불러오지 못했으면 undefined */
   view: WikiViewModel | undefined;
   error: Error | null;
   isRevisionMode: boolean;

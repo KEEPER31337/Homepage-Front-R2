@@ -9,7 +9,6 @@ interface WikiHiddenProps {
   docId: number;
 }
 
-/* NOTE 숨김 처리된 리비전은 문서 상세/리비전 상세 API가 403을 반환합니다. */
 const WikiHidden = ({ target, docId }: WikiHiddenProps) => {
   const navigate = useNavigate();
 

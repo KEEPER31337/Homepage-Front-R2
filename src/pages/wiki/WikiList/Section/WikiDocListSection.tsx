@@ -16,7 +16,6 @@ const wikiDocColumn: Column<WikiDocumentSummary>[] = [
   { key: 'revisionNo', headerName: '리비전', width: '10%' },
 ];
 
-/* NOTE 모바일에서는 제목 칸 아래 줄에 편집자와 수정일을 함께 보여주므로 제목 칸만 둡니다. */
 const mobileWikiDocColumn = wikiDocColumn.filter(({ key }) => key === 'title');
 
 const WIKI_SEARCH_TYPES: WikiSearchType[] = ['title+content', 'title', 'content'];

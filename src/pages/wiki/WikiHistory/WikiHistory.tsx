@@ -12,8 +12,7 @@ const WikiHistory = () => {
   const docId = Number(useParams().docId);
   const { page } = usePagination();
   const { data: revisions, error, isError } = useGetWikiRevisionListQuery({ docId, page, size: REVISION_PAGE_SIZE });
-  /* NOTE 문서 상세는 제목과 편집 버튼에만 씁니다. 현재 리비전이 숨겨지면 403이 오고, WikiHidden에서 이 페이지로 오는 경우이므로
-    실패해도 기록 목록은 그대로 보여줍니다. */
+
   const { data: doc, error: docError } = useGetWikiDocQuery({ docId });
 
   if (getWikiErrorStatus(error) === 404) {

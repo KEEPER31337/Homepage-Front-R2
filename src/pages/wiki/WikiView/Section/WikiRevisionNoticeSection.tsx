@@ -10,6 +10,7 @@ interface WikiRevisionNoticeSectionProps {
 }
 
 /* NOTE 리비전 상세 응답만으로는 최신 리비전인지 알 수 없어, 최신 리비전을 리비전 주소로 열어도 틀리지 않는 문구를 사용합니다. */
+/* TODO 추후 수정 */
 const WikiRevisionNoticeSection = ({ docId, revisionNo }: WikiRevisionNoticeSectionProps) => {
   const navigate = useNavigate();
 

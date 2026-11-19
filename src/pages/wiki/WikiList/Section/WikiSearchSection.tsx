@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import SearchSection from '@components/Section/SearchSection';
 
-/* NOTE 위키 목록 API는 작성자 검색을 지원하지 않습니다. */
 const wikiSearchList = [
   { id: 'title+content', content: '제목 + 내용' },
   { id: 'title', content: '제목' },
@@ -21,8 +20,6 @@ const WikiSearchSection = () => {
   const handleSearchButtonClick = () => {
     const trimmedSearch = search.trim();
 
-    /* NOTE 대문에서 검색해도 결과가 보이도록 항상 목록(/wiki/list)으로 이동합니다.
-      검색어가 없으면 검색 조건을 지우고 전체 목록으로 돌아갑니다. */
     navigate({
       pathname: '/wiki/list',
       search: createSearchParams(
