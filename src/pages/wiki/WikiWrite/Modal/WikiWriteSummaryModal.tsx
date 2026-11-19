@@ -5,7 +5,7 @@ import { WIKI_LIMITS } from '@constants/wiki';
 import StandardInput from '@components/Input/StandardInput';
 import ActionModal from '@components/Modal/ActionModal';
 
-interface WikiEditSummaryModalProps {
+interface WikiWriteSummaryModalProps {
   open: boolean;
   onClose: () => void;
   isEditMode: boolean;
@@ -15,7 +15,7 @@ interface WikiEditSummaryModalProps {
   onSaveButtonClick: () => void;
 }
 
-const WikiEditSummaryModal = ({
+const WikiWriteSummaryModal = ({
   open,
   onClose,
   isEditMode,
@@ -23,7 +23,7 @@ const WikiEditSummaryModal = ({
   editSummary,
   setEditSummary,
   onSaveButtonClick,
-}: WikiEditSummaryModalProps) => {
+}: WikiWriteSummaryModalProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -52,4 +52,4 @@ const WikiEditSummaryModal = ({
   );
 };
 
-export default WikiEditSummaryModal;
+export default WikiWriteSummaryModal;

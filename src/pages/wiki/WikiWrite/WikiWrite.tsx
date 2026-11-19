@@ -23,7 +23,7 @@ import StandardInput from '@components/Input/StandardInput';
 import PageTitle from '@components/Typography/PageTitle';
 import NotFound from '@pages/NotFound/NotFound';
 import WikiHidden from '@pages/wiki/WikiHidden';
-import WikiEditSummaryModal from './Modal/WikiEditSummaryModal';
+import WikiWriteSummaryModal from './Modal/WikiWriteSummaryModal';
 
 /* NOTE 위키 에러 응답의 message에는 사용자 입력값(본문 전체일 수도 있음)이 그대로 담기므로 화면에 띄우지 않고,
   HTTP 상태 코드에 따라 아래 문구만 보여줍니다. */
@@ -282,7 +282,7 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
           {isEditMode ? '수정하기' : '작성완료'}
         </OutlinedButton>
       </div>
-      <WikiEditSummaryModal
+      <WikiWriteSummaryModal
         open={editSummaryModalOpen}
         onClose={handleEditSummaryModalClose}
         isEditMode={isEditMode}
