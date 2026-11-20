@@ -10,10 +10,10 @@ import StandardTablePagination from '@components/Pagination/StandardTablePaginat
 interface WikiRevisionItemProps {
   docId: number;
   revision: WikiRevisionSummary;
-  isCurrent: boolean;
+  isLatest: boolean;
 }
 
-const WikiRevisionItem = ({ docId, revision, isCurrent }: WikiRevisionItemProps) => {
+const WikiRevisionItem = ({ docId, revision, isLatest }: WikiRevisionItemProps) => {
   const { revisionNo, editSummary, writerId, writerName, createdAt, hidden } = revision;
   const isFirstRevision = revisionNo === 1;
   const dateTime = DateTime.fromSQL(createdAt).setLocale('ko').toFormat('yyyy년 M월 d일 (ccc) HH:mm');
@@ -56,7 +56,7 @@ const WikiRevisionItem = ({ docId, revision, isCurrent }: WikiRevisionItemProps)
           <time dateTime={createdAt}>{dateTime}</time>
         </Link>
       )}
-      {isCurrent && <b className="ml-1 whitespace-nowrap text-white">(현재)</b>}
+      {isLatest && <b className="ml-1 whitespace-nowrap text-white">(최신)</b>}
       <ProfileLink memberId={writerId} className="ml-2 whitespace-nowrap text-white">
         {writerName}
       </ProfileLink>
@@ -88,9 +88,7 @@ const WikiRevisionListSection = ({ docId, revisions, isError }: WikiRevisionList
 
     return (
       <>
-        <p className="mb-4 text-gray-400">
-          날짜를 누르면 해당 시점의 문서를 볼 수 있습니다. <b className="text-white">(현재)</b> = 현재 문서의 리비전
-        </p>
+        <p className="mb-4 text-gray-400">날짜를 누르면 해당 시점의 문서를 볼 수 있습니다.</p>
         {revisions.content.length === 0 ? (
           <Typography className="py-16 text-center text-gray-400">이 페이지에 표시할 기록이 없습니다.</Typography>
         ) : (
@@ -100,7 +98,7 @@ const WikiRevisionListSection = ({ docId, revisions, isError }: WikiRevisionList
                 key={revision.revisionNo}
                 docId={docId}
                 revision={revision}
-                isCurrent={revisions.first && index === 0}
+                isLatest={revisions.first && index === 0}
               />
             ))}
           </ul>
