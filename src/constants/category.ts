@@ -111,11 +111,6 @@ const CATEGORIES: Category[] = [
         name: '투표',
         path: 'vote',
       },
-      {
-        id: 403,
-        name: '위키',
-        path: 'wiki',
-      },
     ],
   },
   {
@@ -131,6 +126,11 @@ const CATEGORIES: Category[] = [
         id: 502,
         name: '게임',
         path: 'game',
+      },
+      {
+        id: 503,
+        name: '위키',
+        path: 'wiki',
       },
     ],
   },
