@@ -82,6 +82,10 @@ interface WikiRevisionSummary {
   writerThumbnailPath: string | null;
   createdAt: WikiDateTime;
   hidden: boolean;
+  /** 직전 리비전 대비 추가된 줄 수 (0~999, 999는 999 이상). 1번 리비전은 빈 문서와 비교. hidden 이어도 항상 숫자 */
+  addedLineCount: number;
+  /** 직전 리비전 대비 삭제된 줄 수 (0~999, 999는 999 이상). 바뀐 줄은 삭제 1 + 추가 1로 셈 */
+  removedLineCount: number;
 }
 
 interface WikiRevision {

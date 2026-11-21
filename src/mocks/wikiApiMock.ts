@@ -288,6 +288,37 @@ const getAdjacentDocuments = (docId: number) => {
 
 const compareText = (a: string, b: string) => Number(a > b) - Number(a < b);
 
+/** \n, \r\n, \r 기준으로 나누고 마지막 빈 줄은 버림. 빈 문자열은 0줄 */
+const splitLines = (content: string) => {
+  const lines = content.split(/\r\n|\r|\n/);
+  if (lines[lines.length - 1] === '') lines.pop();
+  return lines;
+};
+
+/** 줄 단위 LCS로 셈. 바뀐 줄은 삭제 1 + 추가 1. 서버처럼 LINE_COUNT_MAX에서 멈춤 */
+const countLineChanges = (before: string, after: string) => {
+  const oldLines = splitLines(before);
+  const newLines = splitLines(after);
+  // lcs[j + 1]: 지금까지 본 oldLines와 newLines[0..j]의 LCS 길이 (한 행만 유지)
+  const lcs = Array.from({ length: newLines.length + 1 }, () => 0);
+
+  oldLines.forEach((oldLine) => {
+    let diagonal = 0;
+    newLines.forEach((newLine, j) => {
+      const up = lcs[j + 1];
+      lcs[j + 1] = oldLine === newLine ? diagonal + 1 : Math.max(up, lcs[j]);
+      diagonal = up;
+    });
+  });
+
+  const common = lcs[newLines.length];
+
+  return {
+    addedLineCount: Math.min(newLines.length - common, WIKI_LIMITS.LINE_COUNT_MAX),
+    removedLineCount: Math.min(oldLines.length - common, WIKI_LIMITS.LINE_COUNT_MAX),
+  };
+};
+
 const documentComparators: Record<WikiSortType, (a: WikiDocumentSummary, b: WikiDocumentSummary) => number> = {
   latest: (a, b) => compareText(b.updatedAt, a.updatedAt) || b.docId - a.docId,
   oldest: (a, b) => compareText(a.updatedAt, b.updatedAt) || a.docId - b.docId,
@@ -387,18 +418,26 @@ const getWikiRevisionsMock = async (
 ): Promise<WikiPage<WikiRevisionSummary>> => {
   await delay();
 
-  const summaries = findDocument(docId)
-    .revisions.toReversed()
-    .map(({ revisionNo, title, editSummary, writerId, writerName, writerThumbnailPath, createdAt, hidden }) => ({
-      revisionNo,
-      title: hidden ? null : title,
-      editSummary: hidden ? null : editSummary,
-      writerId,
-      writerName,
-      writerThumbnailPath,
-      createdAt,
-      hidden,
-    }));
+  const { revisions } = findDocument(docId);
+  // 생성/수정으로 추가된 리비전도 함께 반영되도록 조회할 때 직전 리비전(1번은 빈 문서)과 비교해 계산
+  const summaries = revisions
+    .map(
+      (
+        { revisionNo, title, content, editSummary, writerId, writerName, writerThumbnailPath, createdAt, hidden },
+        index,
+      ) => ({
+        revisionNo,
+        title: hidden ? null : title,
+        editSummary: hidden ? null : editSummary,
+        writerId,
+        writerName,
+        writerThumbnailPath,
+        createdAt,
+        hidden,
+        ...countLineChanges(index > 0 ? revisions[index - 1].content : '', content),
+      }),
+    )
+    .toReversed();
 
   return toPage(summaries, page, size);
 };

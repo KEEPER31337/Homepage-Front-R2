@@ -6,6 +6,11 @@ import { VscEyeClosed } from 'react-icons/vsc';
 import { WikiPage, WikiRevisionSummary } from '@api/wikiDto';
 import ProfileLink from '@components/Link/ProfileLink';
 import StandardTablePagination from '@components/Pagination/StandardTablePagination';
+import { WIKI_LIMITS } from '@constants/wiki';
+
+/** 서버가 LINE_COUNT_MAX에서 멈추므로 그 값이면 "N줄 이상"으로 읽어줌 */
+const formatLineCount = (count: number, action: '추가' | '삭제') =>
+  `${count}줄${count >= WIKI_LIMITS.LINE_COUNT_MAX ? ' 이상' : ''} ${action}`;
 
 interface WikiRevisionItemProps {
   docId: number;
@@ -14,9 +19,11 @@ interface WikiRevisionItemProps {
 }
 
 const WikiRevisionItem = ({ docId, revision, isLatest }: WikiRevisionItemProps) => {
-  const { revisionNo, editSummary, writerId, writerName, createdAt, hidden } = revision;
+  const { revisionNo, editSummary, writerId, writerName, createdAt, hidden, addedLineCount, removedLineCount } =
+    revision;
   const isFirstRevision = revisionNo === 1;
   const dateTime = DateTime.fromSQL(createdAt).setLocale('ko').toFormat('yyyy년 M월 d일 (ccc) HH:mm');
+  const lineCountLabel = `${formatLineCount(addedLineCount, '추가')}, ${formatLineCount(removedLineCount, '삭제')}`;
 
   const renderSummary = () => {
     if (hidden) {
@@ -60,6 +67,18 @@ const WikiRevisionItem = ({ docId, revision, isLatest }: WikiRevisionItemProps) 
       <ProfileLink memberId={writerId} className="ml-2 whitespace-nowrap text-white">
         {writerName}
       </ProfileLink>
+      {/* NOTE 영문 이름 바로 뒤의 '+' 앞은 줄바꿈 지점이 아니라서 좁은 화면에서 넘치거나 '. .'이 다음 줄 맨 앞으로 밀리므로 <wbr />을 둡니다.
+        +/− 쌍은 nowrap으로 묶고, 화면 낭독기에는 기호 대신 문장으로 읽어줍니다. */}
+      <wbr />
+      <span title={lineCountLabel} className="ml-2 whitespace-nowrap">
+        <span aria-hidden className={addedLineCount > 0 ? 'text-green-500' : 'text-gray-500'}>
+          +{addedLineCount}
+        </span>
+        <span aria-hidden className={`ml-1 ${removedLineCount > 0 ? 'text-subRed' : 'text-gray-500'}`}>
+          −{removedLineCount}
+        </span>
+        <span className="sr-only">{lineCountLabel}</span>
+      </span>
       {summary && (
         <>
           <span className="mx-2 text-gray-500">. .</span>
