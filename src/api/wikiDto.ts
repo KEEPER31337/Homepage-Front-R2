@@ -47,6 +47,12 @@ interface WikiDocumentSummary {
   updatedAt: WikiDateTime;
 }
 
+/** docId 순서 기준의 이전/다음 문서. 현재 리비전이 숨겨진 문서는 건너뜀 */
+interface WikiAdjacentDocument {
+  docId: number;
+  title: string;
+}
+
 interface WikiDocument {
   docId: number;
   /** 현재 리비전 번호. 수정할 때 baseRevisionNo로 보낼 값 */
@@ -59,6 +65,10 @@ interface WikiDocument {
   lastEditorThumbnailPath: string | null;
   createdAt: WikiDateTime;
   updatedAt: WikiDateTime;
+  /** docId가 더 작은 문서 중 가장 가까운 문서. 없으면 null */
+  previousDoc: WikiAdjacentDocument | null;
+  /** docId가 더 큰 문서 중 가장 가까운 문서. 없으면 null */
+  nextDoc: WikiAdjacentDocument | null;
 }
 
 interface WikiRevisionSummary {
@@ -106,6 +116,7 @@ interface WikiDocumentIdResponse {
 }
 
 export type {
+  WikiAdjacentDocument,
   WikiDateTime,
   WikiDocument,
   WikiDocumentCreateRequest,

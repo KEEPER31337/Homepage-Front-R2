@@ -6,6 +6,7 @@ import { WikiDocument, WikiRevision } from '@api/wikiDto';
 import NotFound from '@pages/NotFound/NotFound';
 import WikiHidden from '@pages/wiki/WikiHidden';
 import OutlinedButton from '@components/Button/OutlinedButton';
+import WikiAdjacentDocNavSection from './Section/WikiAdjacentDocNavSection';
 import WikiBannerSection from './Section/WikiBannerSection';
 import WikiContentSection from './Section/WikiContentSection';
 import WikiRevisionNoticeSection from './Section/WikiRevisionNoticeSection';
@@ -47,11 +48,13 @@ const revisionToViewModel = (revision: WikiRevision): WikiViewModel => ({
 interface WikiViewPageProps {
   docId: number;
   view: WikiViewModel | undefined;
+  /** 리비전 상세 응답에는 이전/다음 문서가 없어, 현재 문서를 볼 때만 넘깁니다. */
+  adjacentDocs?: Pick<WikiDocument, 'previousDoc' | 'nextDoc'>;
   error: Error | null;
   isRevisionMode: boolean;
 }
 
-const WikiViewPage = ({ docId, view, error, isRevisionMode }: WikiViewPageProps) => {
+const WikiViewPage = ({ docId, view, adjacentDocs, error, isRevisionMode }: WikiViewPageProps) => {
   const navigate = useNavigate();
   const errorStatus = getWikiErrorStatus(error);
 
@@ -75,10 +78,15 @@ const WikiViewPage = ({ docId, view, error, isRevisionMode }: WikiViewPageProps)
   }
 
   return (
-    <div className="-mt-16 space-y-2">
-      <WikiBannerSection view={view} isRevisionMode={isRevisionMode} />
-      {isRevisionMode && <WikiRevisionNoticeSection docId={view.docId} revisionNo={view.revisionNo} />}
-      <WikiContentSection content={view.content} />
+    <div className="-mt-16 space-y-8 sm:space-y-12">
+      <div className="space-y-2">
+        <WikiBannerSection view={view} isRevisionMode={isRevisionMode} />
+        {isRevisionMode && <WikiRevisionNoticeSection docId={view.docId} revisionNo={view.revisionNo} />}
+        <WikiContentSection content={view.content} />
+      </div>
+      {adjacentDocs && (
+        <WikiAdjacentDocNavSection previousDoc={adjacentDocs.previousDoc} nextDoc={adjacentDocs.nextDoc} />
+      )}
     </div>
   );
 };
@@ -90,7 +98,15 @@ interface WikiDocViewProps {
 const WikiDocView = ({ docId }: WikiDocViewProps) => {
   const { data: doc, error } = useGetWikiDocQuery({ docId });
 
-  return <WikiViewPage docId={docId} view={doc && documentToViewModel(doc)} error={error} isRevisionMode={false} />;
+  return (
+    <WikiViewPage
+      docId={docId}
+      view={doc && documentToViewModel(doc)}
+      adjacentDocs={doc && { previousDoc: doc.previousDoc, nextDoc: doc.nextDoc }}
+      error={error}
+      isRevisionMode={false}
+    />
+  );
 };
 
 interface WikiRevisionViewProps {

@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import {
+  WikiAdjacentDocument,
   WikiDateTime,
   WikiDocument,
   WikiDocumentCreateRequest,
@@ -272,6 +273,19 @@ const toDocumentSummary = (doc: MockDocument): WikiDocumentSummary => {
   };
 };
 
+const toAdjacentDocument = (doc: MockDocument | undefined): WikiAdjacentDocument | null =>
+  doc ? { docId: doc.docId, title: getCurrentRevision(doc).title } : null;
+
+/** docId 순서 기준으로 가장 가까운 이전/다음 문서. 현재 리비전이 숨겨진 문서는 건너뜀 */
+const getAdjacentDocuments = (docId: number) => {
+  const visibleDocs = documents.filter((doc) => !getCurrentRevision(doc).hidden).toSorted((a, b) => a.docId - b.docId);
+
+  return {
+    previousDoc: toAdjacentDocument(visibleDocs.findLast((doc) => doc.docId < docId)),
+    nextDoc: toAdjacentDocument(visibleDocs.find((doc) => doc.docId > docId)),
+  };
+};
+
 const compareText = (a: string, b: string) => Number(a > b) - Number(a < b);
 
 const documentComparators: Record<WikiSortType, (a: WikiDocumentSummary, b: WikiDocumentSummary) => number> = {
@@ -364,7 +378,7 @@ const getWikiDocMock = async (docId: number): Promise<WikiDocument> => {
     throw createWikiMockError(403, `[docId] ${docId}: 숨겨진 리비전입니다.`);
   }
 
-  return { ...toDocumentSummary(doc), content, editSummary };
+  return { ...toDocumentSummary(doc), content, editSummary, ...getAdjacentDocuments(docId) };
 };
 
 const getWikiRevisionsMock = async (
