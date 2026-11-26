@@ -10,9 +10,10 @@ import {
   useCreateWikiDocMutation,
   useGetWikiDocQuery,
   useUpdateWikiDocMutation,
+  useUpdateWikiDocTagsMutation,
   wikiKeys,
 } from '@api/wikiApi';
-import { WikiDocument } from '@api/wikiDto';
+import { WikiDocument, WikiTag } from '@api/wikiDto';
 import { COMMON } from '@constants/helperText';
 import { WIKI_LIMITS } from '@constants/wiki';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -33,6 +34,8 @@ const WIKI_WRITE_MSG = {
   badRequest: '입력값을 확인해주세요.',
   notFound: '문서가 더 이상 존재하지 않습니다.',
   saveFail: '저장에 실패했습니다. 잠시 후 다시 시도해주세요.',
+  tagSaveFail: '태그를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.',
+  tagSaveFailAfterDocSave: '문서는 저장했지만 태그를 저장하지 못했습니다. 문서를 다시 편집해 태그를 지정해주세요.',
   loadFail: '문서를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.',
 } as const;
 
@@ -58,6 +61,9 @@ const toastSaveError = (error: unknown) => {
   toast.error(WIKI_WRITE_MSG.saveFail);
 };
 
+const isSameTags = (a: WikiTag[], b: WikiTag[]) =>
+  a.length === b.length && a.every(({ tagId }) => b.some((tag) => tag.tagId === tagId));
+
 interface WikiWriteFormValues {
   title: string;
 }
@@ -67,6 +73,8 @@ interface WikiEditBase {
   docId: number;
   revisionNo: number;
   title: string;
+  /** 문서에 지금 붙어 있는 태그. 태그는 리비전과 따로 저장되어 revisionNo와 무관합니다. */
+  tags: WikiTag[];
 }
 
 /** 409 충돌 처리 단계. syncing은 최신 리비전으로 기준을 다시 맞추는 중이라 저장할 수 없고, 한 번 충돌하면 안내는 계속 보여줍니다. */
@@ -80,7 +88,14 @@ interface WikiWriteFormProps {
 
 const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
   const [editBase, setEditBase] = useState<WikiEditBase | null>(() =>
-    initialDoc ? { docId: initialDoc.docId, revisionNo: initialDoc.revisionNo, title: initialDoc.title } : null,
+    initialDoc
+      ? {
+          docId: initialDoc.docId,
+          revisionNo: initialDoc.revisionNo,
+          title: initialDoc.title,
+          tags: initialDoc.tags,
+        }
+      : null,
   );
   const baseContentRef = useRef(initialDoc?.content ?? '');
 
@@ -90,6 +105,7 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
   const [isContentChanged, setIsContentChanged] = useState(false);
   const [conflictStep, setConflictStep] = useState<WikiConflictStep>('none');
   const [editSummary, setEditSummary] = useState('');
+  const [tags, setTags] = useState<WikiTag[]>(initialDoc?.tags ?? []);
   const [editSummaryModalOpen, setEditSummaryModalOpen] = useState(false);
 
   const editorRef = useRef<StandardEditorHandle | null>(null);
@@ -97,6 +113,7 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
   const queryClient = useQueryClient();
   const { mutate: createWikiDoc, isPending: isCreating } = useCreateWikiDocMutation();
   const { mutate: updateWikiDoc, isPending: isUpdating } = useUpdateWikiDocMutation();
+  const { mutate: updateWikiDocTags, isPending: isUpdatingTags } = useUpdateWikiDocTagsMutation();
   const {
     control,
     getValues,
@@ -115,8 +132,9 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
   }, []);
 
   const isEditMode = editBase !== null;
-  const isChanged = !editBase || title.trim() !== editBase.title || isContentChanged;
-  const isSaving = isCreating || isUpdating || conflictStep === 'syncing';
+  const isDocChanged = !editBase || title.trim() !== editBase.title || isContentChanged;
+  const isTagsChanged = !isSameTags(tags, editBase?.tags ?? []);
+  const isSaving = isCreating || isUpdating || isUpdatingTags || conflictStep === 'syncing';
 
   const handleEditorChange = () => {
     const editor = editorRef.current?.getInstance();
@@ -131,13 +149,15 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
 
   /* NOTE 409 응답에는 최신 리비전 번호가 없으므로 문서 상세를 다시 조회해 다음 저장의 기준 리비전으로 삼습니다.
     에디터 본문은 건드리지 않습니다. 조회에 실패하면 기준이 그대로라 다음 저장에서 다시 409를 받고 재시도됩니다. */
-  const syncBaseWithLatest = (docId: number) => {
+  const syncBaseWithLatest = ({ docId, tags: baseTags }: WikiEditBase) => {
     setConflictStep('syncing');
 
     queryClient
       .fetchQuery({ queryKey: wikiKeys.doc(docId), queryFn: () => getWikiDoc(docId), staleTime: 0 })
       .then((latest) => {
-        setEditBase({ docId, revisionNo: latest.revisionNo, title: latest.title });
+        setEditBase({ docId, revisionNo: latest.revisionNo, title: latest.title, tags: latest.tags });
+        // 태그를 건드리지 않았다면 그 사이 다른 회원이 바꾼 태그를 따라가고, 건드렸다면 고른 태그를 그대로 둡니다.
+        setTags((prevTags) => (isSameTags(prevTags, baseTags) ? latest.tags : prevTags));
         baseContentRef.current = latest.content;
         setIsContentChanged(editorRef.current?.getInstance().getMarkdown() !== latest.content);
       })
@@ -166,7 +186,37 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
     setEditSummaryModalOpen(false);
   };
 
+  /* NOTE 태그는 문서 생성/수정 요청에 넣을 수 없어 PUT /wiki/docs/{docId}/tags로 따로 저장합니다.
+    문서를 먼저 저장한 뒤라면(isDocSaved) 태그 저장이 실패해도 문서는 이미 저장된 상태입니다.
+    이때 문서를 다시 저장하면 같은 문서가 하나 더 생기거나(생성) 409가 나므로(수정), 안내만 하고 문서 보기로 이동합니다. */
+  const saveTags = (docId: number, { isDocSaved }: { isDocSaved: boolean }) => {
+    updateWikiDocTags(
+      { docId, request: { tagIds: tags.map(({ tagId }) => tagId) } },
+      {
+        onSuccess: () => {
+          navigate(`/wiki/view/${docId}`);
+        },
+        onError: (error) => {
+          // 401은 전역 에러 핸들러가 로그인 페이지로 보냅니다.
+          if (getWikiErrorStatus(error) === 401) return;
+          if (isDocSaved) {
+            toast.error(WIKI_WRITE_MSG.tagSaveFailAfterDocSave);
+            navigate(`/wiki/view/${docId}`);
+            return;
+          }
+          toast.error(getWikiErrorStatus(error) === 404 ? WIKI_WRITE_MSG.notFound : WIKI_WRITE_MSG.tagSaveFail);
+        },
+      },
+    );
+  };
+
   const handleUploadButtonClick = () => {
+    /* NOTE 태그만 바뀌었으면 문서는 저장하지 않습니다. 내용이 같아도 문서를 저장하면 새 리비전이 생깁니다. */
+    if (editBase && !isDocChanged) {
+      if (isTagsChanged) saveTags(editBase.docId, { isDocSaved: false });
+      return;
+    }
+
     const trimmedEditSummary = editSummary.trim();
     const request = {
       title: getValues('title').trim(),
@@ -181,14 +231,15 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
         { docId, request: { ...request, baseRevisionNo: revisionNo } },
         {
           onSuccess: () => {
-            navigate(`/wiki/view/${docId}`);
+            if (isTagsChanged) saveTags(docId, { isDocSaved: true });
+            else navigate(`/wiki/view/${docId}`);
           },
           onError: (error) => {
             if (getWikiErrorStatus(error) === 409) {
               // 충돌 안내가 모달에 가려지지 않도록 닫습니다. 적어 둔 편집 요약은 남아 있습니다.
               setEditSummaryModalOpen(false);
               toast.error(WIKI_WRITE_MSG.conflict);
-              syncBaseWithLatest(docId);
+              syncBaseWithLatest(editBase);
               return;
             }
             toastSaveError(error);
@@ -200,7 +251,8 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
 
     createWikiDoc(request, {
       onSuccess: ({ docId }) => {
-        navigate(`/wiki/view/${docId}`);
+        if (tags.length > 0) saveTags(docId, { isDocSaved: true });
+        else navigate(`/wiki/view/${docId}`);
       },
       onError: toastSaveError,
     });
@@ -275,10 +327,8 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
       )}
       <div className="mt-5 flex justify-end space-x-2">
         <TextButton onClick={handleCancelButtonClick}>취소</TextButton>
-        <OutlinedButton
-          onClick={handleSaveButtonClick}
-          disabled={!isValid || Boolean(contentErrMsg) || !isChanged || isSaving}
-        >
+        {/* NOTE 제목과 본문이 그대로여도 다음 팝업에서 태그만 바꿔 저장할 수 있으므로, 변경 여부로는 막지 않습니다. */}
+        <OutlinedButton onClick={handleSaveButtonClick} disabled={!isValid || Boolean(contentErrMsg) || isSaving}>
           {isEditMode ? '수정하기' : '작성완료'}
         </OutlinedButton>
       </div>
@@ -287,8 +337,12 @@ const WikiWriteForm = ({ initialDoc }: WikiWriteFormProps) => {
         onClose={handleEditSummaryModalClose}
         isEditMode={isEditMode}
         isSaving={isSaving}
+        isDocChanged={isDocChanged}
+        isTagsChanged={isTagsChanged}
         editSummary={editSummary}
         setEditSummary={setEditSummary}
+        tags={tags}
+        setTags={setTags}
         onSaveButtonClick={handleUploadButtonClick}
       />
     </div>

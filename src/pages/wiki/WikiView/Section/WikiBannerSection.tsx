@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Chip, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { VscCalendar, VscHistory } from 'react-icons/vsc';
+import { ReactComponent as LogoNeon } from '@assets/logo/logo_neon.svg';
 import CommonAvatar from '@components/Avatar/CommonAvatar';
 import OutlinedButton from '@components/Button/OutlinedButton';
 import ProfileLink from '@components/Link/ProfileLink';
@@ -17,7 +18,10 @@ const WikiBannerSection = ({ view, isRevisionMode }: WikiBannerSectionProps) => 
   const navigate = useNavigate();
 
   return (
-    <div className="bg-mainBlack px-6 py-2">
+    <div className="relative bg-mainBlack px-6 py-2">
+      <div className="pointer-events-none opacity-10" aria-hidden>
+        <LogoNeon className="absolute inset-0 m-auto h-2/3 w-2/3" />
+      </div>
       <div className="mx-auto mt-10 max-w-xl text-center">
         <Chip className="mb-4 !rounded-md !bg-pointBlue/50" label="위키" />
         <Typography variant="h3" className="flex min-h-12 items-center justify-center break-all !font-semibold">

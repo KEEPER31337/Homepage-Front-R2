@@ -7,6 +7,7 @@ import {
   WikiDocumentIdResponse,
   WikiDocumentListParams,
   WikiDocumentSummary,
+  WikiDocumentTagsUpdateRequest,
   WikiDocumentUpdateRequest,
   WikiPage,
   WikiRevision,
@@ -14,15 +15,22 @@ import {
   WikiRevisionSummary,
   WikiSearchType,
   WikiSortType,
+  WikiTag,
+  WikiTagCreateRequest,
+  WikiTagDocumentListParams,
+  WikiTagDocuments,
+  WikiTagSummary,
 } from '@api/wikiDto';
 import { WIKI_LIMITS } from '@constants/wiki';
 
 type MockWriter = Pick<WikiRevision, 'writerId' | 'writerName' | 'writerThumbnailPath'>;
 type MockRevision = Omit<WikiRevision, 'docId'> & { hidden: boolean };
-/** revisions는 revisionNo 오름차순이고 마지막 요소가 현재 리비전 */
-type MockDocument = { docId: number; revisions: MockRevision[] };
+/** revisions는 revisionNo 오름차순이고 마지막 요소가 현재 리비전. tagIds는 리비전과 무관하게 문서에 붙음 */
+type MockDocument = { docId: number; revisions: MockRevision[]; tagIds: number[] };
 /** [title, content, 작성자(members 인덱스), createdAt, editSummary, hidden] */
 type RevisionSeed = [string, string, number, WikiDateTime, string | null, boolean?];
+/** [tagId, name, 이 태그가 붙은 docId 목록] */
+type TagSeed = [number, string, number[]];
 
 const MOCK_DELAY_MS = 200;
 const DEFAULT_PAGE_SIZE = 10;
@@ -61,6 +69,7 @@ const MOCK_WRITER = members[0];
 
 const createDocument = (docId: number, ...seeds: RevisionSeed[]): MockDocument => ({
   docId,
+  tagIds: [],
   revisions: seeds.map(([title, content, writer, createdAt, editSummary, hidden = false], index) => ({
     revisionNo: index + 1,
     title,
@@ -239,6 +248,51 @@ const findDocument = (docId: number) => {
   return doc;
 };
 
+const compareText = (a: string, b: string) => Number(a > b) - Number(a < b);
+
+/* tagId는 서버처럼 연속되지 않는 값입니다.
+  - 보안: 문서 12개 → 태그별 문서 목록이 2페이지
+  - 운영: 현재 리비전이 숨겨진 문서(19)도 포함 → 목록에 나오지만 클릭하면 403
+  - 하드웨어: 문서 0개
+  - docId 7: 태그 10개(문서당 최대), docId 11·14: 태그 없음
+  - 1580: 이름이 30자(최대)인 태그 */
+const tagSeeds: TagSeed[] = [
+  [1002, 'CTF', [7, 20]],
+  [1015, '보안', [4, 5, 6, 7, 9, 15, 16, 17, 18, 20, 21, 23]],
+  [1048, 'Git', [10, 13]],
+  [1103, '개발', [8, 10, 13, 21]],
+  [1127, '네트워크', [7, 16]],
+  [1190, '리버싱', [5, 7]],
+  [1204, '신입', [2, 22]],
+  [1251, '스터디', [7, 12]],
+  [1288, '암호학', [7, 15]],
+  [1342, '웹해킹', [4, 7]],
+  [1376, '입문', [4, 5, 6, 7, 8, 15, 17, 20]],
+  [1419, '포너블', [6, 7]],
+  [1466, '포렌식', [7, 17]],
+  [1502, '하드웨어', []],
+  [1580, '신입 회원이 가입 첫 주에 꼭 읽어야 하는 문서 모음집', [2]],
+  [1637, '운영', [1, 2, 3, 9, 12, 19, 22]],
+];
+
+const tags: WikiTag[] = tagSeeds.map(([tagId, name]) => ({ tagId, name }));
+
+tagSeeds.forEach(([tagId, , docIds]) => {
+  docIds.forEach((docId) => findDocument(docId).tagIds.push(tagId));
+});
+
+let nextTagId = Math.max(...tags.map(({ tagId }) => tagId)) + 1;
+
+/** 이름 중복 판정용. 서버처럼 앞뒤 공백, 대소문자, 악센트를 무시 */
+const normalizeTagName = (name: string) => name.trim().normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+
+const compareTagName = (a: WikiTag, b: WikiTag) =>
+  compareText(a.name.toLowerCase(), b.name.toLowerCase()) || a.tagId - b.tagId;
+
+/** 문서에 붙은 태그 (태그 이름 오름차순). 없으면 [] */
+const getDocumentTags = ({ tagIds }: MockDocument): WikiTag[] =>
+  tags.filter(({ tagId }) => tagIds.includes(tagId)).toSorted(compareTagName);
+
 const toPage = <T>(items: T[], page: number, size: number): WikiPage<T> => {
   const pageSize = Math.min(Math.max(Math.floor(size) || DEFAULT_PAGE_SIZE, 1), WIKI_LIMITS.PAGE_SIZE_MAX);
   const number = Math.max(Math.floor(page) || 0, 0);
@@ -270,6 +324,7 @@ const toDocumentSummary = (doc: MockDocument): WikiDocumentSummary => {
     lastEditorThumbnailPath: current.writerThumbnailPath,
     createdAt: doc.revisions[0].createdAt,
     updatedAt: current.createdAt,
+    tags: getDocumentTags(doc),
   };
 };
 
@@ -285,8 +340,6 @@ const getAdjacentDocuments = (docId: number) => {
     nextDoc: toAdjacentDocument(visibleDocs.find((doc) => doc.docId > docId)),
   };
 };
-
-const compareText = (a: string, b: string) => Number(a > b) - Number(a < b);
 
 /** \n, \r\n, \r 기준으로 나누고 마지막 빈 줄은 버림. 빈 문자열은 0줄 */
 const splitLines = (content: string) => {
@@ -469,7 +522,7 @@ const createWikiDocMock = async (request: WikiDocumentCreateRequest): Promise<Wi
     throw createWikiMockError(400, errors.join(', '));
   }
 
-  const doc: MockDocument = { docId: nextDocId, revisions: [] };
+  const doc: MockDocument = { docId: nextDocId, revisions: [], tagIds: [] };
   nextDocId += 1;
   documents.push(doc);
 
@@ -504,11 +557,111 @@ const updateWikiDocMock = async (
   return appendRevision(doc, request);
 };
 
+const getWikiTagsMock = async (): Promise<WikiTagSummary[]> => {
+  await delay();
+
+  // 현재 리비전이 숨겨진 문서도 documentCount에 포함
+  return tags.toSorted(compareTagName).map((tag) => ({
+    ...tag,
+    documentCount: documents.filter(({ tagIds }) => tagIds.includes(tag.tagId)).length,
+  }));
+};
+
+const getWikiTagDocumentsMock = async (
+  tagId: number,
+  { sort = 'latest', page = 0, size = DEFAULT_PAGE_SIZE }: WikiTagDocumentListParams = {},
+): Promise<WikiTagDocuments> => {
+  await delay();
+
+  if (!SORT_TYPES.includes(sort)) {
+    throw createWikiMockError(400, `[sort] ${sort}: 존재하지 않는 정렬 타입입니다.`);
+  }
+
+  const tag = tags.find((item) => item.tagId === tagId);
+
+  if (!tag) {
+    throw createWikiMockError(404, `[tagId] ${tagId}: 존재하지 않는 태그입니다.`);
+  }
+
+  // 문서 목록처럼 현재 리비전이 숨겨진 문서도 거르지 않음
+  const summaries = documents
+    .filter(({ tagIds }) => tagIds.includes(tagId))
+    .map((doc) => toDocumentSummary(doc))
+    .toSorted(documentComparators[sort]);
+
+  return { ...tag, documents: toPage(summaries, page, size) };
+};
+
+const createWikiTagMock = async ({ name }: WikiTagCreateRequest): Promise<WikiTag> => {
+  await delay();
+
+  // 길이 제한은 서버처럼 앞뒤 공백을 자르기 전 값에 적용
+  if (name === undefined || name === null || !name.trim()) {
+    throw createWikiMockError(400, `[name] ${name ?? null}: 태그 이름을 입력해주세요.`);
+  }
+
+  if (name.length > WIKI_LIMITS.TAG_NAME_MAX) {
+    throw createWikiMockError(400, `[name] ${name}: 태그 이름은 ${WIKI_LIMITS.TAG_NAME_MAX}자 이하로 입력해주세요.`);
+  }
+
+  const trimmedName = name.trim();
+  const normalizedName = normalizeTagName(trimmedName);
+
+  // 409 응답에는 이미 있는 태그의 tagId가 없음
+  if (tags.some((tag) => normalizeTagName(tag.name) === normalizedName)) {
+    throw createWikiMockError(409, `[name] ${trimmedName}: 이미 존재하는 태그 이름입니다.`);
+  }
+
+  const tag: WikiTag = { tagId: nextTagId, name: trimmedName };
+  nextTagId += 1;
+  tags.push(tag);
+
+  return { ...tag };
+};
+
+/** 전체 교체. 리비전을 만들지 않으므로 revisionNo, updatedAt, lastEditor*는 그대로 */
+const updateWikiDocTagsMock = async (docId: number, { tagIds }: WikiDocumentTagsUpdateRequest): Promise<WikiTag[]> => {
+  await delay();
+
+  if (tagIds === undefined || tagIds === null) {
+    throw createWikiMockError(400, '[tagIds] null: 태그 목록을 입력해주세요.');
+  }
+
+  const errors = tagIds.flatMap((tagId, index) =>
+    tagId === undefined || tagId === null ? [`[tagIds[${index}]] null: 태그 id를 입력해주세요.`] : [],
+  );
+
+  // 중복을 없애기 전 배열 길이 기준. 실제 서버의 이 400은 body에 message가 없을 수 있음
+  if (tagIds.length > WIKI_LIMITS.TAGS_PER_DOCUMENT_MAX) {
+    errors.push(`태그는 ${WIKI_LIMITS.TAGS_PER_DOCUMENT_MAX}개 이하로 지정해주세요.`);
+  }
+
+  if (errors.length > 0) {
+    throw createWikiMockError(400, errors.join(', '));
+  }
+
+  const doc = findDocument(docId);
+  // 없는 태그 id가 하나라도 있으면 아무것도 바꾸지 않음. message에는 보낸 순서상 첫 번째 것만 담김
+  const unknownTagId = tagIds.find((tagId) => !tags.some((tag) => tag.tagId === tagId));
+
+  if (unknownTagId !== undefined) {
+    throw createWikiMockError(404, `[tagIds] ${unknownTagId}: 존재하지 않는 태그입니다.`);
+  }
+
+  doc.tagIds = [...new Set(tagIds)];
+
+  return getDocumentTags(doc);
+};
+
 export {
   createWikiDocMock,
+  createWikiTagMock,
   getWikiDocMock,
   getWikiDocsMock,
   getWikiRevisionMock,
   getWikiRevisionsMock,
+  getWikiTagDocumentsMock,
+  getWikiTagsMock,
   updateWikiDocMock,
+  updateWikiDocTagsMock,
 };

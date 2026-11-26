@@ -1,10 +1,10 @@
 import React from 'react';
-import { Chip, ChipProps } from '@mui/material';
+import { Chip as MuiChip, ChipProps } from '@mui/material';
 import { KEEPER_COLOR } from '@constants/keeperTheme';
 
-const MemberChip = (chipProps: ChipProps) => {
+const Chip = (chipProps: ChipProps) => {
   return (
-    <Chip
+    <MuiChip
       sx={{ bgcolor: `${KEEPER_COLOR.pointBlue}30`, color: 'white', fontWeight: 500 }}
       size="small"
       {...chipProps}
@@ -12,4 +12,4 @@ const MemberChip = (chipProps: ChipProps) => {
   );
 };
 
-export default MemberChip;
+export default Chip;

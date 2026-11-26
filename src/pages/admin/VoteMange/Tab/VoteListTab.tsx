@@ -14,7 +14,7 @@ import { useGetMemberInfoQuery } from '@api/dutyManageApi';
 import { useGetAdminVoteListQuery } from '@api/voteApi';
 import { AdminVoteListItem } from '@api/voteDto';
 import ActionButton from '@components/Button/ActionButton';
-import MemberChip from '@components/Chip/MemberChip';
+import Chip from '@components/Chip/Chip';
 import Selector from '@components/Selector/Selector';
 import DeleteVoteModal from '../Modal/DeleteVoteModal';
 
@@ -49,7 +49,7 @@ const VoteListTab = () => {
             ? `${member.generation}기_${member.realName} (ID_${memberId})`
             : `조회 없음 (ID_${memberId})`;
 
-          return <MemberChip className="!rounded" key={`${voteId}-${memberId}-${memberIndex}`} label={label} />;
+          return <Chip className="!rounded" key={`${voteId}-${memberId}-${memberIndex}`} label={label} />;
         })}
       </div>
     );

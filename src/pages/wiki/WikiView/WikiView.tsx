@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { getWikiErrorStatus, useGetWikiDocQuery, useGetWikiRevisionQuery } from '@api/wikiApi';
-import { WikiDocument, WikiRevision } from '@api/wikiDto';
+import { WikiDocument, WikiRevision, WikiTag } from '@api/wikiDto';
 import NotFound from '@pages/NotFound/NotFound';
 import WikiHidden from '@pages/wiki/WikiHidden';
 import OutlinedButton from '@components/Button/OutlinedButton';
@@ -10,6 +10,7 @@ import WikiAdjacentDocNavSection from './Section/WikiAdjacentDocNavSection';
 import WikiBannerSection from './Section/WikiBannerSection';
 import WikiContentSection from './Section/WikiContentSection';
 import WikiRevisionNoticeSection from './Section/WikiRevisionNoticeSection';
+import WikiTagSection from './Section/WikiTagSection';
 
 /* NOTE 문서 상세(WikiDocument)와 리비전 상세(WikiRevision)의 응답 형태가 달라, 화면에서는 이 모델로 통일해서 사용합니다. */
 export interface WikiViewModel {
@@ -50,11 +51,13 @@ interface WikiViewPageProps {
   view: WikiViewModel | undefined;
   /** 리비전 상세 응답에는 이전/다음 문서가 없어, 현재 문서를 볼 때만 넘깁니다. */
   adjacentDocs?: Pick<WikiDocument, 'previousDoc' | 'nextDoc'>;
+  /** 태그는 리비전 이력에 남지 않아 과거 시점의 태그를 알 수 없으므로, 현재 문서를 볼 때만 넘깁니다. */
+  tags?: WikiTag[];
   error: Error | null;
   isRevisionMode: boolean;
 }
 
-const WikiViewPage = ({ docId, view, adjacentDocs, error, isRevisionMode }: WikiViewPageProps) => {
+const WikiViewPage = ({ docId, view, adjacentDocs, tags, error, isRevisionMode }: WikiViewPageProps) => {
   const navigate = useNavigate();
   const errorStatus = getWikiErrorStatus(error);
 
@@ -80,7 +83,11 @@ const WikiViewPage = ({ docId, view, adjacentDocs, error, isRevisionMode }: Wiki
   return (
     <div className="-mt-16 space-y-8 sm:space-y-12">
       <div className="space-y-2">
-        <WikiBannerSection view={view} isRevisionMode={isRevisionMode} />
+        {/* NOTE 태그는 제목(배너)에 간격 없이 붙여 보여줍니다. 태그는 현재 문서에만 있어 리비전 안내와 함께 나오지 않습니다. */}
+        <div>
+          <WikiBannerSection view={view} isRevisionMode={isRevisionMode} />
+          {tags && <WikiTagSection tags={tags} />}
+        </div>
         {isRevisionMode && <WikiRevisionNoticeSection docId={view.docId} revisionNo={view.revisionNo} />}
         <WikiContentSection content={view.content} />
       </div>
@@ -103,6 +110,7 @@ const WikiDocView = ({ docId }: WikiDocViewProps) => {
       docId={docId}
       view={doc && documentToViewModel(doc)}
       adjacentDocs={doc && { previousDoc: doc.previousDoc, nextDoc: doc.nextDoc }}
+      tags={doc?.tags}
       error={error}
       isRevisionMode={false}
     />

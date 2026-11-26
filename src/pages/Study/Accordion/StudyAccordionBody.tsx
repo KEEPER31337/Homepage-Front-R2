@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import { SiNotion } from 'react-icons/si';
 import { VscGithubInverted, VscLink } from 'react-icons/vsc';
 import { useGetStudyQuery } from '@api/studyApi';
-import MemberChip from '@components/Chip/MemberChip';
+import Chip from '@components/Chip/Chip';
 import ProfileLink from '@components/Link/ProfileLink';
 
 interface StudyAccordionBodyProps {
@@ -30,12 +30,12 @@ const StudyAccordionBody = ({ studyId }: StudyAccordionBodyProps) => {
       <div className="space-y-2">
         <Typography className="font-semibold">스터디원</Typography>
         <div className="flex space-x-2">
-          <MemberChip
+          <Chip
             className="!rounded"
             label={<ProfileLink memberId={studyInfo.headMember.memberId}>{studyInfo.headMember.realName}</ProfileLink>}
           />
           {studyInfo.members.map(({ memberId, realName }) => (
-            <MemberChip
+            <Chip
               className="!rounded"
               key={memberId}
               label={<ProfileLink memberId={memberId}>{realName}</ProfileLink>}

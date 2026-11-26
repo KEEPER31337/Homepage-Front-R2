@@ -20,6 +20,7 @@ import WikiHistory from '@pages/wiki/WikiHistory/WikiHistory';
 import WikiHome from '@pages/wiki/WikiHome/WikiHome';
 import WikiLayout from '@pages/wiki/WikiLayout/WikiLayout';
 import WikiList from '@pages/wiki/WikiList/WikiList';
+import WikiTag from '@pages/wiki/WikiTag/WikiTag';
 import WikiView from '@pages/wiki/WikiView/WikiView';
 import FitContainer from '@components/Layout/Container/FitContainer';
 import FullContainer from '@components/Layout/Container/FullContainer';
@@ -273,6 +274,10 @@ const useMainRouter = () =>
                     {
                       path: 'list',
                       element: <WikiList />,
+                    },
+                    {
+                      path: 'tag/:tagId',
+                      element: <WikiTag />,
                     },
                   ],
                 },

@@ -6,11 +6,17 @@ import {
   WikiDocumentIdResponse,
   WikiDocumentListParams,
   WikiDocumentSummary,
+  WikiDocumentTagsUpdateRequest,
   WikiDocumentUpdateRequest,
   WikiPage,
   WikiRevision,
   WikiRevisionListParams,
   WikiRevisionSummary,
+  WikiTag,
+  WikiTagCreateRequest,
+  WikiTagDocumentListParams,
+  WikiTagDocuments,
+  WikiTagSummary,
 } from './wikiDto';
 
 /* NOTE 위키 백엔드 API가 배포되기 전까지 개발 환경(import.meta.env.DEV)에서는 mock(@mocks/wikiApiMock)으로 동작합니다.
@@ -23,6 +29,8 @@ const wikiKeys = {
   revisionList: (docId: number, params: WikiRevisionListParams) =>
     [...wikiKeys.doc(docId), 'revisions', params] as const,
   revision: (docId: number, revisionNo: number) => [...wikiKeys.doc(docId), 'revision', revisionNo] as const,
+  tagList: () => [...wikiKeys.base, 'tags'] as const,
+  tagDocList: (tagId: number, params: WikiTagDocumentListParams) => [...wikiKeys.base, 'tag', tagId, params] as const,
 };
 
 /* NOTE searchType과 search가 모두 있어야 검색되므로, 하나라도 없으면 둘 다 보내지 않습니다. */
@@ -78,6 +86,34 @@ const updateWikiDoc = async ({ docId, request }: { docId: number; request: WikiD
   if (import.meta.env.DEV) return (await import('@mocks/wikiApiMock')).updateWikiDocMock(docId, request);
 
   const { data } = await axios.put<WikiDocumentIdResponse>(`/wiki/docs/${docId}`, request);
+  return data;
+};
+
+const getWikiTags = async () => {
+  if (import.meta.env.DEV) return (await import('@mocks/wikiApiMock')).getWikiTagsMock();
+
+  const { data } = await axios.get<WikiTagSummary[]>('/wiki/tags');
+  return data;
+};
+
+const getWikiTagDocs = async (tagId: number, params: WikiTagDocumentListParams) => {
+  if (import.meta.env.DEV) return (await import('@mocks/wikiApiMock')).getWikiTagDocumentsMock(tagId, params);
+
+  const { data } = await axios.get<WikiTagDocuments>(`/wiki/tags/${tagId}`, { params });
+  return data;
+};
+
+const createWikiTag = async (request: WikiTagCreateRequest) => {
+  if (import.meta.env.DEV) return (await import('@mocks/wikiApiMock')).createWikiTagMock(request);
+
+  const { data } = await axios.post<WikiTag>('/wiki/tags', request);
+  return data;
+};
+
+const updateWikiDocTags = async ({ docId, request }: { docId: number; request: WikiDocumentTagsUpdateRequest }) => {
+  if (import.meta.env.DEV) return (await import('@mocks/wikiApiMock')).updateWikiDocTagsMock(docId, request);
+
+  const { data } = await axios.put<WikiTag[]>(`/wiki/docs/${docId}/tags`, request);
   return data;
 };
 
@@ -140,14 +176,61 @@ const useUpdateWikiDocMutation = () => {
   });
 };
 
+const useGetWikiTagListQuery = ({ enabled = true }: { enabled?: boolean } = {}) => {
+  return useQuery<WikiTagSummary[]>({
+    queryKey: wikiKeys.tagList(),
+    queryFn: getWikiTags,
+    enabled,
+  });
+};
+
+const useGetWikiTagDocListQuery = ({ tagId, sort, page, size }: WikiTagDocumentListParams & { tagId: number }) => {
+  const params = { sort, page, size };
+
+  return useQuery<WikiTagDocuments>({
+    queryKey: wikiKeys.tagDocList(tagId, params),
+    queryFn: () => getWikiTagDocs(tagId, params),
+    placeholderData: keepPreviousData,
+  });
+};
+
+/* NOTE 태그를 만들기만 하고 문서에 붙이지는 않습니다. 문서에 붙이려면 응답의 tagId로 useUpdateWikiDocTagsMutation을 호출해야 합니다. */
+const useCreateWikiTagMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<WikiTag, Error, WikiTagCreateRequest>({
+    mutationFn: createWikiTag,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: wikiKeys.tagList() });
+    },
+  });
+};
+
+/* NOTE 문서의 태그 전체를 교체합니다. 리비전이 생기지 않아 문서의 revisionNo(baseRevisionNo)는 그대로입니다. */
+const useUpdateWikiDocTagsMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<WikiTag[], Error, { docId: number; request: WikiDocumentTagsUpdateRequest }>({
+    mutationFn: updateWikiDocTags,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: wikiKeys.base });
+    },
+  });
+};
+
 export {
   getWikiDoc,
   getWikiErrorStatus,
+  getWikiTags,
   useCreateWikiDocMutation,
+  useCreateWikiTagMutation,
   useGetWikiDocListQuery,
   useGetWikiDocQuery,
   useGetWikiRevisionListQuery,
   useGetWikiRevisionQuery,
+  useGetWikiTagDocListQuery,
+  useGetWikiTagListQuery,
   useUpdateWikiDocMutation,
+  useUpdateWikiDocTagsMutation,
   wikiKeys,
 };

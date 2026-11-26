@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chip, Typography } from '@mui/material';
 import { VscHistory } from 'react-icons/vsc';
+import { ReactComponent as LogoNeon } from '@assets/logo/logo_neon.svg';
 import OutlinedButton from '@components/Button/OutlinedButton';
 
 interface WikiHistoryBannerSectionProps {
@@ -15,7 +16,11 @@ const WikiHistoryBannerSection = ({ docId, title, totalRevisions, canEdit }: Wik
   const navigate = useNavigate();
 
   return (
-    <div className="bg-mainBlack px-6 py-2">
+    <div className="relative bg-mainBlack px-6 py-2">
+      {/* NOTE 문서 보기 배너(WikiBannerSection)와 같은 배경 로고입니다. */}
+      <div className="pointer-events-none opacity-10" aria-hidden>
+        <LogoNeon className="absolute inset-0 m-auto h-2/3 w-2/3" />
+      </div>
       <div className="mx-auto mt-10 max-w-xl text-center">
         <Chip className="mb-4 !rounded-md !bg-pointBlue/50" label="위키" />
         <Typography variant="h3" className="flex min-h-12 items-center justify-center break-all !font-semibold">

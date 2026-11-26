@@ -1,6 +1,6 @@
 import React from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import MemberChip from '@components/Chip/MemberChip';
+import Chip from '@components/Chip/Chip';
 
 interface AutoCompleteItem {
   value: unknown;
@@ -68,7 +68,7 @@ const AutoComplete = <Multiple extends boolean | undefined = false>({
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => {
           const { key, ...tagProps } = getTagProps({ index });
-          return <MemberChip key={key} label={option.label} {...tagProps} disabled={option?.fixed} />;
+          return <Chip key={key} label={option.label} {...tagProps} disabled={option?.fixed} />;
         })
       }
       renderOption={(props, option) => {
